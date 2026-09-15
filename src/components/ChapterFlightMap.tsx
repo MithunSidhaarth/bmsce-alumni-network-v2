@@ -79,7 +79,7 @@ const CONTINENT_COLOR: Record<Continent, string> = {
   "North America": "var(--color-oxblood)",
   Europe: "var(--color-maroon)",
   Asia: "var(--color-accent)",
-  Oceania: "var(--color-ink)",
+  Australia: "var(--color-ink)",
 };
 
 // Faint watermark labels — just enough cartographic context to orient the
@@ -88,7 +88,7 @@ const REGION_LABELS: { label: string; lon: number; lat: number }[] = [
   { label: "NORTH AMERICA", lon: -100, lat: 44 },
   { label: "EUROPE", lon: 8, lat: 56 },
   { label: "ASIA", lon: 95, lat: 40 },
-  { label: "OCEANIA", lon: 143, lat: -28 },
+  { label: "AUSTRALIA", lon: 143, lat: -28 },
 ];
 
 const GRATICULE_LONS = [-120, -90, -60, -30, 0, 30, 60, 90, 120, 150];

@@ -49,6 +49,22 @@
     100% { transform: translate(6%, -10%) scale(1.1); }
   }
 
+  /* Page-level transition — plays once per route change (the wrapper is
+     keyed by pathname, so React remounts it on navigation). Shorter and
+     smaller than fade-up, which is tuned for individual elements revealing
+     on scroll rather than an entire page appearing at once. */
+  --animate-page-enter: page-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* Infinite horizontal ticker — content is duplicated once in the DOM and
      this slides exactly one copy's width, so the loop point is invisible. */
   --animate-marquee: marquee 32s linear infinite;

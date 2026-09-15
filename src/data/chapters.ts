@@ -14,7 +14,7 @@ export const CONTINENTS = [
   "North America",
   "Europe",
   "Asia",
-  "Oceania",
+  "Australia",
 ] as const;
 
 export type Continent = (typeof CONTINENTS)[number];
@@ -22,14 +22,14 @@ export type Continent = (typeof CONTINENTS)[number];
 export type Chapter = {
   name: string;
   continent: Continent;
-  // Home country. null for regional chapters (Europe, SEA, GCC, Oceania), which
+  // Home country. null for regional chapters (Europe, SEA, GCC), which
   // are excluded from the unique-country count on the homepage stats.
   country: string | null;
   // Representative city/region photo (freely-licensed Wikimedia Commons image,
   // hotlinked). The card falls back to a brand-colored tile if the image fails.
   image: string;
   // [longitude, latitude] for the chapter map. Regional chapters (Europe, SEA,
-  // GCC, Oceania) use a representative city — the same one the photo depicts.
+  // GCC) use a representative city — the same one the photo depicts.
   coordinates: [number, number];
 };
 
@@ -60,7 +60,7 @@ export const chapters: Chapter[] = [
   { name: "New York", continent: "North America", country: "United States", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg/960px-View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg", coordinates: [-74.01, 40.71] },
   { name: "Texas", continent: "North America", country: "United States", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Skyline_of_Austin%2C_Texas_%28cropped%29.jpg/960px-Skyline_of_Austin%2C_Texas_%28cropped%29.jpg", coordinates: [-97.74, 30.27] },
   { name: "Europe", continent: "Europe", country: null, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/960px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg", coordinates: [2.35, 48.86] },
-  { name: "Oceania", continent: "Oceania", country: null, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sydney_Opera_House_and_Harbour_Bridge_Dusk_%282%29_2019-06-21.jpg/960px-Sydney_Opera_House_and_Harbour_Bridge_Dusk_%282%29_2019-06-21.jpg", coordinates: [151.21, -33.87] },
+  { name: "Australia", continent: "Australia", country: "Australia", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sydney_Opera_House_and_Harbour_Bridge_Dusk_%282%29_2019-06-21.jpg/960px-Sydney_Opera_House_and_Harbour_Bridge_Dusk_%282%29_2019-06-21.jpg", coordinates: [151.21, -33.87] },
   { name: "Seattle", continent: "North America", country: "United States", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Seattle_Center_as_night_falls.jpg/960px-Seattle_Center_as_night_falls.jpg", coordinates: [-122.33, 47.61] },
   { name: "London", continent: "Europe", country: "United Kingdom", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/London_Skyline_%28125508655%29.jpeg/960px-London_Skyline_%28125508655%29.jpeg", coordinates: [-0.12, 51.51] },
   { name: "Toronto", continent: "North America", country: "Canada", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Toronto_Skyline_from_Olympic_Island%2C_June_20_2026_%285-3_cropped%29.jpg/960px-Toronto_Skyline_from_Olympic_Island%2C_June_20_2026_%285-3_cropped%29.jpg", coordinates: [-79.38, 43.65] },

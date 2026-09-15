@@ -2,6 +2,9 @@ import Link from "next/link";
 import ProfileCompletionNudge from "./ProfileCompletionNudge";
 import Eyebrow from "./Eyebrow";
 import Reveal from "./Reveal";
+import Aurora from "./Aurora";
+import SpotlightCard from "./SpotlightCard";
+import EventCountdown from "./EventCountdown";
 import { PostCard } from "./SocialFeed";
 import {
   DirectoryIcon,
@@ -21,6 +24,20 @@ function greeting(hour: number) {
   return "Good evening";
 }
 
+function memberSince(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+}
+
+type UpcomingEvent = {
+  id: string;
+  title: string;
+  event_date: string;
+  location: string | null;
+};
+
 /**
  * Homepage shown to SIGNED-IN members. Deliberately contains no "Join the
  * network" pitch — that copy belongs only to the logged-out marketing home.
@@ -34,15 +51,27 @@ export default async function MemberHome({
 }) {
   const supabase = await createClient();
 
-  // 4 most recent Instagram highlights for the homepage teaser — mirrors the
-  // query on the events page's "From our Instagram" section.
-  const { data: postRows } = await supabase
-    .from("social_posts")
-    .select("*")
-    .order("posted_at", { ascending: false })
-    .limit(4)
-    .returns<SocialPost[]>();
+  const [{ data: postRows }, { data: eventRows }] = await Promise.all([
+    // 4 most recent Instagram highlights for the homepage teaser — mirrors
+    // the query on the events page's "From our Instagram" section.
+    supabase
+      .from("social_posts")
+      .select("*")
+      .order("posted_at", { ascending: false })
+      .limit(4)
+      .returns<SocialPost[]>(),
+    // The single nearest upcoming event, if any — powers the featured
+    // countdown tile below.
+    supabase
+      .from("events")
+      .select("id, title, event_date, location")
+      .gte("event_date", new Date().toISOString())
+      .order("event_date", { ascending: true })
+      .limit(1)
+      .returns<UpcomingEvent[]>(),
+  ]);
   const posts = postRows ?? [];
+  const nextEvent = eventRows?.[0] ?? null;
 
   const firstName = (profile.full_name ?? "").trim().split(" ")[0] || "there";
   const isStudent = profile.user_type === "student";
@@ -56,8 +85,9 @@ export default async function MemberHome({
   return (
     <>
       {/* Welcome */}
-      <section>
-        <div className="mx-auto max-w-7xl px-6 pb-10 pt-16 md:px-10 md:pt-24">
+      <section className="relative overflow-hidden">
+        <Aurora />
+        <div className="relative mx-auto max-w-7xl px-6 pb-10 pt-16 md:px-10 md:pt-24">
           <Reveal>
             <Eyebrow>
               {isStudent ? "Student" : status === "verified" ? "Member" : "Welcome"}
@@ -66,7 +96,10 @@ export default async function MemberHome({
           <Reveal delay={80}>
             <h1 className="mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
               {greeting(new Date().getHours())},{" "}
-              <span className="italic">{firstName}</span>.
+              <span className="bg-gradient-to-r from-oxblood via-maroon to-accent bg-clip-text italic text-transparent">
+                {firstName}
+              </span>
+              .
             </h1>
           </Reveal>
           <Reveal delay={160}>
@@ -77,9 +110,28 @@ export default async function MemberHome({
             </p>
           </Reveal>
 
+          {/* Identity strip — a quiet personal touch, not a form. */}
+          <Reveal delay={200}>
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-ink/45">
+              <span>Member since {memberSince(profile.created_at)}</span>
+              {profile.graduation_year && (
+                <>
+                  <span aria-hidden="true" className="h-1 w-1 rounded-full bg-gold" />
+                  <span>Batch of {profile.graduation_year}</span>
+                </>
+              )}
+              {profile.current_city && (
+                <>
+                  <span aria-hidden="true" className="h-1 w-1 rounded-full bg-gold" />
+                  <span>{profile.current_city}</span>
+                </>
+              )}
+            </div>
+          </Reveal>
+
           {/* Verification status */}
           {limited && (
-            <Reveal delay={200}>
+            <Reveal delay={240}>
               <StatusNotice profile={profile} careersEnabled={careersEnabled} />
             </Reveal>
           )}
@@ -88,7 +140,9 @@ export default async function MemberHome({
         </div>
       </section>
 
-      {/* Quick links into real features */}
+      {/* Quick links into real features — a bento mosaic instead of a flat
+          grid, with a live-ticking countdown as the anchor tile whenever
+          there's an event on the calendar. */}
       <section className="border-t border-gold/30">
         <div className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-20">
           <Reveal>
@@ -97,13 +151,38 @@ export default async function MemberHome({
             </h2>
           </Reveal>
 
-          <div
-            className={`mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 ${
-              careersEnabled ? "lg:grid-cols-4" : ""
-            }`}
-          >
+          <div className="mt-10 grid auto-rows-[150px] grid-cols-2 gap-5 sm:auto-rows-[170px] sm:grid-cols-4">
+            {nextEvent && (
+              <Reveal
+                delay={0}
+                className="col-span-2 row-span-2 sm:col-span-2 sm:row-span-2"
+              >
+                <SpotlightCard
+                  glow="rgba(255,255,255,0.18)"
+                  className="h-full rounded-2xl bg-gradient-to-br from-oxblood to-maroon p-6 shadow-[0_18px_36px_-16px_rgba(47,37,68,0.5)] md:p-8"
+                >
+                  <Link href="/events" className="flex h-full flex-col justify-between">
+                    <div>
+                      <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ivory/70">
+                        Next up
+                      </span>
+                      <h3 className="mt-2 font-display text-2xl italic text-ivory md:text-3xl">
+                        {nextEvent.title}
+                      </h3>
+                      {nextEvent.location && (
+                        <p className="mt-1 font-sans text-sm text-ivory/70">
+                          {nextEvent.location}
+                        </p>
+                      )}
+                    </div>
+                    <EventCountdown dateIso={nextEvent.event_date} />
+                  </Link>
+                </SpotlightCard>
+              </Reveal>
+            )}
+
             <QuickLink
-              index={0}
+              index={1}
               tag="Directory"
               title="Find your people"
               body={
@@ -112,22 +191,26 @@ export default async function MemberHome({
                   : "Search alumni by batch, branch, city, or company."
               }
               href="/directory"
-              tone="maroon"
+              tone="light"
               Icon={DirectoryIcon}
+              span={nextEvent ? "1" : "wide"}
             />
-            <QuickLink
-              index={1}
-              tag="Events"
-              title="What's coming up"
-              body="Reunions and meetups, plus highlights from our Instagram."
-              href="/events"
-              tone="maroon"
-              Icon={EventsIcon}
-            />
+            {!nextEvent && (
+              <QuickLink
+                index={2}
+                tag="Events"
+                title="What's coming up"
+                body="Reunions and meetups, plus highlights from our Instagram."
+                href="/events"
+                tone="maroon"
+                Icon={EventsIcon}
+                span="1"
+              />
+            )}
             {careersEnabled && (
               <>
                 <QuickLink
-                  index={2}
+                  index={3}
                   tag="Mentorship"
                   title={isStudent ? "Find a mentor" : "Mentor someone"}
                   body={
@@ -140,15 +223,19 @@ export default async function MemberHome({
                       ? "/careers/mentorship"
                       : "/careers/mentorship/become"
                   }
+                  tone="light"
                   Icon={MentorshipIcon}
+                  span="1"
                 />
                 <QuickLink
-                  index={3}
+                  index={4}
                   tag="Careers"
                   title="Jobs & internships"
                   body="Openings shared by members — apply in a click."
                   href="/careers/jobs"
+                  tone="light"
                   Icon={CareersIcon}
+                  span="1"
                 />
               </>
             )}
@@ -273,6 +360,7 @@ function QuickLink({
   href,
   tone = "light",
   Icon,
+  span = "1",
 }: {
   index: number;
   tag: string;
@@ -281,58 +369,64 @@ function QuickLink({
   href: string;
   tone?: "light" | "maroon";
   Icon: () => React.ReactElement;
+  span?: "1" | "wide";
 }) {
   const maroon = tone === "maroon";
   return (
-    <Reveal delay={index * 90} className="h-full">
-      <Link
-        href={href}
-        className={`group block h-full rounded-2xl p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 md:p-8 ${
+    <Reveal
+      delay={index * 90}
+      className={span === "wide" ? "col-span-2 row-span-1" : "col-span-1 row-span-1"}
+    >
+      <SpotlightCard
+        glow={maroon ? "rgba(255,255,255,0.14)" : "rgba(47,37,68,0.08)"}
+        className={`h-full rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 ${
           maroon
             ? "bg-maroon hover:shadow-[0_18px_36px_-16px_rgba(113,41,60,0.5)]"
             : "border border-gold/30 bg-ivory-dim/40 hover:border-gold/60 hover:shadow-[0_18px_36px_-18px_rgba(47,37,68,0.25)]"
         }`}
       >
-        <span
-          className={`flex h-11 w-11 items-center justify-center rounded-full [&>svg]:h-5 [&>svg]:w-5 ${
-            maroon
-              ? "bg-ivory/10 text-ivory"
-              : "border border-gold/40 text-oxblood group-hover:border-accent/60 group-hover:text-accent"
-          }`}
-        >
-          <Icon />
-        </span>
-        <span
-          className={`mt-5 block font-sans text-[11px] font-medium uppercase tracking-[0.2em] ${
-            maroon ? "text-ivory/70" : "text-accent"
-          }`}
-        >
-          {tag}
-        </span>
-        <h3
-          className={`mt-3 font-display text-2xl italic transition-transform duration-300 group-hover:translate-x-1 ${
-            maroon ? "text-ivory" : "text-ink"
-          }`}
-        >
-          {title}
-        </h3>
-        <p
-          className={`mt-4 font-sans text-sm leading-relaxed ${
-            maroon ? "text-ivory/75" : "text-ink/65"
-          }`}
-        >
-          {body}
-        </p>
-        <span
-          className={`mt-6 inline-block font-sans text-[11px] font-medium uppercase tracking-[0.14em] transition-colors ${
-            maroon
-              ? "text-ivory/60 group-hover:text-ivory"
-              : "text-oxblood/70 group-hover:text-oxblood"
-          }`}
-        >
-          Open →
-        </span>
-      </Link>
+        <Link href={href} className="group flex h-full flex-col p-6 md:p-7">
+          <span
+            className={`flex h-10 w-10 items-center justify-center rounded-full [&>svg]:h-5 [&>svg]:w-5 ${
+              maroon
+                ? "bg-ivory/10 text-ivory"
+                : "border border-gold/40 text-oxblood group-hover:border-accent/60 group-hover:text-accent"
+            }`}
+          >
+            <Icon />
+          </span>
+          <span
+            className={`mt-4 block font-sans text-[11px] font-medium uppercase tracking-[0.2em] ${
+              maroon ? "text-ivory/70" : "text-accent"
+            }`}
+          >
+            {tag}
+          </span>
+          <h3
+            className={`mt-2 font-display text-xl italic transition-transform duration-300 group-hover:translate-x-1 ${
+              maroon ? "text-ivory" : "text-ink"
+            }`}
+          >
+            {title}
+          </h3>
+          <p
+            className={`mt-2 line-clamp-2 font-sans text-sm leading-relaxed ${
+              maroon ? "text-ivory/75" : "text-ink/65"
+            }`}
+          >
+            {body}
+          </p>
+          <span
+            className={`mt-auto pt-3 font-sans text-[11px] font-medium uppercase tracking-[0.14em] transition-colors ${
+              maroon
+                ? "text-ivory/60 group-hover:text-ivory"
+                : "text-oxblood/70 group-hover:text-oxblood"
+            }`}
+          >
+            Open →
+          </span>
+        </Link>
+      </SpotlightCard>
     </Reveal>
   );
 }
