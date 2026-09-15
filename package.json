@@ -1,0 +1,36 @@
+{
+  "name": "alumniwebsite",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.3",
+    "@supabase/supabase-js": "^2.110.7",
+    "next": "^16.2.10",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "sharp": "^0.35.3"
+  },
+  "overrides": {
+    "sharp": "^0.35.3",
+    "postcss": "^8.5.19"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.4",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.10",
+    "postcss": "^8.5.19",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}

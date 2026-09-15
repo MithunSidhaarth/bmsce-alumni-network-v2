@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  /* BMSCE Alumni Network brand palette (from the logo). Token names are legacy
+     — the VALUES are the source of truth, so every existing utility cascades:
+       oxblood = navy (primary)   maroon = plum (secondary/hover)
+       gold    = neutral rule/line   accent = brand red (small accents only) */
+  --color-oxblood: #2f2544; /* navy — primary: buttons, CTA bg, nav, headings */
+  --color-maroon: #71293c; /* plum — hover states + secondary accent */
+  --color-ivory: #f8f9fb; /* near-white background */
+  --color-ivory-dim: #eef0f5; /* light cool surface (cards) */
+  --color-ink: #1c1826; /* near-black text, faint navy */
+  --color-gold: #d5d7e1; /* neutral rules/dividers/borders */
+  --color-gold-soft: #d5d7e1a0;
+  --color-accent: #d5322b; /* brand red — eyebrows, underlines, active nav */
+
+  --font-display: var(--font-fraunces), "Iowan Old Style", serif;
+  --font-sans: var(--font-inter), "Helvetica Neue", Arial, sans-serif;
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-gold-soft);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+  }
+
+  .reveal.is-visible {
+    animation: var(--animate-fade-up);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      animation: none !important;
+      transform: none !important;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
+
+    * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
