@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { rateLimit } from "@/lib/rateLimit";
 
 type TargetType =
   | "posting"
@@ -21,6 +22,8 @@ export async function reportContent(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error("Please sign in to report.");
+
+  await rateLimit(supabase, `report:${user.id}`, 20, 3600);
 
   const { error } = await supabase.from("reports").insert({
     reporter_id: user.id,

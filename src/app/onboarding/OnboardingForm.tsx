@@ -8,6 +8,18 @@ import type { Profile, UserType, EducationEntry } from "@/lib/types";
 
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+
+// Matches the avatars bucket's allowed_mime_types + file_size_limit exactly
+// (see migration 0023) — the bucket is the real enforcement, this is just
+// fast client-side feedback. Extension is derived from this map, never from
+// the user-supplied filename, so the stored object name can't be steered by
+// picking a crafted filename.
+const AVATAR_MIME_EXT: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
+const MAX_AVATAR = 5 * 1024 * 1024;
 const LABEL =
   "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60";
 
@@ -160,11 +172,22 @@ export default function OnboardingForm({
       let nextPhotoUrl = photoUrl;
 
       if (photoFile) {
-        const ext = photoFile.name.split(".").pop() || "jpg";
+        // Re-validate here too — `photoFile` state could in principle be set
+        // by something other than the guarded onChange above; the extension
+        // comes from this map (validated MIME -> extension), never from the
+        // user-supplied filename.
+        const ext = AVATAR_MIME_EXT[photoFile.type];
+        if (!ext) throw new Error("Photo must be a JPEG, PNG, or WebP image.");
+        if (photoFile.size > MAX_AVATAR) {
+          throw new Error("Photo must be under 5 MB.");
+        }
         const path = `${userId}/avatar-${Date.now()}.${ext}`;
         const { error: upErr } = await supabase.storage
           .from("avatars")
-          .upload(path, photoFile, { upsert: true });
+          .upload(path, photoFile, {
+            upsert: true,
+            contentType: photoFile.type,
+          });
         if (upErr) throw upErr;
         const { data: pub } = supabase.storage
           .from("avatars")
@@ -404,10 +427,31 @@ export default function OnboardingForm({
             className="sr-only"
             onChange={(e) => {
               const f = e.target.files?.[0] ?? null;
+              clearError("photo");
+              if (!f) return;
+              if (!AVATAR_MIME_EXT[f.type]) {
+                setErrors((p) => ({
+                  ...p,
+                  photo: "Photo must be a JPEG, PNG, or WebP image.",
+                }));
+                e.target.value = "";
+                return;
+              }
+              if (f.size > MAX_AVATAR) {
+                setErrors((p) => ({
+                  ...p,
+                  photo: "Photo must be under 5 MB.",
+                }));
+                e.target.value = "";
+                return;
+              }
               setPhotoFile(f);
-              if (f) setPhotoUrl(URL.createObjectURL(f));
+              setPhotoUrl(URL.createObjectURL(f));
             }}
           />
+          {errors.photo && (
+            <p className="mt-1 font-sans text-xs text-oxblood">{errors.photo}</p>
+          )}
         </div>
       </div>
 

@@ -26,6 +26,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Don't advertise the framework in the `X-Powered-By` response header —
+  // minor info-disclosure that makes framework-specific CVEs easier to
+  // shortlist against this site.
+  poweredByHeader: false,
   images: {
     // Gallery thumbnails/medium images live in Supabase Storage — next/image
     // needs the host allowlisted to optimize/serve them.

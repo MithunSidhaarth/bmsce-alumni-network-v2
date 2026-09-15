@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { rateLimit } from "@/lib/rateLimit";
 
 /** Toggle the current verified member's RSVP ("going") for an event. */
 export async function toggleRsvp(eventId: string) {
@@ -19,6 +20,8 @@ export async function toggleRsvp(eventId: string) {
   if (me?.verification_status !== "verified") {
     throw new Error("Your account needs to be verified to RSVP.");
   }
+
+  await rateLimit(supabase, `rsvp:${user.id}`, 30, 3600);
 
   const { data: existing } = await supabase
     .from("event_rsvps")
