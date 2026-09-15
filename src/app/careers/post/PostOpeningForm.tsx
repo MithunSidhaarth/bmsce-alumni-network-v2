@@ -297,7 +297,7 @@ export default function PostOpeningForm() {
                   placeholder="https://company.com/careers/…"
                 />
                 <span className="mt-1.5 block font-sans text-xs text-ink/50">
-                  Optional — people can still apply here in-app.
+                  Optional: people can still apply here in-app.
                 </span>
               </Field>
             </>
@@ -340,7 +340,7 @@ export default function PostOpeningForm() {
             {busy ? "Publishing…" : "Publish opening"}
           </button>
           <span className="font-sans text-xs text-ink/45">
-            Only the basics are required — the rest is optional.
+            Only the basics are required, and the rest is optional.
           </span>
         </div>
       </div>

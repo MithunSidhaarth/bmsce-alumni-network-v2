@@ -39,7 +39,7 @@ export default function ReportButton({
   if (done) {
     return (
       <p className="font-sans text-[11px] uppercase tracking-[0.12em] text-ink/45">
-        Reported — thank you
+        Reported, thank you
       </p>
     );
   }

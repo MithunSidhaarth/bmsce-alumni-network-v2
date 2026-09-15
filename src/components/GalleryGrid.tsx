@@ -75,7 +75,7 @@ export default function GalleryGrid({
           No photos yet.
         </p>
         <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/65">
-          Check back soon — this fills up as photos are added.
+          Check back soon. This fills up as photos are added.
         </p>
       </div>
     );

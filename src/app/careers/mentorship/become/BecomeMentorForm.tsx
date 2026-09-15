@@ -109,7 +109,7 @@ export default function BecomeMentorForm({ profile }: { profile: Profile }) {
           className={`${FIELD} mt-2 min-h-[120px] resize-y`}
           value={bio}
           onChange={(e) => setBio(e.target.value)}
-          placeholder="A short pitch — what you can help with, and how you like to work with mentees."
+          placeholder="A short pitch: what you can help with, and how you like to work with mentees."
           required
         />
       </label>

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import ComingSoon from "@/components/ComingSoon";
 
 export const metadata: Metadata = {
-  title: "Leadership — BMSCE Alumni Network",
+  title: "Leadership: BMSCE Alumni Network",
   description:
-    "The people behind the BMSCE Alumni Network — details coming soon.",
+    "The people behind the BMSCE Alumni Network, details coming soon.",
 };
 
 export default function LeadershipPage() {

@@ -23,7 +23,7 @@ export async function rateLimit(
   if (error) return; // fail open
   if (data === false) {
     throw new Error(
-      "You're doing that a bit too fast — please wait a moment and try again."
+      "You're doing that a bit too fast, please wait a moment and try again."
     );
   }
 }

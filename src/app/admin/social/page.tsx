@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { SocialPost } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Admin · Social posts — BMSCE Alumni Network",
+  title: "Admin · Social posts: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";

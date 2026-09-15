@@ -9,7 +9,7 @@ import NewPostForm from "./NewPostForm";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Community — BMSCE Alumni Network",
+  title: "Community: BMSCE Alumni Network",
   description:
     "Ask questions and start discussions with verified BMS alumni and students.",
   robots: { index: false, follow: false },
@@ -77,7 +77,7 @@ export default async function CommunityPage({
               </h1>
               <p className="mx-auto mt-5 max-w-md font-sans text-base leading-relaxed text-ink/70">
                 The community discussions are for verified members. An admin
-                reviews new alumni before this opens up — it usually
+                reviews new alumni before this opens up. It usually
                 doesn&rsquo;t take long.
               </p>
               <Link
@@ -126,7 +126,7 @@ export default async function CommunityPage({
               Ask the network.
             </h1>
             <p className="mt-5 max-w-xl font-sans text-base leading-relaxed text-ink/70">
-              Questions, advice, introductions — start a thread and the network
+              Questions, advice, introductions: start a thread and the network
               answers. Visible to verified members only.
             </p>
 

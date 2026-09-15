@@ -9,7 +9,7 @@ import type { GalleryPhoto } from "@/lib/types";
 import { GALLERY_PAGE_SIZE } from "@/lib/gallery";
 
 export const metadata: Metadata = {
-  title: "Gallery — BMSCE Alumni Network",
+  title: "Gallery: BMSCE Alumni Network",
   description: "Photos from the BMS campus and the alumni network worldwide.",
 };
 
@@ -46,7 +46,7 @@ export default async function GalleryPage() {
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
-                Campus, chapters, reunions, and everything in between — click
+                Campus, chapters, reunions, and everything in between. Click
                 any photo for a closer look.
               </p>
             </Reveal>

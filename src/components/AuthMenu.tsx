@@ -33,7 +33,7 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
     router.refresh();
   };
 
-  // --- Mobile variant: simple stacked links ---
+  // --- Mobile variant: stacked links for the dark full-bleed mobile menu ---
   if (variant === "mobile") {
     if (!loading && signedIn) {
       const p = profile;
@@ -41,21 +41,21 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
         <div className="flex flex-col gap-3">
           <Link
             href="/profile"
-            className="pl-3 font-sans text-sm font-medium uppercase tracking-[0.12em] text-ink/80"
+            className="pl-3 font-sans text-sm font-medium uppercase tracking-[0.12em] text-ivory/80 transition-colors hover:text-ivory"
           >
             My profile
           </Link>
           {p?.role === "admin" && (
             <Link
               href="/admin"
-              className="pl-3 font-sans text-sm font-medium uppercase tracking-[0.12em] text-ink/80"
+              className="pl-3 font-sans text-sm font-medium uppercase tracking-[0.12em] text-ivory/80 transition-colors hover:text-ivory"
             >
               Admin
             </Link>
           )}
           <button
             onClick={signOut}
-            className="rounded-sm bg-oxblood px-5 py-3 text-center font-sans text-sm font-medium uppercase tracking-[0.12em] text-ivory"
+            className="rounded-full border border-ivory/25 bg-ivory/5 px-5 py-3 text-center font-sans text-sm font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:border-ivory/50 hover:bg-ivory/10"
           >
             Sign out
           </button>
@@ -66,15 +66,15 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
       <div className="flex flex-col gap-3">
         <Link
           href="/login"
-          className="pl-3 font-sans text-sm font-medium uppercase tracking-[0.12em] text-ink/80"
+          className="pl-3 font-sans text-sm font-medium uppercase tracking-[0.12em] text-ivory/80 transition-colors hover:text-ivory"
         >
           Sign in
         </Link>
         <Link
           href="/login"
-          className="rounded-sm bg-oxblood px-5 py-3 text-center font-sans text-sm font-medium uppercase tracking-[0.12em] text-ivory"
+          className="rounded-full bg-gradient-to-r from-accent to-maroon px-5 py-3 text-center font-sans text-sm font-medium uppercase tracking-[0.12em] text-ivory shadow-[0_10px_24px_-10px_rgba(213,50,43,0.6)] transition-transform hover:scale-[1.02]"
         >
-          Join
+          Join the network
         </Link>
       </div>
     );

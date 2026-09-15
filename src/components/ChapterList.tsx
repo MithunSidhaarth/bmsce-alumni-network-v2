@@ -58,7 +58,7 @@ export default function ChapterList() {
 
       {total === 0 ? (
         <p className="mt-12 border-t border-gold/30 pt-12 text-center font-display text-2xl italic text-ink">
-          No chapters match &ldquo;{query}&rdquo; — yet.
+          No chapters match &ldquo;{query}&rdquo;, yet.
         </p>
       ) : (
         <div className="mt-10 flex flex-col gap-14">

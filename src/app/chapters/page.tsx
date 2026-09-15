@@ -10,9 +10,9 @@ import { GLOBAL_WHATSAPP_URL } from "@/data/chapters";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Chapters — BMSCE Alumni Network",
+  title: "Chapters: BMSCE Alumni Network",
   description:
-    "Find your city. BMS alumni chapters meet worldwide — and one global WhatsApp community connects them all.",
+    "Find your city. BMS alumni chapters meet worldwide, and one global WhatsApp community connects them all.",
 };
 
 // Reads the session to gate the WhatsApp link, so render per-request.
@@ -82,7 +82,7 @@ export default async function ChaptersPage() {
                 )}
                 <p className="font-sans text-xs text-ink/55">
                   {signedIn
-                    ? "One global group for all BMS alumni — the fastest way in, wherever you are."
+                    ? "One global group for all BMS alumni: the fastest way in, wherever you are."
                     : "The WhatsApp community is members-only. Sign in and the link appears here."}
                 </p>
               </div>

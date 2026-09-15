@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { EventRow } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Admin · Events — BMSCE Alumni Network",
+  title: "Admin · Events: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";
@@ -60,7 +60,7 @@ export default async function AdminEventsPage() {
                   No events yet.
                 </p>
                 <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/65">
-                  Create your first event — it&rsquo;ll show on the public
+                  Create your first event, and it&rsquo;ll show on the public
                   Events page.
                 </p>
               </div>

@@ -29,7 +29,7 @@ export default function CareersToggle({ enabled }: { enabled: boolean }) {
           <h3 className="font-display text-lg text-ink">Careers section</h3>
           <p className="mt-1 max-w-md font-sans text-sm leading-relaxed text-ink/65">
             Jobs, internships and mentorship. Off for now until there are mentors
-            signed up — flip it on and it appears in the nav, homepage and routes
+            signed up. Flip it on and it appears in the nav, homepage and routes
             immediately, for everyone.
           </p>
         </div>

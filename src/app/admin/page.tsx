@@ -7,7 +7,7 @@ import { getCareersEnabled } from "@/lib/settings";
 import type { Profile, VerificationStatus } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Admin — BMSCE Alumni Network",
+  title: "Admin: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";
@@ -143,7 +143,7 @@ export default async function AdminPage({
       </div>
 
       {/* Tabs */}
-      <div className="mt-10 flex gap-1 border-b border-gold/30">
+      <div className="mt-10 flex flex-wrap gap-1 border-b border-gold/30">
         {TABS.map((t) => (
           <Link
             key={t.key}

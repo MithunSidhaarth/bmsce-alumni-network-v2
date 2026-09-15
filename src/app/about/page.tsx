@@ -8,9 +8,9 @@ import Reveal from "@/components/Reveal";
 import FounderWidget from "@/components/FounderWidget";
 
 export const metadata: Metadata = {
-  title: "About — BMSCE Alumni Network",
+  title: "About: BMSCE Alumni Network",
   description:
-    "The BMSCE Alumni Network — 58 chapters across 90+ countries, and the programs that turn a shared campus into a lifelong community.",
+    "The BMSCE Alumni Network: 58 chapters across 90+ countries, and the programs that turn a shared campus into a lifelong community.",
 };
 
 // Drop the founder's portrait in at public/founder.jpg and it replaces the
@@ -20,7 +20,7 @@ const FOUNDER_PHOTO_FILE = "founder.jpg";
 const WHAT_WE_RUN = [
   {
     tag: "Scholarships",
-    body: "Alumni-funded scholarships cover tuition and living costs for BMS students who’d otherwise have to choose between the degree and the bill — the network paid it forward, and this is how it comes back.",
+    body: "Alumni-funded scholarships cover tuition and living costs for BMS students who’d otherwise have to choose between the degree and the bill. The network paid it forward, and this is how it comes back.",
   },
   {
     tag: "Reunions & meetups",
@@ -28,7 +28,7 @@ const WHAT_WE_RUN = [
   },
   {
     tag: "Entrepreneurship accelerator",
-    body: "An entrepreneurship accelerator backs alumni founders with mentorship, warm introductions, and early customers drawn from within the network itself — three of your first five hires are probably already BMS.",
+    body: "An entrepreneurship accelerator backs alumni founders with mentorship, warm introductions, and early customers drawn from within the network itself. Three of your first five hires are probably already BMS.",
   },
   {
     tag: "Recruiting bootcamp",
@@ -71,7 +71,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-8 max-w-3xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
-                The BMSCE Alumni Network is what happens after convocation — the
+                The BMSCE Alumni Network is what happens after convocation, the
                 part where a degree turns into a lifelong community. It spans 58
                 active chapters across 90+ countries, from Bengaluru to the Bay
                 Area to Singapore, each one already meeting, hiring, and looking
@@ -82,7 +82,7 @@ export default function AboutPage() {
             <Reveal delay={220}>
               <p className="mt-6 max-w-3xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
                 But chapters are just the map. What the network actually does is
-                bring alumni back into each other&rsquo;s lives — through the
+                bring alumni back into each other&rsquo;s lives, through the
                 programs below, whether you graduated last summer or thirty years
                 ago.
               </p>

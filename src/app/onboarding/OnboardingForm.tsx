@@ -299,7 +299,7 @@ export default function OnboardingForm({
         <p className="mx-auto mt-4 max-w-md font-sans text-sm leading-relaxed text-ink/70">
           We&rsquo;ve sent a confirmation link to{" "}
           <span className="font-medium text-ink">{personalEmail}</span>. Click it
-          to make that your sign-in email — until then you can keep using your
+          to make that your sign-in email. Until then you can keep using your
           college email. {error ? "" : ""}
         </p>
         {error && (
@@ -332,7 +332,7 @@ export default function OnboardingForm({
           <p className="mt-2 font-sans text-sm leading-relaxed text-ink/70">
             Your <span className="font-medium">{email}</span> address verifies
             you as a current BMS student. Add a personal email below so you keep
-            access after you graduate — we&rsquo;ll use it for future sign-ins.
+            access after you graduate. We&rsquo;ll use it for future sign-ins.
           </p>
         </div>
       ) : (
@@ -634,7 +634,7 @@ export default function OnboardingForm({
       <div>
         <span className={LABEL}>Higher education</span>
         <p className="mt-1 font-sans text-xs text-ink/50">
-          Any degrees beyond your BMS degree — optional.
+          Any degrees beyond your BMS degree, optional.
         </p>
         {education.length > 0 && (
           <div className="mt-3 flex flex-col gap-3">

@@ -12,7 +12,7 @@ import type { Profile, EducationEntry } from "@/lib/types";
 import MemberPhoto from "@/components/MemberPhoto";
 
 export const metadata: Metadata = {
-  title: "Profile — BMSCE Alumni Network",
+  title: "Profile: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";

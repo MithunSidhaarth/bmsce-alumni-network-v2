@@ -5,9 +5,9 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — BMSCE Alumni Network",
+  title: "Terms & Conditions: BMSCE Alumni Network",
   description:
-    "The Terms & Conditions governing use of the BMSCE Alumni Network — eligibility, acceptable use, content, job postings, mentorship, and more.",
+    "The Terms & Conditions governing use of the BMSCE Alumni Network: eligibility, acceptable use, content, job postings, mentorship, and more.",
 };
 
 const HEADING = "mt-12 font-display text-2xl text-ink md:text-3xl";

@@ -3,7 +3,7 @@ import Link from "next/link";
 import EventForm from "../EventForm";
 
 export const metadata: Metadata = {
-  title: "New event — BMSCE Alumni Network",
+  title: "New event: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";
@@ -23,7 +23,7 @@ export default function NewEventPage() {
         </Link>
       </div>
       <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-ink/70">
-        Only a title and a date are required — fill in the rest if you have
+        Only a title and a date are required. Fill in the rest if you have
         it.
       </p>
       <div className="mt-10">

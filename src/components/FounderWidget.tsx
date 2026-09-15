@@ -74,7 +74,7 @@ export default function FounderWidget({
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-8 max-w-xl font-sans text-base leading-relaxed text-ivory/75 md:text-lg">
-                B. M. Sreenivasaiah founded BMS College of Engineering in 1946 —
+                B. M. Sreenivasaiah founded BMS College of Engineering in 1946,
                 the first privately established engineering college in India. He
                 went on to found a sister institution, B.M.S. Institute of
                 Technology and Management, in 2002. In recognition of his

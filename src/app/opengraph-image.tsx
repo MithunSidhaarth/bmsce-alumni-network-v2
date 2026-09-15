@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 // Default social-share image (WhatsApp / LinkedIn / X link previews).
-export const alt = "BMSCE Alumni Network — Once BMS. Always BMS.";
+export const alt = "BMSCE Alumni Network: Once BMS. Always BMS.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

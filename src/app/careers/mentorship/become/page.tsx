@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Become a Mentor — BMSCE Alumni Network",
+  title: "Become a Mentor: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";
@@ -50,7 +50,7 @@ export default async function BecomeMentorPage() {
                 </p>
                 <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/65">
                   {profile.user_type === "student"
-                    ? "You're signed in as a current student — you can request mentorship from alumni instead."
+                    ? "You're signed in as a current student. You can request mentorship from alumni instead."
                     : "Once an admin verifies your alumni profile, you'll be able to list yourself as a mentor."}
                 </p>
                 <Link
@@ -64,7 +64,7 @@ export default async function BecomeMentorPage() {
               <>
                 <p className="mt-5 max-w-xl font-sans text-base leading-relaxed text-ink/70">
                   Tell students what you can help with. You choose which
-                  requests to accept — nothing is automatic.
+                  requests to accept, nothing is automatic.
                 </p>
                 <div className="mt-10">
                   <BecomeMentorForm profile={profile} />

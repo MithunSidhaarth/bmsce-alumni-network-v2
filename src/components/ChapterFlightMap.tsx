@@ -297,7 +297,7 @@ export default function ChapterFlightMap() {
             }}
           >
             <p className="font-display text-sm italic text-ink">
-              {active.isHome ? "Bengaluru — home" : active.name}
+              {active.isHome ? "Bengaluru: home" : active.name}
             </p>
             {active.country && (
               <p className="font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-ink/50">
@@ -316,7 +316,7 @@ export default function ChapterFlightMap() {
             className="inline-block h-2 w-2 rounded-full"
             style={{ backgroundColor: "var(--color-accent)" }}
           />
-          Bengaluru — home
+          Bengaluru: home
         </span>
         {CONTINENTS.map((c) => (
           <span

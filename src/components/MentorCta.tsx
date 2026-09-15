@@ -20,7 +20,7 @@ export default function MentorCta() {
           <Reveal delay={160}>
             <p className="mt-6 max-w-md font-sans text-base leading-relaxed text-ink/70">
               Students and younger graduates are looking for someone a few steps
-              ahead. Offer an hour a month — you choose who you take on.
+              ahead. Offer an hour a month. You choose who you take on.
             </p>
           </Reveal>
           <Reveal delay={240}>
@@ -48,7 +48,7 @@ export default function MentorCta() {
             {[
               {
                 tag: "You choose",
-                body: "Requests come to you. Accept the ones you have room for, decline the rest — no automatic pairing.",
+                body: "Requests come to you. Accept the ones you have room for, decline the rest. No automatic pairing.",
               },
               {
                 tag: "On your terms",

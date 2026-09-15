@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Post an Opening — BMSCE Alumni Network",
+  title: "Post an Opening: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";
@@ -63,7 +63,7 @@ export default async function PostOpeningPage() {
             ) : (
               <>
                 <p className="mt-5 max-w-xl font-sans text-base leading-relaxed text-ink/70">
-                  Three short steps. Only the basics are required — you can skip
+                  Three short steps. Only the basics are required, and you can skip
                   anything you don&rsquo;t have handy.
                 </p>
                 <div className="mt-10">

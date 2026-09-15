@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { GalleryPhoto } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Admin · Gallery — BMSCE Alumni Network",
+  title: "Admin · Gallery: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";
@@ -31,7 +31,7 @@ export default async function AdminGalleryPage() {
         Upload photos.
       </h1>
       <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-ink/70">
-        Select or drag in as many photos as you like — they&rsquo;re resized
+        Select or drag in as many photos as you like. They&rsquo;re resized
         and compressed in your browser before upload, so large batches upload
         reliably. They appear on the public{" "}
         <Link

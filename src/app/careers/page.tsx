@@ -7,7 +7,7 @@ import Eyebrow from "@/components/Eyebrow";
 import { getCareersEnabled } from "@/lib/settings";
 
 export const metadata: Metadata = {
-  title: "Careers — BMSCE Alumni Network",
+  title: "Careers: BMSCE Alumni Network",
   robots: { index: false, follow: false },
 };
 

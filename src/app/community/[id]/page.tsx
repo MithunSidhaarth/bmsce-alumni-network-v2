@@ -12,7 +12,7 @@ import DeleteButton from "./DeleteButton";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Discussion — BMSCE Alumni Network",
+  title: "Discussion: BMSCE Alumni Network",
   robots: { index: false, follow: false },
 };
 
@@ -210,7 +210,7 @@ export default async function DiscussionPage({
               <Eyebrow>Replies</Eyebrow>
               {comments.length === 0 ? (
                 <p className="mt-6 font-sans text-sm text-ink/55">
-                  No replies yet — be the first.
+                  No replies yet, be the first.
                 </p>
               ) : (
                 <ul className="mt-6 flex flex-col gap-6">

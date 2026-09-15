@@ -10,7 +10,7 @@ import {
 const DIRECTORY = {
   tag: "Directory",
   title: "Find your batch",
-  body: "Search the full alumni directory by batch, branch, or city — and pick up where you left off.",
+  body: "Search the full alumni directory by batch, branch, or city, and pick up where you left off.",
   href: "/directory",
   Icon: DirectoryIcon,
 };

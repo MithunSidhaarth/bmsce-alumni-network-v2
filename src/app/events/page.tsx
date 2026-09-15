@@ -10,7 +10,7 @@ import { safeUrl } from "@/lib/url";
 import type { EventRow, SocialPost } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Events — BMSCE Alumni Network",
+  title: "Events: BMSCE Alumni Network",
   description:
     "Upcoming BMS alumni events and highlights from our community on Instagram.",
 };
@@ -211,7 +211,7 @@ export default async function EventsPage() {
                 >
                   @bmsce_alumni
                 </a>
-                . These are past posts for memory&rsquo;s sake — not upcoming
+                . These are past posts for memory&rsquo;s sake, not upcoming
                 events. Tap any card to view the original on Instagram.
               </p>
             </Reveal>

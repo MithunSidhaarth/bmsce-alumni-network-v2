@@ -165,7 +165,7 @@ function MentorCardView({
               {status === "pending"
                 ? "Request sent · pending"
                 : status === "accepted"
-                ? "✓ Accepted — see My mentorship"
+                ? "✓ Accepted · see My mentorship"
                 : "Declined"}
             </p>
           ) : viewer.state === "anon" ? (

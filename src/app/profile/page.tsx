@@ -11,7 +11,7 @@ import type { Profile, EducationEntry } from "@/lib/types";
 import MemberPhoto from "@/components/MemberPhoto";
 
 export const metadata: Metadata = {
-  title: "My profile — BMSCE Alumni Network",
+  title: "My profile: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";
@@ -177,14 +177,14 @@ function statusBanner(profile: Profile) {
   if (profile.user_type === "student") {
     return {
       className: "border-gold/40 bg-gold/10 text-ink/75",
-      text: "You're set up as a current BMS student — you can browse the network and request mentorship from alumni.",
+      text: "You're set up as a current BMS student, so you can browse the network and request mentorship from alumni.",
     };
   }
   switch (profile.verification_status) {
     case "verified":
       return {
         className: "border-gold/40 bg-gold/10 text-ink/75",
-        text: "You're verified — your profile appears in the alumni directory.",
+        text: "You're verified: your profile appears in the alumni directory.",
       };
     case "rejected":
       return {

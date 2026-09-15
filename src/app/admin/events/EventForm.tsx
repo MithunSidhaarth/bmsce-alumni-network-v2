@@ -172,7 +172,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
         {/* Details */}
         <div className="flex flex-col gap-6 border-t border-gold/25 pt-8">
           <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
-            Details <span className="text-ink/40">— all optional</span>
+            Details <span className="text-ink/40">(all optional)</span>
           </p>
           <Field label="Description">
             <textarea

@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Newsletter } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Admin · Newsletters — BMSCE Alumni Network",
+  title: "Admin · Newsletters: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";

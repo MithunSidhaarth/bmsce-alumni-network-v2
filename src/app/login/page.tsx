@@ -10,7 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/nav";
 
 export const metadata: Metadata = {
-  title: "Sign in — BMSCE Alumni Network",
+  title: "Sign in: BMSCE Alumni Network",
 };
 
 type Props = {
@@ -57,7 +57,7 @@ export default async function LoginPage({ searchParams }: Props) {
               <p className="mt-5 font-sans text-base leading-relaxed text-ink/70">
                 {isStudent
                   ? "Sign in to connect with BMS alumni who can guide you. Current students welcome."
-                  : "Sign in to reach the network — the directory, chapters, events, and mentorship."}
+                  : "Sign in to reach the network: the directory, chapters, events, and mentorship."}
               </p>
             </Reveal>
 

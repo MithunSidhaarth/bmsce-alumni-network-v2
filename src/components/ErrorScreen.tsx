@@ -10,7 +10,7 @@ import Eyebrow from "./Eyebrow";
 export default function ErrorScreen({
   reset,
   title = "Something went wrong.",
-  body = "We hit a snag loading this page. It's usually temporary — give it another try.",
+  body = "We hit a snag loading this page. It's usually temporary, so give it another try.",
 }: {
   reset?: () => void;
   title?: string;

@@ -5,9 +5,9 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — BMSCE Alumni Network",
+  title: "Privacy Policy: BMSCE Alumni Network",
   description:
-    "How the BMSCE Alumni Network collects, uses, shares, secures, and retains your information — and the rights you have over your data.",
+    "How the BMSCE Alumni Network collects, uses, shares, secures, and retains your information, and the rights you have over your data.",
 };
 
 const HEADING = "mt-12 font-display text-2xl text-ink md:text-3xl";
@@ -147,7 +147,7 @@ export default function PrivacyPage() {
                 <p className={BODY}>
                   We do not sell your personal information. Your profile is
                   visible only to other verified, signed-in members of the
-                  network — not to the public or third parties — unless you
+                  network, not to the public or third parties, unless you
                   choose to make specific information public (e.g., in the
                   Directory).
                 </p>
@@ -163,7 +163,7 @@ export default function PrivacyPage() {
                   Information submitted as part of a job or internship application
                   (including your resume, cover note, and phone number) is shared
                   only with the specific organization or alumnus who posted that
-                  opportunity — not with the wider network.
+                  opportunity, not with the wider network.
                 </p>
 
                 <h2 className={HEADING}>International Users</h2>

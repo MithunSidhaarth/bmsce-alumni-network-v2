@@ -8,9 +8,9 @@ import { safeUrl } from "@/lib/url";
 import type { Newsletter } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Newsletter — BMSCE Alumni Network",
+  title: "Newsletter: BMSCE Alumni Network",
   description:
-    "The BMSCE Alumni Network newsletter archive — past editions to read and download, chapter meetups, alumni wins, and opportunities.",
+    "The BMSCE Alumni Network newsletter archive: past editions to read and download, chapter meetups, alumni wins, and opportunities.",
 };
 
 export const dynamic = "force-dynamic";
@@ -19,7 +19,7 @@ const EXPECT = [
   {
     tag: "Community",
     title: "Chapter highlights",
-    body: "Where alumni are gathering next — meetups, reunions, and city-chapter news from around the world.",
+    body: "Where alumni are gathering next: meetups, reunions, and city-chapter news from around the world.",
   },
   {
     tag: "People",
@@ -64,7 +64,7 @@ export default async function NewsletterPage() {
             </Reveal>
             <Reveal delay={160}>
               <p className="mx-auto mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
-                Chapter meetups, alumni wins, and opportunities — a few times a
+                Chapter meetups, alumni wins, and opportunities, a few times a
                 year. Read every past edition below.
               </p>
             </Reveal>

@@ -6,9 +6,9 @@ import Reveal from "@/components/Reveal";
 import { notableAlumni } from "@/data/notableAlumni";
 
 export const metadata: Metadata = {
-  title: "Notable Alumni — BMSCE Alumni Network",
+  title: "Notable Alumni: BMSCE Alumni Network",
   description:
-    "The graduates who went far — founders, scientists, civil servants, authors, and more from the BMS community.",
+    "The graduates who went far: founders, scientists, civil servants, authors, and more from the BMS community.",
 };
 
 function initials(name: string) {
@@ -39,7 +39,7 @@ export default function NotableAlumniPage() {
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
-                A few of the graduates whose work reached well beyond campus —
+                A few of the graduates whose work reached well beyond campus,
                 and who still call this network home.
               </p>
             </Reveal>

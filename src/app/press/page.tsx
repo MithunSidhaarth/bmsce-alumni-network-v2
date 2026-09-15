@@ -6,7 +6,7 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
-  title: "Press — BMSCE Alumni Network",
+  title: "Press: BMSCE Alumni Network",
   description:
     "Press and media enquiries for BMS College of Engineering and its alumni network.",
 };
@@ -29,8 +29,8 @@ export default function PressPage() {
             <Reveal delay={160}>
               <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
                 We don&rsquo;t have a press kit or a coverage archive published
-                yet. For anything media-related — interviews, alumni stories,
-                photography, or details about the college — please reach the
+                yet. For anything media-related, such as interviews, alumni stories,
+                photography, or details about the college, please reach the
                 alumni office directly and we&rsquo;ll point you to the right
                 person.
               </p>

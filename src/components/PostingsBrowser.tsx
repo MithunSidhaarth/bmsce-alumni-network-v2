@@ -197,7 +197,7 @@ function PostingCardView({
     ? posting.location
       ? `${posting.location} · Remote`
       : "Remote"
-    : posting.location ?? "—";
+    : posting.location ?? "Not specified";
 
   return (
     <Reveal delay={Math.min(index, 6) * 60} className="h-full">

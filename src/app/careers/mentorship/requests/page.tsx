@@ -14,7 +14,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { MentorshipRequest, Profile } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "My Mentorship — BMSCE Alumni Network",
+  title: "My Mentorship: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";

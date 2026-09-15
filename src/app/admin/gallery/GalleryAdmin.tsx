@@ -166,7 +166,7 @@ export default function GalleryAdmin({
           />
         </label>
         <p className="mt-2 font-sans text-xs text-ink/45">
-          JPEG, PNG, or WebP — select as many as you like. Resized and
+          JPEG, PNG, or WebP, select as many as you like. Resized and
           compressed right in your browser before upload, so large batches
           upload reliably.
         </p>

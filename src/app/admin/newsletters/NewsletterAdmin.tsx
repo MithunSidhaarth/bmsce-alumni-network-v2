@@ -136,7 +136,7 @@ export default function NewsletterAdmin({
               className={`${FIELD} mt-2`}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Optional — e.g. Spring 2024 Edition"
+              placeholder="Optional, e.g. Spring 2024 Edition"
             />
           </label>
         </div>

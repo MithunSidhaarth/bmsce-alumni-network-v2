@@ -139,7 +139,7 @@ export default function ApplyBox({
         </p>
         <p className="mt-3 font-sans text-sm leading-relaxed text-ink/70">
           {status === "submitted"
-            ? "You've applied — the poster can see your profile and note."
+            ? "You've applied, the poster can see your profile and note."
             : status === "reviewed"
             ? "The poster has looked at your application."
             : status === "accepted"

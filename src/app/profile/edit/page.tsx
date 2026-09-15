@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Profile, EducationEntry } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Edit profile — BMSCE Alumni Network",
+  title: "Edit profile: BMSCE Alumni Network",
 };
 
 export const dynamic = "force-dynamic";
@@ -51,7 +51,7 @@ export default async function EditProfilePage() {
               Edit your details.
             </h1>
             <p className="mt-5 max-w-xl font-sans text-base leading-relaxed text-ink/70">
-              Keep your profile current — changes save straight away.
+              Keep your profile current: changes save straight away.
             </p>
             <div className="mt-10">
               <OnboardingForm

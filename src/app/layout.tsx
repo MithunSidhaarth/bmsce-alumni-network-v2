@@ -4,6 +4,7 @@ import AuthProvider from "@/components/AuthProvider";
 import ScrollProgress from "@/components/ScrollProgress";
 import PageTransition from "@/components/PageTransition";
 import Aurora from "@/components/Aurora";
+import SitePreloader from "@/components/SitePreloader";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -26,24 +27,24 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "BMSCE Alumni Network — Once BMS. Always BMS.",
+    default: "BMSCE Alumni Network: Once BMS. Always BMS.",
     template: "%s",
   },
   description:
-    "The home for every BMS graduate — find your batch, your city chapter, a mentor, or your next opportunity.",
+    "The home for every BMS graduate: find your batch, your city chapter, a mentor, or your next opportunity.",
   openGraph: {
-    title: "BMSCE Alumni Network — Once BMS. Always BMS.",
+    title: "BMSCE Alumni Network: Once BMS. Always BMS.",
     description:
-      "The home for every BMS graduate — find your batch, your city chapter, a mentor, or your next opportunity.",
+      "The home for every BMS graduate: find your batch, your city chapter, a mentor, or your next opportunity.",
     siteName: "BMSCE Alumni Network",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "BMSCE Alumni Network — Once BMS. Always BMS.",
+    title: "BMSCE Alumni Network: Once BMS. Always BMS.",
     description:
-      "The home for every BMS graduate — find your batch, your city chapter, a mentor, or your next opportunity.",
+      "The home for every BMS graduate: find your batch, your city chapter, a mentor, or your next opportunity.",
   },
 };
 
@@ -55,6 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
+        <SitePreloader />
         {/* Fixed, faint, site-wide — dark sections (oxblood backgrounds)
             naturally occlude it since they paint over it; their own
             brighter Aurora instance still runs underneath for contrast
