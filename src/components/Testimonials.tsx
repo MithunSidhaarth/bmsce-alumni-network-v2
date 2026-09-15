@@ -1,5 +1,6 @@
 import Eyebrow from "./Eyebrow";
 import Reveal from "./Reveal";
+import TiltCard from "./TiltCard";
 
 type Testimonial = {
   quote: string;
@@ -42,32 +43,34 @@ export default function Testimonials() {
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
           {TESTIMONIALS.map((t, i) => (
             <Reveal key={t.name} delay={i * 100} className="h-full">
-              <figure className="flex h-full flex-col rounded-2xl border border-gold/25 bg-ivory p-8 md:p-10">
-                <span
-                  aria-hidden="true"
-                  className="font-display text-5xl leading-none text-accent/60"
-                >
-                  &ldquo;
-                </span>
-                <blockquote className="mt-2 flex-1 font-display text-lg italic leading-relaxed text-ink/85 md:text-xl md:leading-relaxed">
-                  {t.quote}
-                </blockquote>
-                <figcaption className="mt-8 flex items-center gap-4 border-t border-gold/20 pt-6">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-maroon to-oxblood font-display text-base italic text-ivory">
-                    {t.initials}
+              <TiltCard className="h-full" max={3}>
+                <figure className="flex h-full flex-col rounded-2xl border border-gold/25 bg-ivory p-8 shadow-sm md:p-10">
+                  <span
+                    aria-hidden="true"
+                    className="font-display text-5xl leading-none text-accent/60"
+                  >
+                    &ldquo;
                   </span>
-                  <span>
-                    <span className="block font-display text-lg text-ink">
-                      {t.name}
+                  <blockquote className="mt-2 flex-1 font-display text-lg italic leading-relaxed text-ink/85 md:text-xl md:leading-relaxed">
+                    {t.quote}
+                  </blockquote>
+                  <figcaption className="mt-8 flex items-center gap-4 border-t border-gold/20 pt-6">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-maroon to-oxblood font-display text-base italic text-ivory">
+                      {t.initials}
                     </span>
-                    {t.batch && (
-                      <span className="mt-0.5 block font-sans text-sm text-ink/55">
-                        Batch of {t.batch}
+                    <span>
+                      <span className="block font-display text-lg text-ink">
+                        {t.name}
                       </span>
-                    )}
-                  </span>
-                </figcaption>
-              </figure>
+                      {t.batch && (
+                        <span className="mt-0.5 block font-sans text-sm text-ink/55">
+                          Batch of {t.batch}
+                        </span>
+                      )}
+                    </span>
+                  </figcaption>
+                </figure>
+              </TiltCard>
             </Reveal>
           ))}
         </div>

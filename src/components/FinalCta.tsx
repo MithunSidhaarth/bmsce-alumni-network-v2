@@ -1,10 +1,13 @@
 import Eyebrow from "./Eyebrow";
 import Reveal from "./Reveal";
+import Aurora from "./Aurora";
+import MagneticButton from "./MagneticButton";
 
 export default function FinalCta() {
   return (
-    <section className="bg-oxblood text-ivory">
-      <div className="mx-auto max-w-3xl px-6 py-24 text-center md:px-10 md:py-32">
+    <section className="relative overflow-hidden bg-oxblood text-ivory">
+      <Aurora variant="dark" />
+      <div className="relative mx-auto max-w-3xl px-6 py-24 text-center md:px-10 md:py-32">
         <Reveal>
           <Eyebrow tone="ivory" align="center">
             One more thing
@@ -22,13 +25,15 @@ export default function FinalCta() {
           </p>
         </Reveal>
         <Reveal delay={240}>
-          <div className="mt-10">
-            <a
-              href="/login"
-              className="inline-flex items-center justify-center rounded-sm bg-ivory px-9 py-3.5 font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-oxblood transition-colors hover:bg-gold hover:text-ink"
-            >
-              Join the network
-            </a>
+          <div className="mt-10 flex justify-center">
+            <MagneticButton>
+              <a
+                href="/login"
+                className="inline-flex items-center justify-center rounded-sm bg-ivory px-9 py-3.5 font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-oxblood shadow-[0_12px_32px_-10px_rgba(0,0,0,0.4)] transition-colors hover:bg-gold hover:text-ink"
+              >
+                Join the network
+              </a>
+            </MagneticButton>
           </div>
         </Reveal>
       </div>

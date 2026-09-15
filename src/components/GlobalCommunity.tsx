@@ -1,6 +1,7 @@
 import Eyebrow from "./Eyebrow";
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
+import Aurora from "./Aurora";
 import { CHAPTER_COUNT, COUNTRY_COUNT } from "@/data/chapters";
 
 // Alumni worldwide stays a manually-set number (no live source). Countries and
@@ -13,8 +14,9 @@ const SPREAD = [
 
 export default function GlobalCommunity() {
   return (
-    <section className="bg-oxblood text-ivory">
-      <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
+    <section className="relative overflow-hidden bg-oxblood text-ivory">
+      <Aurora variant="dark" />
+      <div className="relative mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
         <Reveal>
           <Eyebrow tone="ivory" align="center">
             The network, worldwide

@@ -29,6 +29,33 @@
       transform: translateY(0);
     }
   }
+
+  /* Slow drifting glow blobs behind hero/dark sections — an "alive"
+     background without ever moving fast enough to distract from the copy. */
+  --animate-aurora-a: aurora-a 22s ease-in-out infinite alternate;
+  --animate-aurora-b: aurora-b 26s ease-in-out infinite alternate;
+  --animate-aurora-c: aurora-c 19s ease-in-out infinite alternate;
+
+  @keyframes aurora-a {
+    0% { transform: translate(-8%, -6%) scale(1); }
+    100% { transform: translate(10%, 8%) scale(1.15); }
+  }
+  @keyframes aurora-b {
+    0% { transform: translate(6%, 10%) scale(1.1); }
+    100% { transform: translate(-10%, -8%) scale(0.95); }
+  }
+  @keyframes aurora-c {
+    0% { transform: translate(0%, 6%) scale(1); }
+    100% { transform: translate(6%, -10%) scale(1.1); }
+  }
+
+  /* Infinite horizontal ticker — content is duplicated once in the DOM and
+     this slides exactly one copy's width, so the loop point is invisible. */
+  --animate-marquee: marquee 32s linear infinite;
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 }
 
 @layer base {

@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import Eyebrow from "./Eyebrow";
 import Reveal from "./Reveal";
+import TiltCard from "./TiltCard";
 
 type SpotlightAlum = {
   name: string;
@@ -141,35 +142,37 @@ export default function AlumniSpotlight() {
               delay={i * 80}
               className="h-full w-[78vw] shrink-0 snap-start sm:w-[320px]"
             >
-              <article
-                className={`flex h-full flex-col rounded-xl border border-gold/25 border-l-4 ${ACCENTS[i % ACCENTS.length]} bg-oxblood/[0.04] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_34px_-18px_rgba(47,37,68,0.4)]`}
-              >
-                <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-maroon to-oxblood font-display text-lg italic text-ivory">
-                  {person.photoUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={person.photoUrl}
-                      alt={person.name}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    initials(person.name)
+              <TiltCard className="h-full">
+                <article
+                  className={`flex h-full flex-col rounded-xl border border-gold/25 border-l-4 ${ACCENTS[i % ACCENTS.length]} bg-oxblood/[0.04] p-6 shadow-sm transition-shadow duration-300 hover:shadow-[0_20px_44px_-20px_rgba(47,37,68,0.45)]`}
+                >
+                  <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-maroon to-oxblood font-display text-lg italic text-ivory">
+                    {person.photoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={person.photoUrl}
+                        alt={person.name}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      initials(person.name)
+                    )}
+                  </div>
+                  <h3 className="mt-6 font-display text-xl text-ink">
+                    {person.name}
+                  </h3>
+                  {person.role && (
+                    <p className="mt-1 font-sans text-sm text-ink/65">
+                      {person.role}
+                    </p>
                   )}
-                </div>
-                <h3 className="mt-6 font-display text-xl text-ink">
-                  {person.name}
-                </h3>
-                {person.role && (
-                  <p className="mt-1 font-sans text-sm text-ink/65">
-                    {person.role}
-                  </p>
-                )}
-                {person.batch && (
-                  <p className="mt-1 font-sans text-sm text-ink/55">
-                    Batch of {person.batch}
-                  </p>
-                )}
-              </article>
+                  {person.batch && (
+                    <p className="mt-1 font-sans text-sm text-ink/55">
+                      Batch of {person.batch}
+                    </p>
+                  )}
+                </article>
+              </TiltCard>
             </Reveal>
           ))}
         </div>
