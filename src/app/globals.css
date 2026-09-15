@@ -10,9 +10,14 @@
   --color-ivory: #f8f9fb; /* near-white background */
   --color-ivory-dim: #eef0f5; /* light cool surface (cards) */
   --color-ink: #1c1826; /* near-black text, faint navy */
-  --color-gold: #d5d7e1; /* neutral rules/dividers/borders */
+  --color-gold: #d5d7e1; /* neutral rules/dividers/borders (NOT actually gold-colored, despite the name — see --color-brass below for real gold) */
   --color-gold-soft: #d5d7e1a0;
   --color-accent: #d5322b; /* brand red — eyebrows, underlines, active nav */
+  /* Actual heraldic gold/brass — used sparingly for ceremonial/official
+     moments (the seal crest, laurel wreath, ribbon details) where the site
+     needs to read as a real university seal, not just its house palette. */
+  --color-brass: #b8933f;
+  --color-brass-light: #d9b876;
 
   --font-display: var(--font-fraunces), "Iowan Old Style", serif;
   --font-sans: var(--font-inter), "Helvetica Neue", Arial, sans-serif;
@@ -65,19 +70,13 @@
     }
   }
 
-  /* Site preloader (SitePreloader.tsx) — a seal being stamped in: outer ring
-     draws clockwise, inner ring counter-clockwise, then the monogram and
-     founding year fade into the center. Durations/delays are chained via the
-     `animation-delay` baked into each utility below, not manual JS timing. */
+  /* Site preloader (SitePreloader.tsx) — a seal being stamped in: rings
+     draw, laurel leaves fan in, then the wordmark and founding year settle.
+     Durations/delays chain via the `animation-delay` baked into each
+     utility below, not manual JS timing. */
   @keyframes seal-settle {
     from { opacity: 0; transform: scale(0.85); }
     to { opacity: 1; transform: scale(1); }
-  }
-  @keyframes seal-draw {
-    to { stroke-dashoffset: 0; }
-  }
-  @keyframes seal-draw-reverse {
-    to { stroke-dashoffset: -365; }
   }
   @keyframes seal-fade {
     to { opacity: 1; }
@@ -130,6 +129,37 @@
   @keyframes preloader-out {
     from { opacity: 1; transform: scale(1); }
     to { opacity: 0; transform: scale(1.04); }
+  }
+
+  /* Seal.tsx (laurel/animate mode): rings draw in via stroke-dashoffset —
+     `pathLength={100}` on the circle normalizes this to 0-100 regardless of
+     actual radius, so these two classes work at any size. Leaves fade in
+     only (no transform) since each <ellipse> already carries its own SVG
+     `transform="rotate(...)"` attribute for placement — animating `transform`
+     via CSS here would silently override that attribute and fly every leaf
+     to the same angle. */
+  .seal-ring-draw {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: seal-ring-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.05s forwards;
+  }
+  @keyframes seal-ring-draw {
+    to { stroke-dashoffset: 0; }
+  }
+  .seal-ring-draw-reverse {
+    stroke-dasharray: 100;
+    stroke-dashoffset: -100;
+    animation: seal-ring-draw-reverse 1s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards;
+  }
+  @keyframes seal-ring-draw-reverse {
+    to { stroke-dashoffset: 0; }
+  }
+  .seal-leaf {
+    opacity: 0;
+    animation: seal-leaf-in 0.4s ease-out forwards;
+  }
+  @keyframes seal-leaf-in {
+    to { opacity: 1; }
   }
 
   .reveal {

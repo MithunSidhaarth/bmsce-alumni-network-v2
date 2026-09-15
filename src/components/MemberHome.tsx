@@ -5,12 +5,16 @@ import Reveal from "./Reveal";
 import SpotlightCard from "./SpotlightCard";
 import EventCountdown from "./EventCountdown";
 import CountUp from "./CountUp";
+import Seal from "./Seal";
+import MemberPhoto from "./MemberPhoto";
+import AlumniSpotlight from "./AlumniSpotlight";
 import { PostCard } from "./SocialFeed";
 import {
   DirectoryIcon,
   EventsIcon,
   MentorshipIcon,
   CareersIcon,
+  CommunityIcon,
 } from "./icons";
 import { createClient } from "@/lib/supabase/server";
 import type { JobPosting, Profile, SocialPost } from "@/lib/types";
@@ -46,12 +50,19 @@ type DiscussionTeaser = {
   comments: { count: number }[] | null;
 };
 
+type DirectoryPreviewProfile = {
+  id: string;
+  full_name: string | null;
+  photo_url: string | null;
+};
+
 // Exact set of Profile columns this page reads — kept in sync with the
 // query in app/page.tsx so that page can select() just these instead of "*".
 export type MemberHomeProfile = Pick<
   Profile,
   | "id"
   | "full_name"
+  | "photo_url"
   | "user_type"
   | "role"
   | "verification_status"
@@ -89,6 +100,7 @@ export default async function MemberHome({
     { count: upcomingEventCount },
     { data: discussionRows },
     { data: opportunityRows },
+    { data: directoryPreviewRows },
   ] = await Promise.all([
     // 4 most recent Instagram highlights for the homepage teaser — mirrors
     // the query on the events page's "From our Instagram" section.
@@ -152,11 +164,25 @@ export default async function MemberHome({
           .limit(3)
           .returns<JobPosting[]>()
       : Promise.resolve({ data: null }),
+    // A handful of real verified members for the Directory tile's avatar
+    // stack — turns "search the directory" from a described feature into
+    // visible proof the directory actually has people in it.
+    !limited
+      ? supabase
+          .from("profiles")
+          .select("id, full_name, photo_url")
+          .eq("verification_status", "verified")
+          .neq("id", profile.id)
+          .order("created_at", { ascending: false })
+          .limit(5)
+          .returns<DirectoryPreviewProfile[]>()
+      : Promise.resolve({ data: null }),
   ]);
   const posts = postRows ?? [];
   const nextEvent = eventRows?.[0] ?? null;
   const discussions = discussionRows ?? [];
   const opportunities = opportunityRows ?? [];
+  const directoryPreview = directoryPreviewRows ?? [];
 
   const firstName = (profile.full_name ?? "").trim().split(" ")[0] || "there";
   const isStudent = profile.user_type === "student";
@@ -169,21 +195,48 @@ export default async function MemberHome({
     <>
       {/* Welcome */}
       <section className="relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-20 top-4 hidden h-[380px] w-[380px] opacity-[0.07] lg:block"
+        >
+          <Seal
+            laurel
+            ringColor="var(--color-brass)"
+            textColor="var(--color-brass)"
+            monogramColor="var(--color-oxblood)"
+            laurelColor="var(--color-brass)"
+          />
+        </div>
         <div className="relative mx-auto max-w-7xl px-6 pb-10 pt-16 md:px-10 md:pt-24">
-          <Reveal>
-            <Eyebrow>
-              {isStudent ? "Student" : status === "verified" ? "Member" : "Welcome"}
-            </Eyebrow>
-          </Reveal>
-          <Reveal delay={80}>
-            <h1 className="mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
-              {greeting(new Date().getHours())},{" "}
-              <span className="bg-gradient-to-r from-oxblood via-maroon to-accent bg-clip-text italic text-transparent">
-                {firstName}
-              </span>
-              .
-            </h1>
-          </Reveal>
+          <div className="flex flex-col gap-6 md:flex-row md:items-center">
+            <Reveal className="shrink-0">
+              <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-brass/60 bg-gradient-to-br from-maroon to-oxblood shadow-[0_10px_24px_-10px_rgba(47,37,68,0.5)] md:h-24 md:w-24">
+                {profile.photo_url ? (
+                  <MemberPhoto src={profile.photo_url} alt={profile.full_name ?? ""} />
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center font-display text-3xl italic text-ivory">
+                    {firstName.charAt(0).toUpperCase()}
+                  </span>
+                )}
+              </div>
+            </Reveal>
+            <div>
+              <Reveal>
+                <Eyebrow>
+                  {isStudent ? "Student" : status === "verified" ? "Member" : "Welcome"}
+                </Eyebrow>
+              </Reveal>
+              <Reveal delay={80}>
+                <h1 className="mt-4 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
+                  {greeting(new Date().getHours())},{" "}
+                  <span className="bg-gradient-to-r from-oxblood from-10% via-maroon via-55% to-accent to-85% bg-clip-text italic text-transparent">
+                    {firstName}
+                  </span>
+                  .
+                </h1>
+              </Reveal>
+            </div>
+          </div>
           <Reveal delay={160}>
             <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
               {status === "verified"
@@ -223,18 +276,29 @@ export default async function MemberHome({
       </section>
 
       {/* Network pulse — a handful of live counts so the page reads as a
-          window onto an active network, not a static set of shortcuts. */}
-      <section className="border-t border-gold/30 bg-oxblood">
-        <div className="mx-auto max-w-7xl px-6 py-10 md:px-10">
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+          window onto an active network, not a static set of shortcuts.
+          Real brass gold (not the site's pale "gold" rule-color token) is
+          what actually reads as an official seal/ledger rather than a
+          generic dark banner. */}
+      <section className="relative overflow-hidden border-y border-brass/25 bg-oxblood">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+        >
+          <div className="absolute left-1/2 top-1/2 h-[60vw] w-[60vw] max-w-[700px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(184,147,63,0.16)_0%,transparent_70%)]" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-6 py-12 md:px-10">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
             <Reveal>
               <StatBlock
+                Icon={DirectoryIcon}
                 value={`${(alumniCount ?? 0).toLocaleString("en-US")}+`}
                 label="Verified alumni"
               />
             </Reveal>
             <Reveal delay={60}>
               <StatBlock
+                Icon={EventsIcon}
                 value={String(upcomingEventCount ?? 0)}
                 label={
                   (upcomingEventCount ?? 0) === 1
@@ -245,6 +309,7 @@ export default async function MemberHome({
             </Reveal>
             <Reveal delay={120}>
               <StatBlock
+                Icon={CareersIcon}
                 value={String(openRoleCount ?? 0)}
                 label={
                   (openRoleCount ?? 0) === 1
@@ -256,11 +321,13 @@ export default async function MemberHome({
             <Reveal delay={180}>
               {profile.graduation_year ? (
                 <StatBlock
+                  Icon={DirectoryIcon}
                   value={String(batchmateCount ?? 0)}
                   label={`From the batch of ${profile.graduation_year}`}
                 />
               ) : (
                 <StatBlock
+                  Icon={CommunityIcon}
                   value={String(discussions.length > 0 ? discussions.length : 0)}
                   label="Recent discussions"
                 />
@@ -281,19 +348,21 @@ export default async function MemberHome({
             </h2>
           </Reveal>
 
-          <div className="mt-10 grid auto-rows-[150px] grid-cols-2 gap-5 sm:auto-rows-[170px] sm:grid-cols-4">
+          {/* Flex, not a fixed-column grid: however many tiles exist below
+              (1 to 4, depending on whether an event and Careers are both
+              on), they always grow to fill the full row width — a
+              grid-cols-4 layout left dead empty columns whenever fewer
+              tiles were present (e.g. Careers off left a wide gap). */}
+          <div className="mt-10 flex flex-col gap-5 lg:flex-row lg:items-stretch">
             {nextEvent && (
-              <Reveal
-                delay={0}
-                className="col-span-2 row-span-2 sm:col-span-2 sm:row-span-2"
-              >
+              <Reveal delay={0} className="lg:w-[42%] lg:shrink-0">
                 <SpotlightCard
                   glow="rgba(255,255,255,0.18)"
-                  className="h-full rounded-2xl bg-gradient-to-br from-oxblood to-maroon p-6 shadow-[0_18px_36px_-16px_rgba(47,37,68,0.5)] md:p-8"
+                  className="h-full min-h-[280px] rounded-2xl bg-gradient-to-br from-oxblood to-maroon p-6 shadow-[0_18px_36px_-16px_rgba(47,37,68,0.5)] md:p-8"
                 >
                   <Link href="/events" className="flex h-full flex-col justify-between">
                     <div>
-                      <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ivory/70">
+                      <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-brass-light">
                         Next up
                       </span>
                       <h3 className="mt-2 font-display text-2xl italic text-ivory md:text-3xl">
@@ -311,64 +380,69 @@ export default async function MemberHome({
               </Reveal>
             )}
 
-            <QuickLink
-              index={1}
-              tag="Directory"
-              title="Find your people"
-              body={
-                limited
-                  ? "Browse verified alumni once your profile is approved."
-                  : "Search alumni by batch, branch, city, or company."
-              }
-              href="/directory"
-              tone="light"
-              Icon={DirectoryIcon}
-              span={nextEvent ? "1" : "wide"}
-            />
-            {!nextEvent && (
-              <QuickLink
-                index={2}
-                tag="Events"
-                title="What's coming up"
-                body="Reunions and meetups, plus highlights from our Instagram."
-                href="/events"
-                tone="maroon"
-                Icon={EventsIcon}
-                span="1"
-              />
-            )}
-            {careersEnabled && (
-              <>
+            <div className="flex flex-1 flex-wrap gap-5">
+              {directoryPreview.length > 0 ? (
+                <DirectoryPreviewTile
+                  people={directoryPreview}
+                  totalCount={alumniCount ?? directoryPreview.length}
+                />
+              ) : (
                 <QuickLink
-                  index={3}
-                  tag="Mentorship"
-                  title={isStudent ? "Find a mentor" : "Mentor someone"}
+                  index={1}
+                  tag="Directory"
+                  title="Find your people"
                   body={
-                    isStudent
-                      ? "Ask an alum a few steps ahead of you for guidance."
-                      : "Offer an hour a month, and you choose who you take on."
+                    limited
+                      ? "Browse verified alumni once your profile is approved."
+                      : "Search alumni by batch, branch, city, or company."
                   }
-                  href={
-                    isStudent
-                      ? "/careers/mentorship"
-                      : "/careers/mentorship/become"
-                  }
+                  href="/directory"
                   tone="light"
-                  Icon={MentorshipIcon}
-                  span="1"
+                  Icon={DirectoryIcon}
                 />
+              )}
+              {!nextEvent && (
                 <QuickLink
-                  index={4}
-                  tag="Careers"
-                  title="Jobs & internships"
-                  body="Openings shared by members, apply in a click."
-                  href="/careers/jobs"
-                  tone="light"
-                  Icon={CareersIcon}
-                  span="1"
+                  index={2}
+                  tag="Events"
+                  title="What's coming up"
+                  body="Reunions and meetups, plus highlights from our Instagram."
+                  href="/events"
+                  tone="maroon"
+                  Icon={EventsIcon}
                 />
-              </>
-            )}
+              )}
+              {careersEnabled && (
+                <>
+                  <QuickLink
+                    index={3}
+                    tag="Mentorship"
+                    title={isStudent ? "Find a mentor" : "Mentor someone"}
+                    body={
+                      isStudent
+                        ? "Ask an alum a few steps ahead of you for guidance."
+                        : "Offer an hour a month, and you choose who you take on."
+                    }
+                    href={
+                      isStudent
+                        ? "/careers/mentorship"
+                        : "/careers/mentorship/become"
+                    }
+                    tone="light"
+                    Icon={MentorshipIcon}
+                  />
+                  <QuickLink
+                    index={4}
+                    tag="Careers"
+                    title="Jobs & internships"
+                    body="Openings shared by members, apply in a click."
+                    href="/careers/jobs"
+                    tone="light"
+                    Icon={CareersIcon}
+                  />
+                </>
+              )}
+            </div>
           </div>
 
           <Reveal delay={200}>
@@ -505,6 +579,11 @@ export default async function MemberHome({
         </section>
       )}
 
+      {/* Where they are now — real, named alumni with real photos, the same
+          section the public homepage uses. Members get it too: proof the
+          network includes people worth knowing, not just a directory tool. */}
+      <AlumniSpotlight />
+
       {/* From our Instagram — teaser, full feed lives on the events page */}
       {posts.length > 0 && (
         <section className="border-t border-gold/30 bg-ivory-dim/30">
@@ -595,6 +674,79 @@ function StatusNotice({
   );
 }
 
+function initials(name: string | null) {
+  const parts = (name ?? "").trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+// Bespoke Directory tile: real faces from the network instead of a sentence
+// describing the feature — the single biggest lever for "this page feels
+// alive" available on the homepage, since it costs one extra query.
+function DirectoryPreviewTile({
+  people,
+  totalCount,
+}: {
+  people: { id: string; full_name: string | null; photo_url: string | null }[];
+  totalCount: number;
+}) {
+  const shown = people.slice(0, 5);
+  const remaining = Math.max(0, totalCount - shown.length);
+  return (
+    <Reveal delay={90} className="min-w-[220px] flex-1 basis-[220px]">
+      <SpotlightCard
+        glow="rgba(184,147,63,0.14)"
+        className="relative h-full min-h-[210px] overflow-hidden rounded-2xl border border-gold/30 bg-ivory-dim/40 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brass/50 hover:shadow-[0_18px_36px_-18px_rgba(47,37,68,0.25)]"
+      >
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-4 -right-4 text-brass/10 [&>svg]:h-24 [&>svg]:w-24"
+        >
+          <DirectoryIcon />
+        </span>
+        <Link href="/directory" className="group relative flex h-full flex-col p-6 md:p-7">
+          <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
+            Directory
+          </span>
+          <h3 className="mt-2 font-display text-xl italic text-ink transition-transform duration-300 group-hover:translate-x-1">
+            Find your people
+          </h3>
+
+          <div className="mt-4 flex items-center">
+            <div className="flex -space-x-3">
+              {shown.map((person) => (
+                <div
+                  key={person.id}
+                  className="h-9 w-9 overflow-hidden rounded-full border-2 border-ivory bg-gradient-to-br from-maroon to-oxblood shadow-sm"
+                  title={person.full_name ?? "Member"}
+                >
+                  {person.photo_url ? (
+                    <MemberPhoto src={person.photo_url} alt={person.full_name ?? ""} />
+                  ) : (
+                    <span className="flex h-full w-full items-center justify-center font-sans text-[10px] font-semibold text-ivory">
+                      {initials(person.full_name)}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+            {remaining > 0 && (
+              <span className="ml-3 font-sans text-sm text-ink/55">
+                +{remaining.toLocaleString("en-US")} more
+              </span>
+            )}
+          </div>
+
+          <span className="mt-auto pt-4 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 transition-colors group-hover:text-brass">
+            Open →
+          </span>
+        </Link>
+      </SpotlightCard>
+    </Reveal>
+  );
+}
+
 function QuickLink({
   index,
   tag,
@@ -603,7 +755,6 @@ function QuickLink({
   href,
   tone = "light",
   Icon,
-  span = "1",
 }: {
   index: number;
   tag: string;
@@ -612,28 +763,36 @@ function QuickLink({
   href: string;
   tone?: "light" | "maroon";
   Icon: () => React.ReactElement;
-  span?: "1" | "wide";
 }) {
   const maroon = tone === "maroon";
   return (
-    <Reveal
-      delay={index * 90}
-      className={span === "wide" ? "col-span-2 row-span-1" : "col-span-1 row-span-1"}
-    >
+    <Reveal delay={index * 90} className="min-w-[220px] flex-1 basis-[220px]">
       <SpotlightCard
-        glow={maroon ? "rgba(255,255,255,0.14)" : "rgba(47,37,68,0.08)"}
-        className={`h-full rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 ${
+        glow={maroon ? "rgba(255,255,255,0.14)" : "rgba(184,147,63,0.14)"}
+        className={`relative h-full min-h-[210px] overflow-hidden rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 ${
           maroon
             ? "bg-maroon hover:shadow-[0_18px_36px_-16px_rgba(113,41,60,0.5)]"
-            : "border border-gold/30 bg-ivory-dim/40 hover:border-gold/60 hover:shadow-[0_18px_36px_-18px_rgba(47,37,68,0.25)]"
+            : "border border-gold/30 bg-ivory-dim/40 hover:border-brass/50 hover:shadow-[0_18px_36px_-18px_rgba(47,37,68,0.25)]"
         }`}
       >
-        <Link href={href} className="group flex h-full flex-col p-6 md:p-7">
+        {/* Faint oversized icon watermark, bottom-right — the same
+            "official document" texture as the seal watermarks elsewhere,
+            here scoped per-card so each tile has its own quiet identity. */}
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute -bottom-4 -right-4 [&>svg]:h-24 [&>svg]:w-24 ${
+            maroon ? "text-ivory/10" : "text-brass/10"
+          }`}
+        >
+          <Icon />
+        </span>
+
+        <Link href={href} className="group relative flex h-full flex-col p-6 md:p-7">
           <span
             className={`flex h-10 w-10 items-center justify-center rounded-full [&>svg]:h-5 [&>svg]:w-5 ${
               maroon
                 ? "bg-ivory/10 text-ivory"
-                : "border border-gold/40 text-oxblood group-hover:border-accent/60 group-hover:text-accent"
+                : "border border-brass/40 text-oxblood group-hover:border-brass group-hover:text-brass"
             }`}
           >
             <Icon />
@@ -663,7 +822,7 @@ function QuickLink({
             className={`mt-auto pt-3 font-sans text-[11px] font-medium uppercase tracking-[0.14em] transition-colors ${
               maroon
                 ? "text-ivory/60 group-hover:text-ivory"
-                : "text-oxblood/70 group-hover:text-oxblood"
+                : "text-oxblood/70 group-hover:text-brass"
             }`}
           >
             Open →
@@ -674,10 +833,21 @@ function QuickLink({
   );
 }
 
-function StatBlock({ value, label }: { value: string; label: string }) {
+function StatBlock({
+  Icon,
+  value,
+  label,
+}: {
+  Icon: () => React.ReactElement;
+  value: string;
+  label: string;
+}) {
   return (
     <div>
-      <p className="font-display text-3xl italic text-ivory md:text-4xl">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full border border-brass/40 text-brass-light [&>svg]:h-4 [&>svg]:w-4">
+        <Icon />
+      </span>
+      <p className="mt-3 font-display text-3xl italic text-brass-light md:text-4xl">
         <CountUp value={value} />
       </p>
       <p className="mt-1 font-sans text-[11px] font-medium uppercase leading-snug tracking-[0.12em] text-ivory/55">

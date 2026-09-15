@@ -26,7 +26,7 @@ export default async function Home() {
     const { data } = await supabase
       .from("profiles")
       .select(
-        "id, full_name, user_type, role, verification_status, rejection_reason, industry, job_title, graduation_year, current_city, onboarded, created_at"
+        "id, full_name, photo_url, user_type, role, verification_status, rejection_reason, industry, job_title, graduation_year, current_city, onboarded, created_at"
       )
       .eq("id", user.id)
       .single<MemberHomeProfile>();

@@ -67,7 +67,7 @@ export default function Hero() {
           <h1 className="mt-8 max-w-4xl font-display text-[clamp(2.75rem,9vw,6.5rem)] leading-[0.98] tracking-tight text-ink">
             Once BMS.
             <br />
-            <span className="bg-gradient-to-r from-oxblood via-maroon to-accent bg-clip-text italic text-transparent">
+            <span className="bg-gradient-to-r from-oxblood from-10% via-maroon via-55% to-accent to-85% bg-clip-text italic text-transparent">
               Always BMS.
             </span>
           </h1>
