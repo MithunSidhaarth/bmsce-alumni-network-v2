@@ -19,7 +19,7 @@ export default async function GalleryPage() {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("gallery_photos")
-    .select("*")
+    .select("id, image_url, thumbnail_url, caption, uploaded_by, uploaded_at")
     .order("uploaded_at", { ascending: false })
     .range(0, GALLERY_PAGE_SIZE - 1)
     .returns<GalleryPhoto[]>();

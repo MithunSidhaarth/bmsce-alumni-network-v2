@@ -7,8 +7,13 @@
 // we pause it anyway to be safe.
 export default function Aurora({
   variant = "light",
+  strength = 1,
 }: {
   variant?: "light" | "dark";
+  // Extra multiplier on top of the (already toned-down) base opacities —
+  // the global ambient instance in the root layout uses a lower value so
+  // it reads as atmosphere on every page without competing with content.
+  strength?: number;
 }) {
   const a = variant === "dark" ? "var(--color-accent)" : "var(--color-oxblood)";
   const b = variant === "dark" ? "var(--color-gold)" : "var(--color-maroon)";
@@ -18,17 +23,18 @@ export default function Aurora({
     <div
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
+      style={{ opacity: strength }}
     >
       <span
-        className="absolute -left-[10%] -top-[20%] h-[60vw] w-[60vw] max-w-[700px] rounded-full opacity-[0.16] blur-3xl motion-safe:animate-[var(--animate-aurora-a)]"
+        className="absolute -left-[10%] -top-[20%] h-[60vw] w-[60vw] max-w-[700px] rounded-full opacity-[0.08] blur-3xl motion-safe:animate-[var(--animate-aurora-a)]"
         style={{ background: a }}
       />
       <span
-        className="absolute -right-[15%] top-[10%] h-[50vw] w-[50vw] max-w-[600px] rounded-full opacity-[0.13] blur-3xl motion-safe:animate-[var(--animate-aurora-b)]"
+        className="absolute -right-[15%] top-[10%] h-[50vw] w-[50vw] max-w-[600px] rounded-full opacity-[0.065] blur-3xl motion-safe:animate-[var(--animate-aurora-b)]"
         style={{ background: b }}
       />
       <span
-        className="absolute bottom-[-20%] left-[30%] h-[45vw] w-[45vw] max-w-[550px] rounded-full opacity-[0.1] blur-3xl motion-safe:animate-[var(--animate-aurora-c)]"
+        className="absolute bottom-[-20%] left-[30%] h-[45vw] w-[45vw] max-w-[550px] rounded-full opacity-[0.05] blur-3xl motion-safe:animate-[var(--animate-aurora-c)]"
         style={{ background: c }}
       />
     </div>

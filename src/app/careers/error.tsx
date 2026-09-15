@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import ErrorScreen from "@/components/ErrorScreen";
+import { reportError } from "@/lib/reportError";
 
 export default function Error({
   error,
@@ -11,7 +12,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error(error);
+    reportError(error);
   }, [error]);
   return <ErrorScreen reset={reset} />;
 }

@@ -29,9 +29,11 @@ export default async function PostingApplicantsPage({
 
   const { data: posting } = await supabase
     .from("job_postings")
-    .select("*")
+    .select("id, title, company, type, posted_by")
     .eq("id", id)
-    .maybeSingle<JobPosting>();
+    .maybeSingle<
+      Pick<JobPosting, "id" | "title" | "company" | "type" | "posted_by">
+    >();
 
   if (!posting) notFound();
   // Only the poster (or an admin) reviews applicants.
@@ -46,24 +48,41 @@ export default async function PostingApplicantsPage({
 
   const { data: apps } = await supabase
     .from("job_applications")
-    .select("*")
+    .select(
+      "id, applicant_id, status, cover_note, applicant_email, applicant_phone, applicant_name, resume_url, created_at"
+    )
     .eq("job_id", id)
     .order("created_at", { ascending: false })
-    .returns<JobApplication[]>();
+    .returns<
+      Omit<JobApplication, "job_id">[]
+    >();
 
   const applications = apps ?? [];
 
   // Applicant profiles (visible via shares_application_with).
-  const peopleById = new Map<string, Profile>();
+  type ApplicantProfile = Pick<
+    Profile,
+    | "id"
+    | "full_name"
+    | "photo_url"
+    | "branch"
+    | "graduation_year"
+    | "job_title"
+    | "company"
+    | "user_type"
+  >;
+  const peopleById = new Map<string, ApplicantProfile>();
   if (applications.length) {
     const { data: people } = await supabase
       .from("profiles")
-      .select("*")
+      .select(
+        "id, full_name, photo_url, branch, graduation_year, job_title, company, user_type"
+      )
       .in(
         "id",
         applications.map((a) => a.applicant_id)
       )
-      .returns<Profile[]>();
+      .returns<ApplicantProfile[]>();
     for (const p of people ?? []) peopleById.set(p.id, p);
   }
 

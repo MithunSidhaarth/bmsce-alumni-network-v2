@@ -15,7 +15,7 @@ export default async function AdminNewslettersPage() {
 
   const { data: existing } = await supabase
     .from("newsletters")
-    .select("*")
+    .select("id, year, title, pdf_url, uploaded_by, uploaded_at")
     .order("year", { ascending: false })
     .order("uploaded_at", { ascending: false })
     .returns<Newsletter[]>();

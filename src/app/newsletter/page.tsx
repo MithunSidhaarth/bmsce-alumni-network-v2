@@ -32,7 +32,7 @@ export default async function NewsletterPage() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("newsletters")
-    .select("*")
+    .select("id, year, title, pdf_url, uploaded_by, uploaded_at")
     .order("year", { ascending: false })
     .order("uploaded_at", { ascending: false })
     .returns<Newsletter[]>();

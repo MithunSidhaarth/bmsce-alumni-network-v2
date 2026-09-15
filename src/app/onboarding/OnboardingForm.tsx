@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { BRANCHES, COUNTRIES, INDIA_STATES, INDUSTRIES } from "@/lib/constants";
@@ -18,6 +18,7 @@ export default function OnboardingForm({
   email,
   redirectTo = "/",
   initialEducation = [],
+  requestedUserType = null,
 }: {
   userId: string;
   initial: Profile | null;
@@ -25,6 +26,11 @@ export default function OnboardingForm({
   email: string;
   redirectTo?: string;
   initialEducation?: EducationEntry[];
+  // The student/alumni entry point chosen on the login screen, threaded
+  // through the OAuth callback's `as` query param (already validated
+  // server-side in page.tsx) — just sets the form's default, same as
+  // before; the visible toggle below still lets the user change it.
+  requestedUserType?: UserType | null;
 }) {
   const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
@@ -32,7 +38,9 @@ export default function OnboardingForm({
   const isCollegeEmail = email.trim().toLowerCase().endsWith("@bmsce.ac.in");
 
   const [userType, setUserType] = useState<UserType>(
-    isCollegeEmail ? "student" : initial?.user_type ?? "alumni"
+    isCollegeEmail
+      ? "student"
+      : initial?.user_type ?? requestedUserType ?? "alumni"
   );
   const [personalEmail, setPersonalEmail] = useState(initialPersonalEmail);
   const [done, setDone] = useState(false);
@@ -125,20 +133,6 @@ export default function OnboardingForm({
       errs.branch = "Please enter your branch / degree.";
     return errs;
   };
-
-  // Honour the "student" entry point chosen on the login screen.
-  useEffect(() => {
-    if (isCollegeEmail) return; // college-email users are always students
-    try {
-      const pending = window.localStorage.getItem("pending_user_type");
-      if (pending === "student" || pending === "alumni") {
-        setUserType(pending);
-        window.localStorage.removeItem("pending_user_type");
-      }
-    } catch {
-      // ignore
-    }
-  }, [isCollegeEmail]);
 
   const isStudent = userType === "student";
 

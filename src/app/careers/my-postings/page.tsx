@@ -28,18 +28,20 @@ export default async function MyPostingsPage() {
 
   const { data: me } = await supabase
     .from("profiles")
-    .select("*")
+    .select("id, onboarded")
     .eq("id", user.id)
-    .single<Profile>();
+    .single<Pick<Profile, "id" | "onboarded">>();
   if (!me || !me.onboarded) redirect("/onboarding");
 
   // Postings I created
   const { data: mine } = await supabase
     .from("job_postings")
-    .select("*")
+    .select("id, type, closed_at, title, company")
     .eq("posted_by", me.id)
     .order("created_at", { ascending: false })
-    .returns<JobPosting[]>();
+    .returns<
+      Pick<JobPosting, "id" | "type" | "closed_at" | "title" | "company">[]
+    >();
 
   const postings = mine ?? [];
 
@@ -65,22 +67,22 @@ export default async function MyPostingsPage() {
   // Applications I've sent
   const { data: sent } = await supabase
     .from("job_applications")
-    .select("*")
+    .select("id, job_id, status")
     .eq("applicant_id", me.id)
     .order("created_at", { ascending: false })
-    .returns<JobApplication[]>();
+    .returns<Pick<JobApplication, "id" | "job_id" | "status">[]>();
 
   const sentApps = sent ?? [];
-  const jobById = new Map<string, JobPosting>();
+  const jobById = new Map<string, Pick<JobPosting, "id" | "title" | "company">>();
   if (sentApps.length) {
     const { data: jobs } = await supabase
       .from("job_postings")
-      .select("*")
+      .select("id, title, company")
       .in(
         "id",
         sentApps.map((a) => a.job_id)
       )
-      .returns<JobPosting[]>();
+      .returns<Pick<JobPosting, "id" | "title" | "company">[]>();
     for (const j of jobs ?? []) jobById.set(j.id, j);
   }
 

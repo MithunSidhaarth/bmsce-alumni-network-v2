@@ -21,7 +21,9 @@ export default async function EditEventPage({
 
   const { data: event } = await supabase
     .from("events")
-    .select("*")
+    .select(
+      "id, title, description, event_date, location, country, state, cover_image_url, rsvp_url, created_by, created_at"
+    )
     .eq("id", id)
     .maybeSingle<EventRow>();
   if (!event) notFound();

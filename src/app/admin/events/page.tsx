@@ -15,7 +15,9 @@ export default async function AdminEventsPage() {
 
   const { data: events } = await supabase
     .from("events")
-    .select("*")
+    .select(
+      "id, title, description, event_date, location, country, state, cover_image_url, rsvp_url, created_by, created_at"
+    )
     .order("event_date", { ascending: false })
     .returns<EventRow[]>();
 

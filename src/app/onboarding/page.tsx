@@ -11,7 +11,17 @@ export const metadata: Metadata = {
   title: "Complete your profile — BMSCE Alumni Network",
 };
 
-export default async function OnboardingPage() {
+export default async function OnboardingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ as?: string }>;
+}) {
+  const { as } = await searchParams;
+  // Strict whitelist — this travels through a server-controlled redirect
+  // (the /auth/callback route), not client storage, but re-validate anyway
+  // since it's still attacker-visible/editable query string input.
+  const requestedType = as === "student" || as === "alumni" ? as : null;
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -63,6 +73,7 @@ export default async function OnboardingPage() {
                 }
                 email={user.email ?? ""}
                 initialEducation={education ?? []}
+                requestedUserType={requestedType}
               />
             </div>
           </div>

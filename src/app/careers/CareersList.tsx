@@ -34,13 +34,13 @@ export default async function CareersList({
     data: { user },
   } = await supabase.auth.getUser();
 
-  let me: Profile | null = null;
+  let me: Pick<Profile, "id" | "verification_status"> | null = null;
   if (user) {
     const { data } = await supabase
       .from("profiles")
-      .select("*")
+      .select("id, verification_status")
       .eq("id", user.id)
-      .single<Profile>();
+      .single<Pick<Profile, "id" | "verification_status">>();
     me = data ?? null;
   }
 

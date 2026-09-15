@@ -26,6 +26,12 @@ export async function GET(request: Request) {
   // Sanitized so a crafted callback URL can't redirect off-site.
   const next = safeNextPath(searchParams.get("next"));
   const type = searchParams.get("type");
+  // The student/alumni entry point chosen on the login screen — carried
+  // through the callback instead of localStorage (which persists across
+  // sessions on a shared computer and is trivially editable from devtools).
+  // Re-validated here against a strict whitelist before it's ever trusted.
+  const asParam = searchParams.get("as");
+  const signupAs = asParam === "student" || asParam === "alumni" ? asParam : null;
 
   // Behind a proxy (Vercel/Netlify/etc.) `origin` can be an internal host or
   // http. Honour the forwarded host so post-login redirects land on the real
@@ -78,7 +84,9 @@ export async function GET(request: Request) {
           .eq("id", user.id)
           .single();
 
-        const dest = profile?.onboarded ? next : "/onboarding";
+        const dest = profile?.onboarded
+          ? next
+          : `/onboarding${signupAs ? `?as=${signupAs}` : ""}`;
         return NextResponse.redirect(`${base}${dest}`);
       }
     }

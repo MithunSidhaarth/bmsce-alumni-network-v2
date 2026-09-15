@@ -113,6 +113,8 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        aria-haspopup="menu"
+        aria-label={`Account menu${p?.full_name ? ` for ${p.full_name}` : ""}`}
         className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-gold/50 bg-ivory-dim transition-colors hover:border-gold"
       >
         {p?.photo_url ? (

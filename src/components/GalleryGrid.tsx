@@ -39,7 +39,7 @@ export default function GalleryGrid({
     const to = from + GALLERY_PAGE_SIZE - 1;
     const { data, error } = await supabase
       .from("gallery_photos")
-      .select("*")
+      .select("id, image_url, thumbnail_url, caption, uploaded_by, uploaded_at")
       .order("uploaded_at", { ascending: false })
       .range(from, to)
       .returns<GalleryPhoto[]>();

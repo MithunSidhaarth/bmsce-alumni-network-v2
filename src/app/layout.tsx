@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import AuthProvider from "@/components/AuthProvider";
 import ScrollProgress from "@/components/ScrollProgress";
 import PageTransition from "@/components/PageTransition";
+import Aurora from "@/components/Aurora";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -54,6 +55,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
+        {/* Fixed, faint, site-wide — dark sections (oxblood backgrounds)
+            naturally occlude it since they paint over it; their own
+            brighter Aurora instance still runs underneath for contrast
+            against dark. */}
+        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+          <Aurora strength={0.55} />
+        </div>
         <ScrollProgress />
         <AuthProvider>
           <PageTransition>{children}</PageTransition>

@@ -23,13 +23,17 @@ export default async function MentorshipPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  let me: Profile | null = null;
+  type MeProfile = Pick<
+    Profile,
+    "id" | "verification_status" | "user_type" | "is_mentor"
+  >;
+  let me: MeProfile | null = null;
   if (user) {
     const { data } = await supabase
       .from("profiles")
-      .select("*")
+      .select("id, verification_status, user_type, is_mentor")
       .eq("id", user.id)
-      .single<Profile>();
+      .single<MeProfile>();
     me = data ?? null;
   }
 

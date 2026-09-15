@@ -38,11 +38,30 @@ export default async function DirectoryProfilePage({
 
   // RLS decides visibility: verified alumni, or someone connected via a
   // mentorship request / job application.
+  type DirectoryProfile = Pick<
+    Profile,
+    | "id"
+    | "full_name"
+    | "photo_url"
+    | "user_type"
+    | "job_title"
+    | "company"
+    | "graduation_year"
+    | "branch"
+    | "current_city"
+    | "industry"
+    | "linkedin_url"
+    | "bio"
+    | "is_mentor"
+    | "mentor_bio"
+  >;
   const { data: p } = await supabase
     .from("profiles")
-    .select("*")
+    .select(
+      "id, full_name, photo_url, user_type, job_title, company, graduation_year, branch, current_city, industry, linkedin_url, bio, is_mentor, mentor_bio"
+    )
     .eq("id", id)
-    .maybeSingle<Profile>();
+    .maybeSingle<DirectoryProfile>();
 
   if (!p) {
     return (
@@ -84,10 +103,10 @@ export default async function DirectoryProfilePage({
 
   const { data: educationData } = await supabase
     .from("education_entries")
-    .select("*")
+    .select("id, degree, institution, year")
     .eq("profile_id", id)
     .order("year", { ascending: false })
-    .returns<EducationEntry[]>();
+    .returns<Pick<EducationEntry, "id" | "degree" | "institution" | "year">[]>();
   const eduList = educationData ?? [];
 
   return (

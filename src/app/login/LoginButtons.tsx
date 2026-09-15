@@ -18,23 +18,17 @@ export default function LoginButtons({
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
-  const rememberUserType = () => {
-    // Remember the chosen path so onboarding can default the profile type.
-    try {
-      window.localStorage.setItem("pending_user_type", userType);
-    } catch {
-      // ignore storage failures
-    }
-  };
-
   const signIn = async (provider: "google" | "linkedin_oidc") => {
     setLoading(provider);
-    rememberUserType();
-    // Carry the post-login destination through the callback route.
-    const callback =
-      next !== "/"
-        ? `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`
-        : `${window.location.origin}/auth/callback`;
+    // Carry both the post-login destination and the chosen entry path
+    // (student/alumni) through the callback route as query params — not
+    // localStorage, which persists across sessions on a shared computer and
+    // can be edited from devtools. The callback route re-validates `type`
+    // against a strict whitelist before it ever reaches the onboarding form.
+    const params = new URLSearchParams();
+    if (next !== "/") params.set("next", next);
+    params.set("as", userType);
+    const callback = `${window.location.origin}/auth/callback?${params.toString()}`;
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
@@ -47,7 +41,6 @@ export default function LoginButtons({
     e.preventDefault();
     setPasswordLoading(true);
     setPasswordError(null);
-    rememberUserType();
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({
       email,

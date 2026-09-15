@@ -23,9 +23,9 @@ export default async function PostOpeningPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("*")
+    .select("onboarded, verification_status")
     .eq("id", user.id)
-    .single<Profile>();
+    .single<Pick<Profile, "onboarded" | "verification_status">>();
 
   if (!profile || !profile.onboarded) redirect("/onboarding");
 

@@ -20,7 +20,7 @@ export default async function AdminGalleryPage() {
 
   const { data: existing } = await supabase
     .from("gallery_photos")
-    .select("*")
+    .select("id, image_url, thumbnail_url, caption, uploaded_by, uploaded_at")
     .order("uploaded_at", { ascending: false })
     .limit(RECENT_LIMIT)
     .returns<GalleryPhoto[]>();

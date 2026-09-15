@@ -4,7 +4,6 @@ import { useRef } from "react";
 import Eyebrow from "./Eyebrow";
 import Seal from "./Seal";
 import Reveal from "./Reveal";
-import Aurora from "./Aurora";
 import Marquee from "./Marquee";
 import MagneticButton from "./MagneticButton";
 import { chapters } from "@/data/chapters";
@@ -48,8 +47,6 @@ export default function Hero() {
       onMouseMove={onMouseMove}
       onMouseLeave={resetSeal}
     >
-      <Aurora />
-
       <div
         ref={sealRef}
         className="pointer-events-none absolute -right-24 top-8 hidden h-[420px] w-[420px] opacity-[0.06] transition-transform duration-300 ease-out lg:block"

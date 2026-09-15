@@ -14,7 +14,9 @@ export default async function AdminSocialPage() {
 
   const { data: recent } = await supabase
     .from("social_posts")
-    .select("*")
+    .select(
+      "id, post_id, short_code, caption, image_url, video_url, post_type, posted_at, likes_count, comments_count, permalink, hashtags, created_at"
+    )
     .eq("post_type", "Manual")
     .order("created_at", { ascending: false })
     .limit(20)

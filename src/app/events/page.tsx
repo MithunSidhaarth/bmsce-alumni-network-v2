@@ -32,13 +32,17 @@ export default async function EventsPage() {
   const [{ data: events }, { data: posts }] = await Promise.all([
     supabase
       .from("events")
-      .select("*")
+      .select(
+        "id, title, description, event_date, location, country, state, cover_image_url, rsvp_url, created_by, created_at"
+      )
       .gte("event_date", nowIso)
       .order("event_date", { ascending: true })
       .returns<EventRow[]>(),
     supabase
       .from("social_posts")
-      .select("*")
+      .select(
+        "id, post_id, short_code, caption, image_url, video_url, post_type, posted_at, likes_count, comments_count, permalink, hashtags, created_at"
+      )
       .order("posted_at", { ascending: false })
       .returns<SocialPost[]>(),
   ]);

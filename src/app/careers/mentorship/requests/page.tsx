@@ -26,27 +26,33 @@ export default async function MentorshipRequestsPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  type MeProfile = Pick<
+    Profile,
+    "id" | "onboarded" | "is_mentor" | "max_mentees"
+  >;
   const { data: me } = await supabase
     .from("profiles")
-    .select("*")
+    .select("id, onboarded, is_mentor, max_mentees")
     .eq("id", user.id)
-    .single<Profile>();
+    .single<MeProfile>();
   if (!me || !me.onboarded) redirect("/onboarding");
 
+  type RequestRow = Omit<MentorshipRequest, "updated_at">;
+  const REQUEST_FIELDS = "id, mentee_id, mentor_id, message, status, created_at";
   // RLS: only rows where I'm the mentor or the mentee come back.
   const [{ data: incomingRaw }, { data: outgoingRaw }] = await Promise.all([
     supabase
       .from("mentorship_requests")
-      .select("*")
+      .select(REQUEST_FIELDS)
       .eq("mentor_id", me.id)
       .order("created_at", { ascending: false })
-      .returns<MentorshipRequest[]>(),
+      .returns<RequestRow[]>(),
     supabase
       .from("mentorship_requests")
-      .select("*")
+      .select(REQUEST_FIELDS)
       .eq("mentee_id", me.id)
       .order("created_at", { ascending: false })
-      .returns<MentorshipRequest[]>(),
+      .returns<RequestRow[]>(),
   ]);
 
   const incoming = incomingRaw ?? [];
@@ -60,7 +66,19 @@ export default async function MentorshipRequestsPage() {
     ])
   );
 
-  const peopleById = new Map<string, Profile>();
+  type CounterpartProfile = Pick<
+    Profile,
+    | "id"
+    | "full_name"
+    | "branch"
+    | "graduation_year"
+    | "user_type"
+    | "job_title"
+    | "company"
+    | "photo_url"
+    | "linkedin_url"
+  >;
+  const peopleById = new Map<string, CounterpartProfile>();
   // Contact rows come from member_contacts, whose RLS only returns a
   // counterpart's contact when there's an ACCEPTED mentorship between us —
   // the server can't leak an email for a pending/declined request.
@@ -70,7 +88,13 @@ export default async function MentorshipRequestsPage() {
   >();
   if (otherIds.length) {
     const [{ data: people }, { data: contacts }] = await Promise.all([
-      supabase.from("profiles").select("*").in("id", otherIds).returns<Profile[]>(),
+      supabase
+        .from("profiles")
+        .select(
+          "id, full_name, branch, graduation_year, user_type, job_title, company, photo_url, linkedin_url"
+        )
+        .in("id", otherIds)
+        .returns<CounterpartProfile[]>(),
       supabase
         .from("member_contacts")
         .select("member_id, personal_email, college_email")
@@ -86,7 +110,7 @@ export default async function MentorshipRequestsPage() {
 
   // Contact details are only exposed once a request is accepted (enforced by
   // RLS above; the `accepted` flag is belt-and-braces).
-  const toPerson = (p: Profile | undefined, accepted: boolean): Person => {
+  const toPerson = (p: CounterpartProfile | undefined, accepted: boolean): Person => {
     const contact = p ? contactById.get(p.id) : undefined;
     return {
       id: p?.id ?? "",
@@ -104,7 +128,7 @@ export default async function MentorshipRequestsPage() {
     };
   };
 
-  const toView = (r: MentorshipRequest, otherId: string): ReqView => ({
+  const toView = (r: RequestRow, otherId: string): ReqView => ({
     id: r.id,
     status: r.status,
     message: r.message,

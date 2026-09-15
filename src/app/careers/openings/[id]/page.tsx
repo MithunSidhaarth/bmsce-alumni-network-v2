@@ -28,21 +28,27 @@ export default async function OpeningPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  let me: Profile | null = null;
+  type MeProfile = Pick<
+    Profile,
+    "id" | "full_name" | "phone" | "linkedin_url" | "verification_status" | "role"
+  >;
+  let me: MeProfile | null = null;
   if (user) {
     const { data } = await supabase
       .from("profiles")
-      .select("*")
+      .select("id, full_name, phone, linkedin_url, verification_status, role")
       .eq("id", user.id)
-      .single<Profile>();
+      .single<MeProfile>();
     me = data ?? null;
   }
 
   const { data: posting } = await supabase
     .from("job_postings")
-    .select("*")
+    .select(
+      "id, posted_by, title, company, type, location, remote, description, responsibilities, skills_required, experience_level, duration, stipend_or_salary, application_deadline, external_link, closed_at"
+    )
     .eq("id", id)
-    .maybeSingle<JobPosting>();
+    .maybeSingle<Omit<JobPosting, "created_at">>();
 
   // RLS hides postings from unverified/signed-out viewers.
   if (!posting) {
@@ -81,14 +87,14 @@ export default async function OpeningPage({
     poster = data as { full_name: string | null } | null;
   }
 
-  let existing: JobApplication | null = null;
+  let existing: Pick<JobApplication, "status"> | null = null;
   if (me) {
     const { data } = await supabase
       .from("job_applications")
-      .select("*")
+      .select("status")
       .eq("job_id", id)
       .eq("applicant_id", me.id)
-      .maybeSingle<JobApplication>();
+      .maybeSingle<Pick<JobApplication, "status">>();
     existing = data ?? null;
   }
 

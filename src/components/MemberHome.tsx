@@ -2,7 +2,6 @@ import Link from "next/link";
 import ProfileCompletionNudge from "./ProfileCompletionNudge";
 import Eyebrow from "./Eyebrow";
 import Reveal from "./Reveal";
-import Aurora from "./Aurora";
 import SpotlightCard from "./SpotlightCard";
 import EventCountdown from "./EventCountdown";
 import { PostCard } from "./SocialFeed";
@@ -38,6 +37,24 @@ type UpcomingEvent = {
   location: string | null;
 };
 
+// Exact set of Profile columns this page reads — kept in sync with the
+// query in app/page.tsx so that page can select() just these instead of "*".
+export type MemberHomeProfile = Pick<
+  Profile,
+  | "id"
+  | "full_name"
+  | "user_type"
+  | "role"
+  | "verification_status"
+  | "rejection_reason"
+  | "industry"
+  | "job_title"
+  | "graduation_year"
+  | "current_city"
+  | "onboarded"
+  | "created_at"
+>;
+
 /**
  * Homepage shown to SIGNED-IN members. Deliberately contains no "Join the
  * network" pitch — that copy belongs only to the logged-out marketing home.
@@ -46,7 +63,7 @@ export default async function MemberHome({
   profile,
   careersEnabled = false,
 }: {
-  profile: Profile;
+  profile: MemberHomeProfile;
   careersEnabled?: boolean;
 }) {
   const supabase = await createClient();
@@ -56,7 +73,9 @@ export default async function MemberHome({
     // the query on the events page's "From our Instagram" section.
     supabase
       .from("social_posts")
-      .select("*")
+      .select(
+        "id, post_id, short_code, caption, image_url, video_url, post_type, posted_at, likes_count, comments_count, permalink, hashtags, created_at"
+      )
       .order("posted_at", { ascending: false })
       .limit(4)
       .returns<SocialPost[]>(),
@@ -86,7 +105,6 @@ export default async function MemberHome({
     <>
       {/* Welcome */}
       <section className="relative overflow-hidden">
-        <Aurora />
         <div className="relative mx-auto max-w-7xl px-6 pb-10 pt-16 md:px-10 md:pt-24">
           <Reveal>
             <Eyebrow>
@@ -302,7 +320,7 @@ function StatusNotice({
   profile,
   careersEnabled = false,
 }: {
-  profile: Profile;
+  profile: MemberHomeProfile;
   careersEnabled?: boolean;
 }) {
   if (profile.verification_status === "rejected") {
