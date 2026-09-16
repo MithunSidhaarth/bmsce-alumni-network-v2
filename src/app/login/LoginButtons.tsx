@@ -42,7 +42,7 @@ export default function LoginButtons({
     setPasswordLoading(true);
     setPasswordError(null);
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -51,8 +51,17 @@ export default function LoginButtons({
       setPasswordLoading(false);
       return;
     }
+    // Mirror the OAuth callback's routing: first-time/unboarded users go to
+    // onboarding, not straight to `next` — otherwise they land on "/" and
+    // silently see the public marketing homepage instead of their dashboard.
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("onboarded")
+      .eq("id", data.user.id)
+      .single();
+    const dest = profile?.onboarded ? next : `/onboarding?as=${userType}`;
     // Full navigation so the server picks up the new session cookie.
-    window.location.href = next;
+    window.location.href = dest;
   };
 
   return (
