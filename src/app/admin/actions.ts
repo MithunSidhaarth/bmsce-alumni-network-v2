@@ -59,6 +59,18 @@ export async function resetMemberToPending(id: string) {
   await setStatus(id, "unverified", null);
 }
 
+/** Grant a verified member admin rights. Admin only, audit-logged. */
+export async function promoteToAdmin(id: string) {
+  const supabase = await requireAdmin();
+  const { error } = await supabase
+    .from("profiles")
+    .update({ role: "admin" })
+    .eq("id", id);
+  if (error) throw new Error(error.message);
+  await logAdminAction(supabase, "member.promote_admin", id);
+  revalidatePath("/admin");
+}
+
 // --- Site settings --------------------------------------------------------
 
 /** Turn the whole Careers section on/off site-wide. Admin only. */

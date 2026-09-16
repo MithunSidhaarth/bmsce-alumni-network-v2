@@ -17,7 +17,7 @@ import {
   CommunityIcon,
 } from "./icons";
 import { createClient } from "@/lib/supabase/server";
-import type { JobPosting, Profile, SocialPost } from "@/lib/types";
+import type { GalleryPhoto, JobPosting, Profile, SocialPost } from "@/lib/types";
 
 // A plain "Welcome back" reads the same at 8am and 11pm — a time-aware
 // greeting is a small, free signal that the page is actually alive.
@@ -56,6 +56,15 @@ type DirectoryPreviewProfile = {
   photo_url: string | null;
 };
 
+type MentorPreview = {
+  id: string;
+  full_name: string | null;
+  photo_url: string | null;
+  job_title: string | null;
+  company: string | null;
+  mentor_expertise: string[] | null;
+};
+
 // Exact set of Profile columns this page reads — kept in sync with the
 // query in app/page.tsx so that page can select() just these instead of "*".
 export type MemberHomeProfile = Pick<
@@ -90,6 +99,7 @@ export default async function MemberHome({
   const nowIso = new Date().toISOString();
   const status = profile.verification_status;
   const limited = status !== "verified";
+  const isAdmin = profile.role === "admin";
 
   const [
     { data: postRows },
@@ -101,6 +111,10 @@ export default async function MemberHome({
     { data: discussionRows },
     { data: opportunityRows },
     { data: directoryPreviewRows },
+    { data: galleryRows },
+    { data: mentorRows },
+    { count: pendingReviewCount },
+    { count: openReportCount },
   ] = await Promise.all([
     // 4 most recent Instagram highlights for the homepage teaser — mirrors
     // the query on the events page's "From our Instagram" section.
@@ -177,12 +191,50 @@ export default async function MemberHome({
           .limit(5)
           .returns<DirectoryPreviewProfile[]>()
       : Promise.resolve({ data: null }),
+    // Recent campus/chapter photos — the gallery itself, distinct from the
+    // Instagram teaser, for another real, current, photographic section.
+    supabase
+      .from("gallery_photos")
+      .select("id, thumbnail_url, caption, uploaded_at")
+      .order("uploaded_at", { ascending: false })
+      .limit(6)
+      .returns<Pick<GalleryPhoto, "id" | "thumbnail_url" | "caption" | "uploaded_at">[]>(),
+    // A few real, active mentors for students specifically — mentorship is
+    // the flagship student-facing feature, so show who's actually
+    // available instead of only linking to the request form.
+    careersEnabled && profile.user_type === "student" && !limited
+      ? supabase
+          .from("profiles")
+          .select("id, full_name, photo_url, job_title, company, mentor_expertise")
+          .eq("is_mentor", true)
+          .eq("verification_status", "verified")
+          .order("created_at", { ascending: false })
+          .limit(3)
+          .returns<MentorPreview[]>()
+      : Promise.resolve({ data: null }),
+    // Admin-only "needs your attention" counts — the single most useful
+    // thing an admin specifically can see on their own homepage.
+    isAdmin
+      ? supabase
+          .from("profiles")
+          .select("id", { count: "exact", head: true })
+          .eq("verification_status", "unverified")
+          .eq("user_type", "alumni")
+      : Promise.resolve({ count: null }),
+    isAdmin
+      ? supabase
+          .from("reports")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "open")
+      : Promise.resolve({ count: null }),
   ]);
   const posts = postRows ?? [];
   const nextEvent = eventRows?.[0] ?? null;
   const discussions = discussionRows ?? [];
   const opportunities = opportunityRows ?? [];
   const directoryPreview = directoryPreviewRows ?? [];
+  const galleryPhotos = galleryRows ?? [];
+  const mentors = mentorRows ?? [];
 
   const firstName = (profile.full_name ?? "").trim().split(" ")[0] || "there";
   const isStudent = profile.user_type === "student";
@@ -229,7 +281,7 @@ export default async function MemberHome({
               <Reveal delay={80}>
                 <h1 className="mt-4 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
                   {greeting(new Date().getHours())},{" "}
-                  <span className="bg-gradient-to-r from-oxblood from-10% via-maroon via-55% to-accent to-85% bg-clip-text italic text-transparent">
+                  <span className="bg-gradient-to-r from-oxblood from-10% via-maroon via-55% to-accent to-85% bg-clip-text pr-2 italic text-transparent">
                     {firstName}
                   </span>
                   .
@@ -268,6 +320,39 @@ export default async function MemberHome({
           {limited && (
             <Reveal delay={240}>
               <StatusNotice profile={profile} careersEnabled={careersEnabled} />
+            </Reveal>
+          )}
+
+          {/* Admin attention strip — the single most useful thing an admin
+              specifically can see here: what's actually waiting on them,
+              not just a link to the dashboard. */}
+          {isAdmin && ((pendingReviewCount ?? 0) > 0 || (openReportCount ?? 0) > 0) && (
+            <Reveal delay={240}>
+              <Link
+                href="/admin"
+                className="group mt-8 flex max-w-2xl flex-wrap items-center justify-between gap-4 rounded-xl border border-accent/30 bg-accent/5 px-6 py-4 transition-colors hover:border-accent/50 hover:bg-accent/10"
+              >
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+                  <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">
+                    Needs your attention
+                  </span>
+                  {(pendingReviewCount ?? 0) > 0 && (
+                    <span className="font-sans text-sm text-ink/75">
+                      {pendingReviewCount} profile
+                      {pendingReviewCount === 1 ? "" : "s"} awaiting review
+                    </span>
+                  )}
+                  {(openReportCount ?? 0) > 0 && (
+                    <span className="font-sans text-sm text-ink/75">
+                      {openReportCount} open report
+                      {openReportCount === 1 ? "" : "s"}
+                    </span>
+                  )}
+                </div>
+                <span className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-accent transition-transform duration-300 group-hover:translate-x-1">
+                  Review →
+                </span>
+              </Link>
             </Reveal>
           )}
 
@@ -466,6 +551,80 @@ export default async function MemberHome({
         </div>
       </section>
 
+      {/* Mentors ready to help — students specifically. Mentorship is the
+          flagship student-facing feature; showing real people beats a link
+          to a request form. */}
+      {mentors.length > 0 && (
+        <section className="border-t border-gold/30 bg-ivory-dim/30">
+          <div className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-20">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <Reveal>
+                  <Eyebrow>Mentorship</Eyebrow>
+                </Reveal>
+                <Reveal delay={80}>
+                  <h2 className="mt-6 font-display text-3xl leading-[1.05] text-ink md:text-4xl">
+                    Mentors ready to help.
+                  </h2>
+                </Reveal>
+              </div>
+              <Reveal delay={100}>
+                <Link
+                  href="/careers/mentorship"
+                  className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood underline decoration-accent underline-offset-4 hover:text-maroon"
+                >
+                  Browse all mentors →
+                </Link>
+              </Reveal>
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+              {mentors.map((mentor, i) => (
+                <Reveal key={mentor.id} delay={i * 90}>
+                  <Link
+                    href="/careers/mentorship"
+                    className="group flex h-full flex-col rounded-2xl border border-gold/30 bg-ivory p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brass/50 hover:shadow-[0_18px_36px_-18px_rgba(47,37,68,0.25)]"
+                  >
+                    <div className="h-12 w-12 overflow-hidden rounded-full bg-gradient-to-br from-maroon to-oxblood">
+                      {mentor.photo_url ? (
+                        <MemberPhoto src={mentor.photo_url} alt={mentor.full_name ?? ""} />
+                      ) : (
+                        <span className="flex h-full w-full items-center justify-center font-sans text-sm font-semibold text-ivory">
+                          {initials(mentor.full_name)}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="mt-4 font-display text-lg italic text-ink transition-transform duration-300 group-hover:translate-x-1">
+                      {mentor.full_name ?? "A mentor"}
+                    </h3>
+                    {(mentor.job_title || mentor.company) && (
+                      <p className="mt-1 font-sans text-sm text-ink/65">
+                        {[mentor.job_title, mentor.company].filter(Boolean).join(", ")}
+                      </p>
+                    )}
+                    {mentor.mentor_expertise && mentor.mentor_expertise.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {mentor.mentor_expertise.slice(0, 3).map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full border border-brass/30 px-2.5 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.06em] text-oxblood/70"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <span className="mt-auto pt-4 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 transition-colors group-hover:text-brass">
+                      Request mentorship →
+                    </span>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Latest opportunities — real postings, not just a link to the board.
           Verified members only, matching the careers-tile gating above. */}
       {!limited && opportunities.length > 0 && (
@@ -574,6 +733,53 @@ export default async function MemberHome({
                   </Reveal>
                 );
               })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Campus & chapter gallery — real event photography (admin-curated),
+          distinct from the Instagram teaser below. */}
+      {galleryPhotos.length > 0 && (
+        <section className="border-t border-gold/30">
+          <div className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-20">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <Reveal>
+                  <Eyebrow>Gallery</Eyebrow>
+                </Reveal>
+                <Reveal delay={80}>
+                  <h2 className="mt-6 font-display text-3xl leading-[1.05] text-ink md:text-4xl">
+                    From campus and chapters.
+                  </h2>
+                </Reveal>
+              </div>
+              <Reveal delay={100}>
+                <Link
+                  href="/gallery"
+                  className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood underline decoration-accent underline-offset-4 hover:text-maroon"
+                >
+                  See the full gallery →
+                </Link>
+              </Reveal>
+            </div>
+
+            <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
+              {galleryPhotos.map((photo, i) => (
+                <Reveal key={photo.id} delay={i * 60}>
+                  <Link
+                    href="/gallery"
+                    className="group block aspect-square overflow-hidden rounded-xl border border-gold/30"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={photo.thumbnail_url}
+                      alt={photo.caption ?? ""}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </Link>
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>

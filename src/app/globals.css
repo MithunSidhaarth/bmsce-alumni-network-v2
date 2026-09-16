@@ -3,13 +3,13 @@
 @theme {
   /* BMSCE Alumni Network brand palette (from the logo). Token names are legacy
      — the VALUES are the source of truth, so every existing utility cascades:
-       oxblood = navy (primary)   maroon = plum (secondary/hover)
+       oxblood = navy (primary)   maroon = oxblood red (secondary/hover)
        gold    = neutral rule/line   accent = brand red (small accents only) */
-  --color-oxblood: #2f2544; /* navy — primary: buttons, CTA bg, nav, headings */
-  --color-maroon: #71293c; /* plum — hover states + secondary accent */
+  --color-oxblood: #142240; /* navy — primary: buttons, CTA bg, nav, headings */
+  --color-maroon: #6e1423; /* oxblood red — hover states + secondary accent */
   --color-ivory: #f8f9fb; /* near-white background */
   --color-ivory-dim: #eef0f5; /* light cool surface (cards) */
-  --color-ink: #1c1826; /* near-black text, faint navy */
+  --color-ink: #161a24; /* near-black text, faint navy */
   --color-gold: #d5d7e1; /* neutral rules/dividers/borders (NOT actually gold-colored, despite the name — see --color-brass below for real gold) */
   --color-gold-soft: #d5d7e1a0;
   --color-accent: #d5322b; /* brand red — eyebrows, underlines, active nav */

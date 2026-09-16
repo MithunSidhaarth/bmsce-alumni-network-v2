@@ -8,6 +8,7 @@ import {
   approveMember,
   rejectMember,
   resetMemberToPending,
+  promoteToAdmin,
 } from "./actions";
 
 type Tab = "pending" | "rejected" | "verified";
@@ -62,6 +63,7 @@ function MemberCard({
 }) {
   const [pending, startTransition] = useTransition();
   const [rejecting, setRejecting] = useState(false);
+  const [confirmingAdmin, setConfirmingAdmin] = useState(false);
   const [reason, setReason] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -108,6 +110,11 @@ function MemberCard({
               {member.user_type === "student" && (
                 <span className="ml-2 align-middle font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-accent">
                   Student
+                </span>
+              )}
+              {member.role === "admin" && (
+                <span className="ml-2 align-middle font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-brass">
+                  Admin
                 </span>
               )}
             </h3>
@@ -178,6 +185,16 @@ function MemberCard({
               Move to pending
             </button>
           )}
+          {tab === "verified" && member.role !== "admin" && (
+            <button
+              type="button"
+              disabled={pending}
+              onClick={() => setConfirmingAdmin((v) => !v)}
+              className="rounded-sm border border-brass/50 px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-brass transition-colors hover:border-brass hover:bg-brass/10 disabled:opacity-60"
+            >
+              Make admin
+            </button>
+          )}
         </div>
       </div>
 
@@ -202,6 +219,35 @@ function MemberCard({
             className="rounded-sm bg-oxblood px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
           >
             Confirm reject
+          </button>
+        </div>
+      )}
+
+      {confirmingAdmin && tab === "verified" && member.role !== "admin" && (
+        <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-gold/20 pt-4">
+          <p className="font-sans text-sm text-ink/70">
+            Give {member.full_name || "this member"} full admin access to this
+            dashboard?
+          </p>
+          <button
+            type="button"
+            disabled={pending}
+            onClick={() =>
+              run(async () => {
+                await promoteToAdmin(member.id);
+                setConfirmingAdmin(false);
+              })
+            }
+            className="rounded-sm bg-brass px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-ink transition-colors hover:bg-brass-light disabled:opacity-60"
+          >
+            Confirm make admin
+          </button>
+          <button
+            type="button"
+            onClick={() => setConfirmingAdmin(false)}
+            className="font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-ink/50 hover:text-ink/75"
+          >
+            Cancel
           </button>
         </div>
       )}

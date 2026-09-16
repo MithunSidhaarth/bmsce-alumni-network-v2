@@ -1,24 +1,39 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Logo from "./Logo";
+import { createClient } from "@/lib/supabase/client";
 
-// Only pages with real content behind them. Careers/Newsletter/Leadership/
-// Press/FAQs/Give-back/Alumni-spotlight are intentionally omitted for now.
-const GROUPS = [
-  {
-    title: "Community",
-    links: [
-      { label: "Directory", href: "/directory" },
-      { label: "Chapters", href: "/chapters" },
-      { label: "Events", href: "/events" },
-    ],
-  },
-  {
-    title: "About",
-    links: [
-      { label: "Our story", href: "/about" },
-      { label: "Contact", href: "/about#contact" },
-    ],
-  },
+// Careers is feature-flagged (site_settings.careers_enabled) — same
+// client-side fetch pattern as Nav.tsx, so the footer's Careers column only
+// appears when the section is actually live.
+const NETWORK_LINKS = [
+  { label: "Directory", href: "/directory" },
+  { label: "Chapters", href: "/chapters" },
+  { label: "Events", href: "/events" },
+  { label: "Community", href: "/community" },
+];
+
+const CAREERS_LINKS = [
+  { label: "Jobs", href: "/careers/jobs" },
+  { label: "Internships", href: "/careers/internships" },
+  { label: "Mentorship", href: "/careers/mentorship" },
+];
+
+const RESOURCE_LINKS = [
+  { label: "Newsletter", href: "/newsletter" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Notable alumni", href: "/notable-alumni" },
+  { label: "Leadership", href: "/leadership" },
+];
+
+const ABOUT_LINKS = [
+  { label: "Our story", href: "/about" },
+  { label: "Give back", href: "/give-back" },
+  { label: "Press", href: "/press" },
+  { label: "FAQs", href: "/faqs" },
+  { label: "Contact", href: "/about#contact" },
 ];
 
 // The alumni network is only on LinkedIn and Instagram — X and YouTube were
@@ -36,80 +51,118 @@ const SOCIALS = [
   },
 ];
 
-export default function Footer() {
+function FooterColumn({
+  title,
+  links,
+}: {
+  title: string;
+  links: { label: string; href: string }[];
+}) {
   return (
-    <footer className="bg-ink text-ivory/70">
-      <div className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-20">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-[1.6fr_1fr_1fr]">
-          <div>
+    <div className="min-w-[8rem] flex-1 basis-[8rem]">
+      <h3 className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ivory/50">
+        {title}
+      </h3>
+      <ul className="mt-5 flex flex-col gap-3">
+        {links.map((link) => (
+          <li key={link.label}>
+            <Link
+              href={link.href}
+              className="font-sans text-sm text-ivory/70 transition-colors hover:text-ivory"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default function Footer() {
+  const [careersEnabled, setCareersEnabled] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    createClient()
+      .from("site_settings")
+      .select("careers_enabled")
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (active) setCareersEnabled(data?.careers_enabled === true);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return (
+    <footer className="bg-oxblood text-ivory/70">
+      <div className="mx-auto max-w-7xl px-6 py-14 md:px-10 md:py-20">
+        {/* Brand block at a fixed width, link columns as a flex row that
+            always grows to fill whatever's left — a fixed grid-cols count
+            left a dead empty column whenever Careers was off, the same bug
+            the homepage bento grid had. Flex has no "wrong number of
+            items" state: 3 columns or 4, they always fill the row. */}
+        <div className="flex flex-col gap-12 md:flex-row md:gap-10">
+          <div className="md:w-64 md:shrink-0">
             <Logo className="h-11 w-auto" placeholderClassName="h-11 w-32" />
-            <p className="mt-5 max-w-[22ch] font-sans text-sm leading-relaxed text-ivory/55">
+            <p className="mt-5 max-w-[26ch] font-sans text-sm leading-relaxed text-ivory/55">
               The home for every BMS graduate, wherever the world has taken
               them.
             </p>
+            <div className="mt-6 flex items-center gap-5">
+              {SOCIALS.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={social.label}
+                  className="text-ivory/55 transition-colors hover:text-brass-light"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-[18px] w-[18px]"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d={social.path} />
+                  </svg>
+                </a>
+              ))}
+            </div>
           </div>
 
-          {GROUPS.map((group) => (
-            <div key={group.title}>
-              <h3 className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ivory/55">
-                {group.title}
-              </h3>
-              <ul className="mt-5 flex flex-col gap-3">
-                {group.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="font-sans text-sm text-ivory/65 transition-colors hover:text-ivory"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div className="flex flex-1 flex-wrap gap-x-6 gap-y-12">
+            <FooterColumn title="Network" links={NETWORK_LINKS} />
+            {careersEnabled && <FooterColumn title="Careers" links={CAREERS_LINKS} />}
+            <FooterColumn title="Resources" links={RESOURCE_LINKS} />
+            <FooterColumn title="About" links={ABOUT_LINKS} />
+          </div>
         </div>
 
-        <div className="mt-16 flex flex-col-reverse items-center gap-6 border-t border-gold/20 pt-8 sm:flex-row sm:justify-between">
+        <div className="mt-14 flex flex-col items-center gap-4 border-t border-ivory/15 pt-8 text-center sm:flex-row sm:justify-between sm:text-left">
           <p className="font-sans text-xs text-ivory/45">
             &copy; {new Date().getFullYear()} BMSCE Alumni Association. All
             rights reserved.
-            <span className="mx-2 text-ivory/25">·</span>
+          </p>
+          <p className="font-sans text-xs text-ivory/45">
             <Link
               href="/privacy"
-              className="text-ivory/55 transition-colors hover:text-ivory"
+              className="text-ivory/60 transition-colors hover:text-ivory"
             >
               Privacy
             </Link>
             <span className="mx-2 text-ivory/25">·</span>
             <Link
               href="/terms"
-              className="text-ivory/55 transition-colors hover:text-ivory"
+              className="text-ivory/60 transition-colors hover:text-ivory"
             >
               Terms
             </Link>
           </p>
-          <div className="flex items-center gap-5">
-            {SOCIALS.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={social.label}
-                className="text-ivory/55 transition-colors hover:text-accent"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="h-[18px] w-[18px]"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d={social.path} />
-                </svg>
-              </a>
-            ))}
-          </div>
         </div>
       </div>
     </footer>
