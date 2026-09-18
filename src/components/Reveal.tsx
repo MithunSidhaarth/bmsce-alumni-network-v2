@@ -30,7 +30,11 @@ export default function Reveal({
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+      // Triggers well before the element reaches the viewport edge and
+      // needs only a sliver visible — call sites pass delay values tuned
+      // for the old, slower reveal; halving it here (one place) keeps
+      // every staggered list snappy without touching each call site.
+      { threshold: 0.01, rootMargin: "0px 0px 15% 0px" }
     );
 
     observer.observe(node);
@@ -41,7 +45,7 @@ export default function Reveal({
     <Tag
       ref={ref}
       className={`reveal ${className}`}
-      style={{ animationDelay: delay ? `${delay}ms` : undefined }}
+      style={{ animationDelay: delay ? `${delay * 0.5}ms` : undefined }}
     >
       {children}
     </Tag>

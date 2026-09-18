@@ -71,7 +71,7 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
           Sign in
         </Link>
         <Link
-          href="/login"
+          href="/join"
           className="rounded-sm bg-oxblood px-5 py-3 text-center font-sans text-sm font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon"
         >
           Join the network
@@ -95,7 +95,7 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
           Sign in
         </Link>
         <Link
-          href="/login"
+          href="/join"
           className="rounded-sm bg-oxblood px-5 py-2.5 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon"
         >
           Join

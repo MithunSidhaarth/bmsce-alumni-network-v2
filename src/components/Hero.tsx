@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import Eyebrow from "./Eyebrow";
 import Seal from "./Seal";
 import Reveal from "./Reveal";
@@ -24,6 +25,20 @@ const TICKER_CITIES = [
 
 export default function Hero() {
   const sealRef = useRef<HTMLDivElement>(null);
+
+  // GSAP entrance for the watermark seal — a slow spin-and-settle that CSS
+  // keyframes (used for the rest of the hero via Reveal) can't easily do
+  // with an eased rotation + scale combo.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = sealRef.current;
+    if (!el) return;
+    gsap.fromTo(
+      el,
+      { opacity: 0, scale: 0.85, rotate: -8 },
+      { opacity: 0.06, scale: 1, rotate: 0, duration: 1.4, ease: "power3.out" }
+    );
+  }, []);
 
   const onMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -84,7 +99,7 @@ export default function Hero() {
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <MagneticButton>
               <a
-                href="/login"
+                href="/join"
                 className="inline-flex items-center justify-center rounded-sm bg-oxblood px-8 py-3.5 font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-ivory shadow-[0_8px_24px_-8px_rgba(47,37,68,0.5)] transition-colors hover:bg-maroon"
               >
                 Join the network

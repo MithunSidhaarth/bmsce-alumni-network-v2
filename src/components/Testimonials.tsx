@@ -45,17 +45,8 @@ export default function Testimonials() {
             <Reveal key={t.name} delay={i * 100} className="h-full">
               <TiltCard className="h-full" max={3}>
                 <figure className="flex h-full flex-col rounded-2xl border border-gold/25 bg-ivory p-8 shadow-sm md:p-10">
-                  <span
-                    aria-hidden="true"
-                    className="font-display text-5xl leading-none text-accent/60"
-                  >
-                    &ldquo;
-                  </span>
-                  <blockquote className="mt-2 flex-1 font-display text-lg italic leading-relaxed text-ink/85 md:text-xl md:leading-relaxed">
-                    {t.quote}
-                  </blockquote>
-                  <figcaption className="mt-8 flex items-center gap-4 border-t border-gold/20 pt-6">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-maroon to-oxblood font-display text-base italic text-ivory">
+                  <figcaption className="flex items-center gap-5">
+                    <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-maroon to-oxblood font-display text-3xl italic text-ivory md:h-24 md:w-24 md:text-4xl">
                       {t.initials}
                     </span>
                     <span>
@@ -69,6 +60,15 @@ export default function Testimonials() {
                       )}
                     </span>
                   </figcaption>
+                  <span
+                    aria-hidden="true"
+                    className="mt-6 font-display text-5xl leading-none text-accent/60"
+                  >
+                    &ldquo;
+                  </span>
+                  <blockquote className="mt-2 flex-1 font-display text-lg italic leading-relaxed text-ink/85 md:text-xl md:leading-relaxed">
+                    {t.quote}
+                  </blockquote>
                 </figure>
               </TiltCard>
             </Reveal>

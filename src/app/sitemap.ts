@@ -18,6 +18,7 @@ const ROUTES = [
   "/leadership",
   "/press",
   "/login",
+  "/join",
   "/privacy",
   "/terms",
 ];

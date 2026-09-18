@@ -16,8 +16,8 @@ export default function SitePreloader() {
     if (typeof document !== "undefined") {
       document.body.style.overflow = "hidden";
     }
-    const outTimer = window.setTimeout(() => setStage("out"), 1650);
-    const doneTimer = window.setTimeout(() => setStage("done"), 2250);
+    const outTimer = window.setTimeout(() => setStage("out"), 800);
+    const doneTimer = window.setTimeout(() => setStage("done"), 1150);
     return () => {
       window.clearTimeout(outTimer);
       window.clearTimeout(doneTimer);
@@ -85,14 +85,14 @@ export default function SitePreloader() {
       </div>
 
       <p
-        className="relative mt-5 font-sans text-[11px] font-medium uppercase text-oxblood/70 opacity-0 animate-[seal-fade_0.6s_ease-out_1.1s_forwards]"
+        className="relative mt-5 font-sans text-[11px] font-medium uppercase text-oxblood/70 opacity-0 animate-[seal-fade_0.3s_ease-out_0.45s_forwards]"
         style={{ letterSpacing: "0.32em" }}
       >
         Alumni Network
       </p>
 
       <div className="relative mt-7 h-[2px] w-40 overflow-hidden rounded-full bg-brass/15">
-        <div className="h-full w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-brass to-brass-light animate-[seal-progress_1.1s_cubic-bezier(0.65,0,0.35,1)_0.4s_forwards]" />
+        <div className="h-full w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-brass to-brass-light animate-[seal-progress_0.55s_cubic-bezier(0.65,0,0.35,1)_0.2s_forwards]" />
       </div>
     </div>
   );

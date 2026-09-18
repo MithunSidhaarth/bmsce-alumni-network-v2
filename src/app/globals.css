@@ -22,12 +22,12 @@
   --font-display: var(--font-fraunces), "Iowan Old Style", serif;
   --font-sans: var(--font-inter), "Helvetica Neue", Arial, sans-serif;
 
-  --animate-fade-up: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-up: fade-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
   @keyframes fade-up {
     from {
       opacity: 0;
-      transform: translateY(1.25rem);
+      transform: translateY(0.6rem);
     }
     to {
       opacity: 1;
@@ -58,11 +58,11 @@
      keyed by pathname, so React remounts it on navigation). Shorter and
      smaller than fade-up, which is tuned for individual elements revealing
      on scroll rather than an entire page appearing at once. */
-  --animate-page-enter: page-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-page-enter: page-enter 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
   @keyframes page-enter {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(4px);
     }
     to {
       opacity: 1;

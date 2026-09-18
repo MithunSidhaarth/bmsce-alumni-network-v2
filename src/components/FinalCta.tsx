@@ -28,7 +28,7 @@ export default function FinalCta() {
           <div className="mt-10 flex justify-center">
             <MagneticButton>
               <a
-                href="/login"
+                href="/join"
                 className="inline-flex items-center justify-center rounded-sm bg-ivory px-9 py-3.5 font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-oxblood shadow-[0_12px_32px_-10px_rgba(0,0,0,0.4)] transition-colors hover:bg-gold hover:text-ink"
               >
                 Join the network

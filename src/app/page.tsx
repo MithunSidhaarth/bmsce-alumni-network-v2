@@ -2,7 +2,6 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import ValueProps from "@/components/ValueProps";
 import Testimonials from "@/components/Testimonials";
-import GlobalCommunity from "@/components/GlobalCommunity";
 import AlumniSpotlight from "@/components/AlumniSpotlight";
 import MentorCta from "@/components/MentorCta";
 import FinalCta from "@/components/FinalCta";
@@ -46,11 +45,10 @@ export default async function Home() {
           <MemberHome profile={profile!} careersEnabled={careersEnabled} />
         ) : (
           <>
-            {/* Order: Hero -> stats (GlobalCommunity) -> ways back in
-                (ValueProps) -> testimonials -> spotlight -> [mentorship promo, only when
-                is enabled] -> final CTA. */}
+            {/* Order: Hero -> ways back in (ValueProps) -> testimonials ->
+                spotlight -> [mentorship promo, only when is enabled] ->
+                final CTA. */}
             <Hero />
-            <GlobalCommunity />
             <ValueProps careersEnabled={careersEnabled} />
             <Testimonials />
             <AlumniSpotlight />

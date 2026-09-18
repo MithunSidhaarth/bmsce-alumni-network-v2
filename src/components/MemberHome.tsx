@@ -4,7 +4,6 @@ import Eyebrow from "./Eyebrow";
 import Reveal from "./Reveal";
 import SpotlightCard from "./SpotlightCard";
 import EventCountdown from "./EventCountdown";
-import CountUp from "./CountUp";
 import Seal from "./Seal";
 import MemberPhoto from "./MemberPhoto";
 import AlumniSpotlight from "./AlumniSpotlight";
@@ -14,7 +13,6 @@ import {
   EventsIcon,
   MentorshipIcon,
   CareersIcon,
-  CommunityIcon,
 } from "./icons";
 import { createClient } from "@/lib/supabase/server";
 import type { GalleryPhoto, JobPosting, Profile, SocialPost } from "@/lib/types";
@@ -105,9 +103,6 @@ export default async function MemberHome({
     { data: postRows },
     { data: eventRows },
     { count: alumniCount },
-    { count: batchmateCount },
-    { count: openRoleCount },
-    { count: upcomingEventCount },
     { data: discussionRows },
     { data: opportunityRows },
     { data: directoryPreviewRows },
@@ -135,28 +130,11 @@ export default async function MemberHome({
       .order("event_date", { ascending: true })
       .limit(1)
       .returns<UpcomingEvent[]>(),
-    // Network-pulse strip: four small counts that make the page feel alive
-    // and current rather than a static set of links.
+    // Total verified-alumni count, used by the Directory preview tile below.
     supabase
       .from("profiles")
       .select("*", { count: "exact", head: true })
       .eq("verification_status", "verified"),
-    profile.graduation_year
-      ? supabase
-          .from("profiles")
-          .select("*", { count: "exact", head: true })
-          .eq("verification_status", "verified")
-          .eq("graduation_year", profile.graduation_year)
-          .neq("id", profile.id)
-      : Promise.resolve({ count: null }),
-    supabase
-      .from("job_postings")
-      .select("*", { count: "exact", head: true })
-      .is("closed_at", null),
-    supabase
-      .from("events")
-      .select("*", { count: "exact", head: true })
-      .gte("event_date", nowIso),
     // Latest community activity — real, current content beats another
     // static link tile for "why open this page today."
     supabase
@@ -357,68 +335,6 @@ export default async function MemberHome({
           )}
 
           <ProfileCompletionNudge show={needsProfileCompletion} />
-        </div>
-      </section>
-
-      {/* Network pulse — a handful of live counts so the page reads as a
-          window onto an active network, not a static set of shortcuts.
-          Real brass gold (not the site's pale "gold" rule-color token) is
-          what actually reads as an official seal/ledger rather than a
-          generic dark banner. */}
-      <section className="relative overflow-hidden border-y border-brass/25 bg-oxblood">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-        >
-          <div className="absolute left-1/2 top-1/2 h-[60vw] w-[60vw] max-w-[700px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(184,147,63,0.16)_0%,transparent_70%)]" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-6 py-12 md:px-10">
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
-            <Reveal>
-              <StatBlock
-                Icon={DirectoryIcon}
-                value={`${(alumniCount ?? 0).toLocaleString("en-US")}+`}
-                label="Verified alumni"
-              />
-            </Reveal>
-            <Reveal delay={60}>
-              <StatBlock
-                Icon={EventsIcon}
-                value={String(upcomingEventCount ?? 0)}
-                label={
-                  (upcomingEventCount ?? 0) === 1
-                    ? "Upcoming event"
-                    : "Upcoming events"
-                }
-              />
-            </Reveal>
-            <Reveal delay={120}>
-              <StatBlock
-                Icon={CareersIcon}
-                value={String(openRoleCount ?? 0)}
-                label={
-                  (openRoleCount ?? 0) === 1
-                    ? "Open role on the board"
-                    : "Open roles on the board"
-                }
-              />
-            </Reveal>
-            <Reveal delay={180}>
-              {profile.graduation_year ? (
-                <StatBlock
-                  Icon={DirectoryIcon}
-                  value={String(batchmateCount ?? 0)}
-                  label={`From the batch of ${profile.graduation_year}`}
-                />
-              ) : (
-                <StatBlock
-                  Icon={CommunityIcon}
-                  value={String(discussions.length > 0 ? discussions.length : 0)}
-                  label="Recent discussions"
-                />
-              )}
-            </Reveal>
-          </div>
         </div>
       </section>
 
@@ -1036,30 +952,6 @@ function QuickLink({
         </Link>
       </SpotlightCard>
     </Reveal>
-  );
-}
-
-function StatBlock({
-  Icon,
-  value,
-  label,
-}: {
-  Icon: () => React.ReactElement;
-  value: string;
-  label: string;
-}) {
-  return (
-    <div>
-      <span className="flex h-8 w-8 items-center justify-center rounded-full border border-brass/40 text-brass-light [&>svg]:h-4 [&>svg]:w-4">
-        <Icon />
-      </span>
-      <p className="mt-3 font-display text-3xl italic text-brass-light md:text-4xl">
-        <CountUp value={value} />
-      </p>
-      <p className="mt-1 font-sans text-[11px] font-medium uppercase leading-snug tracking-[0.12em] text-ivory/55">
-        {label}
-      </p>
-    </div>
   );
 }
 
