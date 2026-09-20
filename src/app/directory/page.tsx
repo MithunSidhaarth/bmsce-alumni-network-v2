@@ -9,6 +9,7 @@ import DirectoryControls, {
   type Facets,
 } from "@/components/DirectoryControls";
 import { createClient } from "@/lib/supabase/server";
+import LinkedInBadge from "@/components/LinkedInBadge";
 import MemberPhoto from "@/components/MemberPhoto";
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ type Row = {
   industry: string | null;
   current_city: string | null;
   photo_url: string | null;
+  linkedin_verified: boolean;
 };
 
 export default async function DirectoryPage({
@@ -92,7 +94,7 @@ export default async function DirectoryPage({
   let query = supabase
     .from("profiles")
     .select(
-      "id, full_name, user_type, graduation_year, branch, company, job_title, industry, current_city, photo_url",
+      "id, full_name, user_type, graduation_year, branch, company, job_title, industry, current_city, photo_url, linkedin_verified",
       { count: "exact" }
     )
     .eq("verification_status", "verified")
@@ -243,6 +245,11 @@ function DirectoryCard({ row, index }: { row: Row; index: number }) {
           )}
         </div>
         <h3 className="mt-6 font-display text-xl text-ink">{name}</h3>
+        {row.linkedin_verified && (
+          <span className="mt-2 block">
+            <LinkedInBadge />
+          </span>
+        )}
         {isStudent && (
           <span className="mt-2 w-fit rounded-full border border-gold/40 px-2.5 py-0.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-accent">
             Current student

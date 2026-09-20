@@ -8,6 +8,8 @@ import AccountManagement from "./AccountManagement";
 import { createClient } from "@/lib/supabase/server";
 import { safeUrl } from "@/lib/url";
 import type { Profile, EducationEntry } from "@/lib/types";
+import LinkedInBadge from "@/components/LinkedInBadge";
+import VerifyLinkedIn from "./VerifyLinkedIn";
 import MemberPhoto from "@/components/MemberPhoto";
 
 export const metadata: Metadata = {
@@ -108,6 +110,14 @@ export default async function ProfilePage() {
                 full
               />
             </dl>
+
+            {profile.linkedin_verified ? (
+              <div className="mt-6">
+                <LinkedInBadge />
+              </div>
+            ) : (
+              <VerifyLinkedIn />
+            )}
 
             {eduList.length > 0 && (
               <div className="mt-8 border-t border-gold/25 pt-8">

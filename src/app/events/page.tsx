@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Eyebrow from "@/components/Eyebrow";
@@ -279,7 +280,14 @@ function EventCard({
           <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">
             {dateLabel}
           </span>
-          <h3 className="mt-3 font-display text-xl text-ink">{event.title}</h3>
+          <h3 className="mt-3 font-display text-xl text-ink">
+            <Link
+              href={`/events/${event.id}`}
+              className="transition-colors hover:text-oxblood"
+            >
+              {event.title}
+            </Link>
+          </h3>
           {event.location && (
             <p className="mt-1 flex flex-wrap items-center gap-2 font-sans text-sm text-ink/60">
               <span>{event.location}</span>

@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getCareersEnabled } from "@/lib/settings";
 import { safeUrl } from "@/lib/url";
 import type { Profile, EducationEntry } from "@/lib/types";
+import LinkedInBadge from "@/components/LinkedInBadge";
 import MemberPhoto from "@/components/MemberPhoto";
 
 export const metadata: Metadata = {
@@ -51,6 +52,7 @@ export default async function DirectoryProfilePage({
     | "current_city"
     | "industry"
     | "linkedin_url"
+    | "linkedin_verified"
     | "bio"
     | "is_mentor"
     | "mentor_bio"
@@ -58,7 +60,7 @@ export default async function DirectoryProfilePage({
   const { data: p } = await supabase
     .from("profiles")
     .select(
-      "id, full_name, photo_url, user_type, job_title, company, graduation_year, branch, current_city, industry, linkedin_url, bio, is_mentor, mentor_bio"
+      "id, full_name, photo_url, user_type, job_title, company, graduation_year, branch, current_city, industry, linkedin_url, linkedin_verified, bio, is_mentor, mentor_bio"
     )
     .eq("id", id)
     .maybeSingle<DirectoryProfile>();
@@ -149,6 +151,11 @@ export default async function DirectoryProfilePage({
               <Row label={isStudent ? "Student" : "Alumnus"} value={meta} />
               <Row label="Industry" value={p.industry} />
               <Row label="LinkedIn" value={p.linkedin_url} isLink />
+              {p.linkedin_verified && (
+                <div>
+                  <LinkedInBadge />
+                </div>
+              )}
               <Row label="About" value={p.bio} full />
               {p.is_mentor && careersEnabled && (
                 <Row

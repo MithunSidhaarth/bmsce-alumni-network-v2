@@ -19,6 +19,7 @@ export type Profile = {
   industry: string | null;
   bio: string | null;
   linkedin_url: string | null;
+  linkedin_verified: boolean;
   photo_url: string | null;
   phone: string | null;
   is_mentor: boolean;

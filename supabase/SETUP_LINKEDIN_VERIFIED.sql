@@ -1,0 +1,5 @@
+-- Already applied to the live project (migrations linkedin_verified,
+-- linkedin_verified_on_profile_insert, protect_linkedin_verified).
+-- profiles.linkedin_verified is set by a trigger on auth.identities when a
+-- linkedin_oidc identity is created, computed on profile insert, and cannot
+-- be changed by client roles.
