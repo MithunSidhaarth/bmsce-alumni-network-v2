@@ -16,8 +16,8 @@ export default function SitePreloader() {
     if (typeof document !== "undefined") {
       document.body.style.overflow = "hidden";
     }
-    const outTimer = window.setTimeout(() => setStage("out"), 800);
-    const doneTimer = window.setTimeout(() => setStage("done"), 1150);
+    const outTimer = window.setTimeout(() => setStage("out"), 450);
+    const doneTimer = window.setTimeout(() => setStage("done"), 750);
     return () => {
       window.clearTimeout(outTimer);
       window.clearTimeout(doneTimer);

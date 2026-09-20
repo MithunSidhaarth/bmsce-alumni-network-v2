@@ -44,7 +44,10 @@ export default async function Home() {
       <Nav />
       <main>
         {showMemberHome ? (
-          <MemberHome profile={profile!} careersEnabled={careersEnabled} />
+          <>
+            <MemberHome profile={profile!} careersEnabled={careersEnabled} />
+            <CampusUpdates />
+          </>
         ) : (
           <>
             {/* Order: Hero -> stats (GlobalCommunity) -> ways back in
