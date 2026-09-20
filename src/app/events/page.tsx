@@ -22,7 +22,6 @@ export const dynamic = "force-dynamic";
 const EVENT_STATS = [
   { value: "10+", label: "events annually" },
   { value: "1,000+", label: "alumni engaged" },
-  { value: "5+", label: "cities" },
 ];
 
 export default async function EventsPage() {

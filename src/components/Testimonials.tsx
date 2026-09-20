@@ -13,14 +13,14 @@ type Testimonial = {
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "The BMSCE Alumni Network has been a great way for me to connect with alumni, both through casual meetups at home and through the larger network. It's given me a chance to chat with people who've been through the same journey and are now working in all kinds of industries. These conversations have really opened my eyes to how things work in the real world and what's going on in different fields. It's been a great way to pick up useful advice and stay updated, helping me grow both personally and professionally!",
+      "The BMSCE Alumni Network has been a great way for me to connect with alumni, through casual meetups at home and the larger network. Chatting with people who've been through the same journey, now working in all kinds of industries, has opened my eyes to how the real world works. It's helped me grow both personally and professionally!",
     name: "Arundati Rao",
     batch: "2024",
     initials: "AR",
   },
   {
     quote:
-      "During my final year of engineering, I was actively looking for a UI/UX design internship and was finding it difficult to get the right opportunity. At a time when I genuinely needed some guidance, I connected with an alumnus who referred me for an opportunity. That internship gave me the chance to prove myself and eventually convert it into a full-time role at a company that was also started by a BMS alumnus. I'm really grateful for the support I received and for being part of a community where alumni continue to help and create opportunities for each other.",
+      "In my final year, I was struggling to find a UI/UX design internship. I connected with an alumnus who referred me, and that internship converted into a full-time role at a company also started by a BMS alumnus. I'm grateful to be part of a community where alumni keep creating opportunities for each other.",
     name: "Bharath Gorental",
     batch: null,
     initials: "BG",

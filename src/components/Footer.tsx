@@ -24,14 +24,10 @@ const CAREERS_LINKS = [
 const RESOURCE_LINKS = [
   { label: "Newsletter", href: "/newsletter" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Notable alumni", href: "/notable-alumni" },
-  { label: "Leadership", href: "/leadership" },
 ];
 
 const ABOUT_LINKS = [
   { label: "Our story", href: "/about" },
-  { label: "Give back", href: "/give-back" },
-  { label: "Press", href: "/press" },
   { label: "FAQs", href: "/faqs" },
   { label: "Contact", href: "/about#contact" },
 ];
@@ -107,7 +103,11 @@ export default function Footer() {
             items" state: 3 columns or 4, they always fill the row. */}
         <div className="flex flex-col gap-12 md:flex-row md:gap-10">
           <div className="md:w-64 md:shrink-0">
-            <Logo className="h-11 w-auto" placeholderClassName="h-11 w-32" />
+            <Logo
+              src="/logo-bw.png"
+              className="h-11 w-auto"
+              placeholderClassName="h-11 w-32"
+            />
             <p className="mt-5 max-w-[26ch] font-sans text-sm leading-relaxed text-ivory/55">
               The home for every BMS graduate, wherever the world has taken
               them.
@@ -147,6 +147,9 @@ export default function Footer() {
           <p className="font-sans text-xs text-ivory/45">
             &copy; {new Date().getFullYear()} BMSCE Alumni Association. All
             rights reserved.
+          </p>
+          <p className="font-sans text-xs text-ivory/45">
+            Made with ❤️ in Basavangudi
           </p>
           <p className="font-sans text-xs text-ivory/45">
             <Link

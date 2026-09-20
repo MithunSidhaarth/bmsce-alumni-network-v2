@@ -2,14 +2,10 @@ import Eyebrow from "./Eyebrow";
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
 import Aurora from "./Aurora";
-import { CHAPTER_COUNT, COUNTRY_COUNT } from "@/data/chapters";
-
-// Alumni worldwide stays a manually-set number (no live source). Countries and
-// active chapters are derived from the chapters data, so they never go stale.
+// Client-confirmed coverage figures (changelog, Sep 19).
 const SPREAD = [
-  { value: "55,000+", label: "Alumni worldwide" },
-  { value: String(COUNTRY_COUNT), label: "Countries" },
-  { value: String(CHAPTER_COUNT), label: "Active chapters" },
+  { value: "10+", label: "Countries" },
+  { value: "30+", label: "Chapters" },
 ];
 
 export default function GlobalCommunity() {
@@ -25,11 +21,11 @@ export default function GlobalCommunity() {
 
         <Reveal delay={80}>
           <h2 className="mx-auto mt-6 max-w-2xl text-center font-display text-4xl leading-[1.05] text-ivory md:text-5xl">
-            A family, wherever you land.
+            A community, wherever you land.
           </h2>
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 gap-y-14 border-y border-gold/25 py-14 md:mt-20 md:grid-cols-3 md:py-16">
+        <div className="mt-16 grid grid-cols-1 gap-y-14 border-y border-gold/25 py-14 md:mt-20 md:grid-cols-2 md:py-16">
           {SPREAD.map((stat, i) => (
             <Reveal
               key={stat.label}

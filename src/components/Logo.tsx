@@ -10,14 +10,17 @@ const CANDIDATES = ["/logo.png", "/logo.jpg", "/logo.svg", "/logo.webp"];
 export default function Logo({
   className = "h-9 w-auto",
   placeholderClassName = "h-9 w-24",
+  src,
 }: {
   className?: string;
   placeholderClassName?: string;
+  src?: string;
 }) {
+  const candidates = src ? [src] : CANDIDATES;
   const [idx, setIdx] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
-  const exhausted = idx >= CANDIDATES.length;
+  const exhausted = idx >= candidates.length;
 
   // A local logo loads instantly (often from cache), so its `load` event can
   // fire before React attaches onLoad during hydration — leaving the image
@@ -39,7 +42,7 @@ export default function Logo({
         // eslint-disable-next-line @next/next/no-img-element
         <img
           ref={imgRef}
-          src={CANDIDATES[idx]}
+          src={candidates[idx]}
           alt="BMSCE Alumni Network"
           onLoad={() => setLoaded(true)}
           onError={() => {

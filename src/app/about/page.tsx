@@ -1,21 +1,14 @@
 import type { Metadata } from "next";
-import fs from "node:fs";
-import path from "node:path";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
-import FounderWidget from "@/components/FounderWidget";
 
 export const metadata: Metadata = {
   title: "About: BMSCE Alumni Network",
   description:
-    "The BMSCE Alumni Network: 58 chapters across 90+ countries, and the programs that turn a shared campus into a lifelong community.",
+    "The BMSCE Alumni Network: 30+ chapters across 10+ countries, and the programs that turn a shared campus into a lifelong community.",
 };
-
-// Drop the founder's portrait in at public/founder.jpg and it replaces the
-// placeholder automatically — no code change needed.
-const FOUNDER_PHOTO_FILE = "founder.jpg";
 
 const WHAT_WE_RUN = [
   {
@@ -36,28 +29,11 @@ const WHAT_WE_RUN = [
   },
 ];
 
-function founderPhotoUrl(): string | null {
-  try {
-    const p = path.join(process.cwd(), "public", FOUNDER_PHOTO_FILE);
-    return fs.existsSync(p) ? `/${FOUNDER_PHOTO_FILE}` : null;
-  } catch {
-    return null;
-  }
-}
-
 export default function AboutPage() {
-  const photoUrl = founderPhotoUrl();
-
   return (
     <>
       <Nav />
       <main>
-        {/* 1 — Founder widget (maroon / oxblood, top of page) */}
-        <FounderWidget
-          photoUrl={photoUrl}
-          photoFileName={`/public/${FOUNDER_PHOTO_FILE}`}
-        />
-
         {/* A — The network (replaces the old college-description section) */}
         <section className="border-t border-gold/30">
           <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
@@ -72,8 +48,8 @@ export default function AboutPage() {
             <Reveal delay={160}>
               <p className="mt-8 max-w-3xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
                 The BMSCE Alumni Network is what happens after convocation, the
-                part where a degree turns into a lifelong community. It spans 58
-                active chapters across 90+ countries, from Bengaluru to the Bay
+                part where a degree turns into a lifelong community. It spans 30+
+                chapters across 10+ countries, from Bengaluru to the Bay
                 Area to Singapore, each one already meeting, hiring, and looking
                 out for its own. Wherever a BMS graduate lands, a chapter is
                 usually already there.
@@ -115,6 +91,39 @@ export default function AboutPage() {
                 </Reveal>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Volunteer — "Join the team" */}
+        <section id="volunteer" className="border-t border-gold/30 bg-ivory-dim/30">
+          <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
+            <Reveal>
+              <Eyebrow>Volunteer</Eyebrow>
+            </Reveal>
+            <Reveal delay={80}>
+              <h2 className="mt-6 max-w-2xl font-display text-4xl leading-[1.05] text-ink md:text-5xl">
+                Join the team.
+              </h2>
+            </Reveal>
+            <Reveal delay={160}>
+              <p className="mt-6 max-w-2xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
+                Run a chapter, organise a meetup, mentor a student, or lend a
+                skill. Tell us your name, batch, city, and how you&rsquo;d like
+                to help.
+              </p>
+            </Reveal>
+            <Reveal delay={220}>
+              <a
+                href={`mailto:bmscealumni@bmsce.ac.in?subject=${encodeURIComponent(
+                  "Volunteering with the BMSCE Alumni Network"
+                )}&body=${encodeURIComponent(
+                  "Name:\nBatch / branch:\nCity:\nHow I'd like to help:\n"
+                )}`}
+                className="mt-8 inline-flex items-center justify-center rounded-sm bg-oxblood px-8 py-3.5 font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-ivory transition-colors hover:bg-maroon"
+              >
+                Volunteer with us
+              </a>
+            </Reveal>
           </div>
         </section>
 
