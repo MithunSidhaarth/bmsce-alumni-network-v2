@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { chapters, CONTINENTS, type Chapter } from "@/data/chapters";
 
-// Photo-card grid grouped by continent (North America, Europe, Asia, Australia),
+// Photo-card grid grouped by continent (North America, Europe, Asia, Oceania),
 // alphabetical within each group. Cards are NOT links — the only clickable
 // action on the page is the global WhatsApp community CTA in the hero above.
 // Each card is a full-bleed city/region photo with a dark gradient overlay; a
