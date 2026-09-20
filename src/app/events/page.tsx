@@ -255,16 +255,26 @@ function EventCard({
   return (
     <Reveal delay={Math.min(index, 6) * 70} className="h-full">
       <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-maroon/30">
-        {event.cover_image_url && (
-          <div className="aspect-[16/9] overflow-hidden bg-ivory-dim">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-maroon to-oxblood">
+          {event.cover_image_url && (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={event.cover_image_url}
               alt=""
               className="h-full w-full object-cover"
             />
-          </div>
-        )}
+          )}
+          {!isNaN(date.getTime()) && (
+            <div className="absolute left-4 top-4 rounded-xl bg-ivory px-3 py-2 text-center shadow-md">
+              <p className="font-display text-2xl leading-none text-ink">
+                {date.getDate()}
+              </p>
+              <p className="mt-1 font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
+                {date.toLocaleDateString("en-US", { month: "short" })}
+              </p>
+            </div>
+          )}
+        </div>
         <div className="flex flex-1 flex-col p-6">
           <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">
             {dateLabel}
