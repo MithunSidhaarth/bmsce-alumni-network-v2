@@ -61,7 +61,7 @@ function initials(name: string) {
 
 // Left-bar accent rotates through the three brand colors (navy / red / plum)
 // so the row has rhythm instead of every card looking identical.
-const ACCENTS = ["border-l-oxblood", "border-l-accent", "border-l-maroon"];
+const ACCENTS = ["border-t-oxblood", "border-t-accent", "border-t-maroon"];
 
 export default function AlumniSpotlight() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -103,11 +103,11 @@ export default function AlumniSpotlight() {
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <Reveal>
-              <Eyebrow>Where they are now</Eyebrow>
+              <Eyebrow>Notable alumni</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
               <h2 className="mt-6 max-w-xl font-display text-4xl leading-[1.05] text-ink md:text-5xl">
-                Out in the world, still in the fold.
+                BMS made them. They made their mark.
               </h2>
             </Reveal>
           </div>
@@ -140,37 +140,41 @@ export default function AlumniSpotlight() {
             <Reveal
               key={person.name}
               delay={i * 80}
-              className="h-full w-[78vw] shrink-0 snap-start sm:w-[320px]"
+              className="h-full w-[78vw] shrink-0 snap-start sm:w-[340px]"
             >
               <TiltCard className="h-full">
-                <article
-                  className={`flex h-full flex-col rounded-xl border border-gold/25 border-l-4 ${ACCENTS[i % ACCENTS.length]} bg-oxblood/[0.04] p-6 shadow-sm transition-shadow duration-300 hover:shadow-[0_20px_44px_-20px_rgba(47,37,68,0.45)]`}
-                >
-                  <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-maroon to-oxblood font-display text-lg italic text-ivory">
+                <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gold/25 bg-ivory shadow-sm transition-shadow duration-300 hover:shadow-[0_24px_48px_-24px_rgba(20,34,64,0.5)]">
+                  <div className="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-maroon to-oxblood">
                     {person.photoUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={person.photoUrl}
                         alt={person.name}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
-                      initials(person.name)
+                      <span className="flex h-full w-full items-center justify-center font-display text-6xl italic text-ivory">
+                        {initials(person.name)}
+                      </span>
                     )}
                   </div>
-                  <h3 className="mt-6 font-display text-xl text-ink">
-                    {person.name}
-                  </h3>
-                  {person.role && (
-                    <p className="mt-1 font-sans text-sm text-ink/65">
-                      {person.role}
-                    </p>
-                  )}
-                  {person.batch && (
-                    <p className="mt-1 font-sans text-sm text-ink/55">
-                      Batch of {person.batch}
-                    </p>
-                  )}
+                  <div
+                    className={`flex flex-1 flex-col border-t-4 ${ACCENTS[i % ACCENTS.length]} px-6 py-6`}
+                  >
+                    <h3 className="font-display text-2xl text-ink">
+                      {person.name}
+                    </h3>
+                    {person.role && (
+                      <p className="mt-1.5 font-sans text-sm text-ink/70">
+                        {person.role}
+                      </p>
+                    )}
+                    {person.batch && (
+                      <p className="mt-1 font-sans text-sm text-ink/55">
+                        Batch of {person.batch}
+                      </p>
+                    )}
+                  </div>
                 </article>
               </TiltCard>
             </Reveal>

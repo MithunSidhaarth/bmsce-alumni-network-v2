@@ -5,23 +5,7 @@ import gsap from "gsap";
 import Eyebrow from "./Eyebrow";
 import Seal from "./Seal";
 import Reveal from "./Reveal";
-import Marquee from "./Marquee";
 import MagneticButton from "./MagneticButton";
-import { chapters } from "@/data/chapters";
-
-// A handful of recognizable chapter cities for the hero ticker — not the
-// full 31 (that's what the Chapters page is for), just enough to say
-// "we're everywhere" at a glance.
-const TICKER_CITIES = [
-  "Bengaluru",
-  "San Francisco",
-  "New York",
-  "London",
-  "Dubai",
-  "Singapore",
-  "Toronto",
-  "Sydney",
-].filter((c) => chapters.some((ch) => ch.name === c || ch.name.includes(c)));
 
 export default function Hero() {
   const sealRef = useRef<HTMLDivElement>(null);
@@ -121,14 +105,6 @@ export default function Hero() {
         </Reveal>
       </div>
 
-      {/* Ticker — a quiet flex before the hard stats land in the next
-          section, reinforcing "worldwide" as something you scroll past, not
-          just a number you're told. */}
-      <Reveal delay={320}>
-        <div className="relative border-y border-gold/25 bg-ivory-dim/40 py-4 text-ink/50">
-          <Marquee items={TICKER_CITIES} />
-        </div>
-      </Reveal>
     </section>
   );
 }
