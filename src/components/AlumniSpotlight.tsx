@@ -107,7 +107,7 @@ export default function AlumniSpotlight() {
             </Reveal>
             <Reveal delay={80}>
               <h2 className="mt-6 max-w-xl font-display text-4xl leading-[1.05] text-ink md:text-5xl">
-                BMS made them. They made their mark.
+                Alumni making their mark.
               </h2>
             </Reveal>
           </div>

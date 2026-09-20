@@ -5,6 +5,7 @@ import ValueProps from "@/components/ValueProps";
 import Testimonials from "@/components/Testimonials";
 import AlumniSpotlight from "@/components/AlumniSpotlight";
 import MentorCta from "@/components/MentorCta";
+import CampusUpdates from "@/components/CampusUpdates";
 import FinalCta from "@/components/FinalCta";
 import MemberHome, { type MemberHomeProfile } from "@/components/MemberHome";
 import Footer from "@/components/Footer";
@@ -54,6 +55,7 @@ export default async function Home() {
             <ValueProps careersEnabled={careersEnabled} />
             <Testimonials />
             <AlumniSpotlight />
+            <CampusUpdates />
             {careersEnabled && <MentorCta />}
             <FinalCta />
           </>

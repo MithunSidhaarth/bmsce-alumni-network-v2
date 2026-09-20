@@ -24,6 +24,7 @@ const CAREERS_LINKS = [
 const RESOURCE_LINKS = [
   { label: "Newsletter", href: "/newsletter" },
   { label: "Gallery", href: "/gallery" },
+  { label: "What's happening", href: "/happening" },
 ];
 
 const ABOUT_LINKS = [

@@ -3,6 +3,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
+import VolunteerForm from "./VolunteerForm";
 
 export const metadata: Metadata = {
   title: "About: BMSCE Alumni Network",
@@ -95,7 +96,7 @@ export default function AboutPage() {
         </section>
 
         {/* Volunteer — "Join the team" */}
-        <section id="volunteer" className="border-t border-gold/30 bg-ivory-dim/30">
+        <section id="volunteer" className="border-t border-gold/30">
           <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
             <Reveal>
               <Eyebrow>Volunteer</Eyebrow>
@@ -108,21 +109,12 @@ export default function AboutPage() {
             <Reveal delay={160}>
               <p className="mt-6 max-w-2xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
                 Run a chapter, organise a meetup, mentor a student, or lend a
-                skill. Tell us your name, batch, city, and how you&rsquo;d like
-                to help.
+                skill. Tell us a bit about yourself and how you&rsquo;d like to
+                help.
               </p>
             </Reveal>
             <Reveal delay={220}>
-              <a
-                href={`mailto:bmscealumni@bmsce.ac.in?subject=${encodeURIComponent(
-                  "Volunteering with the BMSCE Alumni Network"
-                )}&body=${encodeURIComponent(
-                  "Name:\nBatch / branch:\nCity:\nHow I'd like to help:\n"
-                )}`}
-                className="mt-8 inline-flex items-center justify-center rounded-sm bg-oxblood px-8 py-3.5 font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-ivory transition-colors hover:bg-maroon"
-              >
-                Volunteer with us
-              </a>
+              <VolunteerForm />
             </Reveal>
           </div>
         </section>

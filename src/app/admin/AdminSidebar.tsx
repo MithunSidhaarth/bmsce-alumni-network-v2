@@ -27,6 +27,8 @@ export default function AdminSidebar({
     { href: "/admin/social", label: "Social posts" },
     { href: "/admin/newsletters", label: "Newsletters" },
     { href: "/admin/gallery", label: "Gallery" },
+    { href: "/admin/happening", label: "What's happening" },
+    { href: "/admin/volunteers", label: "Volunteers" },
   ];
 
   const isActive = (href: string) =>

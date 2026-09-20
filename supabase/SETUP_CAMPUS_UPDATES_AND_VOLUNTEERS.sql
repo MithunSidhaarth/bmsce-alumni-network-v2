@@ -1,0 +1,3 @@
+-- Already applied to the live project (migration campus_updates_and_volunteers).
+-- campus_updates: public read, admin write. volunteer_signups: anyone may
+-- insert, admin-only read/delete. See the migration for full policies.
