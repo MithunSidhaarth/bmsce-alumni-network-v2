@@ -3,7 +3,6 @@ import { Fraunces, Inter } from "next/font/google";
 import AuthProvider from "@/components/AuthProvider";
 import ScrollProgress from "@/components/ScrollProgress";
 import PageTransition from "@/components/PageTransition";
-import SitePreloader from "@/components/SitePreloader";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -55,7 +54,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
-        <SitePreloader />
         <ScrollProgress />
         <AuthProvider>
           <PageTransition>{children}</PageTransition>

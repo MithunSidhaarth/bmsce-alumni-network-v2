@@ -59,7 +59,12 @@ const nextConfig: NextConfig = {
   },
   // The standalone /happening page was folded into /events.
   async redirects() {
-    return [{ source: "/happening", destination: "/events", permanent: true }];
+    return [
+      { source: "/happening", destination: "/events", permanent: true },
+      // Holds fictional placeholder people; not ready for the public. Remove
+      // this redirect once real notable alumni are added to the page.
+      { source: "/notable-alumni", destination: "/", permanent: false },
+    ];
   },
   async headers() {
     return [
