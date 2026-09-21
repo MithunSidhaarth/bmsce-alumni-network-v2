@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AuthSplit from "@/components/AuthSplit";
+import CountUp from "@/components/CountUp";
 import LoginPanel from "./LoginPanel";
 import { createClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/nav";
@@ -42,6 +43,20 @@ export default async function LoginPage({ searchParams }: Props) {
       <main>
         <section id="top">
           <AuthSplit
+            mobileHero={
+              <>
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
+                  Members
+                </p>
+                <h1 className="mt-4 font-display text-[2.75rem] leading-[0.98] tracking-tight">
+                  Welcome <span className="italic text-accent">back.</span>
+                </h1>
+                <p className="mt-3 max-w-xs font-sans text-sm leading-relaxed text-ivory/70">
+                  The directory, your chapter, events and conversations are
+                  waiting.
+                </p>
+              </>
+            }
             panel={
               <>
                 <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
@@ -56,13 +71,13 @@ export default async function LoginPage({ searchParams }: Props) {
                 </p>
                 <div className="mt-14 grid grid-cols-2 gap-8 border-t border-ivory/15 pt-8">
                   <div>
-                    <p className="font-display text-5xl text-accent">10+</p>
+                    <p className="font-display text-5xl text-accent"><CountUp value="10+" /></p>
                     <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.2em] text-ivory/60">
                       Countries
                     </p>
                   </div>
                   <div>
-                    <p className="font-display text-5xl text-accent">30+</p>
+                    <p className="font-display text-5xl text-accent"><CountUp value="30+" /></p>
                     <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.2em] text-ivory/60">
                       Chapters
                     </p>

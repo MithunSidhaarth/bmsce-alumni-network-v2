@@ -1,20 +1,30 @@
 import type { ReactNode } from "react";
 import Aurora from "./Aurora";
 
-// Two-column shell shared by /login and /join: form on the left, a dark brand
-// panel on the right (hidden on phones, where the form gets the whole screen).
+// Shell shared by /login and /join.
+//  • Desktop: form left, full-bleed dark brand panel right.
+//  • Phone: a dark hero band (mobileHero) with the form as a rounded sheet
+//    sliding up over it — same brand feel instead of a plain white form.
 export default function AuthSplit({
   children,
   panel,
+  mobileHero,
 }: {
   children: ReactNode;
   panel: ReactNode;
+  mobileHero: ReactNode;
 }) {
   return (
-    <div className="grid min-h-[calc(100vh-88px)] grid-cols-1 lg:grid-cols-2">
-      <div className="flex flex-col justify-center px-6 py-14 md:px-10 md:py-20 lg:py-28">
+    <div className="lg:grid lg:min-h-[calc(100vh-88px)] lg:grid-cols-2">
+      <div className="relative overflow-hidden bg-oxblood px-6 pb-16 pt-10 text-ivory sm:px-10 lg:hidden">
+        <Aurora variant="dark" />
+        <div className="relative mx-auto max-w-md">{mobileHero}</div>
+      </div>
+
+      <div className="relative -mt-7 rounded-t-[2rem] bg-ivory px-6 pb-14 pt-9 sm:px-10 lg:mt-0 lg:flex lg:flex-col lg:justify-center lg:rounded-none lg:bg-transparent lg:py-28">
         <div className="mx-auto w-full max-w-md">{children}</div>
       </div>
+
       <aside className="relative hidden overflow-hidden bg-oxblood text-ivory lg:block">
         <Aurora variant="dark" />
         <div className="relative flex h-full flex-col justify-center px-14 py-24 xl:px-24">

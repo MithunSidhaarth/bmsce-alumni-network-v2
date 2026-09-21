@@ -31,20 +31,22 @@ export default function LoginPanel({
 
   return (
     <>
-      <Eyebrow>Members</Eyebrow>
-      <h1 className="mt-5 font-display text-[clamp(2.25rem,5vw,3.25rem)] leading-[1.02] tracking-tight text-ink">
-        Welcome back.
-      </h1>
-      <p className="mt-4 font-sans text-base leading-relaxed text-ink/70">
-        Pick up where you left off: the directory, your chapter, events, and
-        your conversations.
-      </p>
+      <div className="hidden lg:block">
+        <Eyebrow>Members</Eyebrow>
+        <h1 className="mt-5 font-display text-[clamp(2.25rem,5vw,3.25rem)] leading-[1.02] tracking-tight text-ink">
+          Welcome back.
+        </h1>
+        <p className="mt-4 font-sans text-base leading-relaxed text-ink/70">
+          Pick up where you left off: the directory, your chapter, events, and
+          your conversations.
+        </p>
+      </div>
 
       {/* I am a… */}
       <div
         role="tablist"
         aria-label="I am signing in as"
-        className="mt-8 grid grid-cols-2 gap-1 rounded-xl border border-gold/40 bg-ivory-dim/50 p-1"
+        className="grid grid-cols-2 gap-1 rounded-xl lg:mt-8 border border-gold/40 bg-ivory-dim/50 p-1"
       >
         {[
           { label: "Alumnus", student: false },
