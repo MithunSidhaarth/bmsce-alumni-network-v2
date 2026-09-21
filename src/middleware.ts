@@ -23,8 +23,8 @@ import { getCareersEnabled } from "@/lib/settings";
 // upstream bug. That's a much smaller blast radius than having no inline
 // script allowance at all, so it's the right tradeoff until that's fixed.
 function buildCsp(nonce: string, isDev: boolean) {
-  const SUPABASE_ORIGIN = "https://taqlqkjwzpdpomjcexmb.supabase.co";
-  const SUPABASE_WS_ORIGIN = "wss://taqlqkjwzpdpomjcexmb.supabase.co";
+  const SUPABASE_ORIGIN = "https://sujxfhpvbrhhlmvzbgwv.supabase.co";
+  const SUPABASE_WS_ORIGIN = "wss://sujxfhpvbrhhlmvzbgwv.supabase.co";
 
   return [
     `default-src 'self'`,
