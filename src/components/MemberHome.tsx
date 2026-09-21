@@ -147,7 +147,7 @@ export default async function MemberHome({
       .returns<DiscussionTeaser[]>(),
     // A handful of open roles for verified members — the careers QuickLink
     // tile only ever pointed at the board; this shows what's actually on it.
-    !limited
+    careersEnabled && !limited
       ? supabase
           .from("job_postings")
           .select("*")
@@ -542,8 +542,8 @@ export default async function MemberHome({
       )}
 
       {/* Latest opportunities — real postings, not just a link to the board.
-          Verified members only, matching the careers-tile gating above. */}
-      {!limited && opportunities.length > 0 && (
+          Verified members only, and only while Careers is switched on in admin. */}
+      {careersEnabled && !limited && opportunities.length > 0 && (
         <section className="border-t border-gold/30">
           <div className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-20">
             <div className="flex flex-wrap items-end justify-between gap-4">
