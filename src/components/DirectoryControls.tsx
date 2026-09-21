@@ -120,7 +120,7 @@ export default function DirectoryControls({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:flex-1 lg:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:flex-1 lg:grid-cols-7">
             <Select
               label={isStudents ? "Class" : "Batch"}
               value={cur("year")}
@@ -165,6 +165,17 @@ export default function DirectoryControls({
               onChange={(v) => navigate({ role: v === "all" ? null : v })}
               allLabel="All roles"
               options={facets.roles.map((c) => ({ value: c, label: c }))}
+            />
+            <Select
+              label="Sort by"
+              value={cur("sort")}
+              onChange={(v) => navigate({ sort: v === "all" ? null : v })}
+              allLabel="Name (A–Z)"
+              options={[
+                { value: "batch", label: "Batch (newest)" },
+                { value: "industry", label: "Industry" },
+                { value: "role", label: "Job role" },
+              ]}
             />
           </div>
 

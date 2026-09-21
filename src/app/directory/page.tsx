@@ -60,6 +60,7 @@ export default async function DirectoryPage({
   const company = sp.company ?? "";
   const industry = sp.industry ?? "";
   const role = sp.role ?? "";
+  const sort = ["batch", "industry", "role"].includes(sp.sort ?? "") ? sp.sort! : "name";
   const page = Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1);
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
@@ -114,7 +115,18 @@ export default async function DirectoryPage({
     { count: studentCount },
     { data: facetData },
   ] = await Promise.all([
-    query.order("full_name", { ascending: true }).range(from, to).returns<Row[]>(),
+    // Chosen sort first (nulls last), name as the tie-breaker so paging is stable.
+    (sort === "batch"
+      ? query.order("graduation_year", { ascending: false, nullsFirst: false })
+      : sort === "industry"
+        ? query.order("industry", { ascending: true, nullsFirst: false })
+        : sort === "role"
+          ? query.order("job_title", { ascending: true, nullsFirst: false })
+          : query
+    )
+      .order("full_name", { ascending: true })
+      .range(from, to)
+      .returns<Row[]>(),
     supabase
       .from("profiles")
       .select("id", { count: "exact", head: true })
