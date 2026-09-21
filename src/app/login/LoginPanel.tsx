@@ -50,7 +50,7 @@ export default function LoginPanel({
       >
         {[
           { label: "Alumnus", student: false },
-          { label: "Current student", student: true },
+          { label: "Student", student: true },
         ].map((t) => (
           <button
             key={t.label}
