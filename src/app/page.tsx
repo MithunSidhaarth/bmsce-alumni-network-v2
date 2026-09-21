@@ -8,6 +8,7 @@ import MentorCta from "@/components/MentorCta";
 import FinalCta from "@/components/FinalCta";
 import MemberHome, { type MemberHomeProfile } from "@/components/MemberHome";
 import Footer from "@/components/Footer";
+import FunFacts from "@/components/FunFacts";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCareersEnabled } from "@/lib/settings";
@@ -57,7 +58,10 @@ export default async function Home({
       <Nav />
       <main>
         {showMemberHome ? (
-          <MemberHome profile={profile!} careersEnabled={careersEnabled} />
+          <>
+            <MemberHome profile={profile!} careersEnabled={careersEnabled} />
+            <FunFacts />
+          </>
         ) : (
           <>
             {/* Order: Hero -> stats (GlobalCommunity) -> ways back in
@@ -68,6 +72,7 @@ export default async function Home({
             <ValueProps careersEnabled={careersEnabled} />
             <Testimonials />
             <AlumniSpotlight />
+            <FunFacts />
             {careersEnabled && <MentorCta />}
             <FinalCta />
           </>
