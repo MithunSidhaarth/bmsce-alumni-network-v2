@@ -29,6 +29,8 @@ export default async function Home({
 
   // Same server-side auth pattern used by /directory, /profile, /events, etc.
   const supabase = await createClient();
+  // Independent of the user lookup — start it now so it overlaps.
+  const careersEnabledPromise = getCareersEnabled();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -48,7 +50,7 @@ export default async function Home({
   // Signed in and onboarded → the member homepage (no "Join the network" copy).
   // Anyone else falls through to the public marketing homepage, unchanged.
   const showMemberHome = !!user && !!profile && profile.onboarded;
-  const careersEnabled = await getCareersEnabled();
+  const careersEnabled = await careersEnabledPromise;
 
   return (
     <>

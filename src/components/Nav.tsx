@@ -7,7 +7,7 @@ import Logo from "./Logo";
 import AuthMenu from "./AuthMenu";
 import CommandPalette from "./CommandPalette";
 import { useAuth } from "./AuthProvider";
-import { createClient } from "@/lib/supabase/client";
+import { useCareersEnabled } from "@/lib/useCareersEnabled";
 
 type NavChild = { label: string; href: string };
 type NavItem = { label: string; href: string; children?: NavChild[] };
@@ -53,7 +53,7 @@ export default function Nav() {
   // after mount) would fail hydration on a Mac.
   const [isMac, setIsMac] = useState(false);
   // Careers is hidden by default and only appears once the admin flag loads on.
-  const [careersEnabled, setCareersEnabled] = useState(false);
+  const careersEnabled = useCareersEnabled();
   // Community is members-only — shown once we know the visitor is signed in.
   const { signedIn, profile } = useAuth();
   const pathname = usePathname();
@@ -95,20 +95,6 @@ export default function Nav() {
     setMenuOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    let active = true;
-    createClient()
-      .from("site_settings")
-      .select("careers_enabled")
-      .limit(1)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (active) setCareersEnabled(data?.careers_enabled === true);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
 
   // Community (members-only) sits with Directory; Careers appends when enabled.
   const LINKS: NavItem[] = [

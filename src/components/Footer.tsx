@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Logo from "./Logo";
-import { createClient } from "@/lib/supabase/client";
+import { useCareersEnabled } from "@/lib/useCareersEnabled";
 
 // Careers is feature-flagged (site_settings.careers_enabled) — same
 // client-side fetch pattern as Nav.tsx, so the footer's Careers column only
@@ -76,22 +75,8 @@ function FooterColumn({
 }
 
 export default function Footer() {
-  const [careersEnabled, setCareersEnabled] = useState(false);
+  const careersEnabled = useCareersEnabled();
 
-  useEffect(() => {
-    let active = true;
-    createClient()
-      .from("site_settings")
-      .select("careers_enabled")
-      .limit(1)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (active) setCareersEnabled(data?.careers_enabled === true);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
 
   return (
     <footer className="bg-oxblood text-ivory/70">

@@ -1,6 +1,5 @@
 import Nav from "./Nav";
 import Footer from "./Footer";
-import BmsceLoader from "./BmsceLoader";
 
 // Shown while a force-dynamic page awaits its Supabase queries — the
 // branded gear loader up top (so it's never mistaken for a frozen page),
@@ -17,10 +16,11 @@ export default function LoadingScreen({
       <main aria-busy="true" aria-label="Loading">
         <section id="top">
           <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 md:px-10 md:pt-24">
-            <BmsceLoader className="py-10" />
+            <div className="h-3 w-24 animate-pulse rounded bg-ink/10" />
+            <div className="mt-6 h-12 w-2/3 max-w-xl animate-pulse rounded bg-ink/10" />
 
             {variant === "detail" ? (
-              <div className="mt-12 flex flex-col gap-4 opacity-40">
+              <div className="mt-10 flex flex-col gap-4 opacity-40">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <div
                     key={i}
@@ -31,7 +31,7 @@ export default function LoadingScreen({
               </div>
             ) : (
               <div
-                className={`mt-12 grid gap-6 opacity-40 ${
+                className={`mt-10 grid gap-6 opacity-40 ${
                   variant === "grid"
                     ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                     : "grid-cols-1 md:grid-cols-2"

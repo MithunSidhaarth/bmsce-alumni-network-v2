@@ -49,8 +49,12 @@ const nextConfig: NextConfig = {
     // reload. Every page here that depends on auth already opts into
     // per-request rendering (`export const dynamic = "force-dynamic"`); this
     // makes the client cache honor that instead of second-guessing it.
+    // Sign-in is always a full page load and sign-out calls router.refresh(),
+    // both of which reset this cache, so a short window is safe and makes
+    // back/forward and repeat visits instant instead of re-showing a loader.
     staleTimes: {
-      dynamic: 0,
+      dynamic: 30,
+      static: 180,
     },
   },
   // The standalone /happening page was folded into /events.

@@ -30,7 +30,7 @@ export default async function EventsPage() {
   const supabase = await createClient();
 
   const nowIso = new Date().toISOString();
-  const [{ data: events }, { data: posts }] = await Promise.all([
+  const [{ data: events }, { data: posts }, userRes, countsRes] = await Promise.all([
     supabase
       .from("events")
       .select(
@@ -45,14 +45,17 @@ export default async function EventsPage() {
         "id, post_id, short_code, caption, image_url, video_url, post_type, posted_at, likes_count, comments_count, permalink, hashtags, created_at"
       )
       .order("posted_at", { ascending: false })
+      // The feed shows 12 at a time with "load more"; 48 is plenty and keeps
+      // the page payload small.
+      .limit(48)
       .returns<SocialPost[]>(),
+    supabase.auth.getUser(),
+    supabase.rpc("event_going_counts"),
   ]);
 
   // RSVP context: who's signed in, whether they can RSVP, their own RSVPs, and
   // aggregate going-counts (via a security-definer RPC — see SQL).
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = userRes.data.user;
   const signedIn = Boolean(user);
   let canRsvp = false;
   let myRsvps = new Set<string>();
@@ -73,7 +76,7 @@ export default async function EventsPage() {
       .eq("profile_id", user.id);
     myRsvps = new Set((mine ?? []).map((r) => r.event_id as string));
   }
-  const { data: countsJson } = await supabase.rpc("event_going_counts");
+  const countsJson = countsRes.data;
   const counts: Record<string, number> =
     (countsJson as Record<string, number> | null) ?? {};
 

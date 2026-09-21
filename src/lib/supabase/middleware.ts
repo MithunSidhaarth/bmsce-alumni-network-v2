@@ -39,8 +39,11 @@ export async function updateSession(
     }
   );
 
-  // IMPORTANT: do not run code between createServerClient and getUser().
-  await supabase.auth.getUser();
+  // IMPORTANT: do not run code between createServerClient and getClaims().
+  // getClaims() verifies the JWT locally (no Auth-server round trip when the
+  // project uses asymmetric signing keys) and still refreshes an expired
+  // session. Pages that need the user object call getUser() themselves.
+  await supabase.auth.getClaims();
 
   return supabaseResponse;
 }
