@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Eyebrow from "@/components/Eyebrow";
-import Reveal from "@/components/Reveal";
-import LoginButtons from "../login/LoginButtons";
+import AuthSplit from "@/components/AuthSplit";
+import JoinPanel from "./JoinPanel";
 import { createClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/nav";
 
@@ -44,61 +42,47 @@ export default async function JoinPage({ searchParams }: Props) {
       <Nav />
       <main>
         <section id="top">
-          <div className="mx-auto flex max-w-md flex-col px-6 pb-24 pt-20 md:pt-28">
-            <Reveal>
-              <Eyebrow>{isStudent ? "For students" : "New here"}</Eyebrow>
-            </Reveal>
-            <Reveal delay={80}>
-              <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
-                Join the network.
-              </h1>
-            </Reveal>
-            <Reveal delay={160}>
-              <p className="mt-5 font-sans text-base leading-relaxed text-ink/70">
-                {isStudent
-                  ? "Create your account to connect with BMS alumni who can guide you."
-                  : "It takes two minutes: the directory, chapters, events, and mentorship are waiting."}
-              </p>
-            </Reveal>
-
-            {error && (
-              <Reveal delay={200}>
-                <p className="mt-6 rounded-xl border border-oxblood/30 bg-oxblood/5 px-4 py-3 font-sans text-sm text-oxblood">
-                  Something went wrong signing you in. Please try again.
+          <AuthSplit
+            panel={
+              <>
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
+                  What you get
                 </p>
-              </Reveal>
-            )}
-
-            <Reveal delay={240}>
-              <div className="mt-10">
-                <LoginButtons
-                  userType={isStudent ? "student" : "alumni"}
-                  next={next}
-                />
-              </div>
-            </Reveal>
-
-            <Reveal delay={320}>
-              <p className="mt-8 font-sans text-sm text-ink/60">
-                Already a member?{" "}
-                <Link
-                  href={next !== "/" ? `/login?next=${encodeURIComponent(next)}` : "/login"}
-                  className="border-b border-gold pb-0.5 text-oxblood transition-colors hover:border-oxblood"
-                >
-                  Sign in here
-                </Link>
-                .
-              </p>
-            </Reveal>
-
-            <Reveal delay={360}>
-              <p className="mt-6 font-sans text-xs leading-relaxed text-ink/45">
-                By continuing you agree to be part of the BMSCE Alumni Network
-                community. Alumni profiles are reviewed before appearing in the
-                directory.
-              </p>
-            </Reveal>
-          </div>
+                <ul className="mt-8 flex flex-col gap-6">
+                  {[
+                    ["The directory", "Find classmates by batch, branch, city, industry or company."],
+                    ["Your chapter", "Meet BMS alumni in 30+ chapters across 10+ countries."],
+                    ["Events & reunions", "RSVP to meetups and reunions near you."],
+                    ["Mentorship & community", "Ask, answer and help, from campus to career."],
+                  ].map(([t, d], i) => (
+                    <li key={t} className="flex gap-5">
+                      <span className="font-display text-3xl italic leading-none text-accent">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span>
+                        <span className="block font-display text-xl text-ivory">{t}</span>
+                        <span className="mt-1 block font-sans text-sm leading-relaxed text-ivory/65">
+                          {d}
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-12 border-t border-ivory/15 pt-8">
+                  <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
+                    How it works
+                  </p>
+                  <ol className="mt-5 flex flex-col gap-2 font-sans text-sm text-ivory/80">
+                    <li>1. Sign up and complete your profile.</li>
+                    <li>2. We confirm you&rsquo;re from BMS.</li>
+                    <li>3. You&rsquo;re in. Say hello to your batch.</li>
+                  </ol>
+                </div>
+              </>
+            }
+          >
+            <JoinPanel initialStudent={isStudent} next={next} error={!!error} />
+          </AuthSplit>
         </section>
       </main>
       <Footer />

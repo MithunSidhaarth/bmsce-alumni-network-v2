@@ -3,12 +3,20 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-type Props = { userType?: "alumni" | "student"; next?: string };
+type Props = {
+  userType?: "alumni" | "student";
+  next?: string;
+  // "join" is for brand-new members: OAuth only (there is no email sign-up),
+  // so the password form is hidden and the copy says "Sign up".
+  mode?: "login" | "join";
+};
 
 export default function LoginButtons({
   userType = "alumni",
   next = "/",
+  mode = "login",
 }: Props) {
+  const verb = mode === "join" ? "Sign up" : "Continue";
   const [loading, setLoading] = useState<null | "google" | "linkedin_oidc">(
     null
   );
@@ -73,7 +81,7 @@ export default function LoginButtons({
         className="inline-flex items-center justify-center gap-3 rounded-sm border border-gold/40 bg-ivory-dim/40 px-6 py-3.5 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-ink transition-colors hover:border-gold hover:bg-ivory-dim disabled:opacity-60"
       >
         <GoogleMark />
-        {loading === "google" ? "Redirecting…" : "Continue with Google"}
+        {loading === "google" ? "Redirecting…" : `${verb} with Google`}
       </button>
       <button
         type="button"
@@ -82,10 +90,10 @@ export default function LoginButtons({
         className="inline-flex items-center justify-center gap-3 rounded-sm border border-gold/40 bg-ivory-dim/40 px-6 py-3.5 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-ink transition-colors hover:border-gold hover:bg-ivory-dim disabled:opacity-60"
       >
         <LinkedInMark />
-        {loading === "linkedin_oidc" ? "Redirecting…" : "Continue with LinkedIn"}
+        {loading === "linkedin_oidc" ? "Redirecting…" : `${verb} with LinkedIn`}
       </button>
 
-      {!showPassword ? (
+      {mode === "join" ? null : !showPassword ? (
         <button
           type="button"
           onClick={() => setShowPassword(true)}

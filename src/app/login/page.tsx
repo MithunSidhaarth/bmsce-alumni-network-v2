@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import AuthSplit from "@/components/AuthSplit";
 import LoginPanel from "./LoginPanel";
 import { createClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/nav";
@@ -40,9 +41,38 @@ export default async function LoginPage({ searchParams }: Props) {
       <Nav />
       <main>
         <section id="top">
-          <div className="mx-auto flex max-w-md flex-col px-6 pb-24 pt-20 md:pt-28">
+          <AuthSplit
+            panel={
+              <>
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
+                  In their words
+                </p>
+                <blockquote className="mt-8 font-display text-[clamp(1.75rem,2.6vw,2.5rem)] italic leading-[1.2] text-ivory">
+                  &ldquo;I connected with an alumnus who referred me, and that
+                  internship became a full-time role.&rdquo;
+                </blockquote>
+                <p className="mt-6 font-sans text-sm text-ivory/70">
+                  Bharath Gorental, BMSCE alumnus
+                </p>
+                <div className="mt-14 grid grid-cols-2 gap-8 border-t border-ivory/15 pt-8">
+                  <div>
+                    <p className="font-display text-5xl text-accent">10+</p>
+                    <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.2em] text-ivory/60">
+                      Countries
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-display text-5xl text-accent">30+</p>
+                    <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.2em] text-ivory/60">
+                      Chapters
+                    </p>
+                  </div>
+                </div>
+              </>
+            }
+          >
             <LoginPanel initialStudent={isStudent} next={next} error={!!error} />
-          </div>
+          </AuthSplit>
         </section>
       </main>
       <Footer />
