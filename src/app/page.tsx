@@ -8,13 +8,25 @@ import MentorCta from "@/components/MentorCta";
 import FinalCta from "@/components/FinalCta";
 import MemberHome, { type MemberHomeProfile } from "@/components/MemberHome";
 import Footer from "@/components/Footer";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCareersEnabled } from "@/lib/settings";
 
 // Auth state must be read per-request so the right homepage is served.
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ code?: string }>;
+}) {
+  // If Supabase's Site URL points here, it can return the OAuth code to "/"
+  // instead of /auth/callback. Forward it so sign-in still completes.
+  const { code } = await searchParams;
+  if (code && /^[\w-]{8,100}$/.test(code)) {
+    redirect(`/auth/callback?code=${encodeURIComponent(code)}`);
+  }
+
   // Same server-side auth pattern used by /directory, /profile, /events, etc.
   const supabase = await createClient();
   const {
