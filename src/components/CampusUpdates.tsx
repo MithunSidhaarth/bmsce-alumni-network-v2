@@ -1,24 +1,22 @@
-import Link from "next/link";
 import Eyebrow from "./Eyebrow";
 import Reveal from "./Reveal";
 import UpdateCard, { UPDATE_COLUMNS, type CampusUpdate } from "./UpdateCard";
 import { createClient } from "@/lib/supabase/server";
 
-// Homepage teaser: latest 3 items, with a friendly empty state until the
-// first update is published.
+// "What's happening in BMSCE" section for the Events page: every update,
+// newest first, with a friendly empty state until the first is published.
 export default async function CampusUpdates() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("campus_updates")
     .select(UPDATE_COLUMNS)
     .order("published_at", { ascending: false })
-    .limit(3)
     .returns<CampusUpdate[]>();
 
   return (
-    <section className="border-t border-gold/30 bg-ivory-dim/40">
+    <section id="happening" className="border-t border-gold/30">
       <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
-        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+        <div>
           <div>
             <Reveal>
               <Eyebrow>Right now</Eyebrow>
@@ -29,15 +27,9 @@ export default async function CampusUpdates() {
               </h2>
             </Reveal>
           </div>
-          <Link
-            href="/happening"
-            className="font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood underline decoration-accent underline-offset-4 hover:text-maroon"
-          >
-            See all →
-          </Link>
         </div>
         {data?.length ? (
-          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {data.map((u, i) => (
               <Reveal key={u.id} delay={i * 80} className="h-full">
                 <UpdateCard u={u} />

@@ -4,6 +4,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
+import CampusUpdates from "@/components/CampusUpdates";
 import SocialFeed from "@/components/SocialFeed";
 import RsvpButton from "./RsvpButton";
 import { createClient } from "@/lib/supabase/server";
@@ -188,6 +189,8 @@ export default async function EventsPage() {
             )}
           </div>
         </section>
+
+        <CampusUpdates />
 
         {/* Instagram highlights — clearly separate, NOT RSVP-able */}
         <section className="border-t border-gold/30 bg-ivory-dim/30">

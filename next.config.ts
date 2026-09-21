@@ -53,6 +53,10 @@ const nextConfig: NextConfig = {
       dynamic: 0,
     },
   },
+  // The standalone /happening page was folded into /events.
+  async redirects() {
+    return [{ source: "/happening", destination: "/events", permanent: true }];
+  },
   async headers() {
     return [
       {
