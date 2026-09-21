@@ -9,7 +9,7 @@ type SpotlightAlum = {
   name: string;
   // Title/role. Optional — omitted when we only have a name for someone.
   role?: string;
-  // Batch range, e.g. "1990–1994". Rendered as "Batch of 1990–1994".
+  // Graduation year, e.g. "1994". Rendered as "Batch of 1994".
   batch?: string;
   // Optional headshot. Drop a real photo URL here later and it replaces the
   // initials square automatically — no code change needed. Do NOT scrape the
@@ -22,31 +22,31 @@ const ALUMNI: SpotlightAlum[] = [
   {
     name: "Sujith Somasundar",
     role: "Former India cricketer",
-    batch: "1990–1994",
+    batch: "1994",
     photoUrl: "/sujith-somasundar.jpg",
   },
   {
     name: "Naren",
     role: "CEO, Nandu Foods",
-    batch: "1991–1995",
+    batch: "1995",
     photoUrl: "/naren.jpg",
   },
   {
     name: "Sunil Rao",
     role: "MD, Roblox India",
-    batch: "1991–1996",
+    batch: "1996",
     photoUrl: "/sunil-rao.jpg",
   },
   {
     name: "Dinesh Gundu Rao",
     role: "Member of the Karnataka Legislative Assembly",
-    batch: "1988–1992",
+    batch: "1992",
     photoUrl: "/dinesh-gundu-rao.jpg",
   },
   {
     name: "Lathika Pai",
     role: "Microsoft",
-    batch: "1986–1990",
+    batch: "1990",
     photoUrl: "/lathika-pai.jpg",
   },
 ];
