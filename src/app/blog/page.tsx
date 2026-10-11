@@ -71,7 +71,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
               <Link key={c} href={href(c)} data-active={category === c} className="chip">{c}</Link>
             ))}
           </nav>
-          <form action="/blog" role="search" className="relative lg:ml-auto lg:w-64">
+          <form action="/blog" role="search" className="keep-day relative lg:ml-auto lg:w-64">
             <label htmlFor="blog-q" className="sr-only">Search articles</label>
             <Icon name="search" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/45" />
             <input id="blog-q" name="q" defaultValue={q} placeholder="Search articles" className="field rounded-full pl-9" />

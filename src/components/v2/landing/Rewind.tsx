@@ -43,10 +43,9 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
     const ctx = gsap.context(() => {
       const t = track.current!;
       const distance = () => Math.max(0, t.scrollWidth - window.innerWidth);
-      // Sideways travel is quicker than the scroll that drives it, so the
-      // section never outstays its welcome (quicker still on a phone, where
-      // the strip is many screens wide).
-      const scroll = () => distance() * (window.innerWidth < 768 ? 0.34 : 0.5);
+      // The strip moves a little slower than the scroll that drives it, so
+      // each year can be taken in rather than flying past.
+      const scroll = () => distance() * (window.innerWidth < 768 ? 0.9 : 0.8);
       const travel = gsap.to(t, {
         x: () => -distance(),
         ease: "none",

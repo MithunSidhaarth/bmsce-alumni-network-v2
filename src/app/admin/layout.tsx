@@ -18,7 +18,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   ]);
 
   return (
-    <main className="mx-auto grid max-w-[1320px] gap-6 px-4 pb-20 pt-6 md:grid-cols-[13.5rem_minmax(0,1fr)] md:gap-10 md:px-8">
+    <main className="mx-auto grid max-w-[1320px] grid-cols-1 gap-6 px-4 pb-20 pt-6 md:grid-cols-[13.5rem_minmax(0,1fr)] md:gap-10 md:px-8">
       <AdminSidebar
         adminName={me.full_name}
         badges={{

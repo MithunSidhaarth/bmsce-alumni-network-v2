@@ -241,7 +241,7 @@ export default function AppChrome({ me }: { me: Me }) {
           <img src="/bmsce-crest.png" alt="" className="h-8 w-8 object-contain" />
         </Link>
 
-        <form action="/search" role="search" className="relative min-w-0 flex-1 md:max-w-md">
+        <form action="/search" role="search" className="keep-day relative min-w-0 flex-1 md:max-w-md">
           <label htmlFor="global-search" className="sr-only">
             Search people and posts
           </label>

@@ -42,6 +42,7 @@ export default function Nav() {
   if (inApp) return null;
 
   return (
+    <>
     <header
       className={`sticky top-0 z-40 transition-[background-color,border-color] duration-200 ${
         scrolled || open ? "border-b border-ink/10 bg-ivory/92 backdrop-blur-md" : "border-b border-transparent bg-transparent"
@@ -112,10 +113,11 @@ export default function Nav() {
         </button>
       </div>
 
+    </header>
       {open && (
         <div
           id="public-menu"
-          className="fixed inset-x-0 bottom-0 top-16 overflow-y-auto bg-ivory px-5 pb-10 pt-6 lg:hidden"
+          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-ivory px-5 pb-[calc(2.5rem+env(safe-area-inset-bottom))] pt-6 lg:hidden"
         >
           <nav aria-label="Mobile" className="flex flex-col">
             {[...LINKS, { label: "The Wall", href: "/noticeboard" }].map((l, i) => (
@@ -145,6 +147,6 @@ export default function Nav() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }

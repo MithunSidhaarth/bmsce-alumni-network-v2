@@ -82,7 +82,7 @@ export default async function ForumPage({
         </div>
 
         <div className="mt-7 flex flex-col gap-3 md:flex-row md:items-center">
-          <form action="/community" role="search" className="relative md:w-72">
+          <form action="/community" role="search" className="keep-day relative md:w-72">
             <label htmlFor="forum-q" className="sr-only">
               Search discussions
             </label>

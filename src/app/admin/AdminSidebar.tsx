@@ -51,7 +51,7 @@ export default function AdminSidebar({
   const isActive = (href: string) => (href === "/admin" ? pathname === "/admin" : pathname.startsWith(href));
 
   return (
-    <aside className="md:sticky md:top-[calc(var(--topbar)+1.5rem)] md:max-h-[calc(100vh-var(--topbar)-3rem)] md:self-start md:overflow-y-auto no-scrollbar">
+    <aside className="min-w-0 md:sticky md:top-[calc(var(--topbar)+1.5rem)] md:max-h-[calc(100vh-var(--topbar)-3rem)] md:self-start md:overflow-y-auto no-scrollbar">
       <p className="label-mono hidden text-ink/50 md:block">Admin console</p>
       <p className="mb-5 mt-1 hidden truncate font-display text-lg font-bold md:block">{adminName ?? "Admin"}</p>
       <nav aria-label="Admin sections" className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-2 no-scrollbar md:mx-0 md:flex-col md:gap-5 md:overflow-visible md:px-0 md:pb-0">

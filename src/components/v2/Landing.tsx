@@ -2,15 +2,13 @@ import archive from "@/data/instagram-archive.json";
 import sizes from "@/data/instagram-sizes.json";
 import { BLANK_SHOTS } from "@/data/instagram-blank";
 import { chapters, CHAPTER_COUNT, COUNTRY_COUNT } from "@/data/chapters";
-import { FACTS } from "@/data/facts";
 import Testimonials from "@/components/Testimonials";
-import { slugify, stampDate } from "@/lib/format";
+import { stampDate } from "@/lib/format";
 import BigCta from "./landing/BigCta";
 import CampusTeaser from "./landing/CampusTeaser";
-import FactsDeck from "./landing/FactsDeck";
-import FlightMap from "./landing/FlightMap";
 import HeroDesk from "./landing/HeroDesk";
 import InsideStack from "./landing/InsideStack";
+import NotableAlumni from "./landing/NotableAlumni";
 import Numbers from "./landing/Numbers";
 import Rewind, { type RewindYear } from "./landing/Rewind";
 import VelocityMarquee from "./landing/VelocityMarquee";
@@ -49,13 +47,6 @@ const YEARS: RewindYear[] = [...new Set(ALL.map((p) => p.year))]
   })
   .filter((y) => y.photos.length >= 3);
 
-const MAP = chapters.map((c) => ({
-  name: c.name,
-  slug: slugify(c.name),
-  lng: c.coordinates[0],
-  lat: c.coordinates[1],
-  region: c.continent,
-}));
 const POSTCARDS = ["Bengaluru", "London", "San Francisco"]
   .map((name) => chapters.find((c) => c.name === name))
   .filter((c): c is (typeof chapters)[number] => Boolean(c))
@@ -81,10 +72,9 @@ export default function Landing({ signedIn }: { signedIn: boolean }) {
       <Rewind years={YEARS} total={ALL.length} />
       <InsideStack chapters={CHAPTER_COUNT} countries={COUNTRY_COUNT} postcards={POSTCARDS} />
       <WallTeaser photos={TEASER} />
+      <NotableAlumni />
       <Testimonials />
       <CampusTeaser />
-      <FlightMap chapters={MAP} countries={COUNTRY_COUNT} />
-      <FactsDeck facts={FACTS} />
       <BigCta cta={cta} />
     </>
   );

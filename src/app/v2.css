@@ -541,15 +541,6 @@
   to { visibility: visible; }
 }
 /* The campus pin on the chapter map breathes, so the eye starts there. */
-@keyframes map-pulse {
-  0% { transform: scale(0.5); opacity: 0.55; }
-  100% { transform: scale(2.1); opacity: 0; }
-}
-.map-pulse {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: map-pulse 2.4s ease-out infinite;
-}
 
 /* The hero's photographs hang on a spiral in real 3D space. --r (the radius),
    --angle and --tilt are driven from HeroDesk.tsx; the values here are the
@@ -650,7 +641,6 @@
   .stickynote,
   .field,
   .hl,
-  .fact-card,
   .btn-lime,
   .btn-paper,
   .keep-day,
@@ -675,7 +665,6 @@
   html[data-theme="night"] :is(
   .board,
   .keep-dark,
-  .map-frame,
   [class~="bg-forest"], [class^="bg-forest/"], [class*=" bg-forest/"],
   [class~="bg-oxblood"], [class^="bg-oxblood/"], [class*=" bg-oxblood/"],
   [class~="bg-maroon"], [class^="bg-maroon/"], [class*=" bg-maroon/"],
@@ -793,4 +782,13 @@
   .campus .cm-link:hover .cm-sign,
   .campus .cm-link:focus-visible .cm-sign,
   .campus .cm-label.is-hot .cm-sign { opacity: 1; transform: none; }
+}
+
+/* A box that scrolls sideways keeps its visually hidden labels inside it.
+   Without this, an "sr-only" label far along a wide table sits outside the
+   box and makes the whole page wider than a phone screen. */
+@layer base {
+  :where([class~="overflow-x-auto"]) {
+    position: relative;
+  }
 }
