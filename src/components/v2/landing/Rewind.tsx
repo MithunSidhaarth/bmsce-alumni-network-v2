@@ -16,7 +16,7 @@ const DEPTHS = [0.35, 1, 0.6, 1.25, 0.2, 0.85];
 /**
  * "Rewind": the page stops scrolling down and travels sideways through the
  * years instead, newest first. Photographs pass at different speeds, the way
- * near and far things do from a train window. On phones, and with motion off,
+ * near and far things do from a train window. On phones,
  * it is an ordinary strip you swipe through.
  */
 export default function Rewind({ years, total }: { years: RewindYear[]; total: number }) {
@@ -27,7 +27,9 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
   // Step 1: decide whether this screen gets the pinned, sideways version.
   useEffect(() => {
     if (!motionOK()) return;
-    const wide = window.matchMedia("(min-width: 900px) and (min-height: 560px)");
+    // Short windows count too: the layout below is sized from the viewport
+    // height, so it fits a laptop with the browser's toolbars showing.
+    const wide = window.matchMedia("(min-width: 900px) and (min-height: 380px)");
     const update = () => setPinned(wide.matches);
     update();
     wide.addEventListener("change", update);
@@ -90,7 +92,7 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
         {/* Title panel */}
         <div className="flex w-[88vw] shrink-0 snap-start flex-col justify-center px-5 md:w-[62vw] md:px-16">
           <p className="label-mono text-tangerine">Rewind</p>
-          <h2 id="rewind-title" className="mt-4 font-display text-[clamp(3rem,9vw,7.5rem)] font-extrabold leading-[0.84] tracking-[-0.045em]">
+          <h2 id="rewind-title" className="mt-4 font-display text-[clamp(2.6rem,min(9vw,15vh),7.5rem)] font-extrabold leading-[0.84] tracking-[-0.045em]">
             Keep scrolling.
             <br />
             <span className="serif-accent text-[0.92em] text-ivory/70">We are going back.</span>
@@ -120,7 +122,7 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
                 <Link
                   href="/noticeboard"
                   aria-label={`A moment from ${y.year}. Open The Wall.`}
-                  className="pinned block w-[52vw] max-w-[17rem] bg-white p-2.5 pb-9 shadow-[0_26px_40px_-18px_rgb(0_0_0/0.8)] md:w-[19vw] md:max-w-[19rem]"
+                  className="pinned block w-[52vw] max-w-[17rem] bg-white p-2.5 pb-9 shadow-[0_26px_40px_-18px_rgb(0_0_0/0.8)] md:w-[min(19vw,34vh)] md:max-w-[19rem]"
                   style={{ ["--tilt" as string]: `${TILTS[i % TILTS.length]}deg` }}
                 >
                   <span className="tape" aria-hidden="true" />

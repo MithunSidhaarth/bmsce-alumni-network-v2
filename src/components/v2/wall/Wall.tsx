@@ -9,6 +9,7 @@ import { longDate, seeded, stampDate } from "@/lib/format";
 import { motionOK } from "@/lib/motion";
 import Avatar from "../Avatar";
 import Icon from "../Icon";
+import WallNotePad from "./WallNotePad";
 
 // ---------------------------------------------------------------------------
 // The Wall: a green noticeboard of real, stored content. Every card is a
@@ -148,7 +149,17 @@ function Attribution({ v, compact = false }: { v: View; compact?: boolean }) {
   return <span className="label-mono text-ink/60">{v.byline ?? "Alumni Network"}</span>;
 }
 
-export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[]; isMember: boolean; handle: string }) {
+export default function Wall({
+  cards,
+  isMember,
+  isAdmin = false,
+  handle,
+}: {
+  cards: NoticeCard[];
+  isMember: boolean;
+  isAdmin?: boolean;
+  handle: string;
+}) {
   const views = useMemo(() => cards.map(describe), [cards]);
   const years = useMemo(() => [...new Set(views.map((v) => v.year))].sort((a, b) => b - a), [views]);
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -429,6 +440,8 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
           })}
         </ul>
       )}
+
+      {isMember && <WallNotePad isAdmin={isAdmin} />}
 
       {/* The reading view. A native dialog: focus is trapped, Esc closes. */}
       <dialog

@@ -31,7 +31,7 @@ const ALL = (archive as ArchiveRow[])
   }));
 
 // The hero frames are square, so they only hold square pictures: nothing is cropped.
-const HERO = ALL.filter((p) => Math.abs(p.ratio - 1) < 0.02).slice(0, 5);
+const HERO = ALL.filter((p) => Math.abs(p.ratio - 1) < 0.02).slice(0, 9);
 const used = new Set(HERO.map((p) => p.code));
 const TEASER = ALL.filter((p) => !used.has(p.code) && p.ratio > 0.7).slice(0, 6);
 TEASER.forEach((p) => used.add(p.code));

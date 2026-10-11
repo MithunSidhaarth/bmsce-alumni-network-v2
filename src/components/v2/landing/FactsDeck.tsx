@@ -8,7 +8,7 @@ const NOTE = ["#fcf9f0", "#e3f5ab", "#ffd9c7", "#e2dbff"];
 
 /**
  * The fun facts as a deck of index cards you drag sideways and flick. On
- * touch screens, and with motion off, it is a normal swipeable row.
+ * touch screens it is a normal swipeable row.
  */
 export default function FactsDeck({ facts }: { facts: string[] }) {
   const frame = useRef<HTMLDivElement | null>(null);

@@ -9,6 +9,8 @@ import Icon from "./Icon";
 import PostCard from "./PostCard";
 import EmptyState from "./EmptyState";
 import EventStub from "./EventStub";
+import LiveFeedPin from "./LiveFeedPin";
+import TransitionLink from "./vt/TransitionLink";
 
 const FILTERS: { key: string; label: string }[] = [
   { key: "all", label: "Everything" },
@@ -152,10 +154,11 @@ export default async function HomeFeed({
                 {pinned.data!.map((p, i) => {
                   const chapter = Array.isArray(p.chapter) ? p.chapter[0] : p.chapter;
                   return (
-                    <Link
+                    <TransitionLink
                       key={p.id}
                       href={`/community/${p.id}`}
-                      className="stickynote pinned block px-5 pb-4 pt-6"
+                      vtName={`post-${p.id}`}
+                      className="stickynote pinned block px-5 pb-4 pt-6 motion-ok:animate-[var(--animate-pin-drop)]"
                       style={{
                         ["--tilt" as string]: `${((seeded(p.id) - 0.5) * 3).toFixed(2)}deg`,
                         ["--note" as string]: ["#c8f53c", "#ffd9c7", "#e2dbff"][i % 3],
@@ -166,15 +169,19 @@ export default async function HomeFeed({
                       <p className="mt-2 line-clamp-3 font-display text-lg font-bold leading-snug">
                         {p.title ?? p.body}
                       </p>
-                    </Link>
+                    </TransitionLink>
                   );
                 })}
               </section>
             )}
 
+            <LiveFeedPin meId={me.id} />
             <div className="flex flex-col gap-5">
-              {visible.map((p) => (
-                <PostCard key={p.id} post={p} viewer={viewer} myReaction={reactions[p.id] ?? null} />
+              {visible.map((p, i) => (
+                // Each post settles onto the page a beat after the one above.
+                <div key={p.id} className="motion-ok:animate-[var(--animate-rise)]" style={{ animationDelay: `${Math.min(i, 8) * 70}ms` }}>
+                  <PostCard post={p} viewer={viewer} myReaction={reactions[p.id] ?? null} />
+                </div>
               ))}
             </div>
 

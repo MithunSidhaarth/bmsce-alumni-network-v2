@@ -26,15 +26,15 @@ export default function Aurora({
       style={{ opacity: strength }}
     >
       <span
-        className="absolute -left-[10%] -top-[20%] h-[60vw] w-[60vw] max-w-[700px] rounded-full opacity-[0.08] blur-3xl motion-safe:animate-[var(--animate-aurora-a)]"
+        className="absolute -left-[10%] -top-[20%] h-[60vw] w-[60vw] max-w-[700px] rounded-full opacity-[0.08] blur-3xl motion-ok:animate-[var(--animate-aurora-a)]"
         style={{ background: a }}
       />
       <span
-        className="absolute -right-[15%] top-[10%] h-[50vw] w-[50vw] max-w-[600px] rounded-full opacity-[0.065] blur-3xl motion-safe:animate-[var(--animate-aurora-b)]"
+        className="absolute -right-[15%] top-[10%] h-[50vw] w-[50vw] max-w-[600px] rounded-full opacity-[0.065] blur-3xl motion-ok:animate-[var(--animate-aurora-b)]"
         style={{ background: b }}
       />
       <span
-        className="absolute bottom-[-20%] left-[30%] h-[45vw] w-[45vw] max-w-[550px] rounded-full opacity-[0.05] blur-3xl motion-safe:animate-[var(--animate-aurora-c)]"
+        className="absolute bottom-[-20%] left-[30%] h-[45vw] w-[45vw] max-w-[550px] rounded-full opacity-[0.05] blur-3xl motion-ok:animate-[var(--animate-aurora-c)]"
         style={{ background: c }}
       />
     </div>

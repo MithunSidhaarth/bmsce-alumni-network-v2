@@ -13,6 +13,7 @@ import PostCard from "@/components/v2/PostCard";
 import { getMe } from "@/lib/me";
 import { listPosts, myReactions } from "@/lib/posts";
 import { plural } from "@/lib/format";
+import { vt } from "@/lib/vt";
 import type { Chapter, PostKind } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -104,7 +105,7 @@ export default async function ChapterPage({
       <Nav />
       <main className="pb-20">
         {/* Cover: the city photograph with the chapter name stamped over it. */}
-        <header className="relative isolate overflow-hidden bg-forest text-ivory">
+        <header {...vt(`chapter-${chapter.slug}`)} className="relative isolate overflow-hidden bg-forest text-ivory">
           {chapter.cover_url && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={chapter.cover_url} alt="" className="absolute inset-0 -z-10 h-full w-full object-cover opacity-55" />

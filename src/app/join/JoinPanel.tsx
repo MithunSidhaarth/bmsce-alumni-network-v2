@@ -49,7 +49,7 @@ export default function JoinPanel({
       <div className="hidden lg:block">
         <Eyebrow>New here</Eyebrow>
         <h1 className="mt-5 font-display text-[clamp(2.5rem,6vw,3.75rem)] leading-[0.98] tracking-tight text-ink">
-          Join the <span className="bg-gradient-to-r from-accent via-maroon to-accent bg-[length:200%_100%] bg-clip-text italic text-transparent motion-safe:animate-[shimmer_6s_linear_infinite]">network.</span>
+          Join the <span className="bg-gradient-to-r from-accent via-maroon to-accent bg-[length:200%_100%] bg-clip-text italic text-transparent motion-ok:animate-[shimmer_6s_linear_infinite]">network.</span>
         </h1>
         <p className="mt-4 font-sans text-base leading-relaxed text-ink/70">
           Two minutes to set up. Once you&rsquo;re verified as a BMS graduate or

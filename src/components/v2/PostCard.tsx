@@ -4,6 +4,7 @@ import { KIND_LABEL } from "@/lib/posts";
 import { seeded, timeAgo } from "@/lib/format";
 import Avatar from "./Avatar";
 import PostActions from "./PostActions";
+import TransitionLink from "./vt/TransitionLink";
 
 export type Viewer = { id: string; isAdmin: boolean; leadOf?: string[] };
 
@@ -81,13 +82,16 @@ export default function PostCard({
   const tilt = isMemory ? (seeded(post.id) - 0.5) * 1.6 : 0;
   const canModerate = viewer.isAdmin || (post.chapter_id ? (viewer.leadOf ?? []).includes(post.chapter_id) : false);
   const long = post.body.length > 420;
+  const vtName = `post-${post.id}`;
 
   return (
     <article
       className={`sheet px-5 pb-3 pt-5 sm:px-6 ${post.kind === "discussion" ? "sheet-ruled" : ""} ${
         post.is_hidden ? "opacity-60" : ""
       }`}
-      style={tilt ? { transform: `rotate(${tilt.toFixed(2)}deg)` } : undefined}
+      // On the thread page this is what a clicked card grows into.
+      data-vt={full ? vtName : undefined}
+      style={{ ...(tilt ? { transform: `rotate(${tilt.toFixed(2)}deg)` } : {}), ...(full ? { viewTransitionName: vtName } : {}) }}
     >
       {post.kind === "announcement" && <span className="tape tape-left" aria-hidden="true" />}
       {post.kind === "achievement" && (
@@ -120,9 +124,9 @@ export default function PostCard({
           </p>
           <p className="mt-1 text-[0.8125rem] text-ink/55">
             {byline(post)} ·{" "}
-            <Link href={href} className="hover:underline">
+            <TransitionLink href={href} vtName={vtName} source="article" className="hover:underline">
               <time dateTime={post.created_at}>{timeAgo(post.created_at)}</time>
-            </Link>
+            </TransitionLink>
             {post.updated_at && " · edited"}
             {post.is_hidden && " · hidden by a moderator"}
           </p>
@@ -134,7 +138,7 @@ export default function PostCard({
         {isMemory && <Media media={post.media} polaroid />}
         {post.title && (
           <h2 className="font-display text-[1.35rem] leading-[1.12] sm:text-2xl">
-            {full ? post.title : <Link href={href} className="hover:underline">{post.title}</Link>}
+            {full ? post.title : <TransitionLink href={href} vtName={vtName} source="article" className="hover:underline">{post.title}</TransitionLink>}
           </h2>
         )}
         <p
@@ -145,9 +149,9 @@ export default function PostCard({
           {post.body}
         </p>
         {!full && long && (
-          <Link href={href} className="mt-1 inline-block text-sm font-semibold text-forest hover:underline">
+          <TransitionLink href={href} vtName={vtName} source="article" className="mt-1 inline-block text-sm font-semibold text-forest hover:underline">
             Read the rest
-          </Link>
+          </TransitionLink>
         )}
         {!isMemory && <Media media={post.media} polaroid={false} />}
         {post.tags.length > 0 && (

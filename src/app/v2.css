@@ -1,17 +1,8 @@
 @import "./globals.css";
 
-/* motion-ok: like motion-safe, but it also follows the site's own motion
-   switch (data-motion on <html>), which wins over the device setting. */
-@custom-variant motion-ok {
-  html[data-motion="full"] & {
-    @slot;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    html:not([data-motion="calm"]) & {
-      @slot;
-    }
-  }
-}
+/* motion-ok: animation classes. Motion is always on for every visitor, so
+   this variant always applies (it does not follow the device setting). */
+@custom-variant motion-ok (&);
 
 /* ==========================================================================
    BMSCE Alumni Network v2 design system: "The Wall".
@@ -399,23 +390,6 @@
   animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html:not([data-motion="full"]) .pinned,
-  html:not([data-motion="full"]) .pinned:hover {
-    transition: none;
-    transform: rotate(var(--tilt, 0deg));
-  }
-  html:not([data-motion="full"])::view-transition-group(*),
-  html:not([data-motion="full"])::view-transition-old(*),
-  html:not([data-motion="full"])::view-transition-new(*) {
-    animation: none !important;
-  }
-}
-html[data-motion="calm"] .pinned,
-html[data-motion="calm"] .pinned:hover {
-  transition: none;
-  transform: rotate(var(--tilt, 0deg));
-}
 
 /* ==========================================================================
    The Wall
@@ -480,7 +454,7 @@ html[data-motion="calm"] .pinned:hover {
   to { translate: 0 12px; }
 }
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  @media (min-width: 1024px) {
     .wall-item.depth-1 {
       animation: wall-near linear both;
       animation-timeline: view();
@@ -492,26 +466,6 @@ html[data-motion="calm"] .pinned:hover {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html:not([data-motion="full"]) .wall-item {
-    opacity: 1;
-  }
-  html:not([data-motion="full"]) .wall-letter,
-  html:not([data-motion="full"]) .wall-item.is-in > .wall-card,
-  html:not([data-motion="full"]) .wall-item.is-in .wall-pin,
-  html:not([data-motion="full"]) .wall-dialog[open] > article {
-    animation: none;
-  }
-}
-html[data-motion="calm"] .wall-item {
-  opacity: 1;
-}
-html[data-motion="calm"] .wall-letter,
-html[data-motion="calm"] .wall-item.is-in > .wall-card,
-html[data-motion="calm"] .wall-item.is-in .wall-pin,
-html[data-motion="calm"] .wall-dialog[open] > article {
-  animation: none;
-}
 @media (max-width: 639px) {
   /* Phones: one column, gentler angles, nothing hanging off the edge. */
   .wall-card {
@@ -552,4 +506,68 @@ html[data-motion="calm"] .wall-dialog[open] > article {
   transform-box: fill-box;
   transform-origin: center;
   animation: map-pulse 2.4s ease-out infinite;
+}
+
+/* The hero's photographs hang on a spiral in real 3D space. --r (the radius),
+   --angle and --tilt are driven from HeroDesk.tsx; the values here are the
+   still arrangement shown before scripts load. */
+.hero-stage {
+  perspective: 1300px;
+}
+.hero-ring {
+  --r: 15rem;
+  --angle: -18deg;
+  --tilt: -9deg;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(var(--r) * -1)) rotateX(var(--tilt)) rotateY(var(--angle));
+  will-change: transform;
+}
+.ring-card {
+  width: calc(var(--r) * 0.62);
+  margin-left: calc(var(--r) * -0.31);
+  margin-top: calc(var(--r) * -0.37);
+  backface-visibility: hidden;
+  transform: rotateY(calc(var(--i) * 40deg)) translateY(var(--lift, 0%)) translateZ(calc(var(--r) + var(--pop, 0px)));
+}
+
+/* ==========================================================================
+   Feed: reactions
+   ========================================================================== */
+@keyframes react-pop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.55) rotate(-12deg); }
+  70% { transform: scale(0.9) rotate(4deg); }
+  100% { transform: scale(1); }
+}
+@keyframes react-burst {
+  0% { transform: translate(0, 0) scale(0.3); opacity: 0; }
+  18% { opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(1.15) rotate(var(--rot)); opacity: 0; }
+}
+.react-pop {
+  animation: react-pop 0.5s var(--ease-pop);
+}
+.react-burst {
+  animation: react-burst 0.7s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+/* ==========================================================================
+   Page-to-page transitions: a clicked card grows into the page it opens.
+   ========================================================================== */
+::view-transition-group(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+/* Keep each snapshot's proportions while its box changes size, so text is
+   never stretched mid-morph. */
+::view-transition-old(*),
+::view-transition-new(*) {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  object-fit: fill;
 }

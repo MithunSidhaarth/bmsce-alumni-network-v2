@@ -2,28 +2,29 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Draggable, gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { motionOK } from "@/lib/motion";
 import Icon from "../Icon";
 
 export type Print = { src: string; stamp: string; code: string };
 
-// Where each photograph rests on the desk.
-const LAYOUT = [
-  { left: "4%", top: "6%", width: "46%", tilt: -6, tape: true },
-  { left: "47%", top: "0%", width: "44%", tilt: 5, tape: false },
-  { left: "22%", top: "38%", width: "50%", tilt: 2, tape: true },
-  { left: "0%", top: "58%", width: "38%", tilt: -4, tape: false },
-  { left: "60%", top: "52%", width: "40%", tilt: 7, tape: false },
-];
+const STEP = 40; // degrees between neighbouring photographs on the spiral
 
-/** One line of the headline, split into letters that rise out of a mask. */
+/**
+ * A headline line split into letters that rise out of a mask. Letters are
+ * grouped by word, and a word never breaks across lines.
+ */
 function Letters({ text, className = "" }: { text: string; className?: string }) {
   return (
     <span className={className} aria-hidden="true">
-      {[...text].map((ch, i) => (
-        <span key={i} className="hero-char inline-block will-change-transform">
-          {ch === " " ? " " : ch}
+      {text.split(" ").map((word, w, all) => (
+        <span key={w} className="inline-block whitespace-nowrap">
+          {[...word].map((ch, i) => (
+            <span key={i} className="hero-char inline-block will-change-transform">
+              {ch}
+            </span>
+          ))}
+          {w < all.length - 1 && <span className="inline-block">&nbsp;</span>}
         </span>
       ))}
     </span>
@@ -31,81 +32,149 @@ function Letters({ text, className = "" }: { text: string; className?: string })
 }
 
 /**
- * The hero: the headline is set letter by letter, a highlighter is drawn
- * under one word, and five real photographs are dealt onto the desk. With a
- * mouse they can be picked up and thrown; on scroll they drift apart.
+ * The hero. The headline is set letter by letter and a highlighter is drawn
+ * under one word. Beside it, real photographs hang on a spiral in 3D space:
+ * they fly in from the distance, turn slowly, lean toward the pointer, and
+ * can be grabbed and spun. Everything is CSS 3D transforms (no WebGL), so it
+ * stays light on ordinary laptops and phones.
  */
 export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href: string; label: string } }) {
   const root = useRef<HTMLElement | null>(null);
-  const [touched, setTouched] = useState(false);
-  const [canDrag, setCanDrag] = useState(false);
+  const stage = useRef<HTMLDivElement | null>(null);
+  const ring = useRef<HTMLDivElement | null>(null);
+  const [live, setLive] = useState(false);
+  const [spun, setSpun] = useState(false);
+  const dragged = useRef(false);
 
   useEffect(() => {
-    if (!motionOK() || !root.current) return;
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    setCanDrag(fine);
+    const el = root.current;
+    const st = stage.current;
+    const rg = ring.current;
+    if (!el || !st || !rg || !motionOK()) return;
+    setLive(true);
+
+    const cards = Array.from(rg.querySelectorAll<HTMLElement>(".ring-card"));
+    const state = { angle: -18, velocity: 0, tilt: -9, tiltTo: -9, dragging: false, lastX: 0, moved: 0, started: false };
+    const sizeRing = () => rg.style.setProperty("--r", `${Math.round(Math.min(st.clientWidth * 0.6, st.clientHeight * 0.95))}px`);
+    sizeRing();
+    window.addEventListener("resize", sizeRing);
 
     const ctx = gsap.context(() => {
       gsap.set(".hero-pre", { visibility: "visible" });
+      gsap.set(".hero-char", { yPercent: 118, rotate: 7 });
+      gsap.set(".hero-hl", { backgroundSize: "0% 100%" });
+      gsap.set([".hero-stamp", ".hero-fade"], { autoAlpha: 0 });
+      gsap.set(cards, { "--pop": "1500px", autoAlpha: 0 });
 
-      gsap
-        .timeline({ defaults: { ease: "power4.out" } })
-        .fromTo(".hero-stamp", { autoAlpha: 0, y: -18, rotate: -14 }, { autoAlpha: 1, y: 0, rotate: -2.5, duration: 0.6, ease: "back.out(2.2)" })
-        .fromTo(".hero-char", { yPercent: 118, rotate: 7 }, { yPercent: 0, rotate: 0, duration: 0.95, stagger: 0.03 }, "-=0.35")
-        .fromTo(".hero-hl", { backgroundSize: "0% 100%" }, { backgroundSize: "100% 100%", duration: 0.7, ease: "power2.inOut" }, "-=0.45")
-        .fromTo(".hero-fade", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.1 }, "-=0.5");
-
-      // Deal the photographs from the bottom of the desk.
-      gsap.fromTo(
-        ".hero-print",
-        { autoAlpha: 0, x: () => gsap.utils.random(-120, 120), y: 460, rotation: () => gsap.utils.random(-55, 55), scale: 0.7 },
-        { autoAlpha: 1, x: 0, y: 0, rotation: 0, scale: 1, duration: 1.15, stagger: 0.13, delay: 0.3, ease: "back.out(1.1)" }
+      // The entrance waits until the hero is really on screen, so it is never
+      // spent while the page sits in a background tab.
+      const intro = gsap
+        .timeline({ paused: true, defaults: { ease: "power4.out" } })
+        .to(".hero-stamp", { autoAlpha: 1, duration: 0.5 })
+        .to(".hero-char", { yPercent: 0, rotate: 0, duration: 0.95, stagger: 0.03 }, "-=0.3")
+        .to(".hero-hl", { backgroundSize: "100% 100%", duration: 0.7, ease: "power2.inOut" }, "-=0.45")
+        .to(".hero-fade", { autoAlpha: 1, duration: 0.7, stagger: 0.1 }, "-=0.5")
+        .to(cards, { "--pop": "0px", autoAlpha: 1, duration: 1.3, stagger: 0.09, ease: "expo.out" }, 0.15)
+        .add(() => {
+          state.started = true;
+        }, 0.2);
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          io.disconnect();
+          intro.play();
+        },
+        { threshold: 0.25 }
       );
+      io.observe(el);
 
-      // As the page scrolls on, the prints lift away at different speeds.
-      gsap.utils.toArray<HTMLElement>(".hero-drift").forEach((el, i) => {
-        gsap.to(el, {
-          yPercent: -(22 + i * 11),
-          rotation: (i % 2 ? 1 : -1) * (4 + i * 2),
-          ease: "none",
-          scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: 0.6 },
-        });
-      });
+      // Scrolling on: the spiral sinks back and the page takes over.
+      gsap.to(st, { yPercent: 14, scale: 0.86, autoAlpha: 0.35, ease: "none", scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: 0.5 } });
+      const watcher = ScrollTrigger.create({});
 
-      if (fine) {
-        let z = 20;
-        Draggable.create(".hero-print", {
-          type: "x,y",
-          inertia: true,
-          bounds: root.current,
-          edgeResistance: 0.75,
-          onPress(this: Draggable) {
-            this.target.style.zIndex = String(++z);
-            gsap.to(this.target, { scale: 1.07, duration: 0.2 });
-          },
-          onDragStart: () => setTouched(true),
-          onDrag(this: Draggable) {
-            // Lean into the direction of travel, like a card being slid.
-            gsap.to(this.target, { rotation: gsap.utils.clamp(-14, 14, this.deltaX * 0.9), duration: 0.25, overwrite: "auto" });
-          },
-          onRelease(this: Draggable) {
-            gsap.to(this.target, { scale: 1, rotation: 0, duration: 0.7, ease: "elastic.out(1, 0.5)" });
-          },
+      const tick = (_t: number, delta: number) => {
+        if (!state.started) return;
+        const dt = Math.min(delta, 50);
+        if (!state.dragging) {
+          const scrollPush = gsap.utils.clamp(-0.5, 0.5, watcher.getVelocity() / 9000);
+          state.angle += (0.0075 + scrollPush) * dt + state.velocity;
+          state.velocity *= 0.94;
+        }
+        state.tilt += (state.tiltTo - state.tilt) * 0.08;
+        rg.style.setProperty("--angle", `${state.angle.toFixed(2)}deg`);
+        rg.style.setProperty("--tilt", `${state.tilt.toFixed(2)}deg`);
+        // Light the photographs from the front: the more a card faces away,
+        // the darker it gets, which is what makes the turn read as depth.
+        cards.forEach((card, i) => {
+          const facing = Math.cos(((state.angle + i * STEP) * Math.PI) / 180);
+          card.style.filter = `brightness(${(0.5 + 0.5 * Math.max(0, facing)).toFixed(2)})`;
         });
-      }
-    }, root);
-    return () => ctx.revert();
+      };
+      gsap.ticker.add(tick);
+
+      const down = (e: PointerEvent) => {
+        state.dragging = true;
+        state.lastX = e.clientX;
+        state.moved = 0;
+        dragged.current = false;
+      };
+      const move = (e: PointerEvent) => {
+        if (state.dragging) {
+          const dx = e.clientX - state.lastX;
+          state.lastX = e.clientX;
+          state.moved += Math.abs(dx);
+          state.angle += dx * 0.32;
+          state.velocity = dx * 0.32;
+          // Only now is it a drag: keep receiving the pointer even if it
+          // leaves the stage, and swallow the click that would follow.
+          if (state.moved > 6 && !dragged.current) {
+            dragged.current = true;
+            setSpun(true);
+            st.setPointerCapture(e.pointerId);
+          }
+        }
+        const box = st.getBoundingClientRect();
+        state.tiltTo = -9 - ((e.clientY - box.top) / box.height - 0.5) * 12;
+      };
+      const up = () => {
+        state.dragging = false;
+      };
+      const leave = () => {
+        state.tiltTo = -9;
+      };
+      st.addEventListener("pointerdown", down);
+      st.addEventListener("pointermove", move);
+      st.addEventListener("pointerup", up);
+      st.addEventListener("pointercancel", up);
+      st.addEventListener("pointerleave", leave);
+
+      return () => {
+        io.disconnect();
+        gsap.ticker.remove(tick);
+        st.removeEventListener("pointerdown", down);
+        st.removeEventListener("pointermove", move);
+        st.removeEventListener("pointerup", up);
+        st.removeEventListener("pointercancel", up);
+        st.removeEventListener("pointerleave", leave);
+      };
+    }, el);
+
+    return () => {
+      window.removeEventListener("resize", sizeRing);
+      ctx.revert();
+      setLive(false);
+    };
   }, []);
 
   return (
     <section ref={root} className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 pb-16 pt-10 md:px-10 md:pb-24 md:pt-16 lg:grid-cols-[1.05fr_1fr] lg:items-center">
+      <div className="mx-auto grid max-w-7xl gap-8 px-5 pb-14 pt-8 md:px-10 md:pb-20 md:pt-12 lg:grid-cols-[1.02fr_1fr] lg:items-center">
         {/* Hidden for a moment while motion is on, so the entrance never flashes. */}
         <div className="hero-pre relative z-10 motion-ok:invisible motion-ok:[animation:hero-failsafe_0s_4s_forwards]">
           <p className="hero-stamp stamp text-forest">Est. 1946 · Basavanagudi, Bengaluru</p>
           <h1
             aria-label="Once BMS. Always BMS."
-            className="mt-7 font-display text-[clamp(3.4rem,11.5vw,8.25rem)] font-extrabold leading-[0.84] tracking-[-0.045em]"
+            className="mt-6 font-display text-[clamp(3.2rem,13vw,6.5rem)] font-extrabold leading-[0.86] tracking-[-0.045em] lg:text-[clamp(3.6rem,7.3vw,7.4rem)]"
           >
             <span className="-my-[0.14em] block overflow-hidden py-[0.14em]">
               <Letters text="Once BMS." />
@@ -115,11 +184,11 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
               <Letters text=" BMS." />
             </span>
           </h1>
-          <p className="hero-fade mt-7 max-w-[34rem] text-lg leading-relaxed text-ink/75">
+          <p className="hero-fade mt-6 max-w-[34rem] text-lg leading-relaxed text-ink/75">
             The alumni network of B.M.S. College of Engineering. Find your batch, join your city
             chapter, and leave something on the wall for whoever comes next.
           </p>
-          <div className="hero-fade mt-8 flex flex-wrap items-center gap-3">
+          <div className="hero-fade mt-7 flex flex-wrap items-center gap-3">
             <Link href={cta.href} className="btn h-12 px-6 text-base">
               {cta.label}
               <Icon name="arrow" className="h-4 w-4" />
@@ -128,43 +197,39 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
               See The Wall
             </Link>
           </div>
-          <p className="hero-fade hand mt-8 -rotate-2 text-[1.55rem] text-forest/80" aria-hidden="true">
-            {canDrag && !touched ? "go on, move the photos →" : "your batch is in here somewhere →"}
+          <p className="hero-fade hand mt-7 -rotate-2 text-[1.55rem] text-forest/80" aria-hidden="true">
+            {live && !spun ? "grab the photos and spin them →" : "your batch is in here somewhere →"}
           </p>
         </div>
 
-        <div className="hero-pre relative mx-auto aspect-[1/1.02] w-full max-w-[34rem] motion-ok:invisible motion-ok:[animation:hero-failsafe_0s_4s_forwards] lg:max-w-none">
-          {prints.map((p, i) => {
-            const l = LAYOUT[i % LAYOUT.length];
-            return (
-              <div key={p.code} className="hero-drift absolute" style={{ left: l.left, top: l.top, width: l.width, zIndex: i + 1 }}>
-                <div className={`hero-print ${canDrag ? "cursor-grab active:cursor-grabbing" : ""}`}>
-                  <figure
-                    className="pinned relative select-none bg-white p-[3.5%] pb-[13%] shadow-[0_22px_34px_-18px_rgb(19_26_21/0.6)]"
-                    style={{ ["--tilt" as string]: `${l.tilt}deg` }}
-                  >
-                    {l.tape ? <span className="tape" aria-hidden="true" /> : <span className="pin" aria-hidden="true" />}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={p.src}
-                      alt="A moment from the BMSCE alumni network"
-                      draggable={false}
-                      className="pointer-events-none aspect-square w-full object-cover"
-                      loading={i < 2 ? "eager" : "lazy"}
-                    />
-                    <figcaption className="label-mono absolute bottom-[4%] left-[5%] text-ink/55">{p.stamp}</figcaption>
-                  </figure>
-                </div>
+        {/* The 3D stage. */}
+        <div
+          ref={stage}
+          className={`hero-pre hero-stage relative mx-auto h-[min(26rem,78vw)] w-full max-w-[36rem] touch-pan-y select-none motion-ok:invisible motion-ok:[animation:hero-failsafe_0s_4s_forwards] lg:h-[min(34rem,74vh)] lg:max-w-none ${
+            live ? "cursor-grab active:cursor-grabbing" : ""
+          }`}
+        >
+          <div ref={ring} className="hero-ring absolute inset-0">
+            {prints.map((p, i) => (
+              <div
+                key={p.code}
+                className="ring-card absolute left-1/2 top-1/2"
+                style={{ ["--i" as string]: i, ["--lift" as string]: `${(i - (prints.length - 1) / 2) * 7}%` }}
+              >
+                <Link
+                  href="/noticeboard"
+                  draggable={false}
+                  aria-label="A moment from the network. Open The Wall."
+                  onClick={(e) => dragged.current && e.preventDefault()}
+                  className="block bg-white p-[4%] pb-[14%] shadow-[0_24px_40px_-18px_rgb(19_26_21/0.65)]"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={p.src} alt="" draggable={false} loading={i < 4 ? "eager" : "lazy"} className="pointer-events-none aspect-square w-full object-cover" />
+                  <span className="label-mono absolute bottom-[4%] left-[6%] text-ink/55">{p.stamp}</span>
+                </Link>
               </div>
-            );
-          })}
-          <span
-            className="stickynote absolute bottom-[2%] right-[4%] z-10 hidden rotate-6 px-4 py-3 sm:block"
-            style={{ ["--note" as string]: "#ffd9c7" }}
-            aria-hidden="true"
-          >
-            <span className="hand block text-[1.4rem] leading-none">since 1946</span>
-          </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

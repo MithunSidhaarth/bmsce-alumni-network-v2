@@ -3,6 +3,7 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import EmptyState from "@/components/v2/EmptyState";
+import TransitionLink from "@/components/v2/vt/TransitionLink";
 import { getMe } from "@/lib/me";
 import { seeded } from "@/lib/format";
 import type { Chapter } from "@/lib/types";
@@ -74,8 +75,9 @@ export default async function ChaptersPage() {
                   return (
                     <li key={c.id}>
                       {/* A postcard from each city. */}
-                      <Link
+                      <TransitionLink
                         href={`/chapters/${c.slug}`}
+                        vtName={`chapter-${c.slug}`}
                         className="pinned group relative block bg-white p-2.5 pb-4 shadow-[var(--shadow-sheet)]"
                         style={{ ["--tilt" as string]: `${((seeded(c.slug) - 0.5) * 3.2).toFixed(2)}deg` }}
                       >
@@ -101,7 +103,7 @@ export default async function ChaptersPage() {
                             {verified ? `${n} ${n === 1 ? "member" : "members"}` : c.country ?? "Regional"}
                           </span>
                         </p>
-                      </Link>
+                      </TransitionLink>
                     </li>
                   );
                 })}

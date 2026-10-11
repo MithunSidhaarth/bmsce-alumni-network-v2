@@ -11,6 +11,7 @@ import { getMe } from "@/lib/me";
 import { ARTICLE_CARD, type ArticleCard } from "@/lib/blog";
 import { longDate } from "@/lib/format";
 import type { Article } from "@/lib/types";
+import { vt } from "@/lib/vt";
 
 export const dynamic = "force-dynamic";
 
@@ -80,7 +81,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <Nav />
       <main className="pb-20">
         <article>
-          <header className="mx-auto max-w-[46rem] px-5 pt-8 md:pt-14">
+          <header {...vt(`article-${article.slug}`)} className="mx-auto max-w-[46rem] px-5 pt-8 md:pt-14">
             <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-ink/65 hover:text-ink">
               <Icon name="back" className="h-4 w-4" /> Blog &amp; Insights
             </Link>

@@ -19,11 +19,6 @@ export default function CountUp({
     const el = ref.current;
     if (!el) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplay(value);
-      return;
-    }
-
     const match = value.match(/^([^\d]*)([\d,]+)(.*)$/);
     if (!match) {
       setDisplay(value);

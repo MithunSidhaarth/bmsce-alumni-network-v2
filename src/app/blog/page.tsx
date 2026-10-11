@@ -4,6 +4,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SubscribeForm from "@/components/v2/SubscribeForm";
 import Icon from "@/components/v2/Icon";
+import TransitionLink from "@/components/v2/vt/TransitionLink";
 import { getMe } from "@/lib/me";
 import { ARTICLE_CARD, BLOG_CATEGORIES, type ArticleCard } from "@/lib/blog";
 import { longDate } from "@/lib/format";
@@ -103,7 +104,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
             <div>
               <p className="label-mono text-tangerine">Featured · {lead.category}</p>
               <h2 className="mt-3 font-serif text-[clamp(2rem,4.6vw,3.4rem)] font-normal leading-[1.02] tracking-[-0.025em]">
-                <Link href={`/blog/${lead.slug}`} className="hover:underline">{lead.title}</Link>
+                <TransitionLink href={`/blog/${lead.slug}`} vtName={`article-${lead.slug}`} source="article" className="hover:underline">{lead.title}</TransitionLink>
               </h2>
               {lead.excerpt && <p className="mt-4 font-serif text-xl leading-snug text-ink/70">{lead.excerpt}</p>}
               <div className="mt-5"><Byline a={lead} /></div>
@@ -117,7 +118,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
               <article key={a.id} className={`py-8 ${i === 1 ? "md:pl-10" : ""}`}>
                 <p className="label-mono text-tangerine">{a.category}</p>
                 <h2 className="mt-2 font-serif text-[1.9rem] font-normal leading-[1.08] tracking-[-0.02em]">
-                  <Link href={`/blog/${a.slug}`} className="hover:underline">{a.title}</Link>
+                  <TransitionLink href={`/blog/${a.slug}`} vtName={`article-${a.slug}`} source="article" className="hover:underline">{a.title}</TransitionLink>
                 </h2>
                 {a.excerpt && <p className="mt-3 font-serif text-lg leading-snug text-ink/70">{a.excerpt}</p>}
                 <div className="mt-4"><Byline a={a} /></div>
@@ -139,7 +140,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                   )}
                   <p className="label-mono text-tangerine">{a.category}</p>
                   <h2 className="mt-2 font-serif text-2xl font-normal leading-[1.12] tracking-[-0.015em]">
-                    <Link href={`/blog/${a.slug}`} className="hover:underline">{a.title}</Link>
+                    <TransitionLink href={`/blog/${a.slug}`} vtName={`article-${a.slug}`} source="article" className="hover:underline">{a.title}</TransitionLink>
                   </h2>
                   {a.excerpt && <p className="mt-2 line-clamp-3 text-[0.9375rem] leading-relaxed text-ink/70">{a.excerpt}</p>}
                   <div className="mt-3"><Byline a={a} /></div>

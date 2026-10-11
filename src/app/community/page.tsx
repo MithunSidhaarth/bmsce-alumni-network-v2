@@ -5,6 +5,7 @@ import Avatar from "@/components/v2/Avatar";
 import Composer from "@/components/v2/Composer";
 import EmptyState from "@/components/v2/EmptyState";
 import Icon from "@/components/v2/Icon";
+import TransitionLink from "@/components/v2/vt/TransitionLink";
 import { requireMember } from "@/lib/me";
 import { FORUM_TAGS, listPosts } from "@/lib/posts";
 import { plural, timeAgo } from "@/lib/format";
@@ -115,7 +116,7 @@ export default async function ForumPage({
           <ol className="sheet mt-6 divide-y divide-ink/10">
             {threads.map((t) => (
               <li key={t.id} className="relative">
-                <Link href={`/community/${t.id}`} className="group flex gap-4 px-4 py-4 transition-colors hover:bg-lime/25 sm:px-6">
+                <TransitionLink href={`/community/${t.id}`} vtName={`post-${t.id}`} source="li" className="group flex gap-4 px-4 py-4 transition-colors hover:bg-lime/25 sm:px-6">
                   <Avatar name={t.author?.full_name} src={t.author?.photo_url} size={40} className="mt-0.5" />
                   <div className="min-w-0 flex-1">
                     <h2 className="font-display text-[1.15rem] font-bold leading-snug group-hover:underline">
@@ -138,7 +139,7 @@ export default async function ForumPage({
                     <span className="label-mono mt-1 text-ink/50">{t.comment_count === 1 ? "reply" : "replies"}</span>
                     <span className="mt-2 text-xs text-ink/50">active {timeAgo(t.last_activity_at)}</span>
                   </div>
-                </Link>
+                </TransitionLink>
                 <p className="px-4 pb-3 text-xs text-ink/50 sm:hidden">
                   {plural(t.comment_count, "reply", "replies")} · active {timeAgo(t.last_activity_at)}
                 </p>

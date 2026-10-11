@@ -172,38 +172,6 @@
   .reveal.is-visible {
     animation: var(--animate-fade-up);
   }
-
-  /* Motion is off when the device asks for reduced motion, unless the visitor
-     has switched it on with the site's own control (data-motion="full"), and
-     always off when they have switched it off (data-motion="calm"). */
-  @media (prefers-reduced-motion: reduce) {
-    html:not([data-motion="full"]) .reveal {
-      opacity: 1;
-      animation: none !important;
-      transform: none !important;
-    }
-
-    html:not([data-motion="full"]) {
-      scroll-behavior: auto;
-    }
-
-    html:not([data-motion="full"]) * {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-  html[data-motion="calm"] .reveal {
-    opacity: 1;
-    animation: none !important;
-    transform: none !important;
-  }
-  html[data-motion="calm"] {
-    scroll-behavior: auto;
-  }
-  html[data-motion="calm"] * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
 }
 
 @keyframes shimmer {

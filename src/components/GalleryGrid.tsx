@@ -100,7 +100,7 @@ export default function GalleryGrid({
                 photo.caption ? `Open photo: ${photo.caption}` : "Open photo"
               }
               style={{ animationDelay: `${(i % 12) * 45}ms` }}
-              className={`group relative motion-safe:animate-fade-up overflow-hidden rounded-xl bg-ivory-dim ${
+              className={`group relative motion-ok:animate-fade-up overflow-hidden rounded-xl bg-ivory-dim ${
                 big
                   ? "col-span-2 row-span-2"
                   : wide

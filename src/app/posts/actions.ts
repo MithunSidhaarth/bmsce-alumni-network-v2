@@ -156,6 +156,46 @@ export async function setFollow(postId: string, follow: boolean) {
   revalidatePath(`/community/${postId}`);
 }
 
+/**
+ * A short note thrown onto The Wall. It is a real post under the member's
+ * name. A member's note waits for an admin; an admin's own note is pinned at
+ * once (the database only lets admins publish wall items).
+ */
+export async function pinNote(text: string): Promise<"published" | "pending"> {
+  const { supabase, user, isAdmin } = await actionMember();
+  const body = text.trim();
+  if (body.length < 3) throw new Error("Write a few words first.");
+  if (body.length > 240) throw new Error("Keep a note under 240 characters.");
+  await rateLimit(supabase, `post:${user.id}`, 15, 3600);
+
+  const { data, error } = await supabase
+    .from("posts")
+    .insert({ author_id: user.id, kind: "post", body })
+    .select("id")
+    .single();
+  if (error) throw new Error(error.message);
+
+  if (isAdmin) {
+    const { error: pinError } = await supabase
+      .from("notice_items")
+      .upsert({ source: "post", post_id: data.id, origin: "admin", status: "published", created_by: user.id }, { onConflict: "post_id" });
+    if (pinError) {
+      await supabase.from("posts").delete().eq("id", data.id);
+      throw new Error(pinError.message);
+    }
+    refresh(data.id);
+    return "published";
+  }
+  const { data: status, error: suggestError } = await supabase.rpc("suggest_for_noticeboard", { p_post: data.id });
+  if (suggestError) {
+    // e.g. the daily suggestion limit: take the note back rather than leave a stray post.
+    await supabase.from("posts").delete().eq("id", data.id);
+    throw new Error(suggestError.message);
+  }
+  refresh(data.id);
+  return status === "published" ? "published" : "pending";
+}
+
 /** Offer one of your own posts for The Wall. An admin approves it. */
 export async function suggestForWall(postId: string) {
   const { supabase } = await actionMember();

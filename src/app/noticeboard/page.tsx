@@ -31,7 +31,7 @@ export default async function NoticeboardPage() {
       </noscript>
       <main>
         {/* A failed query must never take the page down: show a bare wall. */}
-        <Wall cards={error ? [] : ((data ?? []) as NoticeCard[])} isMember={isMember} handle={settings?.ig_handle ?? "bmscealumni"} />
+        <Wall cards={error ? [] : ((data ?? []) as NoticeCard[])} isMember={isMember} isAdmin={Boolean(me && me.role === "admin" && !me.suspended_at)} handle={settings?.ig_handle ?? "bmscealumni"} />
       </main>
       <Footer />
     </>

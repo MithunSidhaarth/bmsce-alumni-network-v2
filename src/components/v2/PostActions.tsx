@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { deletePost, react, setHidden, setPinned, suggestForWall } from "@/app/posts/actions";
 import { reportContent } from "@/app/moderation/actions";
 import { REACTIONS } from "@/lib/posts";
+import { motionOK } from "@/lib/motion";
 import type { ReactionKind } from "@/lib/types";
 import Icon from "./Icon";
 
@@ -38,6 +39,8 @@ export default function PostActions({
   const [picker, setPicker] = useState(false);
   const [menu, setMenu] = useState(false);
   const [note, setNote] = useState<string | null>(null);
+  // A fresh number each time a reaction is added, so the burst replays.
+  const [burst, setBurst] = useState<{ key: number; glyph: string } | null>(null);
   const [pending, start] = useTransition();
   const wrap = useRef<HTMLDivElement | null>(null);
 
@@ -63,6 +66,12 @@ export default function PostActions({
     setPicker(false);
     setMine(kind);
     setCount((c) => c + (kind && !mine ? 1 : !kind && mine ? -1 : 0));
+    if (kind && motionOK()) {
+      const glyph = REACTIONS.find((r) => r.kind === kind)?.glyph ?? "♥";
+      const key = Date.now();
+      setBurst({ key, glyph });
+      window.setTimeout(() => setBurst((b) => (b?.key === key ? null : b)), 800);
+    }
     start(async () => {
       try {
         await react(postId, kind);
@@ -116,11 +125,33 @@ export default function PostActions({
             }}
             aria-pressed={Boolean(mine)}
             disabled={pending}
-            className={`flex h-10 items-center gap-1.5 rounded-full px-3 font-medium transition-colors hover:bg-ink/[0.06] ${
+            className={`relative flex h-10 items-center gap-1.5 rounded-full px-3 font-medium transition-colors hover:bg-ink/[0.06] ${
               mine ? "text-tangerine" : ""
             }`}
           >
-            <Icon name="heart" filled={Boolean(mine)} className="h-[1.15rem] w-[1.15rem]" />
+            <Icon name="heart" filled={Boolean(mine)} className={`h-[1.15rem] w-[1.15rem] ${burst ? "react-pop" : ""}`} />
+            {burst && (
+              <span key={burst.key} className="pointer-events-none absolute left-5 top-1/2" aria-hidden="true">
+                {Array.from({ length: 9 }).map((_, i) => {
+                  const angle = (i / 9) * Math.PI * 2 + 0.3;
+                  const reach = 26 + (i % 3) * 12;
+                  return (
+                    <span
+                      key={i}
+                      className="react-burst absolute text-[0.8rem] leading-none text-tangerine"
+                      style={{
+                        ["--dx" as string]: `${Math.round(Math.cos(angle) * reach)}px`,
+                        ["--dy" as string]: `${Math.round(Math.sin(angle) * reach - 10)}px`,
+                        ["--rot" as string]: `${(i % 2 ? 1 : -1) * (20 + i * 9)}deg`,
+                        animationDelay: `${i * 12}ms`,
+                      }}
+                    >
+                      {burst.glyph}
+                    </span>
+                  );
+                })}
+              </span>
+            )}
             <span>{current && current.kind !== "like" ? current.label : mine ? "Liked" : "Like"}</span>
             {count > 0 && <span className="font-mono text-xs">{count}</span>}
           </button>
