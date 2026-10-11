@@ -1,3 +1,4 @@
+import DeviceSetup from "@/components/v2/DeviceSetup";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
@@ -81,6 +82,9 @@ export default async function EditProfilePage() {
                 usn={profile.usn ?? null}
               />
             )}
+            <div className="mt-8">
+              <DeviceSetup />
+            </div>
           </div>
         </section>
       </main>

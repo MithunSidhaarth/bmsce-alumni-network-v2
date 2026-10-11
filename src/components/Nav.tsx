@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import ThemeToggle from "./v2/ThemeToggle";
 import { usePathname } from "next/navigation";
 import { useAuth } from "./AuthProvider";
 import AuthMenu from "./AuthMenu";
@@ -81,6 +82,7 @@ export default function Nav() {
         </nav>
 
         <div className="ml-auto hidden items-center gap-2 lg:flex">
+          <ThemeToggle className="flex h-10 w-10 items-center justify-center rounded-full text-ink/75 hover:bg-ink/[0.06] hover:text-ink" />
           {signedIn ? (
             <AuthMenu />
           ) : (

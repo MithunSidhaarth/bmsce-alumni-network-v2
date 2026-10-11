@@ -1,3 +1,4 @@
+import DeviceSetup from "@/components/v2/DeviceSetup";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -44,6 +45,9 @@ export default async function NotificationsPage() {
             </form>
           )}
         </header>
+        <div className="mt-6">
+          <DeviceSetup />
+        </div>
         {rows.length === 0 ? (
           <EmptyState
             title="All quiet"

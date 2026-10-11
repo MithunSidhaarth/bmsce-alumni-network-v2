@@ -123,6 +123,8 @@ export async function launch() {
     return {
       errors,
       cmd,
+      /** Allow browser permissions (e.g. ["notifications"]) for an origin in this page's profile. */
+      grant: (origin, permissions) => send("Browser.grantPermissions", { origin, permissions, browserContextId }),
       eval: evaluate,
       waitFor,
       sleep,

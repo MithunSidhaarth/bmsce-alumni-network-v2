@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 import {
   Bricolage_Grotesque,
   Caveat,
@@ -60,6 +61,9 @@ export const metadata: Metadata = {
     template: "%s",
   },
   description,
+  applicationName: "BMSCE Alumni Network",
+  appleWebApp: { capable: true, title: "BMS Alumni", statusBarStyle: "default" },
+  icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
   openGraph: {
     title: "BMSCE Alumni Network: Once BMS. Always BMS.",
     description,
@@ -87,11 +91,14 @@ export default async function RootLayout({
   // The signed-in shell (rail, top bar, tab bar) only appears once a member
   // has finished onboarding; until then they see the public layout.
   const inApp = Boolean(user && me?.onboarded);
+  // Day or night, as the visitor last chose (see components/v2/ThemeToggle).
+  const night = (await cookies()).get("theme")?.value === "night";
 
   return (
     <html
       lang="en"
       data-auth={inApp ? "in" : "out"}
+      data-theme={night ? "night" : undefined}
       className={`${bricolage.variable} ${hanken.variable} ${fraunces.variable} ${caveat.variable} ${dmMono.variable}`}
     >
       <body>

@@ -18,7 +18,7 @@ export default function Avatar({
   const tint = TINTS[Math.floor(seeded(name ?? "?") * TINTS.length)];
   return (
     <span
-      className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-ink/15 font-display font-bold text-ink ${className}`}
+      className={`keep-day relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-ink/15 font-display font-bold text-ink ${className}`}
       style={{ width: size, height: size, background: tint, fontSize: size * 0.38 }}
     >
       {src ? <MemberPhoto src={src} alt={name ?? ""} /> : <span aria-hidden="true">{initials(name)}</span>}

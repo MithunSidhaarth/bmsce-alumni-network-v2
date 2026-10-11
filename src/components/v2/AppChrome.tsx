@@ -4,11 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { flushPush } from "@/app/push/actions";
 import type { Me } from "@/lib/me";
 import Avatar from "./Avatar";
 import CommandPalette from "./CommandPalette";
 import Icon, { type IconName } from "./Icon";
 import Presence from "./Presence";
+import ThemeToggle from "./ThemeToggle";
 
 type Item = { label: string; short?: string; href: string; icon: IconName; match: string[] };
 
@@ -74,6 +76,10 @@ export default function AppChrome({ me }: { me: Me }) {
   useEffect(() => {
     const supabase = createClient();
     supabase.rpc("touch_activity").then(() => undefined);
+    // Installable app and push notifications. Scheduled reminders have no
+    // always-on sender, so opening the app also delivers whatever is waiting.
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+    if (me.verification_status === "verified") flushPush().catch(() => undefined);
     const channel = supabase
       .channel(`chrome:${me.id}`)
       .on(
@@ -86,7 +92,7 @@ export default function AppChrome({ me }: { me: Me }) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [me.id, refresh]);
+  }, [me.id, me.verification_status, refresh]);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -188,7 +194,7 @@ export default function AppChrome({ me }: { me: Me }) {
               href="/noticeboard"
               aria-current={onWall ? "page" : undefined}
               title="The Wall"
-              className={`relative flex h-12 items-center gap-3 rounded-lg border-[1.5px] border-ink px-3 font-display text-[0.95rem] font-bold transition-transform hover:-translate-y-0.5 ${
+              className={`keep-day relative flex h-12 items-center gap-3 rounded-lg border-[1.5px] border-ink px-3 font-display text-[0.95rem] font-bold transition-transform hover:-translate-y-0.5 ${
                 onWall ? "bg-ink text-lime" : "bg-lime text-ink"
               }`}
             >
@@ -248,6 +254,7 @@ export default function AppChrome({ me }: { me: Me }) {
         </form>
 
         <div className="ml-auto flex items-center gap-1">
+          <ThemeToggle className="flex h-10 w-10 items-center justify-center rounded-full text-ink/75 hover:bg-ink/[0.06] hover:text-ink" />
           <Link
             href="/notifications"
             aria-label={`Notifications${unreadNotes ? `, ${unreadNotes} unread` : ""}`}
@@ -334,7 +341,7 @@ export default function AppChrome({ me }: { me: Me }) {
             <Link
               href="/noticeboard"
               aria-current={onWall ? "page" : undefined}
-              className={`-mt-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border-[1.5px] border-ink shadow-[0_3px_0_var(--color-ink)] ${
+              className={`keep-day -mt-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border-[1.5px] border-ink shadow-[0_3px_0_var(--color-ink)] ${
                 onWall ? "bg-ink text-lime" : "bg-lime text-ink"
               }`}
             >

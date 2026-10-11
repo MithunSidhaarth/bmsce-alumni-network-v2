@@ -37,6 +37,8 @@ function buildCsp(nonce: string, isDev: boolean) {
     `style-src 'self' 'unsafe-inline'`,
     `img-src 'self' data: blob: https:`,
     `font-src 'self'`,
+    `worker-src 'self'`,
+    `manifest-src 'self'`,
     `connect-src 'self' ${SUPABASE_ORIGIN} ${SUPABASE_WS_ORIGIN}`,
     `frame-src 'none'`,
     `frame-ancestors 'none'`,

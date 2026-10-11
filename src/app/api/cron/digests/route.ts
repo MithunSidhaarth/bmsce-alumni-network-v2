@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendDigest } from "@/lib/newsletter";
+import { dispatchPush } from "@/lib/push";
 import { isCronRequest, serverClient, serverSecret } from "@/lib/server/cron";
 
 // Sends email digests whose scheduled time has passed. Runs daily from
@@ -23,7 +24,8 @@ export async function GET(request: Request) {
       if (!outcome.sent && outcome.reason === "Nothing to send.") break;
       outcomes.push(outcome);
     }
-    return NextResponse.json({ processed: outcomes.length, outcomes });
+    const push = await dispatchPush();
+    return NextResponse.json({ processed: outcomes.length, outcomes, push });
   } catch (e) {
     return NextResponse.json({ error: e instanceof Error ? e.message : "Unknown error", outcomes }, { status: 500 });
   }

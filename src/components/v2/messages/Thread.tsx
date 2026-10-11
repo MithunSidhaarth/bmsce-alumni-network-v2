@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { blockMember } from "@/app/messages/actions";
+import { flushPush } from "@/app/push/actions";
 import { reportContent } from "@/app/moderation/actions";
 import { clockTime, dayKey, longDate } from "@/lib/format";
 import Avatar from "../Avatar";
@@ -218,6 +219,7 @@ export default function Thread({
       all.map((x) => (x.key === draft.key ? (error || !data ? { ...x, state: "failed" } : (data as Message)) : x))
     );
     if (error) setNotice(error.message);
+    else flushPush().catch(() => undefined);
   };
 
   const send = () => {

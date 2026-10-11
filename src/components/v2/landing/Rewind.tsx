@@ -87,7 +87,7 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
     <section
       ref={root}
       aria-labelledby="rewind-title"
-      className={`relative bg-ink text-ivory ${pinned ? "h-svh overflow-hidden" : "overflow-x-auto py-16 no-scrollbar"}`}
+      className={`keep-dark relative bg-ink text-ivory ${pinned ? "h-svh overflow-hidden" : "overflow-x-auto py-16 no-scrollbar"}`}
     >
       <div ref={track} className={`flex w-max items-stretch ${pinned ? "h-full will-change-transform" : "snap-x"}`}>
         {/* Title panel */}

@@ -1,11 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { actionMember } from "@/lib/me";
 import { rateLimit } from "@/lib/rateLimit";
 import { logAdminAction } from "@/lib/audit";
 import { FORUM_TAGS } from "@/lib/posts";
 import { fetchLinkPreview, firstUrl } from "@/lib/linkPreview";
+import { dispatchPush } from "@/lib/push";
 import type { PostKind, ReactionKind } from "@/lib/types";
 
 // Every write here is also enforced in Postgres (RLS + the posts_guard
@@ -91,6 +93,7 @@ export async function createPost(input: {
   if (input.eventId && kind === "memory" && media.length > 0) {
     await supabase.rpc("suggest_for_noticeboard", { p_post: data.id });
   }
+  after(() => dispatchPush());
   refresh();
   return data.id as string;
 }
@@ -151,6 +154,7 @@ export async function addComment(postId: string, body: string, parentId?: string
     .from("post_comments")
     .insert({ post_id: postId, author_id: user.id, body: b, parent_id: parentId ?? null, mentions: mentionIds(mentions) });
   if (error) throw new Error(error.message);
+  after(() => dispatchPush());
   refresh(postId);
 }
 

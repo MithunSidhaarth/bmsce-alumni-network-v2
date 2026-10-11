@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import ThemeToggle from "./v2/ThemeToggle";
 import { useAuth } from "./AuthProvider";
 import SubscribeForm from "./v2/SubscribeForm";
 
@@ -52,6 +53,7 @@ export default function Footer() {
           <Link href="/faqs" className="hover:text-ink">FAQs</Link>
           <Link href="/privacy" className="hover:text-ink">Privacy</Link>
           <Link href="/terms" className="hover:text-ink">Terms</Link>
+          <ThemeToggle label className="inline-flex items-center gap-1.5 uppercase hover:text-ink [&>svg]:h-4 [&>svg]:w-4" />
         </p>
       </footer>
     );
@@ -103,6 +105,7 @@ export default function Footer() {
             ))}
             <Link href="/privacy" className="hover:text-lime">Privacy</Link>
             <Link href="/terms" className="hover:text-lime">Terms</Link>
+            <ThemeToggle label className="inline-flex items-center gap-1.5 hover:text-lime [&>svg]:h-4 [&>svg]:w-4" />
           </p>
         </div>
       </div>

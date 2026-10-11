@@ -127,7 +127,7 @@
   }
   ::selection {
     background: var(--color-lime);
-    color: var(--color-ink);
+    color: #131a15;
   }
   :focus-visible {
     outline: 2px solid var(--color-ink);
@@ -287,8 +287,8 @@
   .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
   .btn-lime { background: var(--color-lime); color: var(--color-ink); }
   .btn-lime:hover { background: #d6fb5c; }
-  .btn-ghost { background: transparent; color: var(--color-ink); border-color: rgb(19 26 21 / 0.28); }
-  .btn-ghost:hover { background: var(--color-paper); border-color: var(--color-ink); }
+  .btn-ghost { background: transparent; color: var(--color-ink); border-color: color-mix(in oklab, var(--color-ink) 28%, transparent); }
+  .btn-ghost:hover { background: color-mix(in oklab, var(--color-ink) 8%, transparent); border-color: var(--color-ink); }
   .btn-sm { min-height: 2.25rem; padding: 0.4rem 0.85rem; font-size: 0.8125rem; }
   .btn-paper { background: var(--color-paper); border-color: var(--color-paper); color: var(--color-ink); }
   .btn-paper:hover { background: #fff; box-shadow: 0 3px 0 rgb(6 36 23 / 0.6); }
@@ -303,7 +303,7 @@
     padding: 0.35rem 0.85rem;
     font-size: 0.8125rem;
     font-weight: 500;
-    border: 1px solid rgb(19 26 21 / 0.2);
+    border: 1px solid color-mix(in oklab, var(--color-ink) 20%, transparent);
     border-radius: 999px;
     background: transparent;
     color: var(--color-ink);
@@ -338,7 +338,7 @@
     margin-bottom: 0.4rem;
     font-size: 0.8125rem;
     font-weight: 600;
-    color: rgb(19 26 21 / 0.8);
+    color: color-mix(in oklab, var(--color-ink) 80%, transparent);
   }
 
   /* ---- The board ------------------------------------------------------- */
@@ -388,7 +388,7 @@
 
   .rule-dashed {
     border: 0;
-    border-top: 1.5px dashed rgb(19 26 21 / 0.25);
+    border-top: 1.5px dashed color-mix(in oklab, var(--color-ink) 25%, transparent);
   }
   .no-scrollbar { scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -613,4 +613,88 @@
 ::view-transition-old(root),
 ::view-transition-new(root) {
   object-fit: fill;
+}
+
+/* ==========================================================================
+   Night
+   The room goes dark and a lamp comes on over the desk. Whatever sits
+   directly on the desk (the page itself) turns light-on-dark. Every sheet of
+   paper, photo print, sticky note, and the board, stays exactly as it is in
+   daylight: those are "islands" that get the daytime colours back.
+   ========================================================================== */
+@layer base {
+  html[data-theme="night"] {
+    color-scheme: dark;
+    --color-ivory: #0d1511;
+    --color-ivory-dim: #18231d;
+    --color-ink: #efe8d6;
+    --color-gold: #3b4a41;
+    --color-gold-soft: #3b4a41a0;
+    --color-oxblood: #8fd6a9;
+    --color-forest: #8fd6a9;
+    --color-maroon: #a9e2bd;
+    --color-accent: #ff7a45;
+  }
+  html[data-theme="night"] body {
+    background-image: radial-gradient(70rem 42rem at 50% -8rem, rgb(255 205 130 / 0.1), transparent 70%);
+    background-attachment: fixed;
+  }
+  html[data-theme="night"] body::before {
+    opacity: 0.05;
+    mix-blend-mode: screen;
+  }
+
+  /* Paper and other light things: daytime colours, dark writing. */
+  html[data-theme="night"] :is(
+  .sheet,
+  .stickynote,
+  .field,
+  .hl,
+  .fact-card,
+  .btn-lime,
+  .btn-paper,
+  .keep-day,
+  [class~="bg-paper"], [class^="bg-paper/"], [class*=" bg-paper/"],
+  [class~="bg-white"], [class^="bg-white/"], [class*=" bg-white/"],
+  [class~="bg-lime"], [class^="bg-lime/"], [class*=" bg-lime/"],
+  [class~="bg-kraft"], [class^="bg-kraft/"], [class*=" bg-kraft/"],
+  [class^="bg-[#"], [class*=" bg-[#"]
+  ) {
+    --color-ivory: #f4eedd;
+    --color-ivory-dim: #eae2cb;
+    --color-ink: #131a15;
+    --color-gold: #cdc3a5;
+    --color-gold-soft: #cdc3a5a0;
+    --color-oxblood: #0f3b2a;
+    --color-forest: #0f3b2a;
+    --color-maroon: #1b5e41;
+    --color-accent: #e8501f;
+    color: var(--color-ink);
+  }
+  /* Dark things (the board, forest-green bands): daytime colours, their own light writing. */
+  html[data-theme="night"] :is(
+  .board,
+  .keep-dark,
+  .map-frame,
+  [class~="bg-forest"], [class^="bg-forest/"], [class*=" bg-forest/"],
+  [class~="bg-oxblood"], [class^="bg-oxblood/"], [class*=" bg-oxblood/"],
+  [class~="bg-maroon"], [class^="bg-maroon/"], [class*=" bg-maroon/"],
+  [class~="bg-board"], [class^="bg-board/"], [class*=" bg-board/"],
+  [class~="bg-board-deep"], [class^="bg-board-deep/"], [class*=" bg-board-deep/"],
+  [class~="from-maroon"], [class~="from-oxblood"]
+  ) {
+    --color-ivory: #f4eedd;
+    --color-ivory-dim: #eae2cb;
+    --color-ink: #131a15;
+    --color-gold: #cdc3a5;
+    --color-gold-soft: #cdc3a5a0;
+    --color-oxblood: #0f3b2a;
+    --color-forest: #0f3b2a;
+    --color-maroon: #1b5e41;
+    --color-accent: #e8501f;
+  }
+  /* A lamp-lit room: paper is a touch warmer and less glaring. */
+  html[data-theme="night"] :is(.sheet, [class~="bg-paper"]) {
+    --color-paper: #f3ecd9;
+  }
 }
