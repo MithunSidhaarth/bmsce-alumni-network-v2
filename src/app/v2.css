@@ -394,6 +394,19 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 
+/* The ID card drops in on its lanyard, swings and settles. */
+@keyframes id-swing {
+  0% { transform: translateY(-35%) rotate(-11deg); opacity: 0; }
+  28% { transform: translateY(0) rotate(7deg); opacity: 1; }
+  52% { transform: rotate(-4deg); }
+  76% { transform: rotate(2deg); }
+  100% { transform: rotate(0deg); }
+}
+.idcard-hang {
+  transform-origin: 50% 0;
+  animation: id-swing 1.6s cubic-bezier(0.3, 0.7, 0.3, 1) both;
+}
+
 /* Three dots that bounce in turn while someone is typing. */
 @keyframes typing-dot {
   0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }

@@ -2,6 +2,7 @@
 // here at the source so both onboarding and profile-edit (which share this
 // constant) stay in sync. "Other" is the catch-all and stays pinned last.
 const BRANCH_OPTIONS = [
+  "Artificial Intelligence & Machine Learning",
   "Computer Science",
   "Information Science",
   "Electronics & Communication (ECE)",

@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import LinkedInBadge from "@/components/LinkedInBadge";
 import ReportButton from "@/components/ReportButton";
-import Avatar from "@/components/v2/Avatar";
 import EmptyState from "@/components/v2/EmptyState";
+import IdCard from "@/components/v2/IdCard";
 import Icon from "@/components/v2/Icon";
 import PostCard from "@/components/v2/PostCard";
 import { requireMember } from "@/lib/me";
@@ -24,8 +24,19 @@ type Shown = Pick<
   Profile,
   | "id" | "full_name" | "photo_url" | "user_type" | "job_title" | "company" | "graduation_year" | "branch"
   | "current_city" | "country" | "industry" | "linkedin_url" | "linkedin_verified" | "bio" | "is_mentor"
-  | "mentor_bio" | "skills" | "interests" | "privacy" | "verification_status"
+  | "mentor_bio" | "skills" | "interests" | "privacy" | "verification_status" | "usn" | "created_at"
 >;
+
+// How the department is written on the card. Anything else is printed in full.
+const DEPT: Record<string, string> = {
+  "Artificial Intelligence & Machine Learning": "AIML",
+  "Computer Science": "CSE",
+  "Information Science": "ISE",
+  "Electronics & Communication (ECE)": "ECE",
+  "Electrical & Electronics": "EEE",
+  "Electronics & Instrumentation": "EIE",
+  "Industrial Engineering & Management": "IEM",
+};
 
 const DEFAULT_PRIVACY: Privacy = { dm: "members", show_work: true, show_location: true, show_linkedin: true };
 
@@ -40,7 +51,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
   const { data: p } = await supabase
     .from("profiles")
     .select(
-      "id, full_name, photo_url, user_type, job_title, company, graduation_year, branch, current_city, country, industry, linkedin_url, linkedin_verified, bio, is_mentor, mentor_bio, skills, interests, privacy, verification_status"
+      "id, full_name, photo_url, user_type, job_title, company, graduation_year, branch, current_city, country, industry, linkedin_url, linkedin_verified, bio, is_mentor, mentor_bio, skills, interests, privacy, verification_status, usn, created_at"
     )
     .eq("id", id)
     .maybeSingle<Shown>();
@@ -93,16 +104,38 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
 
   return (
     <>
-      <main className="mx-auto max-w-[980px] px-4 pb-16 pt-6 md:px-8">
+      <main className="mx-auto max-w-[1080px] px-4 pb-16 pt-6 md:px-8">
         <Link href="/directory" className="inline-flex items-center gap-2 text-sm font-semibold text-ink/65 hover:text-ink">
           <Icon name="back" className="h-4 w-4" /> Alumni Network
         </Link>
 
-        {/* An index card: the member, as filed in the network's records. */}
-        <header className="sheet mt-5 px-5 pb-6 pt-7 sm:px-8">
+        <div className="mt-6 grid gap-x-10 gap-y-8 lg:grid-cols-[21rem_minmax(0,1fr)] lg:items-start">
+        {/* The member's college ID card, as it was printed. */}
+        <div className="lg:col-start-1 lg:row-start-1">
+          <IdCard
+            data={{
+              name: p.full_name || "BMS member",
+              photo: p.photo_url,
+              dept: p.branch && p.branch !== "Other" ? `Dept. of ${DEPT[p.branch] ?? p.branch}` : null,
+              // The roll number if the member gave one; otherwise their batch.
+              idLine: p.usn ?? (p.graduation_year ? `${isStudent ? "CLASS" : "BATCH"} OF ${p.graduation_year}` : "ALUMNI NETWORK"),
+              code: p.usn ?? `BMS-${p.id.slice(0, 8)}`,
+              back: {
+                kind: isStudent ? "Student" : p.graduation_year ? `Alumni, batch of ${p.graduation_year}` : "Alumni",
+                verified: p.verification_status === "verified",
+                since: p.created_at ? new Date(p.created_at).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", month: "long", year: "numeric" }) : null,
+                role: role || null,
+                place: place || null,
+                chapters: myChapters.map((c) => c.name),
+              },
+            }}
+          />
+        </div>
+
+        <div className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+        <header className="sheet px-5 pb-6 pt-7 sm:px-8">
           <span className="tape tape-left" aria-hidden="true" />
           <div className="flex flex-wrap items-start gap-5">
-            <Avatar name={p.full_name} src={p.photo_url} size={104} />
             <div className="min-w-0 flex-1">
               <p className="flex flex-wrap items-center gap-2">
                 <span className={`stamp ${isStudent ? "text-violet" : "text-forest"}`}>{isStudent ? "Student" : "Alumni"}</span>
@@ -145,8 +178,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
           </div>
         </header>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
-          <div className="min-w-0">
+          <div className="mt-8 min-w-0">
             {p.bio && (
               <section aria-labelledby="about-title">
                 <h2 id="about-title" className="label-mono text-ink/60">About</h2>
@@ -169,8 +201,9 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
               )}
             </section>
           </div>
+        </div>
 
-          <aside className="flex flex-col gap-7">
+          <aside className="flex flex-col gap-7 lg:col-start-1 lg:row-start-2">
             {showWork && p.industry && <Block title="Industry"><p className="text-sm">{p.industry}</p></Block>}
             {p.skills.length > 0 && (
               <Block title="Skills"><Tags items={p.skills} /></Block>
