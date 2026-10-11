@@ -1,5 +1,6 @@
 import archive from "@/data/instagram-archive.json";
 import sizes from "@/data/instagram-sizes.json";
+import { BLANK_SHOTS } from "@/data/instagram-blank";
 import { chapters, CHAPTER_COUNT, COUNTRY_COUNT } from "@/data/chapters";
 import { FACTS } from "@/data/facts";
 import Testimonials from "@/components/Testimonials";
@@ -20,7 +21,7 @@ type ArchiveRow = { short_code: string; image_url: string | null; posted_at: str
 // association's own Instagram archive, newest first, with its true proportions.
 const SIZES = sizes as Record<string, number[]>;
 const ALL = (archive as ArchiveRow[])
-  .filter((p) => p.image_url && p.posted_at && SIZES[p.short_code])
+  .filter((p) => p.image_url && p.posted_at && SIZES[p.short_code] && !BLANK_SHOTS.has(p.short_code))
   .sort((a, b) => (a.posted_at! < b.posted_at! ? 1 : -1))
   .map((p) => ({
     src: p.image_url!,

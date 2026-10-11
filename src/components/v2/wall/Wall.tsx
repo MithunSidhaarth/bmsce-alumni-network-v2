@@ -1,14 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { flushSync } from "react-dom";
 import Link from "next/link";
 import sizes from "@/data/instagram-sizes.json";
+import { isBlankShot } from "@/data/instagram-blank";
 import type { NoticeCard } from "@/lib/types";
 import { longDate, seeded, stampDate } from "@/lib/format";
 import { motionOK } from "@/lib/motion";
 import Avatar from "../Avatar";
 import Icon from "../Icon";
+import PanZoom from "./PanZoom";
 import WallNotePad from "./WallNotePad";
 
 // ---------------------------------------------------------------------------
@@ -38,6 +40,48 @@ function ratioOf(src: string | null): string | undefined {
   return s ? `${s[0]} / ${s[1]}` : undefined;
 }
 
+function ratioNumber(src: string | null): number | null {
+  const code = src?.match(/^\/instagram\/(.+)\.jpg$/)?.[1];
+  const s = code ? SIZES[code] : undefined;
+  return s ? s[0] / s[1] : null;
+}
+
+// Board view: every card gets a fixed place on one big sheet, packed in
+// columns like the list but planned up front so it can be moved and zoomed.
+const SPOT_W = 250;
+const COL_W = 304;
+const EDGE = 60;
+function plannedHeight(v: View): number {
+  const lines = (n: number, perLine: number, max: number) => Math.min(max, Math.max(1, Math.ceil(n / perLine)));
+  if (v.shape === "print") return (v.image ? SPOT_W / (ratioNumber(v.image) ?? 1) : 0) + 104;
+  if (v.shape === "ticket") return 124;
+  if (v.shape === "sticky") return (v.title ? 30 : 0) + (v.text.length < 120 ? lines(v.text.length, 20, 6) * 28 : lines(v.text.length, 34, 6) * 23) + 112;
+  return (v.title ? 58 : 0) + lines(v.text.length, 34, 6) * 23 + 132;
+}
+function planBoard(views: View[]) {
+  const cols = Math.min(14, Math.max(3, Math.ceil(Math.sqrt(views.length) * 1.25)));
+  const heights = new Array<number>(cols).fill(EDGE);
+  const spots = views.map((v) => {
+    const c = heights.indexOf(Math.min(...heights));
+    const spot = { x: EDGE + c * COL_W + Math.round((seeded(v.card.id, 7) - 0.5) * 22), y: heights[c] };
+    heights[c] += plannedHeight(v) + 46;
+    return spot;
+  });
+  return { spots, width: EDGE * 2 + cols * COL_W - (COL_W - SPOT_W), height: Math.max(...heights) + EDGE };
+}
+
+/** Month, day and year of a moment, in Indian time. */
+function istDay(iso: string | Date) {
+  const d = new Date(new Date(iso).getTime() + 5.5 * 3600e3);
+  return { y: d.getUTCFullYear(), m: d.getUTCMonth(), d: d.getUTCDate() };
+}
+/** Days between two calendar dates ignoring the year (29 February has its own slot). */
+function calendarGap(a: { m: number; d: number }, b: { m: number; d: number }) {
+  const n = (p: { m: number; d: number }) => Date.UTC(2024, p.m, p.d) / 864e5;
+  const gap = Math.abs(n(a) - n(b));
+  return Math.min(gap, 366 - gap);
+}
+
 const NOTE_COLOURS = ["#c8f53c", "#ffd9c7", "#e2dbff", "#fff3a8"];
 const PIN_COLOURS = ["#e23a2e", "#6a4cff", "#ff5a1f", "#131a15"];
 
@@ -59,11 +103,13 @@ function describe(card: NoticeCard): View {
   const base = { card, date: card.date, year: new Date(card.date).getFullYear() };
   if (card.source === "instagram" && card.instagram) {
     const ig = card.instagram;
+    // A thumbnail that is an empty frame becomes a typed card instead.
+    const image = isBlankShot(ig.image) ? null : ig.image;
     return {
       ...base,
-      shape: "print",
+      shape: image ? "print" : "notice",
       group: "instagram",
-      image: ig.image,
+      image,
       title: null,
       text: ig.caption ?? "",
       official: true,
@@ -149,6 +195,120 @@ function Attribution({ v, compact = false }: { v: View; compact?: boolean }) {
   return <span className="label-mono text-ink/60">{v.byline ?? "Alumni Network"}</span>;
 }
 
+/** One thing pinned to the board. The same card serves the list and the board view. */
+function WallCard({
+  v,
+  i,
+  onOpen,
+  className = "",
+  style,
+  square = false,
+}: {
+  v: View;
+  i: number;
+  onOpen: (id: string, from: HTMLElement) => void;
+  className?: string;
+  style?: CSSProperties;
+  /** Board view: pictures of unknown size are cut square so the layout can be planned. */
+  square?: boolean;
+}) {
+  const id = v.card.id;
+  const tilt = ((seeded(id) - 0.5) * 6.4).toFixed(2);
+  const taped = v.shape === "print" && seeded(id, 5) > 0.5;
+  return (
+    <button
+      type="button"
+      onClick={(e) => onOpen(id, e.currentTarget)}
+      aria-haspopup="dialog"
+      aria-label={`Open: ${(v.title ?? v.text ?? "Photograph").slice(0, 80)}`}
+      className={`wall-card pinned relative block w-full text-left ${className}`}
+      style={{ ["--tilt" as string]: `${tilt}deg`, ...style }}
+    >
+      {taped ? (
+        <span className={`tape ${i % 2 ? "tape-lime" : ""}`} aria-hidden="true" />
+      ) : (
+        <span className="pin wall-pin" style={{ ["--pin" as string]: PIN_COLOURS[Math.floor(seeded(id, 9) * PIN_COLOURS.length)] }} aria-hidden="true" />
+      )}
+
+      {v.shape === "print" && (
+        <span className="block rounded-print bg-white p-2.5 pb-3 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
+          {v.image && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={v.image}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              style={{ aspectRatio: ratioOf(v.image) ?? (square ? "1" : undefined) }}
+              className={`block h-auto w-full bg-ivory-dim ${ratioOf(v.image) ? "" : square ? "object-cover" : "min-h-40"}`}
+            />
+          )}
+          {(v.title || v.text) && (
+            <span className="mt-2.5 line-clamp-2 px-0.5 text-[0.8125rem] leading-snug text-ink/85">
+              {v.title ?? v.text}
+            </span>
+          )}
+          <span className="mt-2 flex items-center justify-between gap-2 px-0.5">
+            <Attribution v={v} compact />
+            <span className="label-mono shrink-0 text-ink/50">{stampDate(v.date)}</span>
+          </span>
+        </span>
+      )}
+
+      {v.shape === "notice" && (
+        <span className="block rounded-print bg-paper px-5 pb-5 pt-7 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
+          <span className="stamp text-tangerine">{v.card.source === "instagram" ? "Instagram" : v.group === "notices" ? "Notice" : "From a member"}</span>
+          {v.title && <span className="mt-3 block font-display text-[1.45rem] font-bold leading-[1.05]">{v.title}</span>}
+          <span className="mt-2.5 line-clamp-6 whitespace-pre-line text-sm leading-relaxed text-ink/80">{v.text}</span>
+          <span className="rule-dashed my-3 block" />
+          <span className="flex items-center justify-between gap-2">
+            <Attribution v={v} />
+            <span className="label-mono shrink-0 text-ink/50">{stampDate(v.date)}</span>
+          </span>
+        </span>
+      )}
+
+      {v.shape === "sticky" && (
+        <span
+          className="stickynote block px-5 pb-5 pt-7"
+          style={{ ["--note" as string]: NOTE_COLOURS[Math.floor(seeded(id, 13) * NOTE_COLOURS.length)] }}
+        >
+          {v.title && <span className="block font-display text-lg font-bold leading-tight">{v.title}</span>}
+          <span className={`line-clamp-6 ${v.text.length < 120 ? "hand text-[1.55rem] leading-[1.08]" : "mt-1 text-sm leading-relaxed"}`}>
+            {v.text}
+          </span>
+          <span className="mt-4 flex items-center justify-between gap-2">
+            <Attribution v={v} />
+            <span className="label-mono shrink-0 text-ink/55">{stampDate(v.date)}</span>
+          </span>
+        </span>
+      )}
+
+      {v.shape === "ticket" && (
+        <span className="flex overflow-hidden rounded-md bg-paper shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
+          <span className="flex w-20 shrink-0 flex-col items-center justify-center border-r-2 border-dashed border-ink/30 bg-tangerine py-5 text-white">
+            <span className="font-display text-3xl font-extrabold leading-none">
+              {new Date(v.date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "2-digit" })}
+            </span>
+            <span className="label-mono mt-1">
+              {new Date(v.date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", month: "short" }).toUpperCase()}
+            </span>
+          </span>
+          <span className="min-w-0 flex-1 px-4 py-4">
+            <span className="label-mono text-tangerine">Admit one · Event</span>
+            <span className="mt-1 block font-display text-xl font-bold leading-tight">{v.title}</span>
+            {v.text && <span className="mt-1 block truncate text-xs text-ink/60">{v.text}</span>}
+          </span>
+        </span>
+      )}
+
+      {v.card.pinned && (
+        <span className="stamp absolute -right-2 -top-3 rotate-6 border-ink bg-lime text-ink">Pinned</span>
+      )}
+    </button>
+  );
+}
+
 export default function Wall({
   cards,
   isMember,
@@ -165,6 +325,10 @@ export default function Wall({
   const [filter, setFilter] = useState<FilterKey>("all");
   const [year, setYear] = useState<number | null>(null);
   const [open, setOpen] = useState<string | null>(null);
+  const [mode, setMode] = useState<"list" | "board">("list");
+  // Known only in the browser, so the server and first paint agree.
+  const [today, setToday] = useState<{ y: number; m: number; d: number } | null>(null);
+  useEffect(() => setToday(istDay(new Date())), []);
   const board = useRef<HTMLUListElement | null>(null);
   const dialog = useRef<HTMLDialogElement | null>(null);
 
@@ -173,7 +337,22 @@ export default function Wall({
     [views, filter, year]
   );
   const openIndex = shown.findIndex((v) => v.card.id === open);
-  const current = openIndex >= 0 ? shown[openIndex] : null;
+  // Looked up in everything, so a card opened from "on this day" still opens
+  // when the current filter hides it.
+  const current = open ? views.find((v) => v.card.id === open) ?? null : null;
+  const plan = useMemo(() => (mode === "board" ? planBoard(shown) : null), [mode, shown]);
+
+  // Things pinned around this date in earlier years.
+  const lookBack = useMemo(() => {
+    if (!today) return { exact: false, items: [] as View[] };
+    const near = views
+      .map((v) => ({ v, when: istDay(v.date) }))
+      .filter(({ when }) => when.y < today.y)
+      .map(({ v, when }) => ({ v, gap: calendarGap(when, today) }))
+      .filter(({ gap }) => gap <= 3)
+      .sort((a, b) => a.gap - b.gap || (a.v.date < b.v.date ? 1 : -1));
+    return { exact: near.some((n) => n.gap === 0), items: near.slice(0, 4).map((n) => n.v) };
+  }, [views, today]);
 
   // Cards drop onto the board as they scroll into view, a few at a time.
   useEffect(() => {
@@ -206,7 +385,7 @@ export default function Wall({
       io.disconnect();
       window.clearTimeout(reset);
     };
-  }, [shown]);
+  }, [shown, mode]);
 
   // Taking a card off the wall: where the browser supports it, the card
   // itself grows into the reading view (a shared-element transition).
@@ -231,8 +410,8 @@ export default function Wall({
   }, [current]);
 
   const step = (dir: 1 | -1) => {
-    if (openIndex < 0) return;
-    const next = shown[(openIndex + dir + shown.length) % shown.length];
+    if (shown.length === 0) return;
+    const next = shown[(Math.max(openIndex, 0) + dir + shown.length) % shown.length];
     setOpen(next.card.id);
   };
 
@@ -285,6 +464,14 @@ export default function Wall({
               </button>
             ))}
           </div>
+          <div role="group" aria-label="Layout" className="flex gap-1.5">
+            <button type="button" aria-pressed={mode === "list"} onClick={() => setMode("list")} className="chip wall-chip">
+              Scroll
+            </button>
+            <button type="button" aria-pressed={mode === "board"} onClick={() => setMode("board")} className="chip wall-chip">
+              Whole board
+            </button>
+          </div>
           {years.length > 1 && (
             <div role="group" aria-label="Year" className="-mx-4 flex gap-1.5 overflow-x-auto px-4 no-scrollbar md:mx-0 md:px-0 lg:ml-auto">
               <button type="button" aria-pressed={year === null} onClick={() => setYear(null)} className="chip wall-chip">
@@ -314,6 +501,38 @@ export default function Wall({
         </p>
       </header>
 
+      {lookBack.items.length > 0 && (
+        <section aria-labelledby="lookback-title" className="mx-auto mt-10 max-w-[1400px]">
+          <div className="sheet sheet-kraft relative px-5 pb-5 pt-6">
+            <span className="tape tape-left" aria-hidden="true" />
+            <h2 id="lookback-title" className="hand text-[1.9rem] leading-none text-forest">
+              {lookBack.exact ? "On this day" : "Around this date"}, in earlier years
+            </h2>
+            <ul className="-mx-5 mt-4 flex gap-4 overflow-x-auto px-5 pb-1 no-scrollbar">
+              {lookBack.items.map((v) => (
+                <li key={v.card.id} className="w-56 shrink-0">
+                  <button
+                    type="button"
+                    onClick={(e) => show(v.card.id, e.currentTarget)}
+                    aria-haspopup="dialog"
+                    className="flex w-full items-center gap-3 rounded-print bg-white p-2 text-left shadow-[var(--shadow-sheet)] transition-transform hover:-translate-y-0.5"
+                  >
+                    {v.image && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={v.image} alt="" loading="lazy" className="h-16 w-16 shrink-0 object-cover" />
+                    )}
+                    <span className="min-w-0">
+                      <span className="label-mono block text-tangerine">{longDate(v.date)}</span>
+                      <span className="mt-1 line-clamp-2 text-[0.8125rem] leading-snug text-ink/85">{v.title ?? (v.text || "A photograph")}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {shown.length === 0 ? (
         <div className="mx-auto mt-16 max-w-md -rotate-2 rounded-box bg-paper px-7 py-9 text-center shadow-[var(--shadow-lift)]">
           <span className="pin" aria-hidden="true" />
@@ -324,6 +543,30 @@ export default function Wall({
               : "Try another filter or year."}
           </p>
         </div>
+      ) : plan ? (
+        <>
+          <PanZoom
+            key={`${filter}-${year}`}
+            width={plan.width}
+            height={plan.height}
+            label="The whole board. Drag to move around; pinch, or use the buttons, to zoom."
+            className="mx-auto mt-10 h-[72dvh] max-w-[1400px] overflow-hidden rounded-box border border-ivory/25 bg-board-deep/45"
+          >
+            {shown.map((v, i) => (
+              <div
+                key={v.card.id}
+                data-spot
+                className="wall-item is-in absolute"
+                style={{ left: plan.spots[i].x, top: plan.spots[i].y, width: SPOT_W, ["--delay" as string]: `${Math.min(i, 40) * 22}ms` }}
+              >
+                <WallCard v={v} i={i} onOpen={show} square />
+              </div>
+            ))}
+          </PanZoom>
+          <p className="mx-auto mt-3 max-w-[1400px] text-xs text-ivory/75">
+            Drag to move around the board. Pinch, hold Ctrl and scroll, or use the buttons to zoom.
+          </p>
+        </>
       ) : (
         <ul
           ref={board}
@@ -332,11 +575,9 @@ export default function Wall({
         >
           {shown.map((v, i) => {
             const id = v.card.id;
-            const tilt = ((seeded(id) - 0.5) * 6.4).toFixed(2);
             const nudge = Math.round((seeded(id, 7) - 0.5) * 14);
             const lift = seeded(id, 3) > 0.62 ? -18 : 0;
             const depth = 1 + Math.floor(seeded(id, 11) * 3);
-            const taped = v.shape === "print" && seeded(id, 5) > 0.5;
             const sway = i % 7 === 3;
             return (
               <li
@@ -345,96 +586,7 @@ export default function Wall({
                 className={`wall-item depth-${depth} mb-8 break-inside-avoid`}
                 style={{ marginTop: lift, paddingInline: 6 }}
               >
-                <button
-                  type="button"
-                  onClick={(e) => show(id, e.currentTarget)}
-                  aria-haspopup="dialog"
-                  aria-label={`Open: ${(v.title ?? v.text ?? "Photograph").slice(0, 80)}`}
-                  className={`wall-card pinned relative block w-full text-left ${sway ? "wall-sway" : ""}`}
-                  style={{ ["--tilt" as string]: `${tilt}deg`, marginLeft: nudge }}
-                >
-                  {taped ? (
-                    <span className={`tape ${i % 2 ? "tape-lime" : ""}`} aria-hidden="true" />
-                  ) : (
-                    <span className="pin wall-pin" style={{ ["--pin" as string]: PIN_COLOURS[Math.floor(seeded(id, 9) * PIN_COLOURS.length)] }} aria-hidden="true" />
-                  )}
-
-                  {v.shape === "print" && (
-                    <span className="block rounded-print bg-white p-2.5 pb-3 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
-                      {v.image && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={v.image}
-                          alt=""
-                          loading="lazy"
-                          decoding="async"
-                          style={{ aspectRatio: ratioOf(v.image) }}
-                          className={`block h-auto w-full bg-ivory-dim ${ratioOf(v.image) ? "" : "min-h-40"}`}
-                        />
-                      )}
-                      {(v.title || v.text) && (
-                        <span className="mt-2.5 line-clamp-2 px-0.5 text-[0.8125rem] leading-snug text-ink/85">
-                          {v.title ?? v.text}
-                        </span>
-                      )}
-                      <span className="mt-2 flex items-center justify-between gap-2 px-0.5">
-                        <Attribution v={v} compact />
-                        <span className="label-mono shrink-0 text-ink/50">{stampDate(v.date)}</span>
-                      </span>
-                    </span>
-                  )}
-
-                  {v.shape === "notice" && (
-                    <span className="block rounded-print bg-paper px-5 pb-5 pt-7 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
-                      <span className="stamp text-tangerine">{v.group === "notices" ? "Notice" : "From a member"}</span>
-                      {v.title && <span className="mt-3 block font-display text-[1.45rem] font-bold leading-[1.05]">{v.title}</span>}
-                      <span className="mt-2.5 line-clamp-6 whitespace-pre-line text-sm leading-relaxed text-ink/80">{v.text}</span>
-                      <span className="rule-dashed my-3 block" />
-                      <span className="flex items-center justify-between gap-2">
-                        <Attribution v={v} />
-                        <span className="label-mono shrink-0 text-ink/50">{stampDate(v.date)}</span>
-                      </span>
-                    </span>
-                  )}
-
-                  {v.shape === "sticky" && (
-                    <span
-                      className="stickynote block px-5 pb-5 pt-7"
-                      style={{ ["--note" as string]: NOTE_COLOURS[Math.floor(seeded(id, 13) * NOTE_COLOURS.length)] }}
-                    >
-                      {v.title && <span className="block font-display text-lg font-bold leading-tight">{v.title}</span>}
-                      <span className={`line-clamp-6 ${v.text.length < 120 ? "hand text-[1.55rem] leading-[1.08]" : "mt-1 text-sm leading-relaxed"}`}>
-                        {v.text}
-                      </span>
-                      <span className="mt-4 flex items-center justify-between gap-2">
-                        <Attribution v={v} />
-                        <span className="label-mono shrink-0 text-ink/55">{stampDate(v.date)}</span>
-                      </span>
-                    </span>
-                  )}
-
-                  {v.shape === "ticket" && (
-                    <span className="flex overflow-hidden rounded-md bg-paper shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
-                      <span className="flex w-20 shrink-0 flex-col items-center justify-center border-r-2 border-dashed border-ink/30 bg-tangerine py-5 text-white">
-                        <span className="font-display text-3xl font-extrabold leading-none">
-                          {new Date(v.date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "2-digit" })}
-                        </span>
-                        <span className="label-mono mt-1">
-                          {new Date(v.date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", month: "short" }).toUpperCase()}
-                        </span>
-                      </span>
-                      <span className="min-w-0 flex-1 px-4 py-4">
-                        <span className="label-mono text-tangerine">Admit one · Event</span>
-                        <span className="mt-1 block font-display text-xl font-bold leading-tight">{v.title}</span>
-                        {v.text && <span className="mt-1 block truncate text-xs text-ink/60">{v.text}</span>}
-                      </span>
-                    </span>
-                  )}
-
-                  {v.card.pinned && (
-                    <span className="stamp absolute -right-2 -top-3 rotate-6 border-ink bg-lime text-ink">Pinned</span>
-                  )}
-                </button>
+                <WallCard v={v} i={i} onOpen={show} className={sway ? "wall-sway" : ""} style={{ marginLeft: nudge }} />
               </li>
             );
           })}

@@ -19,11 +19,15 @@ export default function FactsDeck({ facts }: { facts: string[] }) {
     const f = frame.current;
     const t = track.current;
     if (!f || !t || !motionOK()) return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    setGrab(true);
+    // With a mouse the deck is dragged and flicked; a finger swipes it natively.
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (fine) setGrab(true);
     const min = () => Math.min(0, f.clientWidth - t.scrollWidth);
     let onResize = () => {};
     const ctx = gsap.context(() => {
+      // The cards are dealt in from the right the first time they are seen.
+      gsap.fromTo(".fact-card", { x: 240, autoAlpha: 0, rotate: 8 }, { x: 0, autoAlpha: 1, rotate: 0, duration: 0.8, stagger: 0.07, ease: "power3.out", scrollTrigger: { trigger: f, start: "top 80%", once: true } });
+      if (!fine) return;
       const [drag] = Draggable.create(t, {
         type: "x",
         inertia: true,
@@ -36,8 +40,6 @@ export default function FactsDeck({ facts }: { facts: string[] }) {
         onRelease: () => gsap.to(".fact-card", { rotate: 0, duration: 0.6, ease: "elastic.out(1, 0.5)" }),
       });
       onResize = () => drag.applyBounds({ minX: min(), maxX: 0 });
-      // The cards are dealt in from the right the first time they are seen.
-      gsap.fromTo(".fact-card", { x: 240, autoAlpha: 0, rotate: 8 }, { x: 0, autoAlpha: 1, rotate: 0, duration: 0.8, stagger: 0.07, ease: "power3.out", scrollTrigger: { trigger: f, start: "top 80%", once: true } });
     }, f);
     const resize = () => onResize();
     window.addEventListener("resize", resize);

@@ -394,6 +394,17 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 
+/* Photo prints develop like instant film. Elsewhere that happens as each
+   picture loads (components/v2/Develop.tsx); on The Wall a print stays washed
+   out until its card has landed on the board. */
+.wall-item .rounded-print img {
+  transition: filter 1.8s ease-out 0.25s, opacity 0.9s ease-out 0.25s;
+}
+.wall-item:not(.is-in) .rounded-print img {
+  filter: brightness(1.55) contrast(0.42) sepia(0.55);
+  opacity: 0.4;
+}
+
 /* Shared-element morph when a card is taken off the wall. */
 ::view-transition-group(notice-open) {
   animation-duration: 0.42s;

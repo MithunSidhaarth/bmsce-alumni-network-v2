@@ -8,6 +8,9 @@ import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
+// A phone's address bar sliding away resizes the window; re-measuring every
+// pinned section each time makes the page jump.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 // Development only: a handle for stepping animations by hand from the console
 // (browsers pause animation frames in background tabs, which makes scroll

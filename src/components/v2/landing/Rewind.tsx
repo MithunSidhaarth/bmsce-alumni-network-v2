@@ -16,8 +16,7 @@ const DEPTHS = [0.35, 1, 0.6, 1.25, 0.2, 0.85];
 /**
  * "Rewind": the page stops scrolling down and travels sideways through the
  * years instead, newest first. Photographs pass at different speeds, the way
- * near and far things do from a train window. On phones,
- * it is an ordinary strip you swipe through.
+ * near and far things do from a train window, on phones as well as desktops.
  */
 export default function Rewind({ years, total }: { years: RewindYear[]; total: number }) {
   const root = useRef<HTMLElement | null>(null);
@@ -27,9 +26,10 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
   // Step 1: decide whether this screen gets the pinned, sideways version.
   useEffect(() => {
     if (!motionOK()) return;
-    // Short windows count too: the layout below is sized from the viewport
-    // height, so it fits a laptop with the browser's toolbars showing.
-    const wide = window.matchMedia("(min-width: 900px) and (min-height: 380px)");
+    // Phones get it too, and so do short windows: the layout below is sized
+    // from the viewport, so it fits a laptop with the browser's toolbars
+    // showing. Only a phone held sideways falls back to a strip you swipe.
+    const wide = window.matchMedia("(min-height: 380px)");
     const update = () => setPinned(wide.matches);
     update();
     wide.addEventListener("change", update);
@@ -43,8 +43,9 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
       const t = track.current!;
       const distance = () => Math.max(0, t.scrollWidth - window.innerWidth);
       // Sideways travel is quicker than the scroll that drives it, so the
-      // section never outstays its welcome.
-      const scroll = () => distance() * 0.5;
+      // section never outstays its welcome (quicker still on a phone, where
+      // the strip is many screens wide).
+      const scroll = () => distance() * (window.innerWidth < 768 ? 0.34 : 0.5);
       const travel = gsap.to(t, {
         x: () => -distance(),
         ease: "none",
@@ -86,7 +87,7 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
     <section
       ref={root}
       aria-labelledby="rewind-title"
-      className={`relative bg-ink text-ivory ${pinned ? "h-dvh overflow-hidden" : "overflow-x-auto py-16 no-scrollbar"}`}
+      className={`relative bg-ink text-ivory ${pinned ? "h-svh overflow-hidden" : "overflow-x-auto py-16 no-scrollbar"}`}
     >
       <div ref={track} className={`flex w-max items-stretch ${pinned ? "h-full will-change-transform" : "snap-x"}`}>
         {/* Title panel */}
