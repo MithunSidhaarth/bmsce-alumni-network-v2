@@ -37,8 +37,11 @@ const TEASER = ALL.filter((p) => !used.has(p.code) && p.ratio > 0.7).slice(0, 6)
 TEASER.forEach((p) => used.add(p.code));
 
 // "Rewind": up to six photographs for each year, newest year first. Very tall
-// frames are left out so the strip keeps an even rhythm.
+// frames are left out so the strip keeps an even rhythm. 2023 and 2024 are
+// not shown here (their photographs are still on The Wall).
+const REWIND_SKIPS = new Set([2023, 2024]);
 const YEARS: RewindYear[] = [...new Set(ALL.map((p) => p.year))]
+  .filter((year) => !REWIND_SKIPS.has(year))
   .sort((a, b) => b - a)
   .map((year) => {
     const ofYear = ALL.filter((p) => p.year === year);

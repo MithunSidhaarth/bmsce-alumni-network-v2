@@ -26,7 +26,6 @@ const REACTION_KINDS: ReactionKind[] = ["like", "cheer", "nostalgia", "insight"]
 
 function refresh(postId?: string, chapterSlug?: string | null) {
   revalidatePath("/");
-  revalidatePath("/community");
   if (postId) revalidatePath(`/community/${postId}`);
   if (chapterSlug) revalidatePath(`/chapters/${chapterSlug}`);
   revalidatePath("/noticeboard");

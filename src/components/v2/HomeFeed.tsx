@@ -100,18 +100,24 @@ export default async function HomeFeed({
     verified ? supabase.rpc("people_you_may_know", { p_limit: 4 }) : Promise.resolve({ data: [] }),
     supabase
       .from("profiles")
-      .select("photo_url, bio, job_title, company, current_city, skills, usn")
+      .select("photo_url, bio, job_title, company, current_city, skills, usn, passing_out_date")
       .eq("id", me.id)
       .maybeSingle(),
   ]);
 
   // What is still missing from the member's own profile, most useful first.
   const profile = mine.data;
+  const isStudent = me.user_type === "student";
   const steps: { label: string; done: boolean }[] = profile
     ? [
         { label: "Add a photo", done: Boolean(profile.photo_url) },
-        { label: "Say where you work", done: Boolean(profile.job_title || profile.company) },
-        { label: "Write a line about yourself", done: Boolean(profile.bio?.trim()) },
+        // Students have no employer yet; their form asks what they are looking for instead.
+        ...(isStudent
+          ? [{ label: "Say what you are looking for", done: Boolean(profile.bio?.trim()) }]
+          : [
+              { label: "Say where you work", done: Boolean(profile.job_title || profile.company) },
+              { label: "Write a line about yourself", done: Boolean(profile.bio?.trim()) },
+            ]),
         { label: "Add your city", done: Boolean(profile.current_city) },
         { label: "List a few skills", done: (profile.skills ?? []).length > 0 },
         { label: "Join a chapter", done: myChapters.length > 0 },
@@ -276,6 +282,21 @@ export default async function HomeFeed({
             <Link href={nextStep.label === "Join a chapter" ? "/chapters" : "/profile/edit"} className="btn btn-sm mt-3">
               {nextStep.label}
             </Link>
+          </section>
+        )}
+
+        {isStudent && profile?.passing_out_date && (
+          <section aria-labelledby="side-student" className="stickynote px-5 py-4" style={{ ["--note" as string]: "#e2dbff" }}>
+            <h2 id="side-student" className="label-mono text-ink/60">
+              Student account
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed">
+              You pass out on{" "}
+              <strong>
+                {new Date(`${profile.passing_out_date}T00:00:00+05:30`).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "long", year: "numeric" })}
+              </strong>
+              . After that your account becomes an alumni account on its own: nothing to fill in.
+            </p>
           </section>
         )}
 

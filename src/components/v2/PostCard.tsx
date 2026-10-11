@@ -195,12 +195,7 @@ export default function PostCard({
           <ul className="mt-3 flex flex-wrap gap-1.5">
             {post.tags.map((t) => (
               <li key={t}>
-                <Link
-                  href={`/community?tag=${encodeURIComponent(t)}`}
-                  className="label-mono rounded-sm bg-ink/[0.06] px-2 py-1 text-ink/70 hover:bg-lime hover:text-ink"
-                >
-                  {t}
-                </Link>
+                <span className="label-mono rounded-sm bg-ink/[0.06] px-2 py-1 text-ink/70">{t}</span>
               </li>
             ))}
           </ul>

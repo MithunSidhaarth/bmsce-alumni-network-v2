@@ -10,6 +10,7 @@ import {
 import AuthProvider from "@/components/AuthProvider";
 import AppChrome from "@/components/v2/AppChrome";
 import Develop from "@/components/v2/Develop";
+import ScrollTop from "@/components/v2/ScrollTop";
 import { getMe } from "@/lib/me";
 import "./v2.css";
 
@@ -126,6 +127,7 @@ export default async function RootLayout({
           {inApp && me && <AppChrome me={me} />}
           <div id="main">{children}</div>
           <Develop />
+          <ScrollTop />
         </AuthProvider>
       </body>
     </html>

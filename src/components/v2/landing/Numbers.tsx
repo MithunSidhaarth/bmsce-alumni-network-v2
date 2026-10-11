@@ -47,15 +47,22 @@ function Counter({ value }: { value: number }) {
 /** Three real numbers about the network, counted up as they come into view. */
 export default function Numbers({ figures }: { figures: Figure[] }) {
   return (
-    <section aria-label="The network in numbers" className="mx-auto max-w-7xl px-5 py-16 md:px-10 md:py-24">
-      <dl className="grid gap-y-10 sm:grid-cols-3 sm:divide-x sm:divide-ink/20">
+    <section aria-label="The network in numbers" className="mx-auto max-w-7xl px-5 py-12 md:px-10 md:py-24">
+      {/* Phones: one figure per row, the number on the left and its words beside
+          it. Wider screens: three columns. */}
+      <dl className="grid gap-y-7 sm:grid-cols-3 sm:gap-y-10 sm:divide-x sm:divide-ink/20">
         {figures.map((f, i) => (
-          <div key={f.label} className={`flex flex-col ${i ? "sm:pl-10" : ""}`}>
-            <dd className="order-1 font-display text-[clamp(4.5rem,13vw,10rem)] font-extrabold leading-[0.82] tracking-[-0.05em]">
+          <div
+            key={f.label}
+            className={`grid grid-cols-[minmax(7.25rem,auto)_1fr] items-center gap-x-5 border-b border-ink/15 pb-7 last:border-b-0 last:pb-0 sm:flex sm:flex-col sm:items-stretch sm:border-b-0 sm:pb-0 ${
+              i ? "sm:pl-10" : ""
+            }`}
+          >
+            <dd className="row-span-2 font-display text-[clamp(4.5rem,25vw,7rem)] font-extrabold leading-[0.82] tracking-[-0.05em] sm:order-1 sm:text-[clamp(4.5rem,13vw,10rem)]">
               <Counter value={f.value} />
             </dd>
-            <dt className="order-2 mt-3 font-display text-2xl font-bold">{f.label}</dt>
-            <p className="order-3 mt-1 max-w-[22ch] text-sm text-ink/60">{f.note}</p>
+            <dt className="self-end font-display text-2xl font-bold leading-tight sm:order-2 sm:mt-3 sm:self-auto">{f.label}</dt>
+            <p className="mt-1 self-start text-sm text-ink/60 sm:order-3 sm:max-w-[22ch] sm:self-auto">{f.note}</p>
           </div>
         ))}
       </dl>

@@ -22,7 +22,7 @@ export default function CampusPage() {
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink/75">
               Every block, road and gate where you left it. Walk up to a building and it opens the part of the network that
-              belongs there: the canteen is the forum, the Indoor Stadium is events, and the noticeboard outside the
+              belongs there: the canteen is the feed, the Indoor Stadium is events, and the noticeboard outside the
               Administration Block is The Wall.
             </p>
             <h2 className="label-mono mt-9 text-ink/55">Where everything leads</h2>

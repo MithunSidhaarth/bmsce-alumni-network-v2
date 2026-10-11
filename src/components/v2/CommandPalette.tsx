@@ -11,7 +11,6 @@ type Row = { href: string; title: string; sub: string; group: string };
 const PAGES: Row[] = [
   ["Home", "/", "Your feed"],
   ["Alumni Network", "/directory", "Find people"],
-  ["The forum", "/community", "Discussions"],
   ["Chapters", "/chapters", "City and region communities"],
   ["Messages", "/messages", "Your conversations"],
   ["Events", "/events", "What is coming up"],

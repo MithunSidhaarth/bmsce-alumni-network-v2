@@ -9,9 +9,11 @@ import { useRouter } from "next/navigation";
 // and gates, in the same places. It is a map you can use: the places people
 // remember lead to the parts of the network that match them.
 //
-// Not to scale, and not a survey. The Platinum Jubilee block is drawn the way
-// it looks (a curved red-brick front with pale bands); the older blocks are
-// the cream, long-corridor buildings they are.
+// Not to scale, and not a survey. Drawn from photographs: the Platinum
+// Jubilee block (a tall, curved red-brick front with pale bands and blue
+// glass), the cream blocks with their long open corridors and columns, and
+// the black name wall by the main gate. The hostels, the stadium, the canteen
+// and the small sheds are drawn as that kind of building, not as portraits.
 // ---------------------------------------------------------------------------
 
 const W = 860;
@@ -35,7 +37,9 @@ type Block = {
   h: number;
   /** How tall it stands. */
   up: number;
-  look?: "cream" | "brick" | "grey" | "hall" | "kiosk";
+  look?: "cream" | "white" | "brick" | "grey" | "hall" | "kiosk";
+  /** How many storeys to draw on the front. */
+  floors?: number;
   /** Extra footprints that belong to the same building. */
   more?: { x: number; y: number; w: number; h: number }[];
   go?: Go;
@@ -46,24 +50,24 @@ type Block = {
 };
 
 const BLOCKS: Block[] = [
-  { id: "mech", name: "Mechanical\nBlock", x: 160, y: 270, w: 105, h: 95, up: 26, more: [{ x: 165, y: 205, w: 62, h: 62 }, { x: 266, y: 236, w: 34, h: 138 }] },
-  { id: "telecom", name: "Telecom Block", x: 365, y: 146, w: 90, h: 48, up: 22, go: { href: "/messages", label: "Messages" }, ly: 112 },
-  { id: "cs", name: "CS / IT / EC / Civil", x: 330, y: 214, w: 112, h: 116, up: 30, go: { href: "/directory", label: "Alumni Network" }, ly: 250 },
+  { id: "mech", name: "Mechanical\nBlock", x: 160, y: 270, w: 105, h: 95, up: 30, floors: 3, more: [{ x: 165, y: 205, w: 62, h: 62 }, { x: 266, y: 236, w: 34, h: 138 }] },
+  { id: "telecom", name: "Telecom Block", x: 365, y: 146, w: 90, h: 48, up: 28, floors: 3, go: { href: "/messages", label: "Messages" }, ly: 112 },
+  { id: "cs", name: "CS / IT / EC / Civil", x: 330, y: 214, w: 112, h: 116, up: 40, floors: 4, go: { href: "/directory", label: "Alumni Network" }, ly: 250 },
   { id: "shed", name: "", x: 495, y: 76, w: 36, h: 44, up: 12, look: "grey" },
-  { id: "arch", name: "BMS College\nof\nArchitecture", x: 540, y: 132, w: 100, h: 188, up: 28 },
-  { id: "pg", name: "PG Block", x: 392, y: 402, w: 150, h: 68, up: 30, more: [{ x: 372, y: 488, w: 172, h: 66 }, { x: 438, y: 466, w: 62, h: 26 }], go: { href: "/blog", label: "Blog & Insights" }, lx: 467, ly: 420 },
-  { id: "admin", name: "Administration Block", x: 548, y: 538, w: 56, h: 42, up: 18, go: { href: "/noticeboard", label: "The Wall" }, lx: 640, ly: 512 },
-  { id: "pj", name: "PJ Block", x: 368, y: 612, w: 112, h: 138, up: 46, look: "brick", go: { href: "/profile", label: "Your ID card" }, ly: 642 },
-  { id: "stadium", name: "Indoor Stadium", x: 527, y: 627, w: 70, h: 108, up: 24, look: "hall", go: { href: "/events", label: "Events" }, lx: 604, ly: 600 },
-  { id: "annex", name: "", x: 182, y: 427, w: 62, h: 92, up: 20 },
-  { id: "physics", name: "Physics Lab\nsection", x: 146, y: 562, w: 112, h: 148, up: 22, tilt: -4 },
+  { id: "arch", name: "BMS College\nof\nArchitecture", x: 540, y: 132, w: 100, h: 188, up: 36, floors: 4 },
+  { id: "pg", name: "PG Block", x: 392, y: 402, w: 150, h: 68, up: 38, floors: 4, more: [{ x: 372, y: 488, w: 172, h: 66 }, { x: 438, y: 466, w: 62, h: 26 }], go: { href: "/blog", label: "Blog & Insights" }, lx: 467, ly: 420 },
+  { id: "admin", name: "Administration Block", x: 548, y: 538, w: 56, h: 42, up: 22, floors: 2, go: { href: "/noticeboard", label: "The Wall" }, lx: 640, ly: 512 },
+  { id: "pj", name: "PJ Block", x: 368, y: 612, w: 112, h: 138, up: 60, floors: 7, look: "brick", go: { href: "/profile", label: "Your ID card" }, ly: 642 },
+  { id: "stadium", name: "Indoor Stadium", x: 527, y: 627, w: 70, h: 108, up: 26, look: "hall", go: { href: "/events", label: "Events" }, lx: 604, ly: 600 },
+  { id: "annex", name: "", x: 182, y: 427, w: 62, h: 92, up: 22, floors: 2 },
+  { id: "physics", name: "Physics Lab\nsection", x: 146, y: 562, w: 112, h: 148, up: 26, floors: 3, tilt: -4 },
   { id: "mess", name: "Mess", x: 106, y: 730, w: 64, h: 26, up: 12, look: "grey", lx: 64, ly: 738 },
-  { id: "hostel", name: "Boys Hostel 1", x: 112, y: 776, w: 104, h: 70, up: 26, go: { href: "/chapters", label: "Chapters" }, ly: 784 },
-  { id: "lblock", name: "", x: 72, y: 866, w: 144, h: 36, up: 24, more: [{ x: 72, y: 898, w: 80, h: 42 }] },
-  { id: "kanch", name: "Kanchenjunga Block", x: 56, y: 980, w: 190, h: 50, up: 30, go: { href: "/chapters", label: "Chapters" }, ly: 972 },
-  { id: "canteen", name: "Nescafe Canteen", x: 467, y: 846, w: 88, h: 68, up: 16, look: "kiosk", go: { href: "/community", label: "Community" }, lx: 520, ly: 858 },
-  { id: "side", name: "", x: 562, y: 852, w: 98, h: 96, up: 22 },
-  { id: "bank", name: "Indian Bank", x: 347, y: 930, w: 113, h: 58, up: 20, go: { href: "/give-back", label: "Give back" }, ly: 936 },
+  { id: "hostel", name: "Boys Hostel 1", x: 112, y: 776, w: 104, h: 70, up: 34, floors: 4, look: "white", go: { href: "/chapters", label: "Chapters" }, ly: 776 },
+  { id: "lblock", name: "", x: 72, y: 866, w: 144, h: 36, up: 28, floors: 3, look: "white", more: [{ x: 72, y: 898, w: 80, h: 42 }] },
+  { id: "kanch", name: "Kanchenjunga Block", x: 56, y: 980, w: 190, h: 50, up: 42, floors: 5, look: "white", go: { href: "/chapters", label: "Chapters" }, ly: 962 },
+  { id: "canteen", name: "Nescafe Canteen", x: 467, y: 846, w: 88, h: 68, up: 16, look: "kiosk", go: { href: "/", label: "The feed" }, lx: 520, ly: 858 },
+  { id: "side", name: "", x: 562, y: 852, w: 98, h: 96, up: 24, floors: 2 },
+  { id: "bank", name: "Indian Bank", x: 347, y: 930, w: 113, h: 58, up: 22, floors: 2, go: { href: "/give-back", label: "Give back" }, ly: 936 },
   { id: "s1", name: "", x: 342, y: 1014, w: 112, h: 28, up: 12, look: "grey" },
   { id: "s2", name: "", x: 487, y: 976, w: 38, h: 34, up: 12, look: "grey" },
   { id: "s3", name: "", x: 592, y: 980, w: 62, h: 34, up: 14, look: "grey" },
@@ -88,62 +92,169 @@ function boxes(b: Block) {
   return [{ x: b.x, y: b.y, w: b.w, h: b.h }, ...(b.more ?? [])].sort((p, q) => p.y + p.h - (q.y + q.h));
 }
 
-/** One building: a soft shadow, a front wall with its windows, and the roof. */
+// How far a roof leans to the left for each unit of height. It is what lets
+// the east wall show, so a building reads as a solid thing and not a tile.
+const LEAN = 0.2;
+
+type Box = { x: number; y: number; w: number; h: number };
+
+const PALETTE = {
+  cream: { wall: "#f3e2b3", side: "#d9c48d", roof: "#ebe4d0", glass: "#5f6d6c" },
+  white: { wall: "#f8f5ea", side: "#d8d4c4", roof: "#e6e2d6", glass: "#51697a" },
+  brick: { wall: "#b84c31", side: "#8d3a25", roof: "#d9d5ca", glass: "#7fa7bd" },
+  grey: { wall: "#b9beb9", side: "#989d98", roof: "#cfd3cf", glass: "#5f6d6c" },
+  hall: { wall: "#efe3c2", side: "#cfc099", roof: "#8ea9bd", glass: "#5f6d6c" },
+  kiosk: { wall: "#d5402f", side: "#a83022", roof: "#f6e7bd", glass: "#5f6d6c" },
+} as const;
+
+/** The corners of a slice of the south wall between two heights, as polygon points. */
+function slice(r: Box, t0: number, t1: number, inset = 0, from = 0, width = r.w) {
+  const base = r.y + r.h;
+  const left = r.x + from + inset;
+  const right = r.x + from + width - inset;
+  return `${left - LEAN * t0},${base - t0} ${right - LEAN * t0},${base - t0} ${right - LEAN * t1},${base - t1} ${left - LEAN * t1},${base - t1}`;
+}
+
+/**
+ * One building: its shadow, the east wall, the south front with every storey
+ * drawn, and the roof with whatever sits on it.
+ */
 function Building({ b }: { b: Block }) {
   const look = b.look ?? "cream";
-  const wall = look === "brick" ? BRICK : look === "grey" ? "#b9beb9" : look === "kiosk" ? "#d5402f" : CREAM;
-  const roof = look === "brick" ? "#e9b79f" : look === "grey" ? GREY : look === "kiosk" ? "#f6e7bd" : look === "hall" ? "#9fb6c9" : CREAM_ROOF;
+  const P = PALETTE[look];
+  const floors = b.floors ?? Math.max(1, Math.round(b.up / 10));
+  const fh = b.up / floors;
+  const lean = LEAN * b.up;
   return (
     <g transform={b.tilt ? `rotate(${b.tilt} ${b.x + b.w / 2} ${b.y + b.h / 2})` : undefined}>
       {boxes(b).map((r, i) => {
-        const top = r.y - b.up;
         const base = r.y + r.h;
-        const floors = Math.max(1, Math.round(b.up / 9));
+        const top = r.y - b.up;
+        const rx = r.x - lean;
+        const bow = look === "brick" ? 14 : 0; // the Platinum Jubilee block's curved front
         return (
           <g key={i}>
-            <rect x={r.x + 7} y={r.y + 9} width={r.w} height={r.h} rx={3} fill={INK} opacity={0.14} />
-            {/* front wall */}
+            <path d={`M${r.x + 8} ${r.y + 12} H${r.x + r.w + 12} V${base + 10 + bow * 0.6} H${r.x + 8} Z`} fill={INK} opacity={0.13} />
+
+            {/* east wall */}
+            <polygon
+              points={`${r.x + r.w},${r.y} ${r.x + r.w},${base} ${r.x + r.w - lean},${base - b.up} ${r.x + r.w - lean},${top}`}
+              fill={P.side}
+              stroke={INK}
+              strokeWidth={1.4}
+              strokeLinejoin="round"
+            />
+
+            {/* south front */}
             {look === "brick" ? (
               <>
-                <path d={`M${r.x} ${base - b.up} L${r.x} ${base} Q${r.x + r.w / 2} ${base + 13} ${r.x + r.w} ${base} L${r.x + r.w} ${base - b.up} Z`} fill={wall} stroke={INK} strokeWidth={1.6} strokeLinejoin="round" />
-                {Array.from({ length: 5 }, (_, n) => {
-                  const yy = base - b.up + 6 + n * 8.4;
-                  return <path key={n} d={`M${r.x + 3} ${yy} Q${r.x + r.w / 2} ${yy + 11} ${r.x + r.w - 3} ${yy}`} fill="none" stroke="#fbeed2" strokeWidth={3.2} strokeLinecap="round" />;
+                <path
+                  d={`M${r.x} ${base} Q${r.x + r.w / 2} ${base + bow} ${r.x + r.w} ${base} L${r.x + r.w - lean} ${base - b.up} Q${r.x + r.w / 2 - lean} ${base - b.up + bow} ${rx} ${base - b.up} Z`}
+                  fill={P.wall}
+                  stroke={INK}
+                  strokeWidth={1.5}
+                  strokeLinejoin="round"
+                />
+                {/* every storey: a pale balcony band over a strip of blue glass */}
+                {Array.from({ length: floors }, (_, n) => {
+                  const t = n * fh;
+                  const arc = (h: number, pad: number) =>
+                    `M${r.x + pad - LEAN * h} ${base - h} Q${r.x + r.w / 2 - LEAN * h} ${base - h + bow} ${r.x + r.w - pad - LEAN * h} ${base - h}`;
+                  return (
+                    <g key={n}>
+                      <path d={arc(t + fh * 0.42, 4)} fill="none" stroke={P.glass} strokeWidth={fh * 0.34} />
+                      <path d={arc(t + fh * 0.86, 2)} fill="none" stroke="#f6ead0" strokeWidth={fh * 0.3} strokeLinecap="round" />
+                    </g>
+                  );
+                })}
+                {/* brick piers between the bays */}
+                {[0.2, 0.4, 0.6, 0.8].map((k) => {
+                  const dip = bow * 4 * k * (1 - k) * 0.5;
+                  return <line key={k} x1={r.x + r.w * k} y1={base + dip} x2={r.x + r.w * k - lean} y2={base - b.up + dip} stroke="#8d3a25" strokeWidth={2.4} />;
                 })}
               </>
             ) : (
               <>
-                <rect x={r.x} y={base - b.up} width={r.w} height={b.up} fill={wall} stroke={INK} strokeWidth={1.6} strokeLinejoin="round" />
-                {look !== "kiosk" &&
+                <polygon points={slice(r, 0, b.up)} fill={P.wall} stroke={INK} strokeWidth={1.5} strokeLinejoin="round" />
+                {look === "cream" &&
                   Array.from({ length: floors }, (_, n) => (
-                    <line key={n} x1={r.x + 5} x2={r.x + r.w - 5} y1={base - b.up + 6 + n * (b.up / floors)} y2={base - b.up + 6 + n * (b.up / floors)} stroke={INK} strokeWidth={2.2} strokeDasharray="5 4" opacity={0.55} />
+                    // an open corridor on every floor, in shadow behind its parapet
+                    <polygon key={n} points={slice(r, n * fh + fh * 0.3, n * fh + fh * 0.8, 3)} fill={P.glass} opacity={0.78} />
                   ))}
-                {look === "kiosk" && <rect x={r.x - 4} y={base - b.up - 1} width={r.w + 8} height={7} rx={2} fill="#fbeed2" stroke={INK} strokeWidth={1.4} />}
+                {look === "cream" &&
+                  Array.from({ length: Math.max(1, Math.floor(r.w / 17)) }, (_, c) => {
+                    const cx = r.x + ((c + 1) * r.w) / (Math.max(1, Math.floor(r.w / 17)) + 1);
+                    return <line key={c} x1={cx} y1={base} x2={cx - lean} y2={base - b.up} stroke={P.wall} strokeWidth={2.6} />;
+                  })}
+                {look === "white" &&
+                  Array.from({ length: floors }, (_, n) =>
+                    Array.from({ length: Math.max(2, Math.floor((r.w - 8) / 13)) }, (_, c) => (
+                      <polygon key={`${n}-${c}`} points={slice(r, n * fh + fh * 0.28, n * fh + fh * 0.76, 0, 6 + c * 13, 7)} fill={P.glass} />
+                    ))
+                  )}
+                {look === "grey" && <polygon points={slice(r, b.up * 0.3, b.up * 0.7, 4)} fill={P.glass} opacity={0.6} />}
+                {look === "hall" && (
+                  <>
+                    <polygon points={slice(r, 0, b.up * 0.62, 0, r.w * 0.36, r.w * 0.28)} fill={P.glass} opacity={0.75} />
+                    <polygon points={slice(r, b.up * 0.72, b.up * 0.86, 5)} fill={P.glass} opacity={0.5} />
+                  </>
+                )}
+                {look === "kiosk" && (
+                  <>
+                    <polygon points={slice(r, 0, b.up * 0.55, 5)} fill="#3a2a22" opacity={0.75} />
+                    {/* a striped awning over the counter */}
+                    {Array.from({ length: 8 }, (_, n) => (
+                      <polygon key={n} points={slice(r, b.up * 0.55, b.up * 0.95, 0, (n * r.w) / 8, r.w / 8)} fill={n % 2 ? "#fdf4d6" : "#d5402f"} stroke={INK} strokeWidth={0.6} />
+                    ))}
+                  </>
+                )}
               </>
             )}
+
             {/* roof */}
             {look === "hall" ? (
-              <path
-                d={`M${r.x} ${top + r.h} L${r.x} ${top + 14} Q${r.x + r.w / 2} ${top - 16} ${r.x + r.w} ${top + 14} L${r.x + r.w} ${top + r.h} Z`}
-                fill={roof}
-                stroke={INK}
-                strokeWidth={1.6}
-                strokeLinejoin="round"
-              />
+              <>
+                <path
+                  d={`M${rx} ${top + r.h} L${rx} ${top + 12} Q${rx + r.w / 2} ${top - 20} ${rx + r.w} ${top + 12} L${rx + r.w} ${top + r.h} Q${rx + r.w / 2} ${top + r.h - 32} ${rx} ${top + r.h} Z`}
+                  fill={P.roof}
+                  stroke={INK}
+                  strokeWidth={1.5}
+                  strokeLinejoin="round"
+                />
+                {/* the south gable under the vault, and the ribs of the roof */}
+                <path d={`M${rx} ${top + r.h} Q${rx + r.w / 2} ${top + r.h - 32} ${rx + r.w} ${top + r.h} Z`} fill={P.wall} stroke={INK} strokeWidth={1.3} />
+                {[0.2, 0.4, 0.6, 0.8].map((k) => (
+                  <path key={k} d={`M${rx} ${top + 12 + (r.h - 12) * k} Q${rx + r.w / 2} ${top - 20 + (r.h - 12) * k} ${rx + r.w} ${top + 12 + (r.h - 12) * k}`} fill="none" stroke={INK} strokeWidth={0.9} opacity={0.4} />
+                ))}
+              </>
             ) : look === "brick" ? (
-              <path
-                d={`M${r.x} ${top} L${r.x + r.w} ${top} L${r.x + r.w} ${top + r.h} Q${r.x + r.w / 2} ${top + r.h + 13} ${r.x} ${top + r.h} Z`}
-                fill={roof}
-                stroke={INK}
-                strokeWidth={1.6}
-                strokeLinejoin="round"
-              />
+              <>
+                <path
+                  d={`M${rx} ${top} L${rx + r.w} ${top} L${rx + r.w} ${top + r.h} Q${rx + r.w / 2} ${top + r.h + bow} ${rx} ${top + r.h} Z`}
+                  fill={P.roof}
+                  stroke={INK}
+                  strokeWidth={1.5}
+                  strokeLinejoin="round"
+                />
+                {/* the name band along the top of the front, and plant on the roof */}
+                <path d={`M${rx + 3} ${top + r.h - 5} Q${rx + r.w / 2} ${top + r.h + bow - 5} ${rx + r.w - 3} ${top + r.h - 5}`} fill="none" stroke="#f6ead0" strokeWidth={5} strokeLinecap="round" />
+                <rect x={rx + r.w * 0.56} y={top + r.h * 0.2} width={r.w * 0.28} height={r.h * 0.22} fill="#c6c2b6" stroke={INK} strokeWidth={1} />
+                <rect x={rx + r.w * 0.14} y={top + r.h * 0.16} width={r.w * 0.22} height={r.h * 0.3} fill="#b9b5a9" stroke={INK} strokeWidth={1} />
+              </>
             ) : (
-              <rect x={r.x} y={top} width={r.w} height={r.h} fill={roof} stroke={INK} strokeWidth={1.6} strokeLinejoin="round" />
+              <>
+                <rect x={rx} y={top} width={r.w} height={r.h} fill={P.roof} stroke={INK} strokeWidth={1.5} strokeLinejoin="round" />
+                {/* the parapet, a stair head and the black water tanks every roof here has */}
+                {r.w > 44 && r.h > 34 && <rect x={rx + 4} y={top + 4} width={r.w - 8} height={r.h - 8} fill="none" stroke={INK} strokeWidth={0.8} opacity={0.32} />}
+                {(look === "cream" || look === "white") && r.w > 54 && r.h > 40 && (
+                  <>
+                    <rect x={rx + r.w * 0.62} y={top + r.h * 0.2} width={Math.min(20, r.w * 0.2)} height={Math.min(16, r.h * 0.3)} fill={P.wall} stroke={INK} strokeWidth={1} />
+                    <circle cx={rx + r.w * 0.24} cy={top + r.h * 0.34} r={4.2} fill="#262b29" />
+                    <circle cx={rx + r.w * 0.24 + 11} cy={top + r.h * 0.34} r={4.2} fill="#262b29" />
+                  </>
+                )}
+              </>
             )}
-            {look === "hall" &&
-              [0.25, 0.5, 0.75].map((t) => <line key={t} x1={r.x + r.w * t} x2={r.x + r.w * t} y1={top + (t === 0.5 ? 0 : 6)} y2={top + r.h} stroke={INK} strokeWidth={1} opacity={0.35} />)}
-            {look === "cream" && r.w > 60 && r.h > 50 && <rect x={r.x + r.w * 0.3} y={top + r.h * 0.28} width={r.w * 0.4} height={r.h * 0.4} fill="none" stroke={INK} strokeWidth={1} opacity={0.3} />}
           </g>
         );
       })}
@@ -281,6 +392,10 @@ export default function CampusMap({ className = "" }: { className?: string }) {
             {/* Gates */}
             <g className="cm-fade">
               <rect x={792} y={330} width={22} height={38} fill="url(#cm-hatch)" stroke={INK} strokeWidth={1.4} />
+              {/* the black granite name wall by the gate */}
+              <rect x={744} y={300} width={44} height={17} rx={1.5} fill="#1d201f" stroke={INK} strokeWidth={1.2} />
+              <line x1={749} y1={306} x2={783} y2={306} stroke="#e9d9a6" strokeWidth={1.6} />
+              <line x1={753} y1={311} x2={779} y2={311} stroke="#e9d9a6" strokeWidth={1.1} />
               <rect x={286} y={764} width={70} height={30} fill="url(#cm-hatch)" stroke={INK} strokeWidth={1.4} opacity={0.9} />
               <rect x={274} y={1040} width={40} height={14} fill="url(#cm-hatch)" stroke={INK} strokeWidth={1.4} />
             </g>

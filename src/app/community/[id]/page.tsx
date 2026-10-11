@@ -58,7 +58,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
   const back = post.chapter
     ? { href: `/chapters/${post.chapter.slug}`, label: post.chapter.name }
     : post.kind === "discussion"
-    ? { href: "/community", label: "The forum" }
+    ? { href: "/?show=discussion", label: "Discussions" }
     : { href: "/", label: "Home" };
 
   return (

@@ -224,7 +224,9 @@ function statusBanner(profile: Profile) {
   if (profile.user_type === "student") {
     return {
       className: "border-gold/40 bg-gold/10 text-ink/75",
-      text: "You're set up as a current BMS student, so you can browse the network and request mentorship from alumni.",
+      text: profile.passing_out_date
+        ? `You're set up as a current BMS student. After your passing-out date (${new Date(`${profile.passing_out_date}T00:00:00+05:30`).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "long", year: "numeric" })}) your account becomes an alumni account automatically.`
+        : "You're set up as a current BMS student. Add your passing-out date and your account will become an alumni account automatically when the time comes.",
     };
   }
   switch (profile.verification_status) {

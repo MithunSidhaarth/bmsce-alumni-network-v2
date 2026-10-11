@@ -223,7 +223,7 @@ export async function moderatePost(_: ActionState, d: FormData) {
     else throw fail("Unknown action.");
     await logAdminAction(supabase, `post.${what}`, id);
     return { delete: "Deleted.", hide: "Hidden from members.", unhide: "Visible again.", pin: "Pinned. It is on The Wall too.", unpin: "Unpinned." }[what];
-  }, ["/", "/community", "/noticeboard"]);
+  }, ["/", "/noticeboard"]);
 }
 
 export async function moderateComment(_: ActionState, d: FormData) {

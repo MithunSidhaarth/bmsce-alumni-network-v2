@@ -18,17 +18,12 @@ type Item = { label: string; short?: string; href: string; icon: IconName; match
 const ITEMS: Item[] = [
   { label: "Home", href: "/", icon: "home", match: ["/"] },
   { label: "Alumni Network", short: "Network", href: "/directory", icon: "people", match: ["/directory"] },
-  { label: "Community", href: "/community", icon: "forum", match: ["/community", "/chapters"] },
   { label: "Messages", href: "/messages", icon: "mail", match: ["/messages"] },
   { label: "Events", href: "/events", icon: "calendar", match: ["/events", "/gallery"] },
   { label: "Blog & Insights", short: "Blog", href: "/blog", icon: "book", match: ["/blog"] },
   { label: "Profile", href: "/profile", icon: "user", match: ["/profile"] },
 ];
 
-const COMMUNITY_SUB = [
-  { label: "The forum", href: "/community" },
-  { label: "Chapters", href: "/chapters" },
-];
 
 function isActive(pathname: string, item: Item) {
   return item.match.some((m) => (m === "/" ? pathname === "/" : pathname.startsWith(m)));
@@ -167,23 +162,6 @@ export default function AppChrome({ me }: { me: Me }) {
                     <Badge n={unreadDm} className="ml-auto hidden rail:inline-flex" />
                   )}
                 </Link>
-                {item.href === "/community" && active && (
-                  <ul className="mb-1 ml-[1.35rem] mt-1 hidden border-l border-ink/15 pl-3 rail:block">
-                    {COMMUNITY_SUB.map((s) => {
-                      const on = s.href === "/chapters" ? pathname.startsWith("/chapters") : pathname.startsWith("/community");
-                      return (
-                        <li key={s.href}>
-                          <Link
-                            href={s.href}
-                            className={`block rounded px-2 py-1.5 text-sm ${on ? "font-semibold text-ink" : "text-ink/60 hover:text-ink"}`}
-                          >
-                            {s.label}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
               </li>
             );
           })}
@@ -348,9 +326,10 @@ export default function AppChrome({ me }: { me: Me }) {
         className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/15 bg-ivory/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
       >
         <ul className="grid h-[var(--tabbar)] grid-cols-5">
-          {[ITEMS[0], ITEMS[1]].map((item) => (
-            <Tab key={item.href} item={item} active={isActive(pathname, item)} />
-          ))}
+          {["/", "/directory"].map((href) => {
+            const item = ITEMS.find((i) => i.href === href)!;
+            return <Tab key={item.href} item={item} active={isActive(pathname, item)} />;
+          })}
           <li className="flex items-start justify-center">
             <Link
               href="/noticeboard"
@@ -363,8 +342,10 @@ export default function AppChrome({ me }: { me: Me }) {
               <span className="sr-only">The Wall</span>
             </Link>
           </li>
-          <Tab item={ITEMS[2]} active={isActive(pathname, ITEMS[2])} />
-          <Tab item={ITEMS[3]} active={isActive(pathname, ITEMS[3])} badge={unreadDm} />
+          {["/events", "/messages"].map((href) => {
+            const item = ITEMS.find((i) => i.href === href)!;
+            return <Tab key={item.href} item={item} active={isActive(pathname, item)} badge={href === "/messages" ? unreadDm : 0} />;
+          })}
         </ul>
       </nav>
     </>

@@ -24,6 +24,7 @@ export default function ProfileSettings({
   interests,
   privacy,
   usn,
+  isStudent = false,
 }: {
   userId: string;
   skills: string[];
@@ -31,6 +32,7 @@ export default function ProfileSettings({
   privacy: Privacy;
   /** The roll number printed on the member's college ID card, if they gave it. */
   usn: string | null;
+  isStudent?: boolean;
 }) {
   const router = useRouter();
   const [skillText, setSkillText] = useState(skills.join(", "));
@@ -117,7 +119,7 @@ export default function ProfileSettings({
       <fieldset className="mt-7">
         <legend className="text-[0.9375rem] font-bold">What other members see on your profile</legend>
         <div className="mt-3 flex flex-col gap-2.5">
-          {toggle("show_work", "Company, role and industry", "Hidden from your profile page when off.")}
+          {!isStudent && toggle("show_work", "Company, role and industry", "Hidden from your profile page when off.")}
           {toggle("show_location", "City and country", "Hidden from your profile page when off.")}
           {toggle("show_linkedin", "LinkedIn link", "Hidden from your profile page when off.")}
           {toggle("show_online", "A green dot while I am online", "Shown beside your name in Messages. You still see others when this is off.")}

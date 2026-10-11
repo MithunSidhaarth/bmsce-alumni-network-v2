@@ -792,3 +792,36 @@
     position: relative;
   }
 }
+
+/* Back-to-top button: it rises into place once you have scrolled a screen,
+   and sits above the phone tab bar for signed-in members. */
+:root {
+  --scroll-top-base: 1.25rem;
+}
+@media (max-width: 767px) {
+  html[data-auth="in"] {
+    --scroll-top-base: calc(var(--tabbar) + env(safe-area-inset-bottom) + 0.9rem);
+  }
+}
+.scroll-top {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1rem) scale(0.8);
+  transition: opacity 0.25s, transform 0.35s var(--ease-pop), visibility 0s 0.35s, bottom 0.25s;
+  filter: drop-shadow(0 10px 14px rgb(19 26 21 / 0.28));
+}
+.scroll-top[data-show="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.25s, transform 0.35s var(--ease-pop), visibility 0s, bottom 0.25s;
+}
+.scroll-top:active {
+  transform: scale(0.94);
+}
+
+@layer components {
+  html[data-theme="night"] .hl {
+    background-image: linear-gradient(to top, transparent 3%, var(--hl, var(--color-lime)) 3% 97%, transparent 97%);
+  }
+}

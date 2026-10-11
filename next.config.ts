@@ -81,9 +81,9 @@ const nextConfig: NextConfig = {
       // The newsletter archive now lives inside Blog & Insights.
       { source: "/newsletter", destination: "/blog#archive", permanent: false },
       { source: "/network", destination: "/directory", permanent: false },
-      // Holds fictional placeholder people; not ready for the public. Remove
-      // this redirect once real notable alumni are added to the page.
-      { source: "/notable-alumni", destination: "/", permanent: false },
+      // The forum index was retired; discussions live in the home feed. Post
+      // pages keep their /community/<id> addresses.
+      { source: "/community", destination: "/?show=discussion", permanent: false },
     ];
   },
   async headers() {

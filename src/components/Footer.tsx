@@ -11,7 +11,6 @@ const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
     links: [
       { label: "Alumni Network", href: "/directory" },
       { label: "Chapters", href: "/chapters" },
-      { label: "The forum", href: "/community" },
       { label: "Events", href: "/events" },
     ],
   },
