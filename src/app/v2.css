@@ -7,9 +7,9 @@
 /* ==========================================================================
    BMSCE Alumni Network v2 design system: "The Wall".
    A campus noticeboard and scrapbook. Its colours are the brand palette
-   (Brand Guidelines, Edition 2, p. 15): Paper and white grounds, Ink text,
-   Network Blue as the lead colour, BMSCE Red for accents, Ink and Dusk
-   Purple for the board.
+   (Brand Guidelines, Edition 2, p. 15), in the "Signature" scheme: a white
+   page, Ink text, Network Blue for buttons and links, the Red-to-Dusk
+   signature gradient on the big bands, a Dusk Purple board.
 
    The legacy token names below (oxblood, ivory, gold...) are kept because
    every page from v1 is written against them. Only their values change, so
@@ -32,8 +32,8 @@
      Cloud. */
   --color-oxblood: #016ed2; /* Network Blue: the lead colour. Primary blocks, links */
   --color-maroon: #075fb0; /* Network Blue, one step deeper: hover */
-  --color-ivory: #f3f5f8; /* the page: Paper */
-  --color-ivory-dim: #ffffff; /* wells and insets: white, so Network Blue text on them stays above 4.5:1 */
+  --color-ivory: #ffffff; /* the page: white */
+  --color-ivory-dim: #f3f5f8; /* wells and insets: Paper */
   --color-ink: #212529; /* text: Ink */
   --color-gold: #dadde2; /* rules and borders: Cloud */
   --color-gold-soft: #dadde2;
@@ -42,9 +42,9 @@
   --color-paper: #ffffff; /* panels on top of the page: white */
   --color-forest: #016ed2;
   --color-lime: #dadde2; /* quiet highlight grounds: Cloud */
-  --color-volt: #50555b; /* the board: Slate where the light falls, Ink, then Dusk Purple */
-  --color-board: #212529;
-  --color-board-deep: #2f2543;
+  --color-volt: #2f2543; /* the board: Dusk Purple, deepening to Ink */
+  --color-board: #2f2543;
+  --color-board-deep: #212529;
   --color-tangerine: #c8312c;
   --color-violet: #2f2543;
   --color-kraft: #dadde2;
@@ -196,7 +196,7 @@
     background-image: linear-gradient(
       to top,
       transparent 8%,
-      var(--hl, rgb(0 136 204 / 0.3)) 8% 62%,
+      var(--hl, rgb(200 49 44 / 0.22)) 8% 62%,
       transparent 62%
     );
     box-decoration-break: clone;
@@ -365,7 +365,7 @@
     background-color: var(--color-board);
     background-image:
       radial-gradient(120% 80% at 15% 0%, rgb(255 255 255 / 0.1), transparent 55%),
-      radial-gradient(90% 70% at 100% 100%, rgb(47 37 67 / 0.85), transparent 60%),
+      radial-gradient(90% 70% at 100% 100%, rgb(33 37 41 / 0.85), transparent 60%),
       linear-gradient(160deg, var(--color-volt), var(--color-board) 55%, var(--color-board-deep));
   }
   .board::before {
@@ -668,8 +668,8 @@
   [class~="bg-cloud"],
   [class^="bg-[#"], [class*=" bg-[#"]
   ) {
-    --color-ivory: #f3f5f8;
-    --color-ivory-dim: #ffffff;
+    --color-ivory: #ffffff;
+    --color-ivory-dim: #f3f5f8;
     --color-ink: #212529;
     --color-gold: #dadde2;
     --color-gold-soft: #dadde2;
@@ -692,8 +692,8 @@
   [class~="bg-brand-ink"], [class^="bg-brand-ink/"], [class*=" bg-brand-ink/"],
   [class~="bg-blue"], [class~="bg-dusk"], [class~="bg-red"], [class~="bg-tangerine"], [class~="bg-pin"]
   ) {
-    --color-ivory: #f3f5f8;
-    --color-ivory-dim: #ffffff;
+    --color-ivory: #ffffff;
+    --color-ivory-dim: #f3f5f8;
     --color-ink: #212529;
     --color-gold: #dadde2;
     --color-gold-soft: #dadde2;
@@ -896,4 +896,23 @@ html[data-theme="night"] {
 }
 html[data-theme="night"] :is(.sheet, .stickynote, .field, .keep-day, [class~="bg-paper"], [class~="bg-white"], [class~="bg-lime"], [class~="bg-tangerine"], [class~="bg-pin"], [class~="bg-red"]) {
   --color-tangerine: #c8312c;
+}
+
+/* ==========================================================================
+   The signature bands
+   The big dark bands (marquee, footer, sign-in panel, subscribe panel) carry
+   the signature gradient: BMSCE Red to Dusk Purple, 90 degrees (p. 15).
+   White on BMSCE Red is 5.3:1 and on Dusk Purple 14.3:1, so writing on a band
+   is white. Faded white would drop under 4.5:1 at the red end, so it is held
+   near full strength here.
+   ========================================================================== */
+.sig {
+  background-image: linear-gradient(90deg, var(--color-red), var(--color-dusk));
+  border-color: transparent;
+}
+.sig :is([class*="text-ivory/"], [class~="text-lime"], [class*="text-white/"]) {
+  color: rgb(255 255 255 / 0.94);
+}
+.sig ::placeholder {
+  color: rgb(255 255 255 / 0.9);
 }

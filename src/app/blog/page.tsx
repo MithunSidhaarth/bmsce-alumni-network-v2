@@ -150,7 +150,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
           </ul>
         )}
 
-        <section aria-labelledby="subscribe-title" className="mt-14 grid gap-8 rounded-box bg-brand-ink px-6 py-10 text-ivory md:grid-cols-2 md:px-12 md:py-14">
+        <section aria-labelledby="subscribe-title" className="sig mt-14 grid gap-8 rounded-box bg-brand-ink px-6 py-10 text-ivory md:grid-cols-2 md:px-12 md:py-14">
           <div>
             <p className="label-mono text-lime">By email</p>
             <h2 id="subscribe-title" className="mt-3 font-serif text-[clamp(1.9rem,4vw,2.8rem)] font-normal leading-[1.02]">

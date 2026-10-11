@@ -44,7 +44,7 @@ export default function VelocityMarquee({ items }: { items: string[] }) {
   }, []);
 
   return (
-    <div className="overflow-hidden border-y-[1.5px] border-brand-ink bg-brand-ink py-3.5 text-ivory">
+    <div className="overflow-hidden border-y-[1.5px] sig border-brand-ink bg-brand-ink py-3.5 text-ivory">
       <div ref={track} className="flex w-max will-change-transform" aria-hidden="true">
         {[0, 1].map((n) => (
           <ul key={n} className="flex shrink-0 items-center">

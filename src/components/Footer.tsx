@@ -59,8 +59,8 @@ export default function Footer() {
   }
 
   return (
-    <footer className="relative overflow-hidden bg-brand-ink text-ivory">
-      <div className="mx-auto max-w-7xl px-5 pb-10 pt-16 md:px-10 md:pt-24">
+    <footer className="sig relative overflow-hidden bg-brand-ink text-ivory">
+      <div className="mx-auto max-w-7xl px-5 pb-24 pt-16 md:px-10 md:pb-10 md:pt-24">
         <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="label-mono text-lime">Est. 1946 · Basavanagudi, Bengaluru</p>
