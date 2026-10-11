@@ -85,6 +85,12 @@ export async function createPost(input: {
     .select("id")
     .single();
   if (error) throw new Error(error.message);
+  // Photo drop: a photograph shared on an event's page is offered to The Wall
+  // (an admin approves it). If today's suggestions are used up, the post
+  // still stands; it just is not offered.
+  if (input.eventId && kind === "memory" && media.length > 0) {
+    await supabase.rpc("suggest_for_noticeboard", { p_post: data.id });
+  }
   refresh();
   return data.id as string;
 }

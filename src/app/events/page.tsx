@@ -6,7 +6,7 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 import CampusUpdates from "@/components/CampusUpdates";
 import SocialFeed from "@/components/SocialFeed";
-import RsvpButton from "./RsvpButton";
+import TearOffRsvp from "./TearOffRsvp";
 import { createClient } from "@/lib/supabase/server";
 import { safeUrl } from "@/lib/url";
 import type { EventRow, SocialPost } from "@/lib/types";
@@ -259,82 +259,58 @@ function EventCard({
       });
   const rsvpHref = safeUrl(event.rsvp_url);
 
+  const tabLabel = isNaN(date.getTime())
+    ? "Count me in"
+    : date.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" });
+
+  // A poster pinned to the board: taped at the top, hung a touch crooked, with
+  // a strip of tear-off tabs along the bottom for the RSVP.
   return (
     <Reveal delay={Math.min(index, 6) * 70} className="h-full">
-      <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-maroon/30">
-        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-maroon to-oxblood">
-          {event.cover_image_url && (
+      <article className="sheet relative flex h-full flex-col pt-3" style={{ transform: `rotate(${index % 2 ? 0.7 : -0.7}deg)` }}>
+        <span className={`tape ${index % 3 === 1 ? "tape-lime" : ""}`} aria-hidden="true" />
+        <div className="relative mx-3 aspect-[4/3] overflow-hidden rounded-md bg-forest">
+          {event.cover_image_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={event.cover_image_url}
-              alt=""
-              className="h-full w-full object-cover"
-            />
+            <img src={event.cover_image_url} alt="" loading="lazy" className="h-full w-full object-cover" />
+          ) : (
+            <p className="flex h-full items-end break-words p-4 font-display text-[1.55rem] font-extrabold leading-[0.95] text-lime [overflow-wrap:anywhere]" aria-hidden="true">
+              {event.title}
+            </p>
           )}
           {!isNaN(date.getTime()) && (
-            <div className="absolute left-4 top-4 rounded-xl bg-ivory px-3 py-2 text-center shadow-md">
-              <p className="font-display text-2xl leading-none text-ink">
-                {date.getDate()}
-              </p>
-              <p className="mt-1 font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
-                {date.toLocaleDateString("en-US", { month: "short" })}
-              </p>
+            <div className="absolute left-3 top-3 rounded-md bg-paper px-3 py-2 text-center text-ink shadow-md">
+              <p className="font-display text-2xl font-extrabold leading-none">{date.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric" })}</p>
+              <p className="label-mono mt-1 text-tangerine">{date.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", month: "short" })}</p>
             </div>
           )}
         </div>
-        <div className="flex flex-1 flex-col p-6">
-          <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">
-            {dateLabel}
-          </span>
-          <h3 className="mt-3 font-display text-xl text-ink">
-            <Link
-              href={`/events/${event.id}`}
-              className="transition-colors hover:text-oxblood"
-            >
+        <div className="flex flex-1 flex-col px-5 pb-4 pt-4">
+          <span className="label-mono text-tangerine">{dateLabel}</span>
+          <h3 className="mt-2 font-display text-xl leading-tight">
+            <Link href={`/events/${event.id}`} className="hover:underline">
               {event.title}
             </Link>
           </h3>
           {event.location && (
-            <p className="mt-1 flex flex-wrap items-center gap-2 font-sans text-sm text-ink/60">
+            <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-ink/65">
               <span>{event.location}</span>
-              {locationBadge && (
-                <span
-                  className={`w-fit rounded-full border px-2.5 py-0.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] ${
-                    locationBadge === "Near you"
-                      ? "border-accent/30 text-accent"
-                      : "border-oxblood/25 text-oxblood/70"
-                  }`}
-                >
-                  {locationBadge}
-                </span>
-              )}
+              {locationBadge && <span className="stamp text-forest">{locationBadge}</span>}
             </p>
           )}
-          {event.description && (
-            <p className="mt-3 font-sans text-sm leading-relaxed text-ink/70">
-              {event.description}
-            </p>
-          )}
-          <div className="mt-auto pt-5">
+          {event.description && <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-ink/75">{event.description}</p>}
+          <p className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-4 text-xs font-semibold text-forest">
+            <a href={`/events/${event.id}/calendar`} className="underline underline-offset-2 hover:no-underline">
+              Add to calendar
+            </a>
             {rsvpHref && (
-              <a
-                href={rsvpHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mb-3 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 hover:text-oxblood"
-              >
-                Event details →
+              <a href={rsvpHref} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:no-underline">
+                Event details
               </a>
             )}
-            <RsvpButton
-              eventId={event.id}
-              initialGoing={going}
-              count={count}
-              canRsvp={canRsvp}
-              signedIn={signedIn}
-            />
-          </div>
+          </p>
         </div>
+        <TearOffRsvp eventId={event.id} initialGoing={going} count={count} canRsvp={canRsvp} signedIn={signedIn} label={tabLabel} />
       </article>
     </Reveal>
   );

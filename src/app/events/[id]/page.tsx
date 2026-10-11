@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Eyebrow from "@/components/Eyebrow";
-import RsvpButton from "../RsvpButton";
+import TearOffRsvp from "../TearOffRsvp";
 import EventCommunity from "@/components/v2/EventCommunity";
 import { createClient } from "@/lib/supabase/server";
 import { safeUrl } from "@/lib/url";
@@ -155,20 +155,31 @@ export default async function EventPage({ params }: Props) {
                       This event has ended.
                     </p>
                   ) : (
-                    <RsvpButton
-                      eventId={event.id}
-                      initialGoing={going}
-                      count={count}
-                      canRsvp={canRsvp}
-                      signedIn={!!user}
-                    />
+                    <div className="-mx-6 overflow-hidden">
+                      <TearOffRsvp
+                        eventId={event.id}
+                        initialGoing={going}
+                        count={count}
+                        canRsvp={canRsvp}
+                        signedIn={!!user}
+                        label={new Date(event.event_date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" })}
+                      />
+                    </div>
+                  )}
+                  {!isPast && (
+                    <a
+                      href={`/events/${event.id}/calendar`}
+                      className="mt-4 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 hover:text-oxblood"
+                    >
+                      Add to calendar (.ics) →
+                    </a>
                   )}
                   {!isPast && calendar && (
                     <a
                       href={calendar}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-4 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 hover:text-oxblood"
+                      className="mt-3 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 hover:text-oxblood"
                     >
                       Add to Google Calendar →
                     </a>
