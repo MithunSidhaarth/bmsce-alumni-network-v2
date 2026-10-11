@@ -1,0 +1,498 @@
+@import "./globals.css";
+
+/* ==========================================================================
+   BMSCE Alumni Network v2 design system: "The Wall".
+   A campus noticeboard and scrapbook: warm paper, ink, forest green, with
+   lime as the highlighter and electric green reserved for the board itself.
+
+   The legacy token names below (oxblood, ivory, gold...) are kept because
+   every page from v1 is written against them. Only their values change, so
+   untouched pages take on the new identity too.
+   ========================================================================== */
+@theme {
+  --color-oxblood: #0f3b2a; /* forest: primary buttons, dark sections */
+  --color-maroon: #1b5e41; /* forest, one step lighter: hover */
+  --color-ivory: #f4eedd; /* page paper */
+  --color-ivory-dim: #eae2cb; /* darker paper: wells, insets */
+  --color-ink: #131a15; /* green-black text */
+  --color-gold: #cdc3a5; /* paper rule: borders, dividers */
+  --color-gold-soft: #cdc3a5a0;
+  --color-accent: #e8501f; /* tangerine: eyebrows, small accents */
+
+  --color-paper: #fcf9f0; /* a clean sheet on top of the page */
+  --color-forest: #0f3b2a;
+  --color-lime: #c8f53c; /* highlighter */
+  --color-volt: #20dd6d; /* the board */
+  --color-board: #11ad56;
+  --color-board-deep: #07673a;
+  --color-tangerine: #ff5a1f;
+  --color-violet: #6a4cff;
+  --color-kraft: #d9c49b;
+  --color-pin: #e23a2e;
+
+  --font-display: var(--font-bricolage), "Arial Narrow", Arial, sans-serif;
+  --font-sans: var(--font-hanken), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-hand: var(--font-caveat), "Segoe Print", cursive;
+  --font-mono: var(--font-dmmono), ui-monospace, "Courier New", monospace;
+
+  /* The width at which the member rail shows its labels. */
+  --breakpoint-rail: 73.75rem;
+
+  --ease-settle: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-pin-drop: pin-drop 0.7s var(--ease-settle) backwards;
+  --animate-pin-pop: pin-pop 0.45s var(--ease-pop) both;
+  --animate-sway: sway 7s ease-in-out infinite alternate;
+  --animate-rise: rise 0.5s var(--ease-settle) both;
+
+  @keyframes pin-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-28px) rotate(calc(var(--tilt, 0deg) * 3)) scale(1.08);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) rotate(var(--tilt, 0deg)) scale(1);
+    }
+  }
+  @keyframes pin-pop {
+    from { opacity: 0; transform: translate(-50%, -12px) scale(0.2); }
+    to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  }
+  @keyframes sway {
+    from { transform: rotate(calc(var(--tilt, 0deg) - 0.9deg)) translateY(0); }
+    to { transform: rotate(calc(var(--tilt, 0deg) + 0.9deg)) translateY(-3px); }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+:root {
+  --rail: 15.5rem;
+  --rail-slim: 4.75rem;
+  --topbar: 3.75rem;
+  --tabbar: 4rem;
+  --shadow-sheet: 0 1px 0 rgb(19 26 21 / 0.04), 0 2px 4px rgb(19 26 21 / 0.05),
+    0 10px 24px -12px rgb(19 26 21 / 0.22);
+  --shadow-lift: 0 2px 2px rgb(19 26 21 / 0.06), 0 18px 34px -14px rgb(19 26 21 / 0.4);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@layer base {
+  html {
+    scroll-padding-top: calc(var(--topbar) + 1rem);
+  }
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Paper grain over the whole page. Fixed, so it never repaints on scroll. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: var(--grain);
+    opacity: 0.085;
+    mix-blend-mode: multiply;
+  }
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+  h1,
+  h2,
+  h3 {
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    font-variation-settings: "wdth" 88;
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Signed-in chrome: the server sets data-auth on <html>, so the layout is
+     already offset on first paint and nothing jumps after hydration. */
+  html[data-auth="in"] body {
+    padding-top: var(--topbar);
+    padding-bottom: calc(var(--tabbar) + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 768px) {
+    html[data-auth="in"] body {
+      padding-left: var(--rail-slim);
+      padding-bottom: 0;
+    }
+  }
+  @media (min-width: 73.75rem) {
+    html[data-auth="in"] body {
+      padding-left: var(--rail);
+    }
+  }
+}
+
+@layer components {
+  /* ---- Type helpers ---------------------------------------------------- */
+  .label-mono {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .hand {
+    font-family: var(--font-hand);
+    font-size: 1.35em;
+    line-height: 1;
+  }
+  .serif-accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 144;
+  }
+  /* A swipe of highlighter behind a few words. */
+  .hl {
+    background-image: linear-gradient(
+      to top,
+      transparent 8%,
+      var(--hl, var(--color-lime)) 8% 62%,
+      transparent 62%
+    );
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding-inline: 0.12em;
+    margin-inline: -0.12em;
+  }
+
+  /* ---- Paper ----------------------------------------------------------- */
+  .sheet {
+    position: relative;
+    background: var(--color-paper);
+    border: 1px solid rgb(19 26 21 / 0.1);
+    border-radius: 3px;
+    box-shadow: var(--shadow-sheet);
+  }
+  .sheet-ruled {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 1.74rem,
+      rgb(15 59 42 / 0.09) 1.74rem 1.8rem
+    );
+    background-position: 0 3.1rem;
+  }
+  .sheet-kraft {
+    background: var(--color-kraft);
+    border-color: rgb(19 26 21 / 0.14);
+  }
+  .stickynote {
+    position: relative;
+    background: var(--note, var(--color-lime));
+    box-shadow: 0 1px 1px rgb(19 26 21 / 0.1), 0 14px 18px -12px rgb(19 26 21 / 0.45);
+    border-radius: 1px 1px 14px 2px / 1px 1px 26px 2px;
+  }
+  /* A strip of masking tape. Place inside a position:relative parent. */
+  .tape {
+    position: absolute;
+    top: -0.7rem;
+    left: 50%;
+    width: 5.25rem;
+    height: 1.5rem;
+    transform: translateX(-50%) rotate(var(--tape-tilt, -2.5deg));
+    background: rgb(232 223 190 / 0.82);
+    box-shadow: 0 1px 2px rgb(19 26 21 / 0.12);
+    clip-path: polygon(0 12%, 3% 0, 97% 6%, 100% 20%, 98% 92%, 96% 100%, 4% 94%, 0 80%);
+    pointer-events: none;
+  }
+  .tape-lime { background: rgb(200 245 60 / 0.78); }
+  .tape-left { left: 18%; --tape-tilt: -9deg; }
+  .tape-right { left: 82%; --tape-tilt: 8deg; }
+  .pin {
+    position: absolute;
+    top: -0.45rem;
+    left: 50%;
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 999px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle at 35% 30%, #ffb3ab 0 12%, var(--pin, var(--color-pin)) 38%, #7d1911 100%);
+    box-shadow: 0 5px 5px -1px rgb(19 26 21 / 0.45), 0 1px 0 rgb(255 255 255 / 0.2) inset;
+    pointer-events: none;
+  }
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.5rem 0.24rem;
+    border: 1.5px solid currentColor;
+    border-radius: 2px;
+    transform: rotate(-2.5deg);
+    white-space: nowrap;
+  }
+
+  /* ---- Controls -------------------------------------------------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.6rem 1.15rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    border: 1.5px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-ink);
+    color: var(--color-ivory);
+    transition: transform 0.18s var(--ease-settle), box-shadow 0.18s var(--ease-settle),
+      background-color 0.18s, color 0.18s;
+    cursor: pointer;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 0 var(--color-ink); background: var(--color-forest); }
+  .btn:active { transform: translateY(1px); box-shadow: none; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-lime { background: var(--color-lime); color: var(--color-ink); }
+  .btn-lime:hover { background: #d6fb5c; }
+  .btn-ghost { background: transparent; color: var(--color-ink); border-color: rgb(19 26 21 / 0.28); }
+  .btn-ghost:hover { background: var(--color-paper); border-color: var(--color-ink); }
+  .btn-sm { min-height: 2.25rem; padding: 0.4rem 0.85rem; font-size: 0.8125rem; }
+  .btn-danger { background: var(--color-pin); border-color: var(--color-pin); color: #fff; }
+  .btn-danger:hover { background: #c22d22; }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border: 1px solid rgb(19 26 21 / 0.2);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-ink);
+    white-space: nowrap;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .chip:hover { border-color: var(--color-ink); }
+  .chip[aria-pressed="true"],
+  .chip[aria-current="page"],
+  .chip[data-active="true"] {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-ivory);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.6rem 0.85rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    color: var(--color-ink);
+    background: var(--color-paper);
+    border: 1px solid rgb(19 26 21 / 0.22);
+    border-radius: 6px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field::placeholder { color: rgb(19 26 21 / 0.42); }
+  .field:focus { outline: none; border-color: var(--color-ink); box-shadow: 0 0 0 3px rgb(200 245 60 / 0.7); }
+  .field-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: rgb(19 26 21 / 0.8);
+  }
+
+  /* ---- The board ------------------------------------------------------- */
+  .board {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--color-board);
+    background-image:
+      radial-gradient(120% 80% at 18% 0%, rgb(200 245 60 / 0.55), transparent 55%),
+      radial-gradient(90% 70% at 100% 100%, rgb(7 103 58 / 0.9), transparent 60%),
+      linear-gradient(160deg, var(--color-volt), var(--color-board) 55%, var(--color-board-deep));
+  }
+  .board::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: var(--grain);
+    background-size: 180px;
+    opacity: 0.5;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+  .board::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 10px rgb(7 60 34 / 0.55), inset 0 0 90px rgb(4 48 27 / 0.55);
+  }
+
+  /* A pinned thing on the board or the page. --tilt sets its resting angle. */
+  .pinned {
+    transform: rotate(var(--tilt, 0deg));
+    transition: transform 0.35s var(--ease-settle), box-shadow 0.35s var(--ease-settle);
+    will-change: transform;
+  }
+  @media (hover: hover) {
+    .pinned:hover,
+    .pinned:focus-visible {
+      transform: rotate(0deg) translateY(-6px) scale(1.025);
+      box-shadow: var(--shadow-lift);
+      z-index: 5;
+    }
+  }
+
+  .rule-dashed {
+    border: 0;
+    border-top: 1.5px dashed rgb(19 26 21 / 0.25);
+  }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+/* Shared-element morph when a card is taken off the wall. */
+::view-transition-group(notice-open) {
+  animation-duration: 0.42s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pinned,
+  .pinned:hover {
+    transition: none;
+    transform: rotate(var(--tilt, 0deg));
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   The Wall
+   ========================================================================== */
+.wall-chip:not([aria-pressed="true"]) {
+  background: rgb(252 249 240 / 0.88);
+  border-color: rgb(19 26 21 / 0.35);
+}
+.wall-letter {
+  transform: rotate(var(--tilt, 0deg));
+  animation: pin-drop 0.75s var(--ease-settle) backwards;
+}
+
+/* A card is invisible until it scrolls into view, then drops onto the board:
+   the paper lands first, the pin pops in a beat later. */
+.wall-item {
+  opacity: 0;
+}
+.wall-item.is-in {
+  opacity: 1;
+}
+.wall-item.is-in > .wall-card {
+  animation: pin-drop 0.7s var(--ease-settle) var(--delay, 0ms) backwards;
+}
+.wall-item.is-in .wall-pin {
+  animation: pin-pop 0.45s var(--ease-pop) calc(var(--delay, 0ms) + 0.42s) backwards;
+}
+/* One card in seven keeps moving, very slightly, like paper near a fan. */
+.wall-item.is-in > .wall-sway {
+  animation: pin-drop 0.7s var(--ease-settle) var(--delay, 0ms) backwards,
+    sway 7s ease-in-out 1.4s infinite alternate;
+}
+.wall-item.is-in > .wall-sway:hover {
+  animation-play-state: paused;
+}
+.wall-dialog[open] > article {
+  animation: rise 0.3s var(--ease-settle) both;
+}
+.wall-dialog::backdrop {
+  backdrop-filter: blur(3px);
+}
+
+/* Depth: on large screens, cards at different "distances" drift at slightly
+   different speeds as the board scrolls. Scroll-driven, so it costs no JS;
+   browsers without support simply show a flat board. */
+@keyframes wall-near {
+  from { translate: 0 22px; }
+  to { translate: 0 -22px; }
+}
+@keyframes wall-far {
+  from { translate: 0 -12px; }
+  to { translate: 0 12px; }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+    .wall-item.depth-1 {
+      animation: wall-near linear both;
+      animation-timeline: view();
+    }
+    .wall-item.depth-3 {
+      animation: wall-far linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wall-item {
+    opacity: 1;
+  }
+  .wall-letter,
+  .wall-item.is-in > .wall-card,
+  .wall-item.is-in .wall-pin,
+  .wall-dialog[open] > article {
+    animation: none;
+  }
+}
+@media (max-width: 639px) {
+  /* Phones: one column, gentler angles, nothing hanging off the edge. */
+  .wall-card {
+    --tilt: 0deg !important;
+    margin-left: 0 !important;
+  }
+  .wall-item:nth-child(odd) > .wall-card { rotate: -1.2deg; }
+  .wall-item:nth-child(even) > .wall-card { rotate: 1.1deg; }
+}
+
+/* Long-form reading: a drop cap opens every article. */
+.article-body > p:first-of-type::first-letter {
+  float: left;
+  margin: 0.06em 0.09em 0 0;
+  font-family: var(--font-display);
+  font-size: 4.1em;
+  font-weight: 800;
+  line-height: 0.82;
+  color: var(--color-forest);
+}
+.article-body > p:first-of-type {
+  margin-top: 0;
+}

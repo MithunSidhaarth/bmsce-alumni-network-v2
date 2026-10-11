@@ -1,26 +1,56 @@
-import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import {
+  Bricolage_Grotesque,
+  Caveat,
+  DM_Mono,
+  Fraunces,
+  Hanken_Grotesk,
+} from "next/font/google";
 import AuthProvider from "@/components/AuthProvider";
-import ScrollProgress from "@/components/ScrollProgress";
-import PageTransition from "@/components/PageTransition";
-import "./globals.css";
+import AppChrome from "@/components/v2/AppChrome";
+import { getMe } from "@/lib/me";
+import "./v2.css";
 
+// Display: a grotesque with a width axis, set tight and heavy for headlines.
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  axes: ["wdth", "opsz"],
+  variable: "--font-bricolage",
+  display: "swap",
+});
+const hanken = Hanken_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-hanken",
+  display: "swap",
+});
+// Serif: italic accents inside headlines, and long-form article text.
 const fraunces = Fraunces({
   subsets: ["latin"],
   axes: ["opsz"],
+  style: ["normal", "italic"],
   variable: "--font-fraunces",
   display: "swap",
+  preload: false,
 });
-
-const inter = Inter({
+// Handwriting for margin notes, mono for date stamps. Both are decoration,
+// so neither blocks first paint.
+const caveat = Caveat({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-caveat",
   display: "swap",
+  preload: false,
+});
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-dmmono",
+  display: "swap",
+  preload: false,
 });
 
-// Set NEXT_PUBLIC_SITE_URL to your production domain so shared-link previews
-// and the sitemap use absolute URLs. Falls back to localhost for dev.
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const description =
+  "The home for every BMS graduate: the feed, the chapters, the forum and the wall of memories.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -28,35 +58,65 @@ export const metadata: Metadata = {
     default: "BMSCE Alumni Network: Once BMS. Always BMS.",
     template: "%s",
   },
-  description:
-    "The home for every BMS graduate: find your batch, your city chapter, a mentor, or your next opportunity.",
+  description,
   openGraph: {
     title: "BMSCE Alumni Network: Once BMS. Always BMS.",
-    description:
-      "The home for every BMS graduate: find your batch, your city chapter, a mentor, or your next opportunity.",
+    description,
     siteName: "BMSCE Alumni Network",
     type: "website",
-    locale: "en_US",
+    locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
     title: "BMSCE Alumni Network: Once BMS. Always BMS.",
-    description:
-      "The home for every BMS graduate: find your batch, your city chapter, a mentor, or your next opportunity.",
+    description,
   },
 };
 
-export default function RootLayout({
+export const viewport: Viewport = {
+  themeColor: "#f4eedd",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+  const { user, me } = await getMe();
+  // The signed-in shell (rail, top bar, tab bar) only appears once a member
+  // has finished onboarding; until then they see the public layout.
+  const inApp = Boolean(user && me?.onboarded);
+
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
+    <html
+      lang="en"
+      data-auth={inApp ? "in" : "out"}
+      className={`${bricolage.variable} ${hanken.variable} ${fraunces.variable} ${caveat.variable} ${dmMono.variable}`}
+    >
       <body>
-        <ScrollProgress />
-        <AuthProvider>
-          <PageTransition>{children}</PageTransition>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-ivory"
+        >
+          Skip to content
+        </a>
+        <AuthProvider
+          initial={{
+            user,
+            inApp,
+            profile: me
+              ? {
+                  full_name: me.full_name,
+                  photo_url: me.photo_url,
+                  role: me.role,
+                  user_type: me.user_type,
+                  verification_status: me.verification_status,
+                }
+              : null,
+          }}
+        >
+          {inApp && me && <AppChrome me={me} />}
+          <div id="main">{children}</div>
         </AuthProvider>
       </body>
     </html>

@@ -74,6 +74,9 @@ export default function OnboardingForm({
   const [company, setCompany] = useState(initial?.company ?? "");
   const [jobTitle, setJobTitle] = useState(initial?.job_title ?? "");
   const [industry, setIndustry] = useState(initial?.industry ?? "");
+  // Students record the exact day they pass out. A scheduled job moves them
+  // to alumni on that date, so it has to be a real, future date.
+  const [passingOut, setPassingOut] = useState(initial?.passing_out_date ?? "");
   const [education, setEducation] = useState(
     initialEducation.map((e) => ({
       degree: e.degree,
@@ -139,6 +142,15 @@ export default function OnboardingForm({
       if (!Number.isInteger(y) || y < 1946 || y > thisYear + 6) {
         errs.gradYear = `Enter a year between 1946 and ${thisYear + 6}.`;
       }
+    }
+    if (userType === "student" && passingOut !== (initial?.passing_out_date ?? "")) {
+      const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+      if (passingOut && passingOut <= today) {
+        errs.passingOut = "Enter a future date. Already graduated? Ask an admin to update your status.";
+      }
+    }
+    if (userType === "student" && !passingOut && !initial?.onboarded) {
+      errs.passingOut = "Tell us when you pass out, so your membership can move to alumni on that day.";
     }
     if (!branch) errs.branch = "This field is required.";
     else if (branch === "Other" && !branchOther.trim())
@@ -219,6 +231,11 @@ export default function OnboardingForm({
           bio: bio.trim() || null,
           linkedin_url: linkedin.trim() || null,
           photo_url: nextPhotoUrl || null,
+          // Only sent when it changed: the database rejects past dates and
+          // any attempt by an alum to set one.
+          ...(isStudent && passingOut && passingOut !== (initial?.passing_out_date ?? "")
+            ? { passing_out_date: passingOut }
+            : {}),
           onboarded: true,
         },
         { onConflict: "id" }
@@ -542,6 +559,25 @@ export default function OnboardingForm({
           />
         </Field>
       </div>
+
+      {isStudent && (
+        <Field label="Passing-out date" required error={errors.passingOut}>
+          <input
+            className={fieldClass("passingOut")}
+            type="date"
+            value={passingOut}
+            onChange={(e) => {
+              setPassingOut(e.target.value);
+              clearError("passingOut");
+            }}
+          />
+          <p className="mt-1.5 font-sans text-xs leading-relaxed text-ink/55">
+            The day your final results or convocation make you a graduate. On that date your
+            membership changes from student to alumni automatically. Nothing else about your
+            account changes, and an admin can correct the date if it moves.
+          </p>
+        </Field>
+      )}
 
       <Field label="Branch / degree" required error={errors.branch}>
         <select

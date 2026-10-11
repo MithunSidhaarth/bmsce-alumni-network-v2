@@ -7,7 +7,7 @@ import { safeNextPath } from "@/lib/nav";
 // substring/prefix match on the raw header, so lookalikes like
 // "evil.vercel.app.attacker.com" or "notvercel.app" can't slip through.
 const ALLOWED_HOSTS = [
-  "alumninetwork1.vercel.app",
+  new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").hostname,
   // Add the production custom domain here once one is configured, e.g.:
   // "alumni.bmsce.ac.in",
 ];

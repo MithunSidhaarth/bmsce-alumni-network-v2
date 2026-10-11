@@ -4,6 +4,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Eyebrow from "@/components/Eyebrow";
 import OnboardingForm from "@/app/onboarding/OnboardingForm";
+import ProfileSettings from "@/components/v2/ProfileSettings";
 import { createClient } from "@/lib/supabase/server";
 import type { Profile, EducationEntry } from "@/lib/types";
 
@@ -65,6 +66,19 @@ export default async function EditProfilePage() {
                 redirectTo="/profile"
               />
             </div>
+            {profile && (
+              <ProfileSettings
+                userId={user.id}
+                skills={profile.skills ?? []}
+                interests={profile.interests ?? []}
+                privacy={{
+                  dm: profile.privacy?.dm ?? "members",
+                  show_work: profile.privacy?.show_work ?? true,
+                  show_location: profile.privacy?.show_location ?? true,
+                  show_linkedin: profile.privacy?.show_linkedin ?? true,
+                }}
+              />
+            )}
           </div>
         </section>
       </main>

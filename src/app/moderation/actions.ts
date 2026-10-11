@@ -8,8 +8,9 @@ type TargetType =
   | "posting"
   | "profile"
   | "mentor"
-  | "discussion_post"
-  | "discussion_comment";
+  | "post"
+  | "comment"
+  | "message";
 
 /** Any signed-in member can flag content for admin review. */
 export async function reportContent(

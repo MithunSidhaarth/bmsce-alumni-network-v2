@@ -156,9 +156,12 @@ export async function applyToPosting(jobId: string, input: ApplicationInput) {
     throw new Error(error.message);
   }
 
-  // Save the phone back to the profile so it prefills next time.
-  if (phone && phone !== profile.phone) {
-    await supabase.from("profiles").update({ phone }).eq("id", profile.id);
+  // Save the phone to the member's private contact row (never the public
+  // profile) so it prefills next time.
+  if (phone) {
+    await supabase
+      .from("member_contacts")
+      .upsert({ member_id: profile.id, phone }, { onConflict: "member_id" });
   }
 
   revalidatePath(`/careers/openings/${jobId}`);

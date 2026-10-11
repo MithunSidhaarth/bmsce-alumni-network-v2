@@ -12,8 +12,9 @@ export default function ReportButton({
     | "posting"
     | "profile"
     | "mentor"
-    | "discussion_post"
-    | "discussion_comment";
+    | "post"
+    | "comment"
+    | "message";
   targetId: string;
   label?: string;
 }) {

@@ -19,6 +19,8 @@ type AuthContextValue = {
   signedIn: boolean;
   profile: AuthProfile | null;
   loading: boolean;
+  // True when the signed-in app shell (rail, top bar) is on screen.
+  inApp: boolean;
 };
 
 const AuthContext = createContext<AuthContextValue>({
@@ -26,6 +28,7 @@ const AuthContext = createContext<AuthContextValue>({
   signedIn: false,
   profile: null,
   loading: true,
+  inApp: false,
 });
 
 export function useAuth() {
@@ -35,10 +38,21 @@ export function useAuth() {
 // Single source of truth for auth state: one getUser() call and one
 // onAuthStateChange subscription for the whole app, shared via context so
 // Nav/AuthMenu (and anything else) don't each fetch their own copy.
-export default function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<AuthProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+//
+// `initial` comes from the server render (root layout), so the first paint
+// already knows who is signed in and nothing flashes while the client loads.
+export default function AuthProvider({
+  children,
+  initial,
+}: {
+  children: ReactNode;
+  initial?: { user: User | null; profile: AuthProfile | null; inApp?: boolean };
+}) {
+  const [user, setUser] = useState<User | null>(initial?.user ?? null);
+  const [profile, setProfile] = useState<AuthProfile | null>(
+    initial?.profile ?? null
+  );
+  const [loading, setLoading] = useState(!initial);
 
   useEffect(() => {
     const supabase = createClient();
@@ -78,7 +92,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, signedIn: Boolean(user), profile, loading }}
+      value={{
+        user,
+        signedIn: Boolean(user),
+        profile,
+        loading,
+        inApp: Boolean(user) && Boolean(initial?.inApp),
+      }}
     >
       {children}
     </AuthContext.Provider>

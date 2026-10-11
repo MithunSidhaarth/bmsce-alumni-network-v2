@@ -30,16 +30,26 @@ export default async function OpeningPage({
 
   type MeProfile = Pick<
     Profile,
-    "id" | "full_name" | "phone" | "linkedin_url" | "verification_status" | "role"
+    "id" | "full_name" | "linkedin_url" | "verification_status" | "role"
   >;
   let me: MeProfile | null = null;
   if (user) {
     const { data } = await supabase
       .from("profiles")
-      .select("id, full_name, phone, linkedin_url, verification_status, role")
+      .select("id, full_name, linkedin_url, verification_status, role")
       .eq("id", user.id)
       .single<MeProfile>();
     me = data ?? null;
+  }
+  // Phone lives in member_contacts (owner-only), not on the public profile.
+  let myPhone = "";
+  if (user) {
+    const { data: contact } = await supabase
+      .from("member_contacts")
+      .select("phone")
+      .eq("member_id", user.id)
+      .maybeSingle();
+    myPhone = contact?.phone ?? "";
   }
 
   const { data: posting } = await supabase
@@ -216,7 +226,7 @@ export default async function OpeningPage({
                   prefill={{
                     fullName: me?.full_name ?? "",
                     email: user?.email ?? "",
-                    phone: me?.phone ?? "",
+                    phone: myPhone,
                     linkedin: me?.linkedin_url ?? "",
                   }}
                   externalLink={posting.external_link}

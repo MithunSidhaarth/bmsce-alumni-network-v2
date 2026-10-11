@@ -36,7 +36,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "sujxfhpvbrhhlmvzbgwv.supabase.co",
+        hostname: new URL(
+          process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://invalid.supabase.co"
+        ).hostname,
         pathname: "/storage/v1/object/public/**",
       },
     ],
@@ -61,6 +63,9 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/happening", destination: "/events", permanent: true },
+      // The newsletter archive now lives inside Blog & Insights.
+      { source: "/newsletter", destination: "/blog#archive", permanent: false },
+      { source: "/network", destination: "/directory", permanent: false },
       // Holds fictional placeholder people; not ready for the public. Remove
       // this redirect once real notable alumni are added to the page.
       { source: "/notable-alumni", destination: "/", permanent: false },

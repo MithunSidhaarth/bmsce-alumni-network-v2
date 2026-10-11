@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Eyebrow from "@/components/Eyebrow";
 import RsvpButton from "../RsvpButton";
+import EventCommunity from "@/components/v2/EventCommunity";
 import { createClient } from "@/lib/supabase/server";
 import { safeUrl } from "@/lib/url";
 import type { EventRow } from "@/lib/types";
@@ -187,6 +188,7 @@ export default async function EventPage({ params }: Props) {
             </div>
           </div>
         </section>
+        <EventCommunity eventId={event.id} />
       </main>
       <Footer />
     </>

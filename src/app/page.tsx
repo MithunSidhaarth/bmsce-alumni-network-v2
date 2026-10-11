@@ -1,82 +1,53 @@
-import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import GlobalCommunity from "@/components/GlobalCommunity";
-import ValueProps from "@/components/ValueProps";
-import Testimonials from "@/components/Testimonials";
-import AlumniSpotlight from "@/components/AlumniSpotlight";
-import MentorCta from "@/components/MentorCta";
-import FinalCta from "@/components/FinalCta";
-import MemberHome, { type MemberHomeProfile } from "@/components/MemberHome";
-import Footer from "@/components/Footer";
-import FunFacts from "@/components/FunFacts";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { getCareersEnabled } from "@/lib/settings";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import GlobalCommunity from "@/components/GlobalCommunity";
+import Testimonials from "@/components/Testimonials";
+import FunFacts from "@/components/FunFacts";
+import FinalCta from "@/components/FinalCta";
+import HomeFeed from "@/components/v2/HomeFeed";
+import Landing from "@/components/v2/Landing";
+import { getMe } from "@/lib/me";
 
-// Auth state must be read per-request so the right homepage is served.
+// Auth state decides which homepage is served, so this renders per request.
 export const dynamic = "force-dynamic";
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ code?: string }>;
+  searchParams: Promise<{ code?: string; show?: string; n?: string }>;
 }) {
   // If Supabase's Site URL points here, it can return the OAuth code to "/"
   // instead of /auth/callback. Forward it so sign-in still completes.
-  const { code } = await searchParams;
+  const { code, show, n } = await searchParams;
   if (code && /^[\w-]{8,100}$/.test(code)) {
     redirect(`/auth/callback?code=${encodeURIComponent(code)}`);
   }
 
-  // Same server-side auth pattern used by /directory, /profile, /events, etc.
-  const supabase = await createClient();
-  // Independent of the user lookup — start it now so it overlaps.
-  const careersEnabledPromise = getCareersEnabled();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { supabase, user, me } = await getMe();
 
-  let profile: MemberHomeProfile | null = null;
-  if (user) {
-    const { data } = await supabase
-      .from("profiles")
-      .select(
-        "id, full_name, photo_url, user_type, role, verification_status, rejection_reason, industry, job_title, graduation_year, current_city, onboarded, created_at"
-      )
-      .eq("id", user.id)
-      .single<MemberHomeProfile>();
-    profile = data ?? null;
+  // Signed in and onboarded: the personalised feed.
+  if (user && me?.onboarded) {
+    return (
+      <>
+        <main>
+          <HomeFeed supabase={supabase} me={me} show={show ?? "all"} count={Number(n) || 0} />
+        </main>
+        <Footer />
+      </>
+    );
   }
 
-  // Signed in and onboarded → the member homepage (no "Join the network" copy).
-  // Anyone else falls through to the public marketing homepage, unchanged.
-  const showMemberHome = !!user && !!profile && profile.onboarded;
-  const careersEnabled = await careersEnabledPromise;
-
+  // Everyone else: the public homepage.
   return (
     <>
       <Nav />
       <main>
-        {showMemberHome ? (
-          <>
-            <MemberHome profile={profile!} careersEnabled={careersEnabled} />
-            <FunFacts />
-          </>
-        ) : (
-          <>
-            {/* Order: Hero -> stats (GlobalCommunity) -> ways back in
-                (ValueProps) -> testimonials -> spotlight -> [mentorship promo, only when
-                is enabled] -> final CTA. */}
-            <Hero />
-            <GlobalCommunity />
-            <ValueProps careersEnabled={careersEnabled} />
-            <Testimonials />
-            <AlumniSpotlight />
-            <FunFacts />
-            {careersEnabled && <MentorCta />}
-            <FinalCta />
-          </>
-        )}
+        <Landing signedIn={Boolean(user)} />
+        <GlobalCommunity />
+        <Testimonials />
+        <FunFacts />
+        <FinalCta />
       </main>
       <Footer />
     </>

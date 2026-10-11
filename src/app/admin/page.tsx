@@ -1,178 +1,204 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import AdminList from "./AdminList";
-import CareersToggle from "./CareersToggle";
-import { createClient } from "@/lib/supabase/server";
-import { getCareersEnabled } from "@/lib/settings";
-import type { Profile, VerificationStatus } from "@/lib/types";
+import SeriesChart from "@/components/v2/admin/SeriesChart";
+import { AdminHeader, Empty, Panel, Pill, Stat, table } from "@/components/v2/admin/ui";
+import { requireAdmin } from "@/lib/me";
+import { shortDate, timeAgo } from "@/lib/format";
 
-export const metadata: Metadata = {
-  title: "Admin: BMSCE Alumni Network",
-};
-
+export const metadata: Metadata = { title: "Admin: BMSCE Alumni Network" };
 export const dynamic = "force-dynamic";
 
-type Tab = "pending" | "rejected" | "verified";
+const RANGES = [7, 30, 90, 365];
 
-const TABS: { key: Tab; label: string; status: VerificationStatus }[] = [
-  { key: "pending", label: "Pending", status: "unverified" },
-  { key: "rejected", label: "Rejected", status: "rejected" },
-  { key: "verified", label: "Verified", status: "verified" },
-];
+type Metrics = {
+  range_days: number;
+  members: { total: number; students: number; alumni: number; verified: number; pending: number; suspended: number; new_in_range: number; students_without_date: number };
+  active: { today: number; d7: number; d30: number; in_range: number; students_in_range: number; alumni_in_range: number };
+  series: { day: string; registrations: number; active: number; posts: number; comments: number }[];
+  content: { posts: number; discussions: number; comments: number; posts_in_range: number; comments_in_range: number; open_reports: number; messages_in_range: number };
+  chapters: { name: string; slug: string; members: number; pending: number; posts: number }[];
+  events: { upcoming: number; rsvps_going: number; rsvps_in_range: number };
+  blog: { published: number; drafts: number; views_in_range: number; top: { title: string; slug: string; views: number }[] };
+  newsletter: { subscribed: number; unsubscribed: number; bounced: number; digests_sent: number; delivered: number; failed: number };
+  instagram: { imported: number; archive: number; open_failures: number; last_success: string | null; last_attempt: string | null; last_status: string | null };
+  lifecycle: { last_run: string | null; last_ok: boolean | null; graduated_in_range: number; due_next_30: number; on_hold: number };
+};
 
-export default async function AdminPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ tab?: string }>;
-}) {
-  const supabase = await createClient();
+export default async function AdminOverview({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
+  const { supabase } = await requireAdmin();
+  const days = RANGES.includes(Number((await searchParams).range)) ? Number((await searchParams).range) : 30;
+  const { data, error } = await supabase.rpc("admin_metrics", { p_days: days });
+  const m = data as Metrics | null;
 
-  const tabKey = ((await searchParams).tab ?? "pending") as Tab;
-  const active = TABS.find((t) => t.key === tabKey) ?? TABS[0];
-
-  // Counts for the tab labels + overview stat cards.
-  const counts: Record<Tab, number> = {
-    pending: 0,
-    rejected: 0,
-    verified: 0,
-  };
-  const [, eventsUpcoming, galleryTotal] = await Promise.all([
-    Promise.all(
-      TABS.map(async (t) => {
-        let q = supabase
-          .from("profiles")
-          .select("id", { count: "exact", head: true })
-          .eq("verification_status", t.status);
-        if (t.key !== "rejected") q = q.eq("user_type", "alumni");
-        const { count } = await q;
-        counts[t.key] = count ?? 0;
-      })
-    ),
-    supabase
-      .from("events")
-      .select("id", { count: "exact", head: true })
-      .gte("event_date", new Date().toISOString())
-      .then((r) => r.count ?? 0),
-    supabase
-      .from("gallery_photos")
-      .select("id", { count: "exact", head: true })
-      .then((r) => r.count ?? 0),
-  ]);
-
-  let listQuery = supabase
-    .from("profiles")
-    .select("*")
-    .eq("verification_status", active.status)
-    .order("created_at", { ascending: false });
-  // Rejected can include students too; pending/verified lists are alumni.
-  if (active.key !== "rejected") {
-    listQuery = listQuery.eq("user_type", "alumni");
-  }
-  const { data: members } = await listQuery.returns<Profile[]>();
-  const memberList = members ?? [];
-
-  const careersEnabled = await getCareersEnabled();
-
-  // Contact info lives in member_contacts now; admins may read all of it.
-  const contacts: Record<
-    string,
-    { personal_email: string | null; college_email: string | null }
-  > = {};
-  if (memberList.length) {
-    const { data: contactRows } = await supabase
-      .from("member_contacts")
-      .select("member_id, personal_email, college_email")
-      .in(
-        "member_id",
-        memberList.map((m) => m.id)
-      );
-    for (const c of contactRows ?? [])
-      contacts[c.member_id as string] = {
-        personal_email: (c.personal_email as string) ?? null,
-        college_email: (c.college_email as string) ?? null,
-      };
+  if (error || !m) {
+    return (
+      <>
+        <AdminHeader title="Analytics" />
+        <Empty>The numbers could not be loaded: {error?.message ?? "no data returned"}.</Empty>
+      </>
+    );
   }
 
-  const stats: {
-    label: string;
-    value: number;
-    href: string;
-    tone?: "accent";
-  }[] = [
-    {
-      label: "Pending review",
-      value: counts.pending,
-      href: "/admin?tab=pending",
-      tone: counts.pending > 0 ? "accent" : undefined,
-    },
-    { label: "Verified alumni", value: counts.verified, href: "/admin?tab=verified" },
-    { label: "Upcoming events", value: eventsUpcoming, href: "/admin/events" },
-    { label: "Gallery photos", value: galleryTotal, href: "/admin/gallery" },
-  ];
+  const dayList = m.series.map((s) => s.day);
+  const label = days === 365 ? "12 months" : `${days} days`;
+  const topChapters = m.chapters.filter((c) => c.members > 0 || c.posts > 0).slice(0, 8);
 
   return (
     <>
-      <h1 className="font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
-        Overview.
-      </h1>
-      <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-ink/70">
-        Review alumni who&rsquo;ve completed their profile. Approving adds
-        them to the directory; rejecting hides them with an optional note.
-      </p>
-
-      {/* Stat cards */}
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {stats.map((s) => (
-          <Link
-            key={s.label}
-            href={s.href}
-            className="rounded-xl border border-gold/25 bg-ivory-dim/50 p-4 transition-colors hover:border-oxblood/40 hover:bg-ivory-dim"
-          >
-            <p
-              className={`font-display text-3xl ${
-                s.tone === "accent" ? "text-accent" : "text-ink"
-              }`}
-            >
-              {s.value}
-            </p>
-            <p className="mt-1 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/55">
-              {s.label}
-            </p>
-          </Link>
-        ))}
-      </div>
-
-      {/* Tabs */}
-      <div className="mt-10 flex flex-wrap gap-1 border-b border-gold/30">
-        {TABS.map((t) => (
-          <Link
-            key={t.key}
-            href={`/admin?tab=${t.key}`}
-            className={`-mb-px border-b-2 px-4 py-3 font-sans text-[12px] font-medium uppercase tracking-[0.12em] transition-colors ${
-              active.key === t.key
-                ? "border-oxblood text-oxblood"
-                : "border-transparent text-ink/55 hover:text-oxblood"
-            }`}
-          >
-            {t.label}
-            <span className="ml-2 text-ink/40">{counts[t.key]}</span>
-          </Link>
-        ))}
-      </div>
-
-      <div className="mt-8">
-        <AdminList members={memberList} contacts={contacts} tab={active.key} />
-      </div>
-
-      {/* Site settings */}
-      <div className="mt-16 border-t border-gold/25 pt-10">
-        <h2 className="font-display text-2xl text-ink md:text-3xl">
-          Site settings
-        </h2>
-        <div className="mt-6">
-          <CareersToggle enabled={careersEnabled} />
+      <AdminHeader
+        title="Analytics"
+        lead="Live counts from the database. Activity is recorded once per member per day, in India Standard Time. Nothing on this page is estimated or sampled."
+      >
+        <div role="group" aria-label="Date range" className="flex gap-1.5">
+          {RANGES.map((r) => (
+            <Link key={r} href={r === 30 ? "/admin" : `/admin?range=${r}`} data-active={days === r} className="chip">
+              {r === 365 ? "12 months" : `${r} days`}
+            </Link>
+          ))}
         </div>
+      </AdminHeader>
+
+      <div className="mb-7 flex flex-wrap gap-3">
+        <Stat label="Registered members" value={m.members.total} hint={`${m.members.new_in_range} joined in the last ${label}`} />
+        <Stat label="Alumni" value={m.members.alumni} hint={`${m.active.alumni_in_range} active in ${label}`} />
+        <Stat label="Students" value={m.members.students} hint={`${m.active.students_in_range} active in ${label}`} />
+        <Stat label="Active members" value={m.active.in_range} hint={`Today ${m.active.today} · 7 days ${m.active.d7} · 30 days ${m.active.d30}`} />
+        <Stat
+          label="Awaiting verification"
+          value={m.members.pending}
+          hint={<Link href="/admin/review" className="underline">Open the queue</Link>}
+        />
+      </div>
+
+      <div className="mb-7 flex flex-wrap gap-4">
+        <SeriesChart title="New registrations per day" days={dayList} series={[{ name: "Registrations", values: m.series.map((s) => s.registrations) }]} />
+        <SeriesChart title="Active members per day" days={dayList} series={[{ name: "Active members", values: m.series.map((s) => s.active) }]} />
+        <SeriesChart
+          title="Posts and replies per day"
+          days={dayList}
+          series={[
+            { name: "Posts", values: m.series.map((s) => s.posts) },
+            { name: "Replies", values: m.series.map((s) => s.comments) },
+          ]}
+        />
+      </div>
+
+      <div className="grid gap-x-7 lg:grid-cols-2">
+        <Panel title="Community">
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
+            <Row k="Posts, all time" v={m.content.posts} />
+            <Row k={`Posts, last ${label}`} v={m.content.posts_in_range} />
+            <Row k="Forum discussions" v={m.content.discussions} />
+            <Row k="Replies, all time" v={m.content.comments} />
+            <Row k={`Replies, last ${label}`} v={m.content.comments_in_range} />
+            <Row k={`Direct messages, last ${label}`} v={m.content.messages_in_range} />
+            <Row k="Open reports" v={m.content.open_reports} />
+            <Row k="Suspended accounts" v={m.members.suspended} />
+          </dl>
+        </Panel>
+
+        <Panel title="Events, blog and email">
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
+            <Row k="Upcoming events" v={m.events.upcoming} />
+            <Row k={`Event RSVPs, last ${label}`} v={m.events.rsvps_in_range} />
+            <Row k="Published articles" v={m.blog.published} />
+            <Row k={`Article reads, last ${label}`} v={m.blog.views_in_range} />
+            <Row k="Email subscribers" v={m.newsletter.subscribed} />
+            <Row k="Unsubscribed / bounced" v={`${m.newsletter.unsubscribed} / ${m.newsletter.bounced}`} />
+            <Row k="Digests sent" v={m.newsletter.digests_sent} />
+            <Row k="Emails delivered / failed" v={`${m.newsletter.delivered} / ${m.newsletter.failed}`} />
+          </dl>
+          {m.blog.top.some((a) => a.views > 0) && (
+            <>
+              <p className="label-mono mt-5 text-ink/55">Most read articles</p>
+              <ol className="mt-2 flex flex-col gap-1 text-sm">
+                {m.blog.top.filter((a) => a.views > 0).map((a) => (
+                  <li key={a.slug} className="flex justify-between gap-4">
+                    <Link href={`/blog/${a.slug}`} className="truncate hover:underline">{a.title}</Link>
+                    <span className="font-mono text-ink/60">{a.views}</span>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
+        </Panel>
+
+        <Panel title="Chapter participation" aside={<Link href="/admin/chapters" className="text-sm font-semibold text-forest hover:underline">Manage</Link>}>
+          {topChapters.length === 0 ? (
+            <p className="text-sm text-ink/60">No chapter has members or posts yet.</p>
+          ) : (
+            <div className={table.wrap}>
+              <table className="w-full border-collapse text-left text-sm">
+                <thead>
+                  <tr>
+                    <th className={table.th}>Chapter</th>
+                    <th className={table.th}>Members</th>
+                    <th className={table.th}>Requests</th>
+                    <th className={table.th}>Posts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {topChapters.map((c) => (
+                    <tr key={c.slug}>
+                      <td className={table.td}><Link href={`/chapters/${c.slug}`} className="font-semibold hover:underline">{c.name}</Link></td>
+                      <td className={table.td}>{c.members}</td>
+                      <td className={table.td}>{c.pending}</td>
+                      <td className={table.td}>{c.posts}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </Panel>
+
+        <Panel title="Automation health">
+          <ul className="flex flex-col gap-4 text-sm">
+            <li className="flex flex-wrap items-center justify-between gap-2">
+              <span>
+                <span className="font-semibold">Student to alumni job</span>
+                <span className="block text-xs text-ink/60">
+                  {m.lifecycle.last_run ? `Last run: ${timeAgo(m.lifecycle.last_run)}` : "Has not run yet"} · {m.lifecycle.graduated_in_range} graduated in {label} · {m.lifecycle.due_next_30} due in 30 days · {m.lifecycle.on_hold} on hold
+                </span>
+              </span>
+              {m.lifecycle.last_ok === null ? <Pill>Waiting for first run</Pill> : m.lifecycle.last_ok ? <Pill tone="good">Healthy</Pill> : <Pill tone="bad">Last run failed</Pill>}
+            </li>
+            <li className="flex flex-wrap items-center justify-between gap-2">
+              <span>
+                <span className="font-semibold">Instagram import</span>
+                <span className="block text-xs text-ink/60">
+                  {m.instagram.imported} imported by API · {m.instagram.archive} from the archive · {m.instagram.open_failures} failed records ·{" "}
+                  {m.instagram.last_success ? `last success ${shortDate(m.instagram.last_success)}` : "no successful sync yet"}
+                </span>
+              </span>
+              {m.instagram.last_status === "success" ? (
+                <Pill tone="good">Syncing</Pill>
+              ) : m.instagram.last_status === "partial" ? (
+                <Pill tone="warn">Partial</Pill>
+              ) : m.instagram.last_status === "failed" ? (
+                <Pill tone="bad">Failing</Pill>
+              ) : (
+                <Pill tone="warn">Not connected</Pill>
+              )}
+            </li>
+            {m.members.students_without_date > 0 && (
+              <li className="rounded border border-dashed border-ink/25 px-3 py-2 text-ink/75">
+                {m.members.students_without_date} student{m.members.students_without_date === 1 ? " has" : "s have"} no passing-out date and will not graduate automatically.{" "}
+                <Link href="/admin/lifecycle" className="font-semibold text-forest underline">Review them</Link>
+              </li>
+            )}
+          </ul>
+        </Panel>
       </div>
     </>
+  );
+}
+
+function Row({ k, v }: { k: string; v: number | string }) {
+  return (
+    <div>
+      <dt className="text-xs text-ink/60">{k}</dt>
+      <dd className="font-display text-xl font-bold">{v}</dd>
+    </div>
   );
 }

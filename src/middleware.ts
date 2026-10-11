@@ -23,8 +23,11 @@ import { getCareersEnabled } from "@/lib/settings";
 // upstream bug. That's a much smaller blast radius than having no inline
 // script allowance at all, so it's the right tradeoff until that's fixed.
 function buildCsp(nonce: string, isDev: boolean) {
-  const SUPABASE_ORIGIN = "https://sujxfhpvbrhhlmvzbgwv.supabase.co";
-  const SUPABASE_WS_ORIGIN = "wss://sujxfhpvbrhhlmvzbgwv.supabase.co";
+  // Derived from the environment so each deployment trusts only its own backend.
+  const SUPABASE_ORIGIN = new URL(
+    process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://invalid.supabase.co"
+  ).origin;
+  const SUPABASE_WS_ORIGIN = SUPABASE_ORIGIN.replace(/^http/, "ws");
 
   return [
     `default-src 'self'`,
@@ -76,6 +79,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Run on everything except static assets and image files.
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/cron|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

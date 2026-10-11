@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import EventForm from "../../EventForm";
 import { createClient } from "@/lib/supabase/server";
 import type { EventRow } from "@/lib/types";
+import AdminForm, { Submit } from "@/components/v2/admin/AdminForm";
+import { featureOnWall, setEventChapter } from "../../../manage";
 
 export const metadata: Metadata = {
   title: "Edit event: BMSCE Alumni Network",
@@ -27,6 +29,10 @@ export default async function EditEventPage({
     .eq("id", id)
     .maybeSingle<EventRow>();
   if (!event) notFound();
+  const [{ data: chapters }, { data: link }] = await Promise.all([
+    supabase.from("chapters").select("id, name").eq("status", "active").order("name"),
+    supabase.from("events").select("chapter_id").eq("id", id).maybeSingle(),
+  ]);
 
   return (
     <>
@@ -43,6 +49,26 @@ export default async function EditEventPage({
       </div>
       <div className="mt-10">
         <EventForm event={event} />
+      </div>
+      <div className="mt-10 grid gap-6 border-t border-ink/15 pt-8 sm:grid-cols-2">
+        <AdminForm action={setEventChapter} hidden={{ id }} className="flex flex-wrap items-end gap-2">
+          <label className="min-w-[12rem] flex-1">
+            <span className="field-label">Hosting chapter</span>
+            <select name="chapter_id" defaultValue={link?.chapter_id ?? ""} className="field">
+              <option value="">Network-wide (no chapter)</option>
+              {(chapters ?? []).map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <Submit>Save chapter</Submit>
+        </AdminForm>
+        <AdminForm action={featureOnWall} hidden={{ source: "event", ref: id }} className="flex flex-wrap items-end gap-2">
+          <p className="basis-full text-sm text-ink/70">Pin this event to The Wall as a ticket.</p>
+          <Submit className="btn btn-ghost btn-sm">Add to The Wall</Submit>
+        </AdminForm>
       </div>
     </>
   );

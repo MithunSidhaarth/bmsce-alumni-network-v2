@@ -21,7 +21,6 @@ export type Profile = {
   linkedin_url: string | null;
   linkedin_verified: boolean;
   photo_url: string | null;
-  phone: string | null;
   is_mentor: boolean;
   seeking_mentorship: boolean;
   mentor_expertise: string[] | null;
@@ -30,6 +29,15 @@ export type Profile = {
   mentor_bio: string | null;
   max_mentees: number | null;
   onboarded: boolean;
+  passing_out_date: string | null;
+  lifecycle_hold: boolean;
+  lifecycle_note: string | null;
+  suspended_at: string | null;
+  suspended_reason: string | null;
+  skills: string[];
+  interests: string[];
+  privacy: Privacy;
+  last_seen_at: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -38,6 +46,7 @@ export type Profile = {
 // strict RLS so they never leak through a profile row. See migration 0008.
 export type MemberContact = {
   member_id: string;
+  phone: string | null;
   personal_email: string | null;
   college_email: string | null;
 };
@@ -152,4 +161,120 @@ export type EducationEntry = {
   institution: string;
   year: number | null;
   created_at: string;
+};
+
+// ---------------------------------------------------------------------------
+// v2
+// ---------------------------------------------------------------------------
+export type Privacy = {
+  dm: "members" | "chapters" | "nobody";
+  show_work: boolean;
+  show_location: boolean;
+  show_linkedin: boolean;
+};
+
+export type PostKind = "post" | "discussion" | "announcement" | "achievement" | "memory";
+export type ReactionKind = "like" | "cheer" | "nostalgia" | "insight";
+
+export type PostAuthor = {
+  id: string;
+  full_name: string | null;
+  photo_url: string | null;
+  user_type: UserType;
+  graduation_year: number | null;
+  branch: string | null;
+};
+
+export type Post = {
+  id: string;
+  author_id: string | null;
+  kind: PostKind;
+  title: string | null;
+  body: string;
+  media: string[];
+  tags: string[];
+  chapter_id: string | null;
+  event_id: string | null;
+  is_pinned: boolean;
+  is_hidden: boolean;
+  comment_count: number;
+  reaction_count: number;
+  last_activity_at: string;
+  created_at: string;
+  updated_at: string | null;
+  author: PostAuthor | null;
+  chapter: { name: string; slug: string } | null;
+};
+
+export type Chapter = {
+  id: string;
+  slug: string;
+  name: string;
+  region: string;
+  country: string | null;
+  city: string | null;
+  description: string | null;
+  cover_url: string | null;
+  lng: number | null;
+  lat: number | null;
+  join_policy: "open" | "request";
+  whatsapp_url: string | null;
+  status: "active" | "archived";
+  created_at: string;
+};
+
+export type Article = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  body_md: string;
+  cover_url: string | null;
+  category: string;
+  tags: string[];
+  author_id: string | null;
+  author_name: string | null;
+  author_title: string | null;
+  status: "draft" | "published" | "archived";
+  is_featured: boolean;
+  published_at: string | null;
+  reading_minutes: number;
+  view_count: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type NoticeCard = {
+  id: string;
+  source: "instagram" | "post" | "event" | "photo" | "manual";
+  origin: "auto" | "admin" | "member";
+  pinned: boolean;
+  date: string;
+  title: string | null;
+  body: string | null;
+  image: string | null;
+  link: string | null;
+  instagram: {
+    caption: string | null;
+    image: string | null;
+    permalink: string | null;
+    posted_at: string | null;
+    type: string | null;
+    source: string;
+  } | null;
+  post: {
+    id: string;
+    kind: PostKind;
+    title: string | null;
+    body: string;
+    media: string[];
+    created_at: string;
+    author_id: string | null;
+    author: string | null;
+    author_photo: string | null;
+    chapter: string | null;
+    chapter_slug: string | null;
+  } | null;
+  event: { id: string; title: string; date: string; location: string | null; image: string | null } | null;
+  photo: { image: string; thumb: string; caption: string | null } | null;
 };
