@@ -394,6 +394,15 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 
+/* Three dots that bounce in turn while someone is typing. */
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+.typing-dot {
+  animation: typing-dot 1.1s ease-in-out infinite;
+}
+
 /* Photo prints develop like instant film. Elsewhere that happens as each
    picture loads (components/v2/Develop.tsx); on The Wall a print stays washed
    out until its card has landed on the board. */

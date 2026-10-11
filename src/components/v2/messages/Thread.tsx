@@ -3,12 +3,14 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { blockMember } from "@/app/messages/actions";
 import { reportContent } from "@/app/moderation/actions";
 import { clockTime, dayKey, longDate } from "@/lib/format";
 import Avatar from "../Avatar";
 import Icon from "../Icon";
+import { OnlineDot, useOnline } from "../Presence";
 
 export type Message = {
   id: number;
@@ -62,6 +64,10 @@ export default function Thread({
   const [notice, setNotice] = useState<string | null>(null);
   const scroller = useRef<HTMLDivElement | null>(null);
   const stickToBottom = useRef(true);
+  const [typing, setTyping] = useState(false);
+  const room = useRef<RealtimeChannel | null>(null);
+  const lastPing = useRef(0);
+  const otherOnline = useOnline().has(other.id);
 
   const add = useCallback((m: Message) => {
     setMessages((all) => {
@@ -88,7 +94,10 @@ export default function Thread({
         (payload) => {
           const m = payload.new as Message;
           add(m);
-          if (m.sender_id !== meId) supabase.rpc("mark_thread_read", { p_thread: threadId }).then(() => undefined);
+          if (m.sender_id !== meId) {
+            setTyping(false);
+            supabase.rpc("mark_thread_read", { p_thread: threadId }).then(() => undefined);
+          }
         }
       )
       .on(
@@ -104,6 +113,48 @@ export default function Thread({
       supabase.removeChannel(channel);
     };
   }, [threadId, meId, add]);
+
+  // "Typing" travels over a private channel that only the two people in this
+  // conversation can join (the database checks). Nothing is stored.
+  useEffect(() => {
+    const supabase = createClient();
+    let channel: RealtimeChannel | null = null;
+    let cancelled = false;
+    let fade: number | undefined;
+    (async () => {
+      await supabase.realtime.setAuth();
+      if (cancelled) return;
+      channel = supabase.channel(`dm:${threadId}`, { config: { private: true } });
+      channel
+        .on("broadcast", { event: "typing" }, ({ payload }) => {
+          if ((payload as { from?: string } | undefined)?.from === meId) return;
+          setTyping(true);
+          window.clearTimeout(fade);
+          fade = window.setTimeout(() => setTyping(false), 3500);
+        })
+        .subscribe();
+      room.current = channel;
+    })();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(fade);
+      room.current = null;
+      if (channel) supabase.removeChannel(channel);
+    };
+  }, [threadId, meId]);
+
+  // Tell the other person, at most every two seconds, that a message is being written.
+  const ping = () => {
+    const now = Date.now();
+    if (blocked || now - lastPing.current < 2000) return;
+    lastPing.current = now;
+    room.current?.send({ type: "broadcast", event: "typing", payload: { from: meId } });
+  };
+
+  useLayoutEffect(() => {
+    const el = scroller.current;
+    if (el && typing && stickToBottom.current) el.scrollTop = el.scrollHeight;
+  }, [typing]);
 
   // Offline awareness, and a catch-up fetch when the connection returns.
   useEffect(() => {
@@ -210,10 +261,13 @@ export default function Thread({
           <Icon name="back" />
         </Link>
         <Link href={`/directory/${other.id}`} className="flex min-w-0 flex-1 items-center gap-3">
-          <Avatar name={other.full_name} src={other.photo_url} size={40} />
+          <span className="relative shrink-0">
+            <Avatar name={other.full_name} src={other.photo_url} size={40} />
+            <OnlineDot id={other.id} />
+          </span>
           <span className="min-w-0">
             <span className="block truncate font-semibold leading-tight">{other.full_name ?? "Member"}</span>
-            <span className="block truncate text-xs text-ink/55">{subtitle}</span>
+            <span className="block truncate text-xs text-ink/55">{otherOnline ? "Online now" : subtitle}</span>
           </span>
         </Link>
         <div className="relative">
@@ -364,6 +418,16 @@ export default function Thread({
             );
           })}
         </ol>
+        {typing && (
+          <div className="mt-3 flex justify-start" role="status">
+            <span className="inline-flex items-center gap-1 rounded-[16px_16px_16px_5px] border border-ink/10 bg-paper px-3.5 py-3">
+              <span className="sr-only">{(other.full_name ?? "They").split(" ")[0]} is typing</span>
+              {[0, 1, 2].map((i) => (
+                <span key={i} aria-hidden="true" className="typing-dot h-1.5 w-1.5 rounded-full bg-ink/45" style={{ animationDelay: `${i * 0.16}s` }} />
+              ))}
+            </span>
+          </div>
+        )}
       </div>
 
       <footer className="border-t border-ink/10 bg-paper px-3 py-3 md:px-5">
@@ -390,7 +454,10 @@ export default function Thread({
             <textarea
               id="dm-text"
               value={text}
-              onChange={(e) => setText(e.target.value)}
+              onChange={(e) => {
+                setText(e.target.value);
+                if (e.target.value.trim()) ping();
+              }}
               onKeyDown={onKey}
               rows={1}
               maxLength={4000}

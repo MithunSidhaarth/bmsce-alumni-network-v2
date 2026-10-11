@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { timeAgo } from "@/lib/format";
 import Avatar from "../Avatar";
+import { OnlineDot } from "../Presence";
 import Icon from "../Icon";
 
 export type InboxRow = {
@@ -83,7 +84,10 @@ export default function Inbox({ rows, meId, verified }: { rows: InboxRow[]; meId
                   active ? "bg-lime/45" : "hover:bg-ink/[0.04]"
                 }`}
               >
-                <Avatar name={r.other_name} src={r.other_photo} size={44} />
+                <span className="relative shrink-0">
+                  <Avatar name={r.other_name} src={r.other_photo} size={44} />
+                  <OnlineDot id={r.other_id} />
+                </span>
                 <span className="min-w-0 flex-1">
                   <span className="flex items-baseline justify-between gap-2">
                     <span className={`truncate text-[0.9375rem] ${r.unread ? "font-bold" : "font-semibold"}`}>

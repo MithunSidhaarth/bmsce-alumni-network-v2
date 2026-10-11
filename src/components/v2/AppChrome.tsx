@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Me } from "@/lib/me";
 import Avatar from "./Avatar";
 import Icon, { type IconName } from "./Icon";
+import Presence from "./Presence";
 
 type Item = { label: string; short?: string; href: string; icon: IconName; match: string[] };
 
@@ -115,6 +116,7 @@ export default function AppChrome({ me }: { me: Me }) {
 
   return (
     <>
+      {me.verification_status === "verified" && <Presence meId={me.id} announce={me.privacy?.show_online !== false} />}
       {/* ---- Rail: tablet (icons) and desktop (labels) ---- */}
       <nav
         aria-label="Main"

@@ -23,25 +23,34 @@ export default function ProfileSettings({
   skills,
   interests,
   privacy,
+  usn,
 }: {
   userId: string;
   skills: string[];
   interests: string[];
   privacy: Privacy;
+  /** The roll number printed on the member's college ID card, if they gave it. */
+  usn: string | null;
 }) {
   const router = useRouter();
   const [skillText, setSkillText] = useState(skills.join(", "));
   const [interestText, setInterestText] = useState(interests.join(", "));
   const [p, setP] = useState<Privacy>(privacy);
+  const [usnText, setUsnText] = useState(usn ?? "");
   const [state, setState] = useState<{ ok?: string; error?: string }>({});
   const [pending, start] = useTransition();
 
   const save = () =>
     start(async () => {
       setState({});
+      const roll = usnText.toUpperCase().replace(/[^0-9A-Z]/g, "");
+      if (roll && (roll.length < 6 || roll.length > 12)) {
+        setState({ error: "An ID number is 6 to 12 letters and digits, for example 1BM19CS001." });
+        return;
+      }
       const { error } = await createClient()
         .from("profiles")
-        .update({ skills: clean(skillText), interests: clean(interestText), privacy: p })
+        .update({ skills: clean(skillText), interests: clean(interestText), privacy: p, usn: roll || null })
         .eq("id", userId);
       if (error) setState({ error: error.message });
       else {
@@ -50,9 +59,9 @@ export default function ProfileSettings({
       }
     });
 
-  const toggle = (key: "show_work" | "show_location" | "show_linkedin", label: string, hint: string) => (
+  const toggle = (key: "show_work" | "show_location" | "show_linkedin" | "show_online", label: string, hint: string) => (
     <label className="flex items-start gap-3">
-      <input type="checkbox" checked={p[key]} onChange={(e) => setP({ ...p, [key]: e.target.checked })} className="mt-1 h-4 w-4" />
+      <input type="checkbox" checked={p[key] !== false} onChange={(e) => setP({ ...p, [key]: e.target.checked })} className="mt-1 h-4 w-4" />
       <span className="text-sm">
         {label}
         <span className="block text-xs text-ink/60">{hint}</span>
@@ -63,7 +72,7 @@ export default function ProfileSettings({
   return (
     <section aria-labelledby="settings-title" className="sheet mt-12 px-5 py-6 sm:px-7">
       <h2 id="settings-title" className="font-display text-2xl">
-        Skills, interests and privacy
+        Skills, interests, ID card and privacy
       </h2>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -76,6 +85,19 @@ export default function ProfileSettings({
           <input value={interestText} onChange={(e) => setInterestText(e.target.value)} className="field" placeholder="Trekking, Carnatic music, Startups" />
         </label>
       </div>
+
+      <label className="mt-4 block sm:max-w-xs">
+        <span className="field-label">College ID number (USN), optional</span>
+        <input
+          value={usnText}
+          onChange={(e) => setUsnText(e.target.value.toUpperCase())}
+          maxLength={14}
+          autoCapitalize="characters"
+          className="field font-mono"
+          placeholder="1BM19CS001"
+        />
+        <span className="mt-1 block text-xs text-ink/60">Printed on your ID card, which other members can see on your profile.</span>
+      </label>
 
       <fieldset className="mt-7">
         <legend className="text-[0.9375rem] font-bold">Who can message you first</legend>
@@ -98,6 +120,7 @@ export default function ProfileSettings({
           {toggle("show_work", "Company, role and industry", "Hidden from your profile page when off.")}
           {toggle("show_location", "City and country", "Hidden from your profile page when off.")}
           {toggle("show_linkedin", "LinkedIn link", "Hidden from your profile page when off.")}
+          {toggle("show_online", "A green dot while I am online", "Shown beside your name in Messages. You still see others when this is off.")}
         </div>
         <p className="mt-3 text-xs leading-relaxed text-ink/60">
           Your email addresses and phone number are never shown on your profile. They are stored separately and are visible only to

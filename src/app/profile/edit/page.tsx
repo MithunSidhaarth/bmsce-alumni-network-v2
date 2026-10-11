@@ -76,7 +76,9 @@ export default async function EditProfilePage() {
                   show_work: profile.privacy?.show_work ?? true,
                   show_location: profile.privacy?.show_location ?? true,
                   show_linkedin: profile.privacy?.show_linkedin ?? true,
+                  show_online: profile.privacy?.show_online ?? true,
                 }}
+                usn={profile.usn ?? null}
               />
             )}
           </div>

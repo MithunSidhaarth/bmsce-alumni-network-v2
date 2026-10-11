@@ -37,6 +37,8 @@ export type Profile = {
   skills: string[];
   interests: string[];
   privacy: Privacy;
+  /** The roll number printed on the member's college ID card. Optional. */
+  usn: string | null;
   last_seen_at: string | null;
   created_at: string;
   updated_at: string;
@@ -171,6 +173,8 @@ export type Privacy = {
   show_work: boolean;
   show_location: boolean;
   show_linkedin: boolean;
+  /** Missing means on: other members see a green dot while this member is online. */
+  show_online?: boolean;
 };
 
 export type PostKind = "post" | "discussion" | "announcement" | "achievement" | "memory" | "ask" | "offer";

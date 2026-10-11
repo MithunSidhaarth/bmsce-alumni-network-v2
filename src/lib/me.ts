@@ -13,6 +13,7 @@ export type Me = Pick<
   | "verification_status"
   | "onboarded"
   | "suspended_at"
+  | "privacy"
 >;
 
 // One auth + profile lookup per request, shared by the root layout and
@@ -26,7 +27,7 @@ export const getMe = cache(async () => {
   const { data } = await supabase
     .from("profiles")
     .select(
-      "id, full_name, photo_url, role, user_type, verification_status, onboarded, suspended_at"
+      "id, full_name, photo_url, role, user_type, verification_status, onboarded, suspended_at, privacy"
     )
     .eq("id", user.id)
     .maybeSingle<Me>();
