@@ -293,6 +293,7 @@ export default function AppChrome({ me }: { me: Me }) {
                     ["Settings and privacy", "/profile/edit", "settings"],
                     ["Chapters", "/chapters", "map"],
                     ["Events", "/events", "calendar"],
+                    ["Campus map", "/campus", "map"],
                     ["Blog & Insights", "/blog", "book"],
                   ] as [string, string, IconName][]
                 ).map(([label, href, icon]) => (

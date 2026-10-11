@@ -6,6 +6,7 @@ import { FACTS } from "@/data/facts";
 import Testimonials from "@/components/Testimonials";
 import { slugify, stampDate } from "@/lib/format";
 import BigCta from "./landing/BigCta";
+import CampusTeaser from "./landing/CampusTeaser";
 import FactsDeck from "./landing/FactsDeck";
 import FlightMap from "./landing/FlightMap";
 import HeroDesk from "./landing/HeroDesk";
@@ -81,6 +82,7 @@ export default function Landing({ signedIn }: { signedIn: boolean }) {
       <InsideStack chapters={CHAPTER_COUNT} countries={COUNTRY_COUNT} postcards={POSTCARDS} />
       <WallTeaser photos={TEASER} />
       <Testimonials />
+      <CampusTeaser />
       <FlightMap chapters={MAP} countries={COUNTRY_COUNT} />
       <FactsDeck facts={FACTS} />
       <BigCta cta={cta} />

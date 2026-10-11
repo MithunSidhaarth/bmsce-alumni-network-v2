@@ -1,73 +1,38 @@
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Eyebrow from "@/components/Eyebrow";
+import CampusMap from "@/components/v2/campus/CampusMap";
 
-const QUICK_LINKS = [
-  { label: "Directory", href: "/directory" },
-  { label: "Events", href: "/events" },
-  { label: "Chapters", href: "/chapters" },
-  { label: "Community", href: "/community" },
-];
-
+// Lost? Here is the map.
 export default function NotFound() {
   return (
     <>
       <Nav />
-      <main>
-        <section id="top" className="relative overflow-hidden">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 flex items-center justify-center"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/bmsce-crest.png"
-              alt=""
-              className="h-[70vmin] w-[70vmin] max-w-[560px] object-contain opacity-[0.05]"
-            />
-          </div>
-
-          <div className="relative mx-auto max-w-xl px-6 py-32 text-center md:px-10 md:py-40">
-            <Eyebrow align="center">Error 404</Eyebrow>
-            <p className="mt-6 font-display text-[clamp(4rem,14vw,7rem)] italic leading-none text-oxblood/15">
-              404
-            </p>
-            <h1 className="-mt-8 font-display text-[clamp(2rem,6vw,3.5rem)] leading-[1.05] tracking-tight text-ink">
-              We couldn&rsquo;t find that page.
+      <main className="mx-auto max-w-[1180px] px-5 pb-20 pt-10 md:px-10 md:pt-14">
+        <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,33rem)] lg:items-center">
+          <div>
+            <p className="stamp text-tangerine">Error 404</p>
+            <h1 className="mt-5 font-display text-[clamp(2.8rem,9vw,5.5rem)] font-extrabold leading-[0.9] tracking-[-0.04em]">
+              You look <span className="serif-accent hl">lost</span>.
             </h1>
-            <p className="mx-auto mt-5 max-w-md font-sans text-base leading-relaxed text-ink/70">
-              The link may be broken, the page may have moved, or it never
-              existed in the first place.
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-ink/75">
+              That page is not here: the link may be broken, or it may have moved. The campus has not moved, though. Pick a
+              building and walk in.
             </p>
-
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center rounded-sm bg-oxblood px-7 py-3 font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-ivory transition-colors hover:bg-maroon"
-              >
-                Back home
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/" className="btn">
+                Back to the main gate
+              </Link>
+              <Link href="/noticeboard" className="btn btn-ghost">
+                See The Wall
               </Link>
             </div>
-
-            <div className="mt-14 border-t border-gold/30 pt-8">
-              <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/45">
-                Or try one of these
-              </p>
-              <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-                {QUICK_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="font-sans text-sm font-medium text-oxblood underline decoration-brass underline-offset-4 transition-colors hover:text-maroon"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
           </div>
-        </section>
+          <div className="sheet relative min-w-0 rotate-[0.6deg] p-2.5 sm:p-4">
+            <span className="tape tape-lime" aria-hidden="true" />
+            <CampusMap />
+          </div>
+        </div>
       </main>
       <Footer />
     </>

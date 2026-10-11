@@ -698,3 +698,99 @@
     --color-paper: #f3ecd9;
   }
 }
+
+/* ==========================================================================
+   The campus map
+   It draws itself when it scrolls into view: the wall and roads are inked
+   in, then the buildings stand up one after another. After that it stays
+   alive: traffic on the ring road, trees, a flag, steam over the canteen.
+   ========================================================================== */
+.campus .cm-scene {
+  transform-origin: 0 0;
+  transition: transform 0.55s cubic-bezier(0.5, 0, 0.2, 1);
+}
+.campus .cm-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  fill-opacity: 0;
+  animation: cm-draw 1.5s ease-out forwards paused;
+}
+.campus .cm-fade {
+  opacity: 0;
+  animation: cm-fade 0.8s ease-out 1.5s forwards paused;
+}
+.campus .cm-dash {
+  opacity: 0;
+  animation: cm-dash-in 0.8s ease-out 1.5s forwards paused, cm-march 1.1s linear infinite paused;
+}
+.campus .cm-rise {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  opacity: 0;
+  animation: cm-rise 0.75s var(--ease-pop) var(--d, 1s) forwards paused;
+}
+.campus.is-live :is(.cm-draw, .cm-fade, .cm-dash, .cm-rise) {
+  animation-play-state: running;
+}
+@keyframes cm-draw {
+  0% { stroke-dashoffset: 1; fill-opacity: 0; }
+  70% { stroke-dashoffset: 0; fill-opacity: 0; }
+  100% { stroke-dashoffset: 0; fill-opacity: 1; }
+}
+@keyframes cm-fade { to { opacity: 1; } }
+@keyframes cm-dash-in { to { opacity: 0.55; } }
+@keyframes cm-march { to { stroke-dashoffset: -18; } }
+@keyframes cm-rise {
+  0% { transform: scaleY(0); opacity: 0; }
+  20% { opacity: 1; }
+  65% { transform: scaleY(1.07); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+.campus .cm-tree {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: cm-sway 4.6s ease-in-out infinite alternate;
+}
+@keyframes cm-sway { from { transform: rotate(-3.5deg); } to { transform: rotate(3.5deg); } }
+.campus .cm-flag {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+  animation: cm-flag 0.9s ease-in-out infinite alternate;
+}
+@keyframes cm-flag { from { transform: skewY(-9deg) scaleX(0.86); } to { transform: skewY(9deg) scaleX(1); } }
+.campus .cm-steam { animation: cm-steam 2.4s ease-out infinite; }
+@keyframes cm-steam {
+  0% { opacity: 0; transform: translateY(5px); }
+  30% { opacity: 0.55; }
+  100% { opacity: 0; transform: translateY(-12px); }
+}
+.campus .cm-needle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cm-needle 5s ease-in-out infinite alternate;
+}
+@keyframes cm-needle { from { transform: rotate(-9deg); } to { transform: rotate(11deg); } }
+.campus .cm-heart {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cm-beat 1.3s ease-in-out infinite;
+}
+@keyframes cm-beat { 0%, 100% { transform: scale(1); } 18% { transform: scale(1.22); } 36% { transform: scale(1); } 54% { transform: scale(1.14); } }
+
+/* A building you can walk into lifts off the page when you reach for it. */
+.campus .cm-link { cursor: pointer; outline: none; }
+.campus .cm-lift { transition: transform 0.28s var(--ease-pop); }
+.campus .cm-link:hover .cm-lift,
+.campus .cm-link:focus-visible .cm-lift { transform: translateY(-8px); }
+.campus .cm-link:focus-visible .cm-tag > rect:first-child { stroke: var(--color-tangerine); stroke-width: 2.6; }
+.campus .cm-tag { pointer-events: none; }
+.campus .cm-label { transition: transform 0.28s var(--ease-pop); }
+.campus .cm-label.is-hot { transform: translateY(-8px); }
+.campus .cm-label.is-hot .cm-tag > rect:first-child { stroke-width: 2.2; }
+/* With a mouse the green "where it leads" signs appear as you point; on touch they are always there. */
+@media (hover: hover) {
+  .campus .cm-sign { opacity: 0; transform: translateY(-5px); transition: opacity 0.2s, transform 0.25s var(--ease-pop); }
+  .campus .cm-link:hover .cm-sign,
+  .campus .cm-link:focus-visible .cm-sign,
+  .campus .cm-label.is-hot .cm-sign { opacity: 1; transform: none; }
+}

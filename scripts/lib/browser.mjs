@@ -184,7 +184,9 @@ export async function launch() {
       },
       /** JPEG screenshot of the viewport, at half size by default to keep files small. */
       async shot(file, { scale = 0.5 } = {}) {
-        const { data } = await cmd("Page.captureScreenshot", { format: "jpeg", quality: 60, clip: { x: 0, y: 0, width, height, scale } });
+        // The clip is in page coordinates, so follow the scroll position to capture what is on screen.
+        const at = await evaluate(`return { x: window.scrollX, y: window.scrollY }`);
+        const { data } = await cmd("Page.captureScreenshot", { format: "jpeg", quality: 60, clip: { x: at.x, y: at.y, width, height, scale } });
         fs.mkdirSync(path.dirname(file), { recursive: true });
         fs.writeFileSync(file, Buffer.from(data, "base64"));
         return file;
