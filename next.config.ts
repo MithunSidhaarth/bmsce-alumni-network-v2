@@ -25,7 +25,19 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
 ];
 
+// Share cards and the ID card image read fonts, the crest and archive
+// photographs from disk when they are drawn, so those files are bundled with
+// the routes that draw them.
+const CARD_FILES = ["./src/assets/og/*", "./public/bmsce-crest.png"];
+
 const nextConfig: NextConfig = {
+  outputFileTracingIncludes: {
+    "/opengraph-image": [...CARD_FILES, "./public/instagram/*"],
+    "/noticeboard/card/[id]": [...CARD_FILES, "./public/instagram/*"],
+    "/blog/[slug]/opengraph-image": CARD_FILES,
+    "/events/[id]/opengraph-image": CARD_FILES,
+    "/profile/card": CARD_FILES,
+  },
   // Don't advertise the framework in the `X-Powered-By` response header —
   // minor info-disclosure that makes framework-specific CVEs easier to
   // shortlist against this site.

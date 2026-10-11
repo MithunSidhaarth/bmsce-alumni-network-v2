@@ -205,6 +205,19 @@ export default function AppChrome({ me }: { me: Me }) {
               </span>
             </Link>
           </li>
+          <li className="mt-1.5">
+            <Link
+              href="/campus"
+              aria-current={pathname.startsWith("/campus") ? "page" : undefined}
+              title="Campus map"
+              className={`flex h-11 items-center gap-3 rounded-lg px-3 text-[0.9375rem] transition-colors ${
+                pathname.startsWith("/campus") ? "bg-ink font-semibold text-ivory" : "font-medium text-ink/75 hover:bg-ink/[0.06] hover:text-ink"
+              }`}
+            >
+              <Icon name="map" />
+              <span className="hidden rail:block">Campus map</span>
+            </Link>
+          </li>
         </ul>
 
         {isAdmin && (

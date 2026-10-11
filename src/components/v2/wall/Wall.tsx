@@ -314,17 +314,21 @@ export default function Wall({
   isMember,
   isAdmin = false,
   handle,
+  initialOpen = null,
 }: {
   cards: NoticeCard[];
   isMember: boolean;
   isAdmin?: boolean;
   handle: string;
+  /** A pinned item to open straight away (from a shared link). */
+  initialOpen?: string | null;
 }) {
   const views = useMemo(() => cards.map(describe), [cards]);
   const years = useMemo(() => [...new Set(views.map((v) => v.year))].sort((a, b) => b - a), [views]);
   const [filter, setFilter] = useState<FilterKey>("all");
   const [year, setYear] = useState<number | null>(null);
-  const [open, setOpen] = useState<string | null>(null);
+  const [open, setOpen] = useState<string | null>(initialOpen);
+  const [shared, setShared] = useState(false);
   const [mode, setMode] = useState<"list" | "board">("list");
   // Known only in the browser, so the server and first paint agree.
   const [today, setToday] = useState<{ y: number; m: number; d: number } | null>(null);
@@ -408,6 +412,21 @@ export default function Wall({
     if (current && !d.open) d.showModal();
     if (!current && d.open) d.close();
   }, [current]);
+
+  // Share the open item: the phone's share sheet where there is one, otherwise copy its link.
+  const share = async (v: View) => {
+    const url = `${window.location.origin}/noticeboard?item=${v.card.id}`;
+    try {
+      if (navigator.share) await navigator.share({ title: "Pinned to The Wall", text: (v.title ?? v.text).slice(0, 120), url });
+      else {
+        await navigator.clipboard.writeText(url);
+        setShared(true);
+        window.setTimeout(() => setShared(false), 2200);
+      }
+    } catch {
+      /* the share sheet was closed */
+    }
+  };
 
   const step = (dir: 1 | -1) => {
     if (shown.length === 0) return;
@@ -640,6 +659,9 @@ export default function Wall({
                 <hr className="rule-dashed mb-4" />
                 <p className="flex flex-wrap items-center justify-between gap-3">
                   <Attribution v={current} />
+                  <button type="button" onClick={() => share(current)} className="btn btn-ghost btn-sm ml-auto">
+                    <Icon name="share" className="h-4 w-4" /> {shared ? "Link copied" : "Share"}
+                  </button>
                   {current.href &&
                     (current.href.external ? (
                       <a href={current.href.url} target="_blank" rel="noreferrer" className="btn btn-sm">

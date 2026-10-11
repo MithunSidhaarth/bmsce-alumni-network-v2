@@ -8,6 +8,7 @@ import EmptyState from "@/components/v2/EmptyState";
 import IdCard from "@/components/v2/IdCard";
 import Icon from "@/components/v2/Icon";
 import PostCard from "@/components/v2/PostCard";
+import { deptLine, idLines } from "@/lib/dept";
 import { requireMember } from "@/lib/me";
 import { listPosts, myReactions } from "@/lib/posts";
 import { getCareersEnabled } from "@/lib/settings";
@@ -27,16 +28,6 @@ type Shown = Pick<
   | "mentor_bio" | "skills" | "interests" | "privacy" | "verification_status" | "usn" | "created_at"
 >;
 
-// How the department is written on the card. Anything else is printed in full.
-const DEPT: Record<string, string> = {
-  "Artificial Intelligence & Machine Learning": "AIML",
-  "Computer Science": "CSE",
-  "Information Science": "ISE",
-  "Electronics & Communication (ECE)": "ECE",
-  "Electrical & Electronics": "EEE",
-  "Electronics & Instrumentation": "EIE",
-  "Industrial Engineering & Management": "IEM",
-};
 
 const DEFAULT_PRIVACY: Privacy = { dm: "members", show_work: true, show_location: true, show_linkedin: true };
 
@@ -116,10 +107,9 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
             data={{
               name: p.full_name || "BMS member",
               photo: p.photo_url,
-              dept: p.branch && p.branch !== "Other" ? `Dept. of ${DEPT[p.branch] ?? p.branch}` : null,
+              dept: deptLine(p.branch),
               // The roll number if the member gave one; otherwise their batch.
-              idLine: p.usn ?? (p.graduation_year ? `${isStudent ? "CLASS" : "BATCH"} OF ${p.graduation_year}` : "ALUMNI NETWORK"),
-              code: p.usn ?? `BMS-${p.id.slice(0, 8)}`,
+              ...idLines(p),
               back: {
                 kind: isStudent ? "Student" : p.graduation_year ? `Alumni, batch of ${p.graduation_year}` : "Alumni",
                 verified: p.verification_status === "verified",
@@ -150,9 +140,14 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
             </div>
             <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:flex-col">
               {own ? (
-                <Link href="/profile/edit" className="btn btn-sm">
-                  <Icon name="edit" className="h-4 w-4" /> Edit profile
-                </Link>
+                <>
+                  <Link href="/profile/edit" className="btn btn-sm">
+                    <Icon name="edit" className="h-4 w-4" /> Edit profile
+                  </Link>
+                  <a href="/profile/card" download="bms-id-card.png" className="btn btn-ghost btn-sm">
+                    <Icon name="image" className="h-4 w-4" /> Save my ID card
+                  </a>
+                </>
               ) : canDm.data ? (
                 <Link href={`/messages?to=${p.id}`} className="btn btn-sm">
                   <Icon name="mail" className="h-4 w-4" /> Message
