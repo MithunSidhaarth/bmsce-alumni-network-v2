@@ -337,12 +337,18 @@ export default function AppChrome({ me }: { me: Me }) {
             <Link
               href="/noticeboard"
               aria-current={onWall ? "page" : undefined}
-              className={`keep-day -mt-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border-[1.5px] border-ink shadow-[0_3px_0_var(--color-ink)] ${
-                onWall ? "bg-brand-ink text-white" : "bg-red text-white"
-              }`}
+              className={`-mt-4 flex flex-col items-center gap-1 text-[0.6875rem] font-medium ${onWall ? "text-ink" : "text-ink/70"}`}
             >
-              <Icon name="pin" />
-              <span className="sr-only">The Wall</span>
+              <span
+                className={`keep-day flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-ink shadow-[0_3px_0_var(--color-ink)] ${
+                  onWall ? "bg-brand-ink text-white" : "bg-red text-white"
+                }`}
+              >
+                <Icon name="pin" />
+              </span>
+              <span>
+                <span className="sr-only">The </span>Wall
+              </span>
             </Link>
           </li>
           {["/events", "/messages"].map((href) => {

@@ -11,6 +11,15 @@ export const metadata: Metadata = {
     "The BMSCE Alumni Network: 31 chapters across 12 countries, and the programmes that turn a shared campus into a lifelong community.",
 };
 
+// From the Network's media kit (Brand Guidelines, Edition 2, pp. 4 and 28).
+// These are the Network's published figures, not counts from this site's database.
+const FIGURES: [string, string][] = [
+  ["55K+", "graduates to date"],
+  ["24,000+", "registered alumni"],
+  ["25+", "events a year"],
+  ["10K+", "social followers"],
+];
+
 const WHAT_WE_RUN = [
   {
     tag: "Scholarships",
@@ -86,6 +95,17 @@ export default function AboutPage() {
                   </dd>
                 </div>
               </dl>
+            </Reveal>
+            <Reveal delay={340}>
+              <dl className="mt-10 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-6 border-t border-gold/30 pt-8 sm:grid-cols-4">
+                {FIGURES.map(([value, label]) => (
+                  <div key={label} className="flex flex-col">
+                    <dt className="order-last mt-1 font-sans text-sm text-ink/70">{label}</dt>
+                    <dd className="font-display text-3xl text-ink">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-4 font-sans text-sm text-ink/70">The Network&rsquo;s own figures for 2026.</p>
             </Reveal>
           </div>
         </section>

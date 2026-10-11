@@ -1,5 +1,6 @@
 "use client";
 
+import { DEGREES } from "@/lib/dept";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -24,6 +25,7 @@ export default function ProfileSettings({
   interests,
   privacy,
   usn,
+  degree,
   isStudent = false,
 }: {
   userId: string;
@@ -32,12 +34,15 @@ export default function ProfileSettings({
   privacy: Privacy;
   /** The roll number printed on the member's college ID card, if they gave it. */
   usn: string | null;
+  /** Their BMSCE degree, if given: shown as "BE ECE '04" beside their name. */
+  degree: string | null;
   isStudent?: boolean;
 }) {
   const router = useRouter();
   const [skillText, setSkillText] = useState(skills.join(", "));
   const [interestText, setInterestText] = useState(interests.join(", "));
   const [p, setP] = useState<Privacy>(privacy);
+  const [degreeText, setDegreeText] = useState(degree ?? "");
   const [usnText, setUsnText] = useState(usn ?? "");
   const [state, setState] = useState<{ ok?: string; error?: string }>({});
   const [pending, start] = useTransition();
@@ -52,7 +57,7 @@ export default function ProfileSettings({
       }
       const { error } = await createClient()
         .from("profiles")
-        .update({ skills: clean(skillText), interests: clean(interestText), privacy: p, usn: roll || null })
+        .update({ skills: clean(skillText), interests: clean(interestText), privacy: p, usn: roll || null, degree: degreeText || null })
         .eq("id", userId);
       if (error) setState({ error: error.message });
       else {
@@ -87,6 +92,19 @@ export default function ProfileSettings({
           <input value={interestText} onChange={(e) => setInterestText(e.target.value)} className="field" placeholder="Trekking, Carnatic music, Startups" />
         </label>
       </div>
+
+      <label className="mt-4 block sm:max-w-xs">
+        <span className="field-label">Your BMSCE degree, optional</span>
+        <select value={degreeText} onChange={(e) => setDegreeText(e.target.value)} className="field">
+          <option value="">Not shown</option>
+          {DEGREES.map((d) => (
+            <option key={d} value={d}>
+              {d}
+            </option>
+          ))}
+        </select>
+        <span className="mt-1.5 block text-sm text-ink/70">With a degree, your class reads like “BE ECE ’04” on your profile.</span>
+      </label>
 
       <label className="mt-4 block sm:max-w-xs">
         <span className="field-label">College ID number (USN), optional</span>

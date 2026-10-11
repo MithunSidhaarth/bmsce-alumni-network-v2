@@ -80,6 +80,7 @@ export default async function EditProfilePage() {
                   show_online: profile.privacy?.show_online ?? true,
                 }}
                 usn={profile.usn ?? null}
+                degree={profile.degree ?? null}
                 isStudent={profile.user_type === "student"}
               />
             )}

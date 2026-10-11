@@ -11,7 +11,7 @@ import type { Profile, EducationEntry } from "@/lib/types";
 import LinkedInBadge from "@/components/LinkedInBadge";
 import VerifyLinkedIn from "./VerifyLinkedIn";
 import IdCard from "@/components/v2/IdCard";
-import { deptLine, idLines } from "@/lib/dept";
+import { deptLine, idLines, classOf } from "@/lib/dept";
 
 export const metadata: Metadata = {
   title: "My profile: BMSCE Alumni Network",
@@ -54,10 +54,9 @@ export default async function ProfilePage() {
   const isStudent = profile.user_type === "student";
   const detail = [profile.job_title, profile.company].filter(Boolean).join(", ");
   const meta = [
-    profile.graduation_year
-      ? `Class of ${profile.graduation_year}`
-      : null,
-    profile.branch,
+    classOf(profile),
+    // The branch is already in "BE ECE '04"; it is listed on its own only without a degree.
+    profile.degree ? null : profile.branch,
     profile.current_city,
   ]
     .filter(Boolean)

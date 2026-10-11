@@ -39,6 +39,8 @@ export type Profile = {
   privacy: Privacy;
   /** The roll number printed on the member's college ID card. Optional. */
   usn: string | null;
+  /** The member's BMSCE degree (BE, MTech...), if they chose to say. */
+  degree: string | null;
   last_seen_at: string | null;
   created_at: string;
   updated_at: string;

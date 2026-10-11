@@ -8,7 +8,7 @@ import EmptyState from "@/components/v2/EmptyState";
 import IdCard from "@/components/v2/IdCard";
 import Icon from "@/components/v2/Icon";
 import PostCard from "@/components/v2/PostCard";
-import { deptLine, idLines } from "@/lib/dept";
+import { deptLine, idLines, classOf } from "@/lib/dept";
 import { requireMember } from "@/lib/me";
 import { listPosts, myReactions } from "@/lib/posts";
 import { getCareersEnabled } from "@/lib/settings";
@@ -25,7 +25,7 @@ type Shown = Pick<
   Profile,
   | "id" | "full_name" | "photo_url" | "user_type" | "job_title" | "company" | "graduation_year" | "branch"
   | "current_city" | "country" | "industry" | "linkedin_url" | "linkedin_verified" | "bio" | "is_mentor"
-  | "mentor_bio" | "skills" | "interests" | "privacy" | "verification_status" | "usn" | "created_at"
+  | "mentor_bio" | "skills" | "interests" | "privacy" | "verification_status" | "usn" | "degree" | "created_at"
 >;
 
 
@@ -42,7 +42,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
   const { data: p } = await supabase
     .from("profiles")
     .select(
-      "id, full_name, photo_url, user_type, job_title, company, graduation_year, branch, current_city, country, industry, linkedin_url, linkedin_verified, bio, is_mentor, mentor_bio, skills, interests, privacy, verification_status, usn, created_at"
+      "id, full_name, photo_url, user_type, job_title, company, graduation_year, branch, current_city, country, industry, linkedin_url, linkedin_verified, bio, is_mentor, mentor_bio, skills, interests, privacy, verification_status, usn, degree, created_at"
     )
     .eq("id", id)
     .maybeSingle<Shown>();
@@ -135,7 +135,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
               <h1 className="mt-3 font-display text-[clamp(2rem,6vw,3.2rem)] leading-[0.98]">{p.full_name || "BMSCE member"}</h1>
               {role && <p className="mt-2 text-lg text-ink/75">{role}</p>}
               <p className="label-mono mt-3 text-ink/70">
-                {[p.graduation_year ? `Class of ${p.graduation_year}` : null, p.branch, place].filter(Boolean).join(" · ")}
+                {[classOf(p), p.degree ? null : p.branch, place].filter(Boolean).join(" · ")}
               </p>
             </div>
             <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:flex-col">
