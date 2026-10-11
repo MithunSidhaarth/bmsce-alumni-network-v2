@@ -19,6 +19,10 @@ let trimmed = 0;
 // margin is left alone.
 // Black: only a clean letterbox or pillarbox (bars on one axis, nothing on
 // the other), so a dark poster never loses its own background.
+// Files whose black bar contains a logo. Add a short code here after looking
+// at the image; do not widen the rule.
+const LOGO_BARS = new Set(["DSTnmYuCIzi"]);
+
 const RULES = [
   {
     name: "white",
@@ -65,6 +69,36 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith(".jpg"))) {
       height = out.info.height;
     }
     break;
+  }
+
+  // A letterbox bar that carries a small logo is not uniform, so the pass
+  // above leaves it. For the files named in LOGO_BARS only (checked by eye:
+  // a general rule here also cut into genuine night photographs), strip rows
+  // from the top and bottom that are mostly black.
+  if (LOGO_BARS.has(file.replace(".jpg", ""))) {
+    const cur = await sharp(readFileSync(path)).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+    const dark = (y) => {
+      let n = 0;
+      for (let x = 0; x < cur.info.width; x++) {
+        const i = (y * cur.info.width + x) * cur.info.channels;
+        if (Math.max(cur.data[i], cur.data[i + 1], cur.data[i + 2]) <= 26) n++;
+      }
+      return n / cur.info.width >= 0.7;
+    };
+    let top = 0;
+    let bottom = cur.info.height;
+    while (top < bottom - 1 && dark(top)) top++;
+    while (bottom > top + 1 && dark(bottom - 1)) bottom--;
+    const kept = bottom - top;
+    if (kept <= cur.info.height * 0.9 && kept >= cur.info.height * 0.3) {
+      trimmed += 1;
+      console.log(`${file}: logo bar, ${cur.info.width}x${cur.info.height} -> ${cur.info.width}x${kept}`);
+      if (write) {
+        const cropped = await sharp(readFileSync(path)).extract({ left: 0, top, width: cur.info.width, height: kept }).jpeg({ quality: 90, mozjpeg: true }).toBuffer();
+        writeFileSync(path, cropped);
+      }
+      height = kept;
+    }
   }
   sizes[file.replace(".jpg", "")] = [width, height];
 }

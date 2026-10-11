@@ -1,5 +1,18 @@
 @import "./globals.css";
 
+/* motion-ok: like motion-safe, but it also follows the site's own motion
+   switch (data-motion on <html>), which wins over the device setting. */
+@custom-variant motion-ok {
+  html[data-motion="full"] & {
+    @slot;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-motion="calm"]) & {
+      @slot;
+    }
+  }
+}
+
 /* ==========================================================================
    BMSCE Alumni Network v2 design system: "The Wall".
    A campus noticeboard and scrapbook: warm paper, ink, forest green, with
@@ -387,16 +400,21 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pinned,
-  .pinned:hover {
+  html:not([data-motion="full"]) .pinned,
+  html:not([data-motion="full"]) .pinned:hover {
     transition: none;
     transform: rotate(var(--tilt, 0deg));
   }
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
+  html:not([data-motion="full"])::view-transition-group(*),
+  html:not([data-motion="full"])::view-transition-old(*),
+  html:not([data-motion="full"])::view-transition-new(*) {
     animation: none !important;
   }
+}
+html[data-motion="calm"] .pinned,
+html[data-motion="calm"] .pinned:hover {
+  transition: none;
+  transform: rotate(var(--tilt, 0deg));
 }
 
 /* ==========================================================================
@@ -475,15 +493,24 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wall-item {
+  html:not([data-motion="full"]) .wall-item {
     opacity: 1;
   }
-  .wall-letter,
-  .wall-item.is-in > .wall-card,
-  .wall-item.is-in .wall-pin,
-  .wall-dialog[open] > article {
+  html:not([data-motion="full"]) .wall-letter,
+  html:not([data-motion="full"]) .wall-item.is-in > .wall-card,
+  html:not([data-motion="full"]) .wall-item.is-in .wall-pin,
+  html:not([data-motion="full"]) .wall-dialog[open] > article {
     animation: none;
   }
+}
+html[data-motion="calm"] .wall-item {
+  opacity: 1;
+}
+html[data-motion="calm"] .wall-letter,
+html[data-motion="calm"] .wall-item.is-in > .wall-card,
+html[data-motion="calm"] .wall-item.is-in .wall-pin,
+html[data-motion="calm"] .wall-dialog[open] > article {
+  animation: none;
 }
 @media (max-width: 639px) {
   /* Phones: one column, gentler angles, nothing hanging off the edge. */
@@ -507,4 +534,22 @@
 }
 .article-body > p:first-of-type {
   margin-top: 0;
+}
+
+/* ==========================================================================
+   The public home
+   ========================================================================== */
+/* If the hero's entrance script never runs, show the hero anyway. */
+@keyframes hero-failsafe {
+  to { visibility: visible; }
+}
+/* The campus pin on the chapter map breathes, so the eye starts there. */
+@keyframes map-pulse {
+  0% { transform: scale(0.5); opacity: 0.55; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+.map-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: map-pulse 2.4s ease-out infinite;
 }

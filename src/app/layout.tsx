@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 import {
   Bricolage_Grotesque,
   Caveat,
@@ -86,11 +87,15 @@ export default async function RootLayout({
   // The signed-in shell (rail, top bar, tab bar) only appears once a member
   // has finished onboarding; until then they see the public layout.
   const inApp = Boolean(user && me?.onboarded);
+  // The visitor's own motion choice, if they have made one (see lib/motion.ts).
+  const motionCookie = (await cookies()).get("motion")?.value;
+  const motion = motionCookie === "full" || motionCookie === "calm" ? motionCookie : undefined;
 
   return (
     <html
       lang="en"
       data-auth={inApp ? "in" : "out"}
+      data-motion={motion}
       className={`${bricolage.variable} ${hanken.variable} ${fraunces.variable} ${caveat.variable} ${dmMono.variable}`}
     >
       <body>

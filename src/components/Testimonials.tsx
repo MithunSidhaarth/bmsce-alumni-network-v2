@@ -1,6 +1,4 @@
-import Eyebrow from "./Eyebrow";
-import Reveal from "./Reveal";
-import TiltCard from "./TiltCard";
+import { seeded } from "@/lib/format";
 
 type Testimonial = {
   quote: string;
@@ -27,51 +25,36 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
+// The two letters are real quotes from members, kept exactly as given.
+// They are shown as notes pinned to the page, each signed in handwriting.
 export default function Testimonials() {
   return (
-    <section className="border-t border-gold/30 bg-ivory-dim/40">
-      <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
-        <Reveal>
-          <Eyebrow>In their words</Eyebrow>
-        </Reveal>
-        <Reveal delay={80}>
-          <h2 className="mt-6 max-w-xl font-display text-4xl leading-[1.05] text-ink md:text-5xl">
-            Why alumni stay connected.
-          </h2>
-        </Reveal>
-
-        <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+    <section aria-labelledby="letters-title" className="border-t border-ink/10">
+      <div className="mx-auto max-w-7xl px-5 py-20 md:px-10 md:py-28">
+        <p className="label-mono text-tangerine">In their words</p>
+        <h2 id="letters-title" className="mt-4 max-w-2xl font-display text-[clamp(2.2rem,6vw,4rem)] leading-[0.95]">
+          Why alumni <span className="serif-accent hl">stay</span> connected.
+        </h2>
+        <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-14">
           {TESTIMONIALS.map((t, i) => (
-            <Reveal key={t.name} delay={i * 100} className="h-full">
-              <TiltCard className="h-full" max={3}>
-                <figure className="flex h-full flex-col rounded-2xl border border-gold/25 bg-ivory p-8 shadow-sm md:p-10">
-                  <figcaption className="flex items-center gap-5">
-                    <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-maroon to-oxblood font-display text-3xl italic text-ivory md:h-24 md:w-24 md:text-4xl">
-                      {t.initials}
-                    </span>
-                    <span>
-                      <span className="block font-display text-lg text-ink">
-                        {t.name}
-                      </span>
-                      {t.batch && (
-                        <span className="mt-0.5 block font-sans text-sm text-ink/55">
-                          Batch of {t.batch}
-                        </span>
-                      )}
-                    </span>
-                  </figcaption>
-                  <span
-                    aria-hidden="true"
-                    className="mt-6 font-display text-5xl leading-none text-accent/60"
-                  >
-                    &ldquo;
-                  </span>
-                  <blockquote className="mt-2 flex-1 font-display text-lg italic leading-relaxed text-ink/85 md:text-xl md:leading-relaxed">
-                    {t.quote}
-                  </blockquote>
-                </figure>
-              </TiltCard>
-            </Reveal>
+            <figure
+              key={t.name}
+              className={`pinned sheet relative px-7 pb-8 pt-10 md:px-10 ${i % 2 ? "lg:mt-14" : ""}`}
+              style={{ ["--tilt" as string]: `${((seeded(t.name) - 0.5) * 3.4).toFixed(2)}deg` }}
+            >
+              <span className={`tape ${i % 2 ? "tape-right tape-lime" : "tape-left"}`} aria-hidden="true" />
+              <span className="font-serif text-7xl leading-[0.6] text-tangerine" aria-hidden="true">
+                &ldquo;
+              </span>
+              <blockquote className="mt-2 font-serif text-[1.3rem] leading-[1.5] text-ink/90">{t.quote}</blockquote>
+              <figcaption className="mt-7 flex items-end justify-between gap-4 border-t border-dashed border-ink/25 pt-5">
+                <span>
+                  <span className="hand block text-[2rem] leading-none text-forest">{t.name}</span>
+                  {t.batch && <span className="label-mono mt-2 block text-ink/55">Batch of {t.batch}</span>}
+                </span>
+                <span className="stamp text-ink/45">Member</span>
+              </figcaption>
+            </figure>
           ))}
         </div>
       </div>

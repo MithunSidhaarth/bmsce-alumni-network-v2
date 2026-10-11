@@ -6,6 +6,7 @@ import Link from "next/link";
 import sizes from "@/data/instagram-sizes.json";
 import type { NoticeCard } from "@/lib/types";
 import { longDate, seeded, stampDate } from "@/lib/format";
+import { motionOK } from "@/lib/motion";
 import Avatar from "../Avatar";
 import Icon from "../Icon";
 
@@ -168,7 +169,7 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
     const root = board.current;
     if (!root) return;
     const items = Array.from(root.querySelectorAll<HTMLElement>("[data-card]"));
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+    if (!motionOK() || !("IntersectionObserver" in window)) {
       items.forEach((el) => el.classList.add("is-in"));
       return;
     }
@@ -200,7 +201,7 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
   // itself grows into the reading view (a shared-element transition).
   const show = useCallback((id: string | null, from?: HTMLElement | null) => {
     const apply = () => flushSync(() => setOpen(id));
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = !motionOK();
     const doc = document as Document & { startViewTransition?: (cb: () => void) => { finished: Promise<void> } };
     if (!doc.startViewTransition || reduce || !from) return apply();
     from.style.viewTransitionName = "notice-open";

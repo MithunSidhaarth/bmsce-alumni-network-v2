@@ -1,10 +1,6 @@
 import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import GlobalCommunity from "@/components/GlobalCommunity";
-import Testimonials from "@/components/Testimonials";
-import FunFacts from "@/components/FunFacts";
-import FinalCta from "@/components/FinalCta";
 import HomeFeed from "@/components/v2/HomeFeed";
 import Landing from "@/components/v2/Landing";
 import { getMe } from "@/lib/me";
@@ -44,10 +40,6 @@ export default async function Home({
       <Nav />
       <main>
         <Landing signedIn={Boolean(user)} />
-        <GlobalCommunity />
-        <Testimonials />
-        <FunFacts />
-        <FinalCta />
       </main>
       <Footer />
     </>

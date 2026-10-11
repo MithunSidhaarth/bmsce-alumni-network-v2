@@ -121,7 +121,7 @@ export default function Nav() {
                 key={l.href}
                 href={l.href}
                 style={{ animationDelay: `${i * 40}ms` }}
-                className="border-b border-ink/10 py-4 font-display text-[2rem] font-bold leading-none tracking-tight motion-safe:animate-[var(--animate-rise)]"
+                className="border-b border-ink/10 py-4 font-display text-[2rem] font-bold leading-none tracking-tight motion-ok:animate-[var(--animate-rise)]"
               >
                 {l.label}
               </Link>

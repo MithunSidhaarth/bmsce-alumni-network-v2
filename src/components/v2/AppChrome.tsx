@@ -257,7 +257,7 @@ export default function AppChrome({ me }: { me: Me }) {
             {menuOpen && (
               <div
                 role="menu"
-                className="sheet absolute right-0 top-[calc(100%+0.5rem)] w-60 origin-top-right p-1.5 motion-safe:animate-[var(--animate-rise)]"
+                className="sheet absolute right-0 top-[calc(100%+0.5rem)] w-60 origin-top-right p-1.5 motion-ok:animate-[var(--animate-rise)]"
               >
                 <div className="border-b border-ink/10 px-3 pb-2.5 pt-2">
                   <p className="truncate text-sm font-semibold">{me.full_name ?? "Member"}</p>

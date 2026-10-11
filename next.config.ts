@@ -30,6 +30,9 @@ const nextConfig: NextConfig = {
   // minor info-disclosure that makes framework-specific CVEs easier to
   // shortlist against this site.
   poweredByHeader: false,
+  // Development only: lets the dev server be opened as 127.0.0.1 as well as
+  // localhost. Handy for a second, signed-out session next to a signed-in one.
+  allowedDevOrigins: ["127.0.0.1"],
   images: {
     // Gallery thumbnails/medium images live in Supabase Storage — next/image
     // needs the host allowlisted to optimize/serve them.

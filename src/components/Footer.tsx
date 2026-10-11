@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "./AuthProvider";
 import SubscribeForm from "./v2/SubscribeForm";
+import MotionToggle from "./v2/MotionToggle";
 
 const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
   {
@@ -52,6 +53,7 @@ export default function Footer() {
           <Link href="/faqs" className="hover:text-ink">FAQs</Link>
           <Link href="/privacy" className="hover:text-ink">Privacy</Link>
           <Link href="/terms" className="hover:text-ink">Terms</Link>
+          <MotionToggle className="hover:text-ink" />
         </p>
       </footer>
     );
@@ -103,6 +105,7 @@ export default function Footer() {
             ))}
             <Link href="/privacy" className="hover:text-lime">Privacy</Link>
             <Link href="/terms" className="hover:text-lime">Terms</Link>
+            <MotionToggle className="hover:text-lime" />
           </p>
         </div>
       </div>

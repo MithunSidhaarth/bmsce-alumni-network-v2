@@ -166,7 +166,7 @@ export default function PostActions({
         <div
           role="group"
           aria-label="Choose a reaction"
-          className="sheet absolute bottom-[calc(100%-0.25rem)] left-0 z-20 flex gap-1 p-1.5 motion-safe:animate-[var(--animate-rise)]"
+          className="sheet absolute bottom-[calc(100%-0.25rem)] left-0 z-20 flex gap-1 p-1.5 motion-ok:animate-[var(--animate-rise)]"
         >
           {REACTIONS.map((r) => (
             <button
@@ -186,7 +186,7 @@ export default function PostActions({
       )}
 
       {menu && (
-        <div role="menu" className="sheet absolute right-0 top-[calc(100%-0.25rem)] z-20 w-60 p-1.5 motion-safe:animate-[var(--animate-rise)]">
+        <div role="menu" className="sheet absolute right-0 top-[calc(100%-0.25rem)] z-20 w-60 p-1.5 motion-ok:animate-[var(--animate-rise)]">
           {isOwn && (
             <button
               type="button"
