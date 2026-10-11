@@ -27,7 +27,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
   const [comments, likes, reactions, follow, lead] = await Promise.all([
     supabase
       .from("post_comments")
-      .select("id, body, created_at, author_id, is_hidden, author:profiles!post_comments_author_id_fkey(id, full_name, photo_url, user_type, graduation_year)")
+      .select("id, body, mentions, created_at, author_id, is_hidden, author:profiles!post_comments_author_id_fkey(id, full_name, photo_url, user_type, graduation_year)")
       .eq("post_id", id)
       .order("created_at"),
     supabase.from("comment_reactions").select("comment_id, user_id, comment:post_comments!inner(post_id)").eq("comment.post_id", id),
@@ -47,6 +47,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
   const replies: Reply[] = (comments.data ?? []).map((c) => ({
     id: c.id,
     body: c.body,
+    mentions: (c.mentions as Reply["mentions"]) ?? [],
     created_at: c.created_at,
     author_id: c.author_id,
     author: Array.isArray(c.author) ? (c.author[0] ?? null) : c.author,

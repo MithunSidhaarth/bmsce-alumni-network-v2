@@ -17,6 +17,8 @@ export const KIND_LABEL: Record<PostKind, string> = {
   announcement: "Announcement",
   achievement: "Achievement",
   memory: "Memory",
+  ask: "Ask",
+  offer: "Offer",
 };
 
 export const REACTIONS: { kind: ReactionKind; label: string; glyph: string }[] = [
@@ -27,7 +29,7 @@ export const REACTIONS: { kind: ReactionKind; label: string; glyph: string }[] =
 ];
 
 export const POST_SELECT =
-  "id, author_id, kind, title, body, media, tags, chapter_id, event_id, is_pinned, is_hidden, comment_count, reaction_count, last_activity_at, created_at, updated_at, author:profiles!posts_author_id_fkey(id, full_name, photo_url, user_type, graduation_year, branch), chapter:chapters(name, slug)";
+  "id, author_id, kind, title, body, media, tags, chapter_id, event_id, is_pinned, is_hidden, comment_count, reaction_count, last_activity_at, created_at, updated_at, poll_options, poll_counts, link_preview, mentions, author:profiles!posts_author_id_fkey(id, full_name, photo_url, user_type, graduation_year, branch), chapter:chapters(name, slug)";
 
 type Raw = Omit<Post, "author" | "chapter"> & {
   author: Post["author"] | Post["author"][];
@@ -51,6 +53,8 @@ export type PostQuery = {
   chapterIds?: string[];
   authorId?: string;
   kind?: PostKind;
+  /** Any of several kinds (e.g. asks and offers together). */
+  kinds?: PostKind[];
   tag?: string;
   q?: string;
   sort?: "recent" | "active" | "popular";
@@ -68,6 +72,7 @@ export async function listPosts(supabase: SupabaseClient, query: PostQuery): Pro
   if (query.scope === "author" && query.authorId) q = q.eq("author_id", query.authorId);
   if (query.chapterIds) q = q.in("chapter_id", query.chapterIds);
   if (query.kind) q = q.eq("kind", query.kind);
+  if (query.kinds?.length) q = q.in("kind", query.kinds);
   if (query.tag) q = q.contains("tags", [query.tag]);
   if (query.q?.trim()) q = q.textSearch("fts", query.q.trim(), { type: "websearch", config: "english" });
 

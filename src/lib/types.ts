@@ -173,7 +173,13 @@ export type Privacy = {
   show_linkedin: boolean;
 };
 
-export type PostKind = "post" | "discussion" | "announcement" | "achievement" | "memory";
+export type PostKind = "post" | "discussion" | "announcement" | "achievement" | "memory" | "ask" | "offer";
+
+/** Someone named in a post or reply with "@Full Name". The name is set by the database. */
+export type Mention = { id: string; name: string };
+
+/** A card for the first link in a post: text only, fetched once when it is posted. */
+export type LinkPreview = { url: string; title: string; description?: string; site?: string };
 export type ReactionKind = "like" | "cheer" | "nostalgia" | "insight";
 
 export type PostAuthor = {
@@ -202,6 +208,11 @@ export type Post = {
   last_activity_at: string;
   created_at: string;
   updated_at: string | null;
+  /** A poll's options and how many votes each has; null when the post has no poll. */
+  poll_options: string[] | null;
+  poll_counts: number[] | null;
+  link_preview: LinkPreview | null;
+  mentions: Mention[];
   author: PostAuthor | null;
   chapter: { name: string; slug: string } | null;
 };

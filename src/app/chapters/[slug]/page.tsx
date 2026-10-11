@@ -94,7 +94,7 @@ export default async function ChapterPage({
         ])
       : [{ data: [] }, { data: [] }, { data: [] }, { data: [] }];
 
-  const kinds: PostKind[] = ["post", "memory", "discussion", ...(canManage ? (["announcement"] as PostKind[]) : [])];
+  const kinds: PostKind[] = ["post", "memory", "discussion", "ask", "offer", ...(canManage ? (["announcement"] as PostKind[]) : [])];
   const pics = [
     ...(photos.data ?? []).map((p) => ({ key: p.id, src: p.thumbnail_url as string, href: null as string | null, alt: (p.caption as string | null) ?? "" })),
     ...(memories.data ?? []).flatMap((p) => (p.media as string[]).map((m, i) => ({ key: `${p.id}-${i}`, src: m, href: `/community/${p.id}`, alt: "" }))),

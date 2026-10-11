@@ -5,12 +5,20 @@ import { actionMember } from "@/lib/me";
 import { rateLimit } from "@/lib/rateLimit";
 import { logAdminAction } from "@/lib/audit";
 import { FORUM_TAGS } from "@/lib/posts";
+import { fetchLinkPreview, firstUrl } from "@/lib/linkPreview";
 import type { PostKind, ReactionKind } from "@/lib/types";
 
 // Every write here is also enforced in Postgres (RLS + the posts_guard
 // trigger). These checks exist to give people a clear message first.
 
-const KINDS: PostKind[] = ["post", "discussion", "announcement", "achievement", "memory"];
+const KINDS: PostKind[] = ["post", "discussion", "announcement", "achievement", "memory", "ask", "offer"];
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+// Only ids are trusted from the browser; the database looks the names up
+// itself and drops anyone whose "@Name" is not actually in the text.
+function mentionIds(mentions: { id: string }[] | undefined) {
+  return [...new Set((mentions ?? []).map((m) => m.id).filter((id) => UUID.test(id)))].slice(0, 10).map((id) => ({ id }));
+}
 const REACTION_KINDS: ReactionKind[] = ["like", "cheer", "nostalgia", "insight"];
 
 function refresh(postId?: string, chapterSlug?: string | null) {
@@ -29,6 +37,9 @@ export async function createPost(input: {
   media?: string[];
   chapterId?: string | null;
   eventId?: string | null;
+  /** Two to four poll options, or nothing. */
+  poll?: string[];
+  mentions?: { id: string }[];
 }) {
   const { supabase, user } = await actionMember();
   const kind = KINDS.includes(input.kind) ? input.kind : "post";
@@ -44,7 +55,17 @@ export async function createPost(input: {
   const base = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/post-media/${user.id}/`;
   const media = (input.media ?? []).filter((u) => u.startsWith(base)).slice(0, 6);
 
+  const poll = (input.poll ?? []).map((o) => o.trim()).filter(Boolean);
+  if (input.poll && (poll.length < 2 || poll.length > 4)) throw new Error("A poll needs two to four options.");
+  if (poll.some((o) => o.length > 80)) throw new Error("Keep each poll option under 80 characters.");
+  if (new Set(poll.map((o) => o.toLowerCase())).size !== poll.length) throw new Error("Two poll options are the same.");
+
   await rateLimit(supabase, `post:${user.id}`, 15, 3600);
+
+  // A text card for the first link, fetched once. Never blocks the post: a
+  // link that is slow, private or not a web page simply has no card.
+  const link = firstUrl(body);
+  const linkPreview = link ? await fetchLinkPreview(link) : null;
 
   const { data, error } = await supabase
     .from("posts")
@@ -57,6 +78,9 @@ export async function createPost(input: {
       media,
       chapter_id: input.chapterId ?? null,
       event_id: input.eventId ?? null,
+      poll_options: poll.length ? poll : null,
+      link_preview: linkPreview,
+      mentions: mentionIds(input.mentions),
     })
     .select("id")
     .single();
@@ -111,7 +135,7 @@ export async function react(postId: string, kind: ReactionKind | null) {
   if (error) throw new Error(error.message);
 }
 
-export async function addComment(postId: string, body: string, parentId?: string | null) {
+export async function addComment(postId: string, body: string, parentId?: string | null, mentions?: { id: string }[]) {
   const { supabase, user } = await actionMember();
   const b = body.trim();
   if (!b) throw new Error("Write a reply first.");
@@ -119,7 +143,7 @@ export async function addComment(postId: string, body: string, parentId?: string
   await rateLimit(supabase, `comment:${user.id}`, 40, 3600);
   const { error } = await supabase
     .from("post_comments")
-    .insert({ post_id: postId, author_id: user.id, body: b, parent_id: parentId ?? null });
+    .insert({ post_id: postId, author_id: user.id, body: b, parent_id: parentId ?? null, mentions: mentionIds(mentions) });
   if (error) throw new Error(error.message);
   refresh(postId);
 }
@@ -154,6 +178,50 @@ export async function setFollow(postId: string, follow: boolean) {
     : await supabase.from("post_follows").delete().eq("post_id", postId).eq("user_id", user.id);
   if (error) throw new Error(error.message);
   revalidatePath(`/community/${postId}`);
+}
+
+/** Vote in a poll, change the vote, or (with null) take it back. Returns the new totals. */
+export async function votePoll(postId: string, option: number | null): Promise<number[]> {
+  const { supabase, user } = await actionMember();
+  if (!UUID.test(postId)) throw new Error("Unknown poll.");
+  await rateLimit(supabase, `vote:${user.id}`, 120, 3600);
+  if (option === null) {
+    const { error } = await supabase.from("poll_votes").delete().eq("post_id", postId).eq("user_id", user.id);
+    if (error) throw new Error(error.message);
+  } else {
+    if (!Number.isInteger(option) || option < 0 || option > 3) throw new Error("Unknown option.");
+    // The database checks that the post has a poll and that the option exists.
+    const { error } = await supabase
+      .from("poll_votes")
+      .upsert({ post_id: postId, user_id: user.id, option_index: option }, { onConflict: "post_id,user_id" });
+    if (error) throw new Error("That vote could not be counted.");
+  }
+  const { data } = await supabase.from("posts").select("poll_counts").eq("id", postId).maybeSingle();
+  return (data?.poll_counts as number[] | null) ?? [];
+}
+
+/** Members whose name matches, for the "@" picker. */
+export async function searchMembers(q: string): Promise<{ id: string; name: string; photo: string | null; line: string }[]> {
+  const { supabase, user } = await actionMember();
+  const term = q.trim().replace(/[%_,()\\]/g, " ").slice(0, 40);
+  if (term.length < 2) return [];
+  const { data } = await supabase
+    .from("profiles")
+    .select("id, full_name, photo_url, user_type, graduation_year, branch")
+    .eq("verification_status", "verified")
+    .is("suspended_at", null)
+    .neq("id", user.id)
+    .ilike("full_name", `%${term}%`)
+    .order("full_name")
+    .limit(6);
+  return (data ?? [])
+    .filter((p) => p.full_name)
+    .map((p) => ({
+      id: p.id as string,
+      name: p.full_name as string,
+      photo: (p.photo_url as string | null) ?? null,
+      line: [p.user_type === "student" ? "Student" : p.graduation_year ? `Batch of ${p.graduation_year}` : "Alumni", p.branch].filter(Boolean).join(" · "),
+    }));
 }
 
 /**

@@ -6,9 +6,10 @@ import { createClient } from "@/lib/supabase/client";
 import { resizeImage, MEDIUM_MAX_DIMENSION, MEDIUM_QUALITY } from "@/lib/resizeImage";
 import { createPost } from "@/app/posts/actions";
 import { FORUM_TAGS, KIND_LABEL } from "@/lib/posts";
-import type { PostKind } from "@/lib/types";
+import type { Mention, PostKind } from "@/lib/types";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
+import MentionTextarea, { mentionsIn } from "./MentionTextarea";
 
 const PROMPTS: Record<PostKind, string> = {
   post: "What is happening in your corner of the network?",
@@ -16,6 +17,8 @@ const PROMPTS: Record<PostKind, string> = {
   announcement: "Write the announcement. It will also be pinned to The Wall.",
   achievement: "A new role, a launch, a paper, a marathon. Tell the network.",
   memory: "A canteen story, a fest, a professor you still quote. Add a photo if you have one.",
+  ask: "What do you need? A referral, an introduction, advice, a room in a new city.",
+  offer: "What can you offer? A role on your team, a referral, an hour of your time.",
 };
 
 const MAX_PHOTOS = 4;
@@ -48,6 +51,9 @@ export default function Composer({
   const [body, setBody] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [photos, setPhotos] = useState<string[]>([]);
+  const [mentions, setMentions] = useState<Mention[]>([]);
+  // null: no poll. Otherwise the option texts being written (two to four).
+  const [poll, setPoll] = useState<string[] | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
@@ -94,11 +100,23 @@ export default function Composer({
     setError(null);
     start(async () => {
       try {
-        await createPost({ kind, title: needsTitle ? title : undefined, body, tags, media: photos, chapterId, eventId });
+        await createPost({
+          kind,
+          title: needsTitle ? title : undefined,
+          body,
+          tags,
+          media: photos,
+          chapterId,
+          eventId,
+          poll: poll ?? undefined,
+          mentions: mentionsIn(body, mentions).map((m) => ({ id: m.id })),
+        });
         setTitle("");
         setBody("");
         setTags([]);
         setPhotos([]);
+        setMentions([]);
+        setPoll(null);
         setOpen(false);
         router.refresh();
       } catch (e) {
@@ -172,10 +190,12 @@ export default function Composer({
       <label htmlFor="composer-body" className="sr-only">
         Your post
       </label>
-      <textarea
+      <MentionTextarea
         id="composer-body"
         value={body}
-        onChange={(e) => setBody(e.target.value)}
+        onValue={setBody}
+        mentions={mentions}
+        onMentions={setMentions}
         autoFocus
         rows={4}
         maxLength={10000}
@@ -200,6 +220,50 @@ export default function Composer({
             </li>
           ))}
         </ul>
+      )}
+
+      {poll && (
+        <fieldset className="mt-3 rounded-md border border-ink/15 p-3">
+          <legend className="label-mono px-1 text-ink/55">Poll</legend>
+          <div className="flex flex-col gap-2">
+            {poll.map((option, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <label htmlFor={`poll-option-${i}`} className="sr-only">
+                  Option {i + 1}
+                </label>
+                <input
+                  id={`poll-option-${i}`}
+                  value={option}
+                  onChange={(e) => setPoll((all) => (all ?? []).map((o, n) => (n === i ? e.target.value : o)))}
+                  maxLength={80}
+                  placeholder={`Option ${i + 1}`}
+                  className="field"
+                />
+                {poll.length > 2 && (
+                  <button
+                    type="button"
+                    onClick={() => setPoll((all) => (all ?? []).filter((_, n) => n !== i))}
+                    aria-label={`Remove option ${i + 1}`}
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink/60 hover:bg-ink/[0.06] hover:text-ink"
+                  >
+                    <Icon name="x" className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="mt-2 flex items-center gap-3 text-xs">
+            {poll.length < 4 && (
+              <button type="button" onClick={() => setPoll((all) => [...(all ?? []), ""])} className="font-semibold text-forest hover:underline">
+                Add an option
+              </button>
+            )}
+            <button type="button" onClick={() => setPoll(null)} className="font-semibold text-ink/60 hover:text-ink hover:underline">
+              Remove the poll
+            </button>
+            <span className="ml-auto text-ink/50">Votes are private.</span>
+          </div>
+        </fieldset>
       )}
 
       {kind === "discussion" && !chapterId && (
@@ -248,6 +312,12 @@ export default function Composer({
           <Icon name="image" className="h-4 w-4" />
           {uploading ? "Uploading" : "Photo"}
         </button>
+        {!poll && (
+          <button type="button" onClick={() => setPoll(["", ""])} className="btn btn-ghost btn-sm">
+            <Icon name="chart" className="h-4 w-4" />
+            Poll
+          </button>
+        )}
         <span className="ml-auto" />
         <button type="button" onClick={() => setOpen(false)} className="btn btn-ghost btn-sm" disabled={pending}>
           Cancel

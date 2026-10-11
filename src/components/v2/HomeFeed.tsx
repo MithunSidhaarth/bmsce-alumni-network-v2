@@ -19,6 +19,7 @@ const FILTERS: { key: string; label: string }[] = [
   { key: "achievement", label: "Achievements" },
   { key: "memory", label: "Memories" },
   { key: "discussion", label: "Discussions" },
+  { key: "asks", label: "Asks & offers" },
 ];
 
 const PAGE = 15;
@@ -60,6 +61,7 @@ export default async function HomeFeed({
 
   const query: PostQuery = { scope: "feed", limit: limit + 1 };
   if (filter === "chapters") query.chapterIds = myChapters.map((c) => c.id);
+  else if (filter === "asks") query.kinds = ["ask", "offer"];
   else if (filter !== "all") query.kind = filter as PostKind;
   const skipFeed = filter === "chapters" && myChapters.length === 0;
 
@@ -99,7 +101,7 @@ export default async function HomeFeed({
   const visible = posts.slice(0, limit);
   const reactions = await myReactions(supabase, me.id, visible.map((p) => p.id));
   const viewer = { id: me.id, isAdmin, leadOf: myChapters.filter((c) => c.role === "lead").map((c) => c.id) };
-  const kinds: PostKind[] = ["post", "memory", "achievement", "discussion", ...(isAdmin ? (["announcement"] as PostKind[]) : [])];
+  const kinds: PostKind[] = ["post", "memory", "achievement", "discussion", "ask", "offer", ...(isAdmin ? (["announcement"] as PostKind[]) : [])];
   const first = (me.full_name ?? "").trim().split(/\s+/)[0];
   const cards = (board.data as NoticeCard[] | null) ?? [];
 

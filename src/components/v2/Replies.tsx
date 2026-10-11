@@ -6,12 +6,16 @@ import { useRouter } from "next/navigation";
 import { addComment, deleteComment, setFollow, toggleCommentLike } from "@/app/posts/actions";
 import { reportContent } from "@/app/moderation/actions";
 import { plural, timeAgo } from "@/lib/format";
+import type { Mention } from "@/lib/types";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
+import MentionTextarea, { mentionsIn } from "./MentionTextarea";
+import RichText from "./RichText";
 
 export type Reply = {
   id: string;
   body: string;
+  mentions?: Mention[];
   created_at: string;
   author_id: string | null;
   author: { id: string; full_name: string | null; photo_url: string | null; user_type: string; graduation_year: number | null } | null;
@@ -32,6 +36,7 @@ export default function Replies({
 }) {
   const router = useRouter();
   const [body, setBody] = useState("");
+  const [mentions, setMentions] = useState<Mention[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
   const [pending, start] = useTransition();
@@ -90,7 +95,9 @@ export default function Replies({
                         : ""}
                     </span>
                   </p>
-                  <p className="mt-1.5 whitespace-pre-wrap break-words text-[0.9375rem] leading-relaxed">{r.body}</p>
+                  <p className="mt-1.5 whitespace-pre-wrap break-words text-[0.9375rem] leading-relaxed">
+                    <RichText text={r.body} mentions={r.mentions} />
+                  </p>
                 </div>
                 <p className="mt-1.5 flex items-center gap-4 pl-1 text-xs text-ink/55">
                   <time dateTime={r.created_at}>{timeAgo(r.created_at)}</time>
@@ -138,7 +145,13 @@ export default function Replies({
         className="mt-7 flex gap-3"
         onSubmit={(e) => {
           e.preventDefault();
-          run(() => addComment(postId, body), () => setBody(""));
+          run(
+            () => addComment(postId, body, null, mentionsIn(body, mentions).map((m) => ({ id: m.id }))),
+            () => {
+              setBody("");
+              setMentions([]);
+            }
+          );
         }}
       >
         <Avatar name={me.full_name} src={me.photo_url} size={36} className="mt-1" />
@@ -146,13 +159,15 @@ export default function Replies({
           <label htmlFor="reply-body" className="sr-only">
             Write a reply
           </label>
-          <textarea
+          <MentionTextarea
             id="reply-body"
             value={body}
-            onChange={(e) => setBody(e.target.value)}
+            onValue={setBody}
+            mentions={mentions}
+            onMentions={setMentions}
             rows={3}
             maxLength={5000}
-            placeholder="Write a reply"
+            placeholder="Write a reply. Type @ to mention someone."
             className="field resize-y"
           />
           <div className="mt-2 flex items-center gap-3">

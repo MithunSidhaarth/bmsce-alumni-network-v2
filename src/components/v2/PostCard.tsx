@@ -3,7 +3,10 @@ import type { Post, ReactionKind } from "@/lib/types";
 import { KIND_LABEL } from "@/lib/posts";
 import { seeded, timeAgo } from "@/lib/format";
 import Avatar from "./Avatar";
+import Icon from "./Icon";
+import Poll from "./Poll";
 import PostActions from "./PostActions";
+import RichText from "./RichText";
 import TransitionLink from "./vt/TransitionLink";
 
 export type Viewer = { id: string; isAdmin: boolean; leadOf?: string[] };
@@ -16,7 +19,17 @@ const STAMP: Record<Post["kind"], string> = {
   announcement: "text-tangerine",
   achievement: "text-forest bg-lime border-lime",
   memory: "text-violet",
+  ask: "border-ink bg-ink text-ivory",
+  offer: "border-forest bg-forest text-ivory",
 };
+
+function hostOf(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
 
 function byline(post: Post) {
   const a = post.author;
@@ -86,7 +99,7 @@ export default function PostCard({
 
   return (
     <article
-      className={`sheet px-5 pb-3 pt-5 sm:px-6 ${post.kind === "discussion" ? "sheet-ruled" : ""} ${
+      className={`sheet px-5 pb-3 pt-5 sm:px-6 ${post.kind === "discussion" ? "sheet-ruled" : ""} ${post.kind === "ask" || post.kind === "offer" ? "sheet-kraft" : ""} ${
         post.is_hidden ? "opacity-60" : ""
       }`}
       // On the thread page this is what a clicked card grows into.
@@ -149,12 +162,33 @@ export default function PostCard({
             full ? "" : "line-clamp-6"
           }`}
         >
-          {post.body}
+          <RichText text={post.body} mentions={post.mentions} />
         </p>
         {!full && long && (
           <TransitionLink href={href} vtName={vtName} source="article" className="mt-1 inline-block text-sm font-semibold text-forest hover:underline">
             Read the rest
           </TransitionLink>
+        )}
+        {post.poll_options && <Poll postId={post.id} options={post.poll_options} counts={post.poll_counts} canVote={!post.is_hidden} />}
+        {/* The stored card is only shown while its link is still in the text. */}
+        {post.link_preview && post.body.includes(post.link_preview.url) && (
+          <a
+            href={post.link_preview.url}
+            target="_blank"
+            rel="noopener noreferrer nofollow ugc"
+            className="mt-4 flex items-start gap-3 rounded-md border border-ink/15 bg-ivory/60 px-4 py-3 transition-colors hover:border-ink/45"
+          >
+            <Icon name="link" className="mt-0.5 h-4 w-4 text-ink/50" />
+            <span className="min-w-0">
+              <span className="label-mono block truncate text-ink/55">
+                {post.link_preview.site ?? hostOf(post.link_preview.url)}
+              </span>
+              <span className="mt-1 line-clamp-2 font-semibold leading-snug">{post.link_preview.title}</span>
+              {post.link_preview.description && (
+                <span className="mt-1 line-clamp-2 text-sm text-ink/65">{post.link_preview.description}</span>
+              )}
+            </span>
+          </a>
         )}
         {!isMemory && <Media media={post.media} polaroid={false} />}
         {post.tags.length > 0 && (
