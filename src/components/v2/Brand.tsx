@@ -5,8 +5,8 @@
 // retyped, redrawn, recoloured, stretched, boxed or animated.
 //  - Full logo: clear space of x (a third of its height) on every side. Full
 //    colour on a light ground; the white logo on a dark one. The guide asks
-//    for at least 75 px; the site owner chose a smaller header logo (52 px)
-//    so it sits neatly in the bar.
+//    for at least 75 px; the site owner chose a smaller header logo (52 px,
+//    and 36 to 40 px in the phone bars) so it sits neatly in the bar.
 //  - Gear mark: at least 32 px, only where the full logo will not fit, and
 //    always with the full name beside it. Shown in its "On Ink" version.
 //

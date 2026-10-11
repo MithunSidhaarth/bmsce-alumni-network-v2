@@ -213,9 +213,9 @@ export default function AppChrome({ me }: { me: Me }) {
 
       {/* ---- Top bar ---- */}
       <header className="fixed left-0 right-0 top-0 z-30 flex h-[var(--topbar)] items-center gap-2 border-b border-ink/10 bg-ivory/90 px-3 backdrop-blur-md md:left-[var(--rail-slim)] md:px-6 rail:left-[var(--rail)]">
-        {/* Phones: the gear mark with the full name beside it. */}
-        <Link href="/" className="flex items-center md:hidden" aria-label="BMSCE Alumni Network home">
-          <GearMark size={36} className="[&>span]:max-w-[6.5rem]" />
+        {/* Phones: the logo, sized to the top bar. */}
+        <Link href="/" className="flex shrink-0 items-center md:hidden" aria-label="BMSCE Alumni Network home">
+          <Logo height={36} clear={false} />
         </Link>
         <span className="hidden font-display text-sm font-bold md:block rail:hidden">BMSCE Alumni Network</span>
 

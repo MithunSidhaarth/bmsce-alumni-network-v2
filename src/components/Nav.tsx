@@ -61,8 +61,9 @@ export default function Nav() {
             <span className="hidden lg:block">
               <Logo className="-ml-[17px]" />
             </span>
+            {/* Phones: the same logo, sized to the 64 px bar. */}
             <span className="lg:hidden">
-              <GearMark />
+              <Logo height={40} clear={false} />
             </span>
           </>
         )}

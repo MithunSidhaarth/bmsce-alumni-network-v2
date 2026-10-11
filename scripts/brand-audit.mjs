@@ -62,8 +62,8 @@ for (const el of document.querySelectorAll("a[href], button")) {
 // with the full name by it.
 const marks = [...document.querySelectorAll("img[src*='/brand/']")].filter(visible).map((i) => ({ src: i.getAttribute("src").split("/").pop(), h: Math.round(i.getBoundingClientRect().height), w: Math.round(i.getBoundingClientRect().width), nw: i.naturalWidth, nh: i.naturalHeight, el: i }));
 for (const m of marks) {
-  // The guide asks for 75 px; the site owner chose a 52 px header logo. Anything smaller is a mistake.
-  if (/logo/.test(m.src) && m.h < 50) add("logo", m.el, m.src + " shown at " + m.h + "px");
+  // The guide asks for 75 px; the site owner chose 52 px on desktop and 36 to 40 px in the phone bars. Anything smaller is a mistake.
+  if (/logo/.test(m.src) && m.h < 34) add("logo", m.el, m.src + " shown at " + m.h + "px");
   if (/gear/.test(m.src) && m.h < 32) add("logo", m.el, m.src + " shown at " + m.h + "px, under the 32 px minimum");
   if (m.nw && Math.abs(m.w / m.h - m.nw / m.nh) > 0.03) add("logo", m.el, m.src + " is stretched");
   if (/gear/.test(m.src) && !/BMSCE Alumni Network/.test(m.el.parentElement.textContent)) add("logo", m.el, "gear mark without the full name beside it");
