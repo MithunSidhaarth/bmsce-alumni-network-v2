@@ -39,7 +39,7 @@ function ChapterSpecimen({ postcards }: { postcards: Postcard[] }) {
       {postcards.slice(0, 3).map((p, i) => (
         <div
           key={p.name}
-          className="absolute w-[58%] bg-white p-2 pb-3 shadow-[var(--shadow-lift)]"
+          className="absolute w-[58%] rounded-print bg-white p-2 pb-3 shadow-[var(--shadow-lift)]"
           style={{ left: `${i * 20}%`, top: `${[10, 0, 16][i]}%`, transform: `rotate(${[-7, 2, 8][i]}deg)`, zIndex: i }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -125,7 +125,7 @@ export default function InsideStack({ chapters, countries, postcards }: { chapte
       body: "Private messages between verified members, with the privacy controls in your hands.",
       href: "/join",
       link: "Join to say hello",
-      tone: "bg-[#e3f5ab] text-ink border border-ink/10 shadow-[var(--shadow-sheet)]",
+      tone: "rounded-box bg-[#e3f5ab] text-ink border border-ink/10 shadow-[var(--shadow-sheet)]",
       specimen: <MessageSpecimen />,
     },
     {
@@ -134,7 +134,7 @@ export default function InsideStack({ chapters, countries, postcards }: { chapte
       body: "Career journeys, startup lessons and campus memories, written by the network.",
       href: "/blog",
       link: "Start reading",
-      tone: "bg-forest text-ivory shadow-[var(--shadow-sheet)]",
+      tone: "rounded-box bg-forest text-ivory shadow-[var(--shadow-sheet)]",
       specimen: <BlogSpecimen />,
     },
   ];
@@ -151,7 +151,7 @@ export default function InsideStack({ chapters, countries, postcards }: { chapte
       <div ref={root} className="mt-12">
         {sheets.map((s, i) => (
           <div key={s.kicker} className="stack-card sticky pb-6" style={{ top: `calc(5.5rem + ${i * 1.1}rem)` }}>
-            <article className={`grid origin-top gap-8 rounded-md px-6 py-9 will-change-transform md:grid-cols-[1.1fr_1fr] md:items-center md:px-12 md:py-14 ${s.tone}`}>
+            <article className={`grid origin-top gap-8 px-6 py-9 will-change-transform md:grid-cols-[1.1fr_1fr] md:items-center md:px-12 md:py-14 ${s.tone}`}>
               <div>
                 <p className="label-mono opacity-60">{s.kicker}</p>
                 <h3 className={`mt-4 max-w-[16ch] text-[clamp(2rem,4.6vw,3.6rem)] leading-[0.98] ${i === 3 ? "font-serif font-normal tracking-tight" : "font-display"}`}>

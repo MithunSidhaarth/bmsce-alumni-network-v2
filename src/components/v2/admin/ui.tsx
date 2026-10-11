@@ -31,7 +31,7 @@ export function Panel({ title, children, aside }: { title?: string; children: Re
 
 export function Stat({ label, value, hint }: { label: string; value: ReactNode; hint?: ReactNode }) {
   return (
-    <div className="min-w-[9.5rem] flex-1 rounded-md border border-ink/12 bg-paper px-4 py-3.5">
+    <div className="min-w-[9.5rem] flex-1 rounded-box border border-ink/12 bg-paper px-4 py-3.5">
       <p className="label-mono text-ink/55">{label}</p>
       <p className="mt-1.5 font-display text-[1.9rem] font-bold leading-none">{value}</p>
       {hint && <p className="mt-1.5 text-xs text-ink/55">{hint}</p>}

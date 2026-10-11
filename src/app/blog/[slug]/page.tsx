@@ -110,7 +110,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           {article.cover_url && (
             <figure className="mx-auto mt-8 max-w-[62rem] px-0 md:px-5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={article.cover_url} alt="" className="max-h-[34rem] w-full object-cover" />
+              <img src={article.cover_url} alt="" className="max-h-[34rem] w-full object-cover md:rounded-box" />
             </figure>
           )}
 

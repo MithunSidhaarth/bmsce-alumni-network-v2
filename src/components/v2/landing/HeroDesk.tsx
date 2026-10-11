@@ -221,7 +221,7 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
                   draggable={false}
                   aria-label="A moment from the network. Open The Wall."
                   onClick={(e) => dragged.current && e.preventDefault()}
-                  className="block bg-white p-[4%] pb-[14%] shadow-[0_24px_40px_-18px_rgb(19_26_21/0.65)]"
+                  className="block rounded-print bg-white p-[4%] pb-[14%] shadow-[0_24px_40px_-18px_rgb(19_26_21/0.65)]"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={p.src} alt="" draggable={false} loading={i < 4 ? "eager" : "lazy"} className="pointer-events-none aspect-square w-full object-cover" />

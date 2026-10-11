@@ -122,7 +122,7 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
                 <Link
                   href="/noticeboard"
                   aria-label={`A moment from ${y.year}. Open The Wall.`}
-                  className="pinned block w-[52vw] max-w-[17rem] bg-white p-2.5 pb-9 shadow-[0_26px_40px_-18px_rgb(0_0_0/0.8)] md:w-[min(19vw,34vh)] md:max-w-[19rem]"
+                  className="pinned block w-[52vw] max-w-[17rem] rounded-print bg-white p-2.5 pb-9 shadow-[0_26px_40px_-18px_rgb(0_0_0/0.8)] md:w-[min(19vw,34vh)] md:max-w-[19rem]"
                   style={{ ["--tilt" as string]: `${TILTS[i % TILTS.length]}deg` }}
                 >
                   <span className="tape" aria-hidden="true" />

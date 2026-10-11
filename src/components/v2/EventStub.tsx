@@ -21,7 +21,7 @@ export default function EventStub({
   return (
     <Link
       href={`/events/${id}`}
-      className="group flex overflow-hidden rounded-[5px] border border-ink/15 bg-paper shadow-[var(--shadow-sheet)] transition-transform hover:-translate-y-0.5"
+      className="group flex overflow-hidden rounded-box border border-ink/15 bg-paper shadow-[var(--shadow-sheet)] transition-transform hover:-translate-y-0.5"
     >
       <span className="flex w-[4.25rem] shrink-0 flex-col items-center justify-center border-r-2 border-dashed border-ink/25 bg-tangerine py-3 text-white">
         <span className="font-display text-2xl font-extrabold leading-none">{day}</span>

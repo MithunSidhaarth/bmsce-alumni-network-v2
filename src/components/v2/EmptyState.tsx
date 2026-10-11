@@ -14,7 +14,7 @@ export default function EmptyState({
   children?: ReactNode;
 }) {
   return (
-    <div className="relative mx-auto mt-6 max-w-md -rotate-1 border border-dashed border-ink/30 bg-paper px-7 py-9 text-center">
+    <div className="relative mx-auto mt-6 max-w-md -rotate-1 rounded-box border border-dashed border-ink/30 bg-paper px-7 py-9 text-center">
       <span className="tape" aria-hidden="true" />
       <p className="hand text-[1.7rem] text-forest">{title}</p>
       <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink/70">{body}</p>

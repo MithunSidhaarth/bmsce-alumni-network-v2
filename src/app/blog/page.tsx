@@ -93,7 +93,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
 
         {lead && (
           <article className="mt-10 grid gap-8 border-b border-ink/15 pb-10 lg:grid-cols-[1.25fr_1fr] lg:items-center">
-            <Link href={`/blog/${lead.slug}`} className="group block overflow-hidden bg-forest">
+            <Link href={`/blog/${lead.slug}`} className="group block overflow-hidden rounded-box bg-forest">
               {lead.cover_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={lead.cover_url} alt="" className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
@@ -133,7 +133,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
               <li key={a.id} className="border-b border-ink/15 py-7">
                 <article>
                   {a.cover_url && (
-                    <Link href={`/blog/${a.slug}`} className="mb-4 block overflow-hidden">
+                    <Link href={`/blog/${a.slug}`} className="mb-4 block overflow-hidden rounded-box">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={a.cover_url} alt="" loading="lazy" className="aspect-[3/2] w-full object-cover" />
                     </Link>
@@ -150,7 +150,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
           </ul>
         )}
 
-        <section aria-labelledby="subscribe-title" className="mt-14 grid gap-8 bg-forest px-6 py-10 text-ivory md:grid-cols-2 md:px-12 md:py-14">
+        <section aria-labelledby="subscribe-title" className="mt-14 grid gap-8 rounded-box bg-forest px-6 py-10 text-ivory md:grid-cols-2 md:px-12 md:py-14">
           <div>
             <p className="label-mono text-lime">By email</p>
             <h2 id="subscribe-title" className="mt-3 font-serif text-[clamp(1.9rem,4vw,2.8rem)] font-normal leading-[1.02]">

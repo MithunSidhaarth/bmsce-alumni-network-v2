@@ -71,7 +71,7 @@ export default function FlightMap({ chapters, countries }: { chapters: MapChapte
           </p>
         </div>
 
-        <div className="map-frame relative mt-10 overflow-hidden rounded-md border border-ivory/15 bg-[#0b2d20]">
+        <div className="map-frame relative mt-10 overflow-hidden rounded-box border border-ivory/15 bg-[#0b2d20]">
           <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Map of routes from Bengaluru to ${away.length} chapters around the world`} className="block h-auto w-full">
             <defs>
               <pattern id="map-dots" width="20" height="20" patternUnits="userSpaceOnUse">

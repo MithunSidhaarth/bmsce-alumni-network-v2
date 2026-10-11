@@ -315,7 +315,7 @@ export default function Wall({
       </header>
 
       {shown.length === 0 ? (
-        <div className="mx-auto mt-16 max-w-md -rotate-2 bg-paper px-7 py-9 text-center shadow-[var(--shadow-lift)]">
+        <div className="mx-auto mt-16 max-w-md -rotate-2 rounded-box bg-paper px-7 py-9 text-center shadow-[var(--shadow-lift)]">
           <span className="pin" aria-hidden="true" />
           <p className="hand text-[1.9rem] text-forest">{cards.length === 0 ? "A bare wall" : "Nothing pinned under this"}</p>
           <p className="mt-2 text-sm text-ink/70">
@@ -360,7 +360,7 @@ export default function Wall({
                   )}
 
                   {v.shape === "print" && (
-                    <span className="block bg-white p-2.5 pb-3 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
+                    <span className="block rounded-print bg-white p-2.5 pb-3 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
                       {v.image && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -385,7 +385,7 @@ export default function Wall({
                   )}
 
                   {v.shape === "notice" && (
-                    <span className="block bg-paper px-5 pb-5 pt-7 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
+                    <span className="block rounded-print bg-paper px-5 pb-5 pt-7 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
                       <span className="stamp text-tangerine">{v.group === "notices" ? "Notice" : "From a member"}</span>
                       {v.title && <span className="mt-3 block font-display text-[1.45rem] font-bold leading-[1.05]">{v.title}</span>}
                       <span className="mt-2.5 line-clamp-6 whitespace-pre-line text-sm leading-relaxed text-ink/80">{v.text}</span>
@@ -456,7 +456,7 @@ export default function Wall({
         className="wall-dialog m-auto w-[min(94vw,62rem)] max-w-none bg-transparent p-0 backdrop:bg-ink/75"
       >
         {current && (
-          <article className="relative grid max-h-[88dvh] overflow-hidden bg-paper shadow-[var(--shadow-lift)] md:grid-cols-[1.1fr_1fr]" style={{ viewTransitionName: "notice-open" }}>
+          <article className="relative grid max-h-[88dvh] overflow-hidden rounded-box bg-paper shadow-[var(--shadow-lift)] md:grid-cols-[1.1fr_1fr]" style={{ viewTransitionName: "notice-open" }}>
             {current.image && (
               <div className="flex max-h-[42dvh] items-center justify-center bg-ink md:max-h-[88dvh]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

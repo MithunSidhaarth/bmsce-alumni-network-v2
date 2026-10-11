@@ -90,7 +90,7 @@ export default function WallTeaser({ photos }: { photos: TeaserPhoto[] }) {
                 aria-label="Open The Wall"
                 onPointerMove={tip}
                 onPointerLeave={settle}
-                className="relative block bg-white p-2 pb-7 shadow-[0_14px_22px_-12px_rgb(0_0_0/0.55)]"
+                className="relative block rounded-print bg-white p-2 pb-7 shadow-[0_14px_22px_-12px_rgb(0_0_0/0.55)]"
                 style={{ transform: `rotate(${TILTS[i % TILTS.length]}deg)` }}
               >
                 <span className="pin" style={{ ["--pin" as string]: PINS[i % PINS.length] }} aria-hidden="true" />

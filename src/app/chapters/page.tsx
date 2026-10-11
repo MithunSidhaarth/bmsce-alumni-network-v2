@@ -78,7 +78,7 @@ export default async function ChaptersPage() {
                       <TransitionLink
                         href={`/chapters/${c.slug}`}
                         vtName={`chapter-${c.slug}`}
-                        className="pinned group relative block bg-white p-2.5 pb-4 shadow-[var(--shadow-sheet)]"
+                        className="pinned group relative block rounded-print bg-white p-2.5 pb-4 shadow-[var(--shadow-sheet)]"
                         style={{ ["--tilt" as string]: `${((seeded(c.slug) - 0.5) * 3.2).toFixed(2)}deg` }}
                       >
                         <div className="relative aspect-[4/3] overflow-hidden bg-forest">

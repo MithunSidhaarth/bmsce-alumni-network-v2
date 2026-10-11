@@ -32,7 +32,7 @@ function Media({ media, polaroid }: { media: string[]; polaroid: boolean }) {
   if (media.length === 0) return null;
   if (polaroid) {
     return (
-      <div className="mb-4 bg-white p-2 pb-3 shadow-[0_1px_3px_rgb(19_26_21/0.18)]">
+      <div className="mb-4 rounded-print bg-white p-2 pb-3 shadow-[0_1px_3px_rgb(19_26_21/0.18)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={media[0]} alt="" loading="lazy" className="block h-auto max-h-[36rem] w-full object-contain" />
         {media.length > 1 && (
@@ -48,7 +48,7 @@ function Media({ media, polaroid }: { media: string[]; polaroid: boolean }) {
   }
   const cols = media.length === 1 ? "grid-cols-1" : "grid-cols-2";
   return (
-    <div className={`mt-4 grid gap-1.5 overflow-hidden rounded ${cols}`}>
+    <div className={`mt-4 grid gap-1.5 overflow-hidden rounded-lg ${cols}`}>
       {media.slice(0, 4).map((m, i) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -95,7 +95,10 @@ export default function PostCard({
     >
       {post.kind === "announcement" && <span className="tape tape-left" aria-hidden="true" />}
       {post.kind === "achievement" && (
-        <span className="absolute inset-y-0 left-0 w-1.5 rounded-l-[3px] bg-lime" aria-hidden="true" />
+        // Clipped to the card's corners, so the strip follows the curve.
+        <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]" aria-hidden="true">
+          <span className="absolute inset-y-0 left-0 w-1.5 bg-lime" />
+        </span>
       )}
       {post.is_pinned && <span className="pin" aria-hidden="true" />}
 

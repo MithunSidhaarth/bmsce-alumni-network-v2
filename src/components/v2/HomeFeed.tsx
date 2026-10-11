@@ -221,7 +221,7 @@ export default async function HomeFeed({
       {/* ---- Context column ---- */}
       <aside className="flex flex-col gap-8 lg:sticky lg:top-[calc(var(--topbar)+1.5rem)] lg:max-h-[calc(100vh-var(--topbar)-3rem)] lg:overflow-y-auto lg:pb-4 no-scrollbar">
         <section aria-labelledby="side-wall">
-          <Link href="/noticeboard" className="board group block overflow-hidden rounded-md px-5 pb-5 pt-4">
+          <Link href="/noticeboard" className="board group block overflow-hidden rounded-box px-5 pb-5 pt-4">
             <p id="side-wall" className="flex items-center justify-between font-display text-xl font-extrabold text-ivory">
               The Wall
               <Icon name="arrow" className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -235,7 +235,7 @@ export default async function HomeFeed({
                 return (
                   <div
                     key={c.id}
-                    className="relative w-1/3 bg-white p-1.5 pb-4 shadow-[0_6px_10px_-6px_rgb(0_0_0/0.5)]"
+                    className="relative w-1/3 rounded-print bg-white p-1.5 pb-4 shadow-[0_6px_10px_-6px_rgb(0_0_0/0.5)]"
                     style={{ transform: `rotate(${[-4, 3, -2][i]}deg)` }}
                   >
                     {img ? (

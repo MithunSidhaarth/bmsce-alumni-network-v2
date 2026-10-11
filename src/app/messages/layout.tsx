@@ -17,7 +17,7 @@ export default async function MessagesLayout({ children }: { children: ReactNode
 
   return (
     <main className="mx-auto flex h-[calc(100dvh-var(--topbar)-var(--tabbar))] max-w-[1180px] md:h-[calc(100dvh-var(--topbar))] md:px-6 md:py-5">
-      <div className="flex min-h-0 w-full overflow-hidden border-ink/12 bg-paper md:rounded-md md:border md:shadow-[var(--shadow-sheet)]">
+      <div className="flex min-h-0 w-full overflow-hidden border-ink/12 bg-paper md:rounded-box md:border md:shadow-[var(--shadow-sheet)]">
         <Inbox rows={(data ?? []) as InboxRow[]} meId={me.id} verified={verified} />
         {children}
       </div>

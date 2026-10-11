@@ -289,7 +289,7 @@ export default async function ChapterPage({
                     // eslint-disable-next-line @next/next/no-img-element
                     const img = <img src={p.src} alt={p.alt} loading="lazy" className="w-full" />;
                     return (
-                      <li key={p.key} className="mb-3 break-inside-avoid bg-white p-1.5 shadow-[var(--shadow-sheet)]">
+                      <li key={p.key} className="mb-3 break-inside-avoid rounded-print bg-white p-1.5 shadow-[var(--shadow-sheet)]">
                         {p.href ? <Link href={p.href}>{img}</Link> : img}
                       </li>
                     );

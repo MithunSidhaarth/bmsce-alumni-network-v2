@@ -69,7 +69,7 @@ export default function FactsDeck({ facts }: { facts: string[] }) {
           {facts.map((fact, i) => (
             <li
               key={i}
-              className="fact-card relative flex w-[78vw] max-w-[21rem] shrink-0 snap-start select-none flex-col border border-ink/12 px-6 pb-7 pt-8 shadow-[var(--shadow-sheet)]"
+              className="fact-card relative flex w-[78vw] max-w-[21rem] shrink-0 snap-start select-none flex-col overflow-hidden rounded-box border border-ink/12 px-6 pb-7 pt-8 shadow-[var(--shadow-sheet)]"
               style={{ background: NOTE[i % NOTE.length] }}
             >
               <span className="absolute left-0 right-0 top-0 h-2 bg-ink/[0.07]" aria-hidden="true" />
