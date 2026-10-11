@@ -6,6 +6,7 @@ import { setApplicationStatus } from "../../actions";
 import { safeUrl } from "@/lib/url";
 import type { ApplicationStatus } from "@/lib/types";
 import MemberPhoto from "@/components/MemberPhoto";
+import { said } from "@/lib/fail";
 
 export type ApplicantRow = {
   applicationId: string;
@@ -118,7 +119,7 @@ function ApplicantCard({ row }: { row: ApplicantRow }) {
       try {
         await setApplicationStatus(row.applicationId, status);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Could not update.");
+        setError(said(e) ?? "Could not update.");
       }
     });
   };

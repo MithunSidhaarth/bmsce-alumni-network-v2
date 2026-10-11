@@ -9,6 +9,7 @@ import { REACTIONS } from "@/lib/posts";
 import { motionOK } from "@/lib/motion";
 import type { ReactionKind } from "@/lib/types";
 import Icon from "./Icon";
+import { said } from "@/lib/fail";
 
 export default function PostActions({
   postId,
@@ -78,7 +79,7 @@ export default function PostActions({
       } catch (e) {
         setMine(before.mine);
         setCount(before.count);
-        setNote(e instanceof Error ? e.message : "Could not save your reaction.");
+        setNote(said(e) ?? "Could not save your reaction.");
       }
     });
   };
@@ -91,7 +92,7 @@ export default function PostActions({
         if (done) setNote(done);
         router.refresh();
       } catch (e) {
-        setNote(e instanceof Error ? e.message : "Something went wrong.");
+        setNote(said(e) ?? "Something went wrong.");
       }
     });
   };

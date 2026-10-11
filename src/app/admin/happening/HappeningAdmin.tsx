@@ -4,6 +4,7 @@ import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { addUpdate, deleteUpdate } from "./actions";
 import type { CampusUpdate } from "@/components/UpdateCard";
+import { said } from "@/lib/fail";
 
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
@@ -34,7 +35,7 @@ export default function HappeningAdmin({ items }: { items: CampusUpdate[] }) {
         form.reset();
         router.refresh();
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not save.");
+        setError(said(err) ?? "Could not save.");
       }
     });
   };
@@ -46,7 +47,7 @@ export default function HappeningAdmin({ items }: { items: CampusUpdate[] }) {
         await deleteUpdate(id);
         router.refresh();
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not delete.");
+        setError(said(err) ?? "Could not delete.");
       }
     });
   };

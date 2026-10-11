@@ -4,13 +4,14 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { rateLimit } from "@/lib/rateLimit";
 import type { Profile } from "@/lib/types";
+import { fail } from "@/lib/fail";
 
 async function currentProfile() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("You need to be signed in.");
+  if (!user) throw fail("You need to be signed in.");
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -18,7 +19,7 @@ async function currentProfile() {
     .eq("id", user.id)
     .single<Profile>();
 
-  if (!profile) throw new Error("Complete your profile first.");
+  if (!profile) throw fail("Complete your profile first.");
   return { supabase, user, profile };
 }
 
@@ -40,14 +41,14 @@ export async function becomeMentor(input: {
   const { supabase, profile } = await currentProfile();
 
   if (profile.user_type !== "alumni" || profile.verification_status !== "verified") {
-    throw new Error(
+    throw fail(
       "Only verified alumni can register as mentors."
     );
   }
 
   const max = input.maxMentees.trim() ? Number(input.maxMentees) : null;
   if (max !== null && (!Number.isFinite(max) || max < 1)) {
-    throw new Error("Number of mentees must be a positive number.");
+    throw fail("Number of mentees must be a positive number.");
   }
 
   const { error } = await supabase
@@ -62,7 +63,7 @@ export async function becomeMentor(input: {
     })
     .eq("id", profile.id);
 
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/careers/mentorship");
   revalidatePath("/careers/mentorship/requests");
   revalidatePath("/profile");
@@ -75,7 +76,7 @@ export async function stopBeingMentor() {
     .from("profiles")
     .update({ is_mentor: false })
     .eq("id", profile.id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/careers/mentorship");
   revalidatePath("/careers/mentorship/requests");
 }
@@ -85,12 +86,12 @@ export async function sendMentorshipRequest(mentorId: string, message: string) {
   const { supabase, profile } = await currentProfile();
 
   if (profile.verification_status !== "verified") {
-    throw new Error(
+    throw fail(
       "Your account needs to be verified before you can request mentorship."
     );
   }
   if (mentorId === profile.id) {
-    throw new Error("You can't request mentorship from yourself.");
+    throw fail("You can't request mentorship from yourself.");
   }
 
   // Cap mentorship requests per member (spam / abuse guard).
@@ -109,7 +110,7 @@ export async function sendMentorshipRequest(mentorId: string, message: string) {
     mentor.user_type !== "alumni" ||
     mentor.verification_status !== "verified"
   ) {
-    throw new Error("That mentor isn't available.");
+    throw fail("That mentor isn't available.");
   }
 
   // Don't allow duplicate open requests to the same mentor.
@@ -122,7 +123,7 @@ export async function sendMentorshipRequest(mentorId: string, message: string) {
     .maybeSingle();
 
   if (existing) {
-    throw new Error(
+    throw fail(
       existing.status === "accepted"
         ? "This mentor has already accepted you."
         : "You already have a pending request with this mentor."
@@ -135,7 +136,7 @@ export async function sendMentorshipRequest(mentorId: string, message: string) {
     message: message.trim() || null,
     status: "pending",
   });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
 
   revalidatePath("/careers/mentorship");
   revalidatePath("/careers/mentorship/requests");
@@ -154,9 +155,9 @@ export async function respondToRequest(
     .eq("id", requestId)
     .single();
 
-  if (!req) throw new Error("Request not found.");
+  if (!req) throw fail("Request not found.");
   if (req.mentor_id !== profile.id) {
-    throw new Error("Only the mentor can respond to this request.");
+    throw fail("Only the mentor can respond to this request.");
   }
 
   // Enforce the mentor's stated cap on concurrent mentees.
@@ -168,7 +169,7 @@ export async function respondToRequest(
       .eq("status", "accepted");
 
     if ((count ?? 0) >= profile.max_mentees) {
-      throw new Error(
+      throw fail(
         `You've reached your limit of ${profile.max_mentees} mentee(s). Decline or free up a spot first.`
       );
     }
@@ -179,7 +180,7 @@ export async function respondToRequest(
     .update({ status: decision })
     .eq("id", requestId);
 
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/careers/mentorship/requests");
   revalidatePath("/careers/mentorship");
 }

@@ -11,6 +11,7 @@ import { addNewsletter, deleteNewsletter } from "../actions";
 import { createClient } from "@/lib/supabase/client";
 import { safeUrl } from "@/lib/url";
 import type { Newsletter } from "@/lib/types";
+import { said } from "@/lib/fail";
 
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
@@ -93,7 +94,7 @@ export default function NewsletterAdmin({
         setOk(true);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Could not upload the newsletter."
+          said(err) ?? "Could not upload the newsletter."
         );
       }
     });
@@ -104,7 +105,7 @@ export default function NewsletterAdmin({
       try {
         await deleteNewsletter(id);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not delete.");
+        setError(said(err) ?? "Could not delete.");
       }
     });
   };

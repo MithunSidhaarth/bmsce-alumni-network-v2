@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { motionOK } from "@/lib/motion";
+import { pic } from "@/lib/pic";
 import Icon from "../Icon";
 
 export type Print = { src: string; stamp: string; code: string };
@@ -224,7 +225,7 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
                   className="block rounded-print bg-white p-[4%] pb-[14%] shadow-[0_24px_40px_-18px_rgb(19_26_21/0.65)]"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.src} alt="" draggable={false} loading={i < 4 ? "eager" : "lazy"} className="pointer-events-none aspect-square w-full object-cover" />
+                  <img {...pic(p.src, "(min-width: 1024px) 15rem, 40vw")} alt="" draggable={false} loading={i < 4 ? "eager" : "lazy"} className="pointer-events-none aspect-square w-full object-cover" />
                   <span className="label-mono absolute bottom-[4%] left-[6%] text-ink/55">{p.stamp}</span>
                 </Link>
               </div>

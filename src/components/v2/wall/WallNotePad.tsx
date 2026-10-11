@@ -6,6 +6,7 @@ import { pinNote } from "@/app/posts/actions";
 import { Draggable, gsap } from "@/lib/gsap";
 import { motionOK } from "@/lib/motion";
 import Icon from "../Icon";
+import { said } from "@/lib/fail";
 
 const COLOURS = ["#fff3a8", "#ffd9c7", "#e2dbff", "#e3f5ab"];
 const MAX = 240;
@@ -90,7 +91,7 @@ export default function WallNotePad({ isAdmin }: { isAdmin: boolean }) {
         setMode("sent");
         if (result === "published") router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "That note could not be pinned.");
+        setError(said(e) ?? "That note could not be pinned.");
       }
     });
   };

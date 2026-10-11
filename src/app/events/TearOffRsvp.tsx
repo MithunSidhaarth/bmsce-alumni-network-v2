@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toggleRsvp } from "./actions";
+import { said } from "@/lib/fail";
 
 const TABS = 8;
 
@@ -48,7 +49,7 @@ export default function TearOffRsvp({
       } catch (e) {
         setGoing(initialGoing);
         setN(count);
-        setError(e instanceof Error ? e.message : "That RSVP did not go through.");
+        setError(said(e) ?? "That RSVP did not go through.");
       }
     });
   };

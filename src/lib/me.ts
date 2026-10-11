@@ -2,6 +2,7 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/types";
+import { fail } from "@/lib/fail";
 
 export type Me = Pick<
   Profile,
@@ -55,17 +56,17 @@ export async function requireAdmin() {
 /** For server actions: throws instead of redirecting. */
 export async function actionMember() {
   const { supabase, user, me } = await getMe();
-  if (!user || !me) throw new Error("You need to be signed in.");
-  if (me.suspended_at) throw new Error("This account is suspended.");
+  if (!user || !me) throw fail("You need to be signed in.");
+  if (me.suspended_at) throw fail("This account is suspended.");
   const isAdmin = me.role === "admin";
   if (me.verification_status !== "verified" && !isAdmin) {
-    throw new Error("Your account needs to be verified first.");
+    throw fail("Your account needs to be verified first.");
   }
   return { supabase, user, me, isAdmin };
 }
 
 export async function actionAdmin() {
   const ctx = await actionMember();
-  if (!ctx.isAdmin) throw new Error("Not authorized.");
+  if (!ctx.isAdmin) throw fail("Not authorized.");
   return ctx;
 }

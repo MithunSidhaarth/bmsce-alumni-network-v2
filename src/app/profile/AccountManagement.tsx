@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { said } from "@/lib/fail";
 
 export default function AccountManagement({ userId }: { userId: string }) {
   const router = useRouter();
@@ -56,7 +57,7 @@ export default function AccountManagement({ userId }: { userId: string }) {
       a.click();
       URL.revokeObjectURL(url);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not export.");
+      setError(said(e) ?? "Could not export.");
     } finally {
       setExporting(false);
     }
@@ -73,7 +74,7 @@ export default function AccountManagement({ userId }: { userId: string }) {
         router.push("/");
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Could not delete account.");
+        setError(said(e) ?? "Could not delete account.");
       }
     });
   };

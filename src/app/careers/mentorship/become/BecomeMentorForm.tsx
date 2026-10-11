@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { becomeMentor, stopBeingMentor } from "../actions";
 import { MENTOR_EXPERTISE } from "@/lib/constants";
 import type { Profile } from "@/lib/types";
+import { said } from "@/lib/fail";
 
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
@@ -47,7 +48,7 @@ export default function BecomeMentorForm({ profile }: { profile: Profile }) {
         router.push("/careers/mentorship");
         router.refresh();
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not save.");
+        setError(said(err) ?? "Could not save.");
       }
     });
   };
@@ -60,7 +61,7 @@ export default function BecomeMentorForm({ profile }: { profile: Profile }) {
         router.push("/careers/mentorship");
         router.refresh();
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not withdraw.");
+        setError(said(err) ?? "Could not withdraw.");
       }
     });
   };

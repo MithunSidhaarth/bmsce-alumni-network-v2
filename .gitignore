@@ -24,3 +24,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# WebP copies of the archive photos, made by scripts/make-webp.mjs
+/public/instagram/w/

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { rateLimit } from "@/lib/rateLimit";
+import { fail } from "@/lib/fail";
 
 type TargetType =
   | "posting"
@@ -22,7 +23,7 @@ export async function reportContent(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("Please sign in to report.");
+  if (!user) throw fail("Please sign in to report.");
 
   await rateLimit(supabase, `report:${user.id}`, 20, 3600);
 
@@ -33,7 +34,7 @@ export async function reportContent(
     reason: reason.trim() || null,
     status: "open",
   });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/reports");
 }
 
@@ -42,13 +43,13 @@ async function requireAdmin() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("Not authenticated.");
+  if (!user) throw fail("Not authenticated.");
   const { data: me } = await supabase
     .from("profiles")
     .select("role")
     .eq("id", user.id)
     .single();
-  if (me?.role !== "admin") throw new Error("Not authorized.");
+  if (me?.role !== "admin") throw fail("Not authorized.");
   return supabase;
 }
 
@@ -62,6 +63,6 @@ export async function setReportStatus(
     .from("reports")
     .update({ status, resolved_at: new Date().toISOString() })
     .eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/reports");
 }

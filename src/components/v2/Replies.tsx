@@ -11,6 +11,7 @@ import Avatar from "./Avatar";
 import Icon from "./Icon";
 import MentionTextarea, { mentionsIn } from "./MentionTextarea";
 import RichText from "./RichText";
+import { said } from "@/lib/fail";
 
 export type Reply = {
   id: string;
@@ -49,7 +50,7 @@ export default function Replies({
         after?.();
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Something went wrong.");
+        setError(said(e) ?? "Something went wrong.");
       }
     });
 

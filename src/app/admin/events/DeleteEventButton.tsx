@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteEvent } from "./actions";
+import { said } from "@/lib/fail";
 
 export default function DeleteEventButton({
   id,
@@ -23,7 +24,7 @@ export default function DeleteEventButton({
         await deleteEvent(id);
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Could not delete.");
+        setError(said(e) ?? "Could not delete.");
       }
     });
   };

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { logAdminAction } from "@/lib/audit";
 import type { VerificationStatus } from "@/lib/types";
+import { fail } from "@/lib/fail";
 
 // Maps a verification outcome to its audit-log action label.
 const STATUS_ACTION: Record<VerificationStatus, string> = {
@@ -19,7 +20,7 @@ async function requireAdmin() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("Not authenticated");
+  if (!user) throw fail("Not authenticated");
 
   const { data: me } = await supabase
     .from("profiles")
@@ -27,7 +28,7 @@ async function requireAdmin() {
     .eq("id", user.id)
     .single();
 
-  if (me?.role !== "admin") throw new Error("Not authorized");
+  if (me?.role !== "admin") throw fail("Not authorized");
   return supabase;
 }
 
@@ -41,7 +42,7 @@ async function setStatus(
     .from("profiles")
     .update({ verification_status: status, rejection_reason: reason })
     .eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   await logAdminAction(supabase, STATUS_ACTION[status], id);
   revalidatePath("/admin");
   revalidatePath("/directory");
@@ -66,7 +67,7 @@ export async function promoteToAdmin(id: string) {
     .from("profiles")
     .update({ role: "admin" })
     .eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   await logAdminAction(supabase, "member.promote_admin", id);
   revalidatePath("/admin");
 }
@@ -80,7 +81,7 @@ export async function setCareersEnabled(enabled: boolean) {
     .from("site_settings")
     .update({ careers_enabled: enabled, updated_at: new Date().toISOString() })
     .eq("id", 1);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   await logAdminAction(
     supabase,
     "careers.toggle",
@@ -118,7 +119,7 @@ export async function addSocialPost(input: {
     posted_at: new Date().toISOString(),
     added_by: user?.id ?? null,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/social");
   revalidatePath("/events");
 }
@@ -126,7 +127,7 @@ export async function addSocialPost(input: {
 export async function deleteSocialPost(id: string) {
   const supabase = await requireAdmin();
   const { error } = await supabase.from("social_posts").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/social");
   revalidatePath("/events");
 }
@@ -146,8 +147,8 @@ export async function addNewsletter(input: {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!Number.isInteger(input.year)) throw new Error("A valid year is required.");
-  if (!input.pdfUrl.trim()) throw new Error("A PDF is required.");
+  if (!Number.isInteger(input.year)) throw fail("A valid year is required.");
+  if (!input.pdfUrl.trim()) throw fail("A PDF is required.");
 
   const { error } = await supabase.from("newsletters").insert({
     year: input.year,
@@ -155,7 +156,7 @@ export async function addNewsletter(input: {
     pdf_url: input.pdfUrl.trim(),
     uploaded_by: user?.id ?? null,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/newsletters");
   revalidatePath("/newsletter");
 }
@@ -163,7 +164,7 @@ export async function addNewsletter(input: {
 export async function deleteNewsletter(id: string) {
   const supabase = await requireAdmin();
   const { error } = await supabase.from("newsletters").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/newsletters");
   revalidatePath("/newsletter");
 }

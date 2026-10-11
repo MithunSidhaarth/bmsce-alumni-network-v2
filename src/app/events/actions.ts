@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { rateLimit } from "@/lib/rateLimit";
+import { fail } from "@/lib/fail";
 
 /** Toggle the current verified member's RSVP ("going") for an event. */
 export async function toggleRsvp(eventId: string) {
@@ -10,7 +11,7 @@ export async function toggleRsvp(eventId: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("Please sign in to RSVP.");
+  if (!user) throw fail("Please sign in to RSVP.");
 
   const { data: me } = await supabase
     .from("profiles")
@@ -18,7 +19,7 @@ export async function toggleRsvp(eventId: string) {
     .eq("id", user.id)
     .single();
   if (me?.verification_status !== "verified") {
-    throw new Error("Your account needs to be verified to RSVP.");
+    throw fail("Your account needs to be verified to RSVP.");
   }
 
   await rateLimit(supabase, `rsvp:${user.id}`, 30, 3600);
@@ -36,12 +37,12 @@ export async function toggleRsvp(eventId: string) {
       .delete()
       .eq("event_id", eventId)
       .eq("profile_id", user.id);
-    if (error) throw new Error(error.message);
+    if (error) throw fail(error.message);
   } else {
     const { error } = await supabase
       .from("event_rsvps")
       .insert({ event_id: eventId, profile_id: user.id, status: "going" });
-    if (error) throw new Error(error.message);
+    if (error) throw fail(error.message);
   }
   revalidatePath("/events");
 }

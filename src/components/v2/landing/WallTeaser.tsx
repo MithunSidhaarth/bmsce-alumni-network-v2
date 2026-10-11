@@ -4,6 +4,7 @@ import { useEffect, useRef, type PointerEvent } from "react";
 import Link from "next/link";
 import { gsap } from "@/lib/gsap";
 import { motionOK } from "@/lib/motion";
+import { pic } from "@/lib/pic";
 import Icon from "../Icon";
 
 export type TeaserPhoto = { src: string; ratio: number; stamp: string; code: string };
@@ -95,7 +96,7 @@ export default function WallTeaser({ photos }: { photos: TeaserPhoto[] }) {
               >
                 <span className="pin" style={{ ["--pin" as string]: PINS[i % PINS.length] }} aria-hidden="true" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.src} alt="" loading="lazy" style={{ aspectRatio: String(p.ratio) }} className="block h-auto w-full" />
+                <img {...pic(p.src, "(min-width: 640px) 16rem, 44vw")} alt="" loading="lazy" style={{ aspectRatio: String(p.ratio) }} className="block h-auto w-full" />
                 <span className="label-mono absolute bottom-2 left-2 text-ink/60">{p.stamp}</span>
               </Link>
             </li>

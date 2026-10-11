@@ -10,6 +10,7 @@ import {
   resetMemberToPending,
   promoteToAdmin,
 } from "./actions";
+import { said } from "@/lib/fail";
 
 type Tab = "pending" | "rejected" | "verified";
 
@@ -73,7 +74,7 @@ function MemberCard({
       try {
         await fn();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Something went wrong.");
+        setError(said(e) ?? "Something went wrong.");
       }
     });
   };

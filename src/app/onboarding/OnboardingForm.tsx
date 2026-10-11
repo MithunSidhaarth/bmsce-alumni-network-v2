@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { BRANCHES, COUNTRIES, INDIA_STATES, INDUSTRIES } from "@/lib/constants";
 import type { Profile, UserType, EducationEntry } from "@/lib/types";
+import { said } from "@/lib/fail";
 
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
@@ -298,7 +299,7 @@ export default function OnboardingForm({
       router.refresh();
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Could not save. Please try again."
+        said(err) ?? "Could not save. Please try again."
       );
       setSaving(false);
     }

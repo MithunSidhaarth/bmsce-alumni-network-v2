@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { joinChapter, leaveChapter, removeMember, reviewMember } from "@/app/chapters/actions";
+import { said } from "@/lib/fail";
 
 /** Join, request, leave: the membership control in a chapter's header. */
 export default function ChapterControls({
@@ -34,7 +35,7 @@ export default function ChapterControls({
         await fn();
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Something went wrong.");
+        setError(said(e) ?? "Something went wrong.");
       }
     });
 
@@ -109,7 +110,7 @@ export function MemberReview({
         await fn();
         router.refresh();
       } catch (e) {
-        window.alert(e instanceof Error ? e.message : "Something went wrong.");
+        window.alert(said(e) ?? "Something went wrong.");
       }
     });
 

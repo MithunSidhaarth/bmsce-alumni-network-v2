@@ -9,6 +9,7 @@ import { FORUM_TAGS } from "@/lib/posts";
 import { fetchLinkPreview, firstUrl } from "@/lib/linkPreview";
 import { dispatchPush } from "@/lib/push";
 import type { PostKind, ReactionKind } from "@/lib/types";
+import { fail } from "@/lib/fail";
 
 // Every write here is also enforced in Postgres (RLS + the posts_guard
 // trigger). These checks exist to give people a clear message first.
@@ -47,10 +48,10 @@ export async function createPost(input: {
   const kind = KINDS.includes(input.kind) ? input.kind : "post";
   const title = (input.title ?? "").trim();
   const body = input.body.trim();
-  if (!body) throw new Error("Write something first.");
-  if (body.length > 10000) throw new Error("That post is too long.");
-  if (kind === "discussion" && !title) throw new Error("A discussion needs a title.");
-  if (title.length > 200) throw new Error("Keep the title under 200 characters.");
+  if (!body) throw fail("Write something first.");
+  if (body.length > 10000) throw fail("That post is too long.");
+  if (kind === "discussion" && !title) throw fail("A discussion needs a title.");
+  if (title.length > 200) throw fail("Keep the title under 200 characters.");
 
   const tags = (input.tags ?? []).filter((t) => (FORUM_TAGS as readonly string[]).includes(t)).slice(0, 3);
   // Only accept photos that live in this member's own storage folder.
@@ -58,9 +59,9 @@ export async function createPost(input: {
   const media = (input.media ?? []).filter((u) => u.startsWith(base)).slice(0, 6);
 
   const poll = (input.poll ?? []).map((o) => o.trim()).filter(Boolean);
-  if (input.poll && (poll.length < 2 || poll.length > 4)) throw new Error("A poll needs two to four options.");
-  if (poll.some((o) => o.length > 80)) throw new Error("Keep each poll option under 80 characters.");
-  if (new Set(poll.map((o) => o.toLowerCase())).size !== poll.length) throw new Error("Two poll options are the same.");
+  if (input.poll && (poll.length < 2 || poll.length > 4)) throw fail("A poll needs two to four options.");
+  if (poll.some((o) => o.length > 80)) throw fail("Keep each poll option under 80 characters.");
+  if (new Set(poll.map((o) => o.toLowerCase())).size !== poll.length) throw fail("Two poll options are the same.");
 
   await rateLimit(supabase, `post:${user.id}`, 15, 3600);
 
@@ -86,7 +87,7 @@ export async function createPost(input: {
     })
     .select("id")
     .single();
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   // Photo drop: a photograph shared on an event's page is offered to The Wall
   // (an admin approves it). If today's suggestions are used up, the post
   // still stands; it just is not offered.
@@ -101,7 +102,7 @@ export async function createPost(input: {
 export async function deletePost(postId: string) {
   const { supabase } = await actionMember();
   const { error } = await supabase.from("posts").delete().eq("id", postId);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   refresh(postId);
 }
 
@@ -109,7 +110,7 @@ export async function deletePost(postId: string) {
 export async function setPinned(postId: string, pinned: boolean) {
   const { supabase, isAdmin } = await actionMember();
   const { error } = await supabase.from("posts").update({ is_pinned: pinned }).eq("id", postId);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   if (isAdmin) await logAdminAction(supabase, pinned ? "post.pin" : "post.unpin", postId);
   refresh(postId);
 }
@@ -117,7 +118,7 @@ export async function setPinned(postId: string, pinned: boolean) {
 export async function setHidden(postId: string, hidden: boolean) {
   const { supabase, isAdmin } = await actionMember();
   const { error } = await supabase.from("posts").update({ is_hidden: hidden }).eq("id", postId);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   if (isAdmin) await logAdminAction(supabase, hidden ? "post.hide" : "post.unhide", postId);
   refresh(postId);
 }
@@ -127,10 +128,10 @@ export async function react(postId: string, kind: ReactionKind | null) {
   const { supabase, user } = await actionMember();
   if (kind === null) {
     const { error } = await supabase.from("post_reactions").delete().eq("post_id", postId).eq("user_id", user.id);
-    if (error) throw new Error(error.message);
+    if (error) throw fail(error.message);
     return;
   }
-  if (!REACTION_KINDS.includes(kind)) throw new Error("Unknown reaction.");
+  if (!REACTION_KINDS.includes(kind)) throw fail("Unknown reaction.");
   await rateLimit(supabase, `react:${user.id}`, 200, 3600);
   const { data: existing } = await supabase
     .from("post_reactions")
@@ -141,19 +142,19 @@ export async function react(postId: string, kind: ReactionKind | null) {
   const { error } = existing
     ? await supabase.from("post_reactions").update({ kind }).eq("post_id", postId).eq("user_id", user.id)
     : await supabase.from("post_reactions").insert({ post_id: postId, user_id: user.id, kind });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
 }
 
 export async function addComment(postId: string, body: string, parentId?: string | null, mentions?: { id: string }[]) {
   const { supabase, user } = await actionMember();
   const b = body.trim();
-  if (!b) throw new Error("Write a reply first.");
-  if (b.length > 5000) throw new Error("That reply is too long.");
+  if (!b) throw fail("Write a reply first.");
+  if (b.length > 5000) throw fail("That reply is too long.");
   await rateLimit(supabase, `comment:${user.id}`, 40, 3600);
   const { error } = await supabase
     .from("post_comments")
     .insert({ post_id: postId, author_id: user.id, body: b, parent_id: parentId ?? null, mentions: mentionIds(mentions) });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   after(() => dispatchPush());
   refresh(postId);
 }
@@ -161,7 +162,7 @@ export async function addComment(postId: string, body: string, parentId?: string
 export async function deleteComment(commentId: string, postId: string) {
   const { supabase } = await actionMember();
   const { error } = await supabase.from("post_comments").delete().eq("id", commentId);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   refresh(postId);
 }
 
@@ -176,7 +177,7 @@ export async function toggleCommentLike(commentId: string, postId: string) {
   const { error } = existing
     ? await supabase.from("comment_reactions").delete().eq("comment_id", commentId).eq("user_id", user.id)
     : await supabase.from("comment_reactions").insert({ comment_id: commentId, user_id: user.id });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath(`/community/${postId}`);
 }
 
@@ -186,25 +187,25 @@ export async function setFollow(postId: string, follow: boolean) {
   const { error } = follow
     ? await supabase.from("post_follows").upsert({ post_id: postId, user_id: user.id })
     : await supabase.from("post_follows").delete().eq("post_id", postId).eq("user_id", user.id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath(`/community/${postId}`);
 }
 
 /** Vote in a poll, change the vote, or (with null) take it back. Returns the new totals. */
 export async function votePoll(postId: string, option: number | null): Promise<number[]> {
   const { supabase, user } = await actionMember();
-  if (!UUID.test(postId)) throw new Error("Unknown poll.");
+  if (!UUID.test(postId)) throw fail("Unknown poll.");
   await rateLimit(supabase, `vote:${user.id}`, 120, 3600);
   if (option === null) {
     const { error } = await supabase.from("poll_votes").delete().eq("post_id", postId).eq("user_id", user.id);
-    if (error) throw new Error(error.message);
+    if (error) throw fail(error.message);
   } else {
-    if (!Number.isInteger(option) || option < 0 || option > 3) throw new Error("Unknown option.");
+    if (!Number.isInteger(option) || option < 0 || option > 3) throw fail("Unknown option.");
     // The database checks that the post has a poll and that the option exists.
     const { error } = await supabase
       .from("poll_votes")
       .upsert({ post_id: postId, user_id: user.id, option_index: option }, { onConflict: "post_id,user_id" });
-    if (error) throw new Error("That vote could not be counted.");
+    if (error) throw fail("That vote could not be counted.");
   }
   const { data } = await supabase.from("posts").select("poll_counts").eq("id", postId).maybeSingle();
   return (data?.poll_counts as number[] | null) ?? [];
@@ -242,8 +243,8 @@ export async function searchMembers(q: string): Promise<{ id: string; name: stri
 export async function pinNote(text: string): Promise<"published" | "pending"> {
   const { supabase, user, isAdmin } = await actionMember();
   const body = text.trim();
-  if (body.length < 3) throw new Error("Write a few words first.");
-  if (body.length > 240) throw new Error("Keep a note under 240 characters.");
+  if (body.length < 3) throw fail("Write a few words first.");
+  if (body.length > 240) throw fail("Keep a note under 240 characters.");
   await rateLimit(supabase, `post:${user.id}`, 15, 3600);
 
   const { data, error } = await supabase
@@ -251,7 +252,7 @@ export async function pinNote(text: string): Promise<"published" | "pending"> {
     .insert({ author_id: user.id, kind: "post", body })
     .select("id")
     .single();
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
 
   if (isAdmin) {
     const { error: pinError } = await supabase
@@ -259,7 +260,7 @@ export async function pinNote(text: string): Promise<"published" | "pending"> {
       .upsert({ source: "post", post_id: data.id, origin: "admin", status: "published", created_by: user.id }, { onConflict: "post_id" });
     if (pinError) {
       await supabase.from("posts").delete().eq("id", data.id);
-      throw new Error(pinError.message);
+      throw fail(pinError.message);
     }
     refresh(data.id);
     return "published";
@@ -268,7 +269,7 @@ export async function pinNote(text: string): Promise<"published" | "pending"> {
   if (suggestError) {
     // e.g. the daily suggestion limit: take the note back rather than leave a stray post.
     await supabase.from("posts").delete().eq("id", data.id);
-    throw new Error(suggestError.message);
+    throw fail(suggestError.message);
   }
   refresh(data.id);
   return status === "published" ? "published" : "pending";
@@ -278,6 +279,6 @@ export async function pinNote(text: string): Promise<"published" | "pending"> {
 export async function suggestForWall(postId: string) {
   const { supabase } = await actionMember();
   const { data, error } = await supabase.rpc("suggest_for_noticeboard", { p_post: postId });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   return data as string;
 }

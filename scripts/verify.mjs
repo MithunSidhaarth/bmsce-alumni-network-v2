@@ -240,6 +240,103 @@ try {
   check("the emailed token unsubscribes", (await anon.rpc("newsletter_unsubscribe", { p_token: sub.data?.unsubscribe_token })).data === true);
   check("a non-admin cannot claim a digest", Boolean((await alum.client.rpc("digest_claim", { p_secret: null, p_digest: null })).error));
   await admin.client.from("newsletter_subscribers").delete().eq("id", sub.data?.id);
+
+  // The newer features, in a block of their own so names cannot clash with the checks above.
+  {
+  console.log("\nAsks, offers, polls and mentions");
+  const adminName = (await admin.client.from("profiles").select("full_name").eq("id", admin.id).single()).data.full_name;
+  const ask = await alum.client
+    .from("posts")
+    .insert({
+      author_id: alum.id,
+      kind: "ask",
+      body: `[verify] Anyone hiring? @${adminName}`,
+      poll_options: ["Yes", "No"],
+      poll_counts: [99, 99],
+      mentions: [{ id: admin.id }, { id: student.id }],
+    })
+    .select("id, kind, poll_counts, mentions")
+    .single();
+  if (ask.data) made.posts.push(ask.data.id);
+  const askId = ask.data?.id;
+  check("a member can post an ask", ask.data?.kind === "ask", ask.error?.message);
+  check("poll totals start at zero whatever the browser sends", JSON.stringify(ask.data?.poll_counts) === "[0,0]");
+  check("only people actually named in the text are kept as mentions", ask.data?.mentions?.length === 1 && ask.data.mentions[0].id === admin.id && ask.data.mentions[0].name === adminName);
+  check("a poll with one option is refused", Boolean((await alum.client.from("posts").insert({ author_id: alum.id, body: "[verify] bad poll", poll_options: ["only"] })).error));
+  const counts = async () => JSON.stringify((await admin.client.from("posts").select("poll_counts").eq("id", askId).single()).data?.poll_counts);
+  await alum.client.from("poll_votes").upsert({ post_id: askId, user_id: alum.id, option_index: 1 });
+  check("a vote is counted on the post", (await counts()) === "[0,1]");
+  check("a vote for an option that does not exist is refused", Boolean((await student.client.from("poll_votes").upsert({ post_id: askId, user_id: student.id, option_index: 5 })).error));
+  check("nobody can vote as someone else", Boolean((await student.client.from("poll_votes").upsert({ post_id: askId, user_id: admin.id, option_index: 0 })).error));
+  await student.client.from("poll_votes").upsert({ post_id: askId, user_id: student.id, option_index: 0 });
+  await student.client.from("poll_votes").upsert({ post_id: askId, user_id: student.id, option_index: 1 });
+  check("changing a vote moves it rather than adding one", (await counts()) === "[0,2]");
+  const seen = await student.client.from("poll_votes").select("user_id").eq("post_id", askId);
+  check("a member can read only their own vote", (seen.data ?? []).length === 1 && seen.data[0].user_id === student.id);
+  await alum.client.from("posts").update({ poll_counts: [50, 50], poll_options: ["Rigged", "No"] }).eq("id", askId);
+  const pollAfter = await admin.client.from("posts").select("poll_counts, poll_options").eq("id", askId).single();
+  check("the author cannot rewrite a poll or its totals", JSON.stringify(pollAfter.data?.poll_counts) === "[0,2]" && pollAfter.data?.poll_options?.[0] === "Yes");
+  await sleep(400);
+  const told = await admin.client.from("notifications").select("type, title").eq("link", `/community/${askId}`);
+  check("the member who was mentioned is notified", (told.data ?? []).some((n) => n.type === "mention"));
+  check("the member who was not named is not", ((await student.client.from("notifications").select("id").eq("link", `/community/${askId}`)).data ?? []).length === 0);
+
+  console.log("\nPeople you may know");
+  const people = await alum.client.rpc("people_you_may_know", { p_limit: 6 });
+  check("suggestions come with a reason and never include the caller", !people.error && (people.data ?? []).every((p) => p.id !== alum.id && p.reasons.length > 0), people.error?.message);
+  check("suggestions need a signed-in member", blocked(await anon.rpc("people_you_may_know", { p_limit: 3 })));
+
+  console.log("\nPush notifications");
+  const endpoint = `https://fcm.googleapis.com/fcm/send/verify-${Date.now()}`;
+  const device = await alum.client.rpc("push_subscribe", { p_endpoint: endpoint, p_p256dh: "B".repeat(87), p_auth: "a".repeat(22) });
+  check("a device can be registered for push", !device.error, device.error?.message);
+  check("a member cannot see anyone else's devices", ((await student.client.from("push_subscriptions").select("endpoint").eq("endpoint", endpoint)).data ?? []).length === 0);
+  check("the outbox cannot be collected without the server secret", Boolean((await alum.client.rpc("push_claim", { p_secret: "x".repeat(40), p_limit: 5 })).error));
+  check("nor can devices be removed without it", Boolean((await alum.client.rpc("push_prune", { p_secret: "x".repeat(40), p_endpoints: [endpoint] })).error));
+  await alum.client.rpc("push_unsubscribe", { p_endpoint: endpoint });
+  check("a member can remove their own device", ((await alum.client.from("push_subscriptions").select("endpoint").eq("endpoint", endpoint)).data ?? []).length === 0);
+
+  console.log("\nLive channels (typing, who is online)");
+  const join = (client, topic) =>
+    new Promise((resolve) => {
+      const channel = client.channel(topic, { config: { private: true } });
+      const timer = setTimeout(() => resolve("TIMED_OUT"), 9000);
+      channel.subscribe((status) => {
+        if (status === "SUBSCRIBED" || status === "CHANNEL_ERROR") {
+          clearTimeout(timer);
+          client.removeChannel(channel);
+          resolve(status);
+        }
+      });
+    });
+  // The conversation this run already made is between the alum and the
+  // student, so the admin is the outsider. (Starting another one here would
+  // leave a thread behind and change the privacy check above on the next run.)
+  await Promise.all([admin, alum, student].map((u) => u.client.realtime.setAuth()));
+  check("someone in a conversation can join its live channel", (await join(alum.client, `dm:${tid}`)) === "SUBSCRIBED");
+  check("someone outside the conversation is refused", (await join(admin.client, `dm:${tid}`)) === "CHANNEL_ERROR");
+  check("a verified member can join the online room", (await join(alum.client, "online")) === "SUBSCRIBED");
+  check("a visitor who is not signed in cannot", (await join(anon, "online")) === "CHANNEL_ERROR");
+
+  console.log("\nBuilt-in logic");
+  const { code39, decode39 } = await import("../src/lib/code39.ts");
+  check("an ID card barcode reads back as the number it carries", decode39(code39("1BM19CS001").bars) === "1BM19CS001" && decode39(code39("bms-8cd785e5").bars) === "BMS-8CD785E5");
+  const preview = await import("../src/lib/linkPreview.ts");
+  const unsafe = ["127.0.0.1", "10.0.0.8", "169.254.169.254", "192.168.1.1", "172.20.0.1", "100.64.0.1", "0.0.0.0", "::1", "fd00::1", "fe80::1", "::ffff:10.0.0.1", "not-an-ip"];
+  check(
+    "private and local addresses are never fetched for a link card",
+    unsafe.every((ip) => preview.isPrivateAddress(ip)) && !preview.isPrivateAddress("93.184.216.34") && !preview.isPrivateAddress("2606:2800:220:1:248:1893:25c8:1946")
+  );
+  const refused = await Promise.all(
+    ["http://example.com/", "https://127.0.0.1/", "https://localhost/", "https://user:pw@example.com/", "https://example.com:8443/", "ftp://example.com/x", "https://intranet/"].map((u) => preview.fetchLinkPreview(u))
+  );
+  check("unsafe links get no card (wrong scheme, bare address, credentials, odd port)", refused.every((r) => r === null));
+  check(
+    "the first link in a post is found and a page title is read",
+    preview.firstUrl("see https://example.com/a?b=1, thanks") === "https://example.com/a?b=1" &&
+      preview.parsePreview('<head><meta property="og:title" content="A &amp; B"><meta name="description" content="d"></head>', "https://e.com/")?.title === "A & B"
+  );
+  }
 } finally {
   // Clean up everything this run created.
   for (const id of made.posts) await admin.client.from("posts").delete().eq("id", id);

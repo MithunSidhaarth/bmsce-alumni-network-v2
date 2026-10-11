@@ -11,6 +11,7 @@ import {
   MEDIUM_QUALITY,
 } from "@/lib/resizeImage";
 import type { GalleryPhoto } from "@/lib/types";
+import { said } from "@/lib/fail";
 
 // Caps how many files upload at once so a huge batch doesn't hammer the
 // browser or Supabase's API simultaneously — comfortably handles hundreds
@@ -108,7 +109,7 @@ export default function GalleryAdmin({
       } catch (err) {
         setFailed((cur) => [
           ...cur,
-          `${file.name}: ${err instanceof Error ? err.message : "upload failed"}`,
+          `${file.name}: ${said(err) ?? "upload failed"}`,
         ]);
       } finally {
         setDone((n) => n + 1);

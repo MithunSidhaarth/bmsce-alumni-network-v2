@@ -5,6 +5,7 @@ import Link from "next/link";
 import Reveal from "./Reveal";
 import { sendMentorshipRequest } from "@/app/careers/mentorship/actions";
 import MemberPhoto from "@/components/MemberPhoto";
+import { said } from "@/lib/fail";
 
 export type MentorCard = {
   id: string;
@@ -107,7 +108,7 @@ function MentorCardView({
         setSent(true);
         setOpen(false);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Could not send request.");
+        setError(said(e) ?? "Could not send request.");
       }
     });
   };

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { fail } from "@/lib/fail";
 
 // Server-side admin gate. RLS + storage policies also enforce this, but we
 // re-check here so a non-admin call fails fast and clearly.
@@ -10,7 +11,7 @@ async function requireAdmin() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("Not authenticated");
+  if (!user) throw fail("Not authenticated");
 
   const { data: me } = await supabase
     .from("profiles")
@@ -18,7 +19,7 @@ async function requireAdmin() {
     .eq("id", user.id)
     .single();
 
-  if (me?.role !== "admin") throw new Error("Not authorized");
+  if (me?.role !== "admin") throw fail("Not authorized");
   return { supabase, user };
 }
 
@@ -33,7 +34,7 @@ export async function addGalleryPhoto(input: {
   const { supabase, user } = await requireAdmin();
 
   if (!input.imageUrl.trim() || !input.thumbnailUrl.trim()) {
-    throw new Error("Both image sizes are required.");
+    throw fail("Both image sizes are required.");
   }
 
   const { error } = await supabase.from("gallery_photos").insert({
@@ -42,7 +43,7 @@ export async function addGalleryPhoto(input: {
     caption: input.caption.trim() || null,
     uploaded_by: user.id,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/gallery");
   revalidatePath("/gallery");
 }
@@ -50,7 +51,7 @@ export async function addGalleryPhoto(input: {
 export async function deleteGalleryPhoto(id: string) {
   const { supabase } = await requireAdmin();
   const { error } = await supabase.from("gallery_photos").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/gallery");
   revalidatePath("/gallery");
 }

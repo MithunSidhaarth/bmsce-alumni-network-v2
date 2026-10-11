@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { respondToRequest } from "../actions";
 import MemberPhoto from "@/components/MemberPhoto";
 import { safeUrl } from "@/lib/url";
+import { said } from "@/lib/fail";
 
 export type Person = {
   id: string;
@@ -60,7 +61,7 @@ function IncomingCard({ req }: { req: ReqView }) {
       try {
         await respondToRequest(req.id, decision);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Something went wrong.");
+        setError(said(e) ?? "Something went wrong.");
       }
     });
   };

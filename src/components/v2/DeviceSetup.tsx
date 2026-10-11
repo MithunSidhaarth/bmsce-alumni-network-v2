@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { sendTestPush } from "@/app/push/actions";
 import { createClient } from "@/lib/supabase/client";
 import Icon from "./Icon";
+import { said } from "@/lib/fail";
 
 const KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? "";
 
@@ -77,7 +78,7 @@ export default function DeviceSetup() {
       setPush("on");
       setNote("Notifications are on for this device.");
     } catch (e) {
-      setNote(e instanceof Error ? e.message : "Notifications could not be turned on.");
+      setNote(said(e) ?? "Notifications could not be turned on.");
     } finally {
       setBusy(false);
     }
@@ -109,7 +110,7 @@ export default function DeviceSetup() {
       const r = await sendTestPush();
       setNote(!r.configured ? "The server is not set up to send notifications yet." : r.sent > 0 ? "Sent. It should arrive in a moment." : "The test could not be delivered to this device.");
     } catch (e) {
-      setNote(e instanceof Error ? e.message : "The test could not be sent.");
+      setNote(said(e) ?? "The test could not be sent.");
     } finally {
       setBusy(false);
     }

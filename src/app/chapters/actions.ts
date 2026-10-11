@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { actionMember } from "@/lib/me";
+import { fail } from "@/lib/fail";
 
 // Membership rules (open vs request, who may approve) live in Postgres
 // functions; these actions are thin wrappers that surface their messages.
@@ -9,7 +10,7 @@ import { actionMember } from "@/lib/me";
 export async function joinChapter(chapterId: string, slug: string) {
   const { supabase } = await actionMember();
   const { data, error } = await supabase.rpc("join_chapter", { p_chapter: chapterId });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath(`/chapters/${slug}`);
   revalidatePath("/chapters");
   return data as "active" | "pending";
@@ -22,7 +23,7 @@ export async function leaveChapter(chapterId: string, slug: string) {
     .delete()
     .eq("chapter_id", chapterId)
     .eq("profile_id", user.id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath(`/chapters/${slug}`);
   revalidatePath("/chapters");
 }
@@ -35,7 +36,7 @@ export async function reviewMember(chapterId: string, slug: string, profileId: s
     p_profile: profileId,
     p_approve: approve,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath(`/chapters/${slug}`);
 }
 
@@ -47,6 +48,6 @@ export async function removeMember(chapterId: string, slug: string, profileId: s
     .delete()
     .eq("chapter_id", chapterId)
     .eq("profile_id", profileId);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath(`/chapters/${slug}`);
 }

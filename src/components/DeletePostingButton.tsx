@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { closePosting, reopenPosting } from "@/app/careers/actions";
+import { said } from "@/lib/fail";
 
 /**
  * Two-step delete for a posting. Never deletes on a single click.
@@ -36,7 +37,7 @@ export default function DeletePostingButton({
         if (redirectTo) router.push(redirectTo);
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Something went wrong.");
+        setError(said(e) ?? "Something went wrong.");
       }
     });
   };

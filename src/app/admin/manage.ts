@@ -11,6 +11,7 @@ import { sendDigest } from "@/lib/newsletter";
 import { slugify } from "@/lib/format";
 import { safeUrl } from "@/lib/url";
 import type { ActionState } from "@/components/v2/admin/AdminForm";
+import { fail } from "@/lib/fail";
 
 // Every admin action: (previous state, form data) -> a message for the form.
 // actionAdmin() checks the caller's role on the server; Row Level Security and
@@ -34,17 +35,17 @@ const str = (d: FormData, k: string) => String(d.get(k) ?? "").trim();
 const opt = (d: FormData, k: string) => str(d, k) || null;
 const bool = (d: FormData, k: string) => ["on", "true", "1"].includes(str(d, k));
 const must = (v: string, label: string) => {
-  if (!v) throw new Error(`${label} is required.`);
+  if (!v) throw fail(`${label} is required.`);
   return v;
 };
 const check = (error: { message: string } | null) => {
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
 };
 const url = (d: FormData, k: string, label: string) => {
   const raw = str(d, k);
   if (!raw) return null;
   const safe = safeUrl(raw);
-  if (!safe) throw new Error(`${label} must be a full http(s) link.`);
+  if (!safe) throw fail(`${label} must be a full http(s) link.`);
   return safe;
 };
 
@@ -54,7 +55,7 @@ export async function setMemberRole(_: ActionState, d: FormData) {
   return admin(async ({ supabase, userId }) => {
     const id = must(str(d, "id"), "Member");
     const role = str(d, "role") === "admin" ? "admin" : "member";
-    if (id === userId && role !== "admin") throw new Error("You cannot remove your own admin role.");
+    if (id === userId && role !== "admin") throw fail("You cannot remove your own admin role.");
     check((await supabase.from("profiles").update({ role }).eq("id", id)).error);
     await logAdminAction(supabase, `member.role:${role}`, id);
     return role === "admin" ? "Now an admin." : "Admin role removed.";
@@ -65,7 +66,7 @@ export async function setMemberSuspended(_: ActionState, d: FormData) {
   return admin(async ({ supabase, userId }) => {
     const id = must(str(d, "id"), "Member");
     const suspend = str(d, "suspend") === "1";
-    if (id === userId) throw new Error("You cannot suspend yourself.");
+    if (id === userId) throw fail("You cannot suspend yourself.");
     check(
       (
         await supabase
@@ -83,7 +84,7 @@ export async function updateMemberDetails(_: ActionState, d: FormData) {
   return admin(async ({ supabase }) => {
     const id = must(str(d, "id"), "Member");
     const year = str(d, "graduation_year");
-    if (year && !/^(19|20)\d\d$/.test(year)) throw new Error("Graduation year must be a four-digit year.");
+    if (year && !/^(19|20)\d\d$/.test(year)) throw fail("Graduation year must be a four-digit year.");
     check(
       (
         await supabase
@@ -142,7 +143,7 @@ export async function runLifecycleNow() {
   return admin(async ({ supabase }) => {
     const { data, error } = await supabase.rpc("run_membership_lifecycle");
     check(error);
-    if (data === -1) throw new Error("The job failed. See the run history below.");
+    if (data === -1) throw fail("The job failed. See the run history below.");
     return data === 0 ? "Ran. Nobody was due today." : `Ran. ${data} member${data === 1 ? "" : "s"} moved to alumni.`;
   });
 }
@@ -169,7 +170,7 @@ export async function saveChapter(_: ActionState, d: FormData) {
       lng: lng ? Number(lng) : null,
       updated_at: new Date().toISOString(),
     };
-    if (!row.slug) throw new Error("The address needs at least one letter or number.");
+    if (!row.slug) throw fail("The address needs at least one letter or number.");
     check(id ? (await supabase.from("chapters").update(row).eq("id", id)).error : (await supabase.from("chapters").insert(row)).error);
     await logAdminAction(supabase, id ? "chapter.edit" : "chapter.create", row.slug);
     return id ? "Chapter updated." : "Chapter created.";
@@ -219,7 +220,7 @@ export async function moderatePost(_: ActionState, d: FormData) {
     if (what === "delete") check((await supabase.from("posts").delete().eq("id", id)).error);
     else if (what === "hide" || what === "unhide") check((await supabase.from("posts").update({ is_hidden: what === "hide" }).eq("id", id)).error);
     else if (what === "pin" || what === "unpin") check((await supabase.from("posts").update({ is_pinned: what === "pin" }).eq("id", id)).error);
-    else throw new Error("Unknown action.");
+    else throw fail("Unknown action.");
     await logAdminAction(supabase, `post.${what}`, id);
     return { delete: "Deleted.", hide: "Hidden from members.", unhide: "Visible again.", pin: "Pinned. It is on The Wall too.", unpin: "Unpinned." }[what];
   }, ["/", "/community", "/noticeboard"]);
@@ -251,7 +252,7 @@ export async function updateNotice(_: ActionState, d: FormData) {
       : {};
     if (what === "remove") check((await supabase.from("notice_items").delete().eq("id", id)).error);
     else if (Object.keys(patch).length) check((await supabase.from("notice_items").update(patch).eq("id", id)).error);
-    else throw new Error("Unknown action.");
+    else throw fail("Unknown action.");
     await logAdminAction(supabase, `notice.${what}`, id);
     return { publish: "On The Wall.", hide: "Hidden from The Wall.", pin: "Pinned to the top.", unpin: "Unpinned.", order: "Order saved.", remove: "Removed from The Wall. The original content is untouched." }[what];
   }, ["/noticeboard"]);
@@ -263,7 +264,7 @@ export async function featureOnWall(_: ActionState, d: FormData) {
     const source = str(d, "source");
     const ref = must(str(d, "ref"), "Item");
     const column = { post: "post_id", event: "event_id", photo: "photo_id", instagram: "social_post_id" }[source];
-    if (!column) throw new Error("Unknown content type.");
+    if (!column) throw fail("Unknown content type.");
     check(
       (
         await supabase
@@ -281,7 +282,7 @@ export async function addManualNotice(_: ActionState, d: FormData) {
     const title = opt(d, "title");
     const body = opt(d, "body");
     const image_url = url(d, "image_url", "Image");
-    if (!title && !body && !image_url) throw new Error("Add a title, some text or an image.");
+    if (!title && !body && !image_url) throw fail("Add a title, some text or an image.");
     check(
       (
         await supabase.from("notice_items").insert({
@@ -311,8 +312,8 @@ export async function syncInstagramNow() {
   return admin(async ({ supabase }) => {
     const r = await runInstagramSync(supabase, { trigger: "manual", secret: process.env.APP_SERVER_SECRET ?? null });
     await logAdminAction(supabase, "instagram.manual_sync", r.status);
-    if (r.status === "not_configured") throw new Error("Instagram is not connected yet. Add an access token below, then sync again.");
-    if (r.status === "failed") throw new Error(`Sync failed: ${r.error ?? "unknown error"}`);
+    if (r.status === "not_configured") throw fail("Instagram is not connected yet. Add an access token below, then sync again.");
+    if (r.status === "failed") throw fail(`Sync failed: ${r.error ?? "unknown error"}`);
     return `Sync ${r.status}: ${r.fetched} fetched, ${r.new} new, ${r.updated} refreshed, ${r.failed} failed.`;
   }, ["/noticeboard"]);
 }
@@ -330,7 +331,7 @@ export async function saveInstagramToken(_: ActionState, d: FormData) {
   return admin(async ({ supabase }) => {
     const token = str(d, "token");
     const remove = str(d, "remove") === "1";
-    if (!remove && token.length < 40) throw new Error("That does not look like a Meta access token.");
+    if (!remove && token.length < 40) throw fail("That does not look like a Meta access token.");
     check((await supabase.rpc("ig_token_set", { p_secret: null, p_token: remove ? null : token, p_expires_at: null })).error);
     return remove ? "Stored token removed." : "Token stored. Run a sync to test it.";
   });
@@ -339,7 +340,7 @@ export async function saveInstagramToken(_: ActionState, d: FormData) {
 export async function saveInstagramHandle(_: ActionState, d: FormData) {
   return admin(async ({ supabase }) => {
     const handle = str(d, "handle").replace(/^@/, "");
-    if (!/^[A-Za-z0-9._]{1,30}$/.test(handle)) throw new Error("Enter the account's username, without the link.");
+    if (!/^[A-Za-z0-9._]{1,30}$/.test(handle)) throw fail("Enter the account's username, without the link.");
     check((await supabase.from("site_settings").update({ ig_handle: handle }).eq("id", 1)).error);
     return "Account name saved.";
   }, ["/noticeboard"]);
@@ -392,7 +393,7 @@ export async function saveArticle(_: ActionState, d: FormData) {
     const title = must(str(d, "title"), "Title");
     const status = ["draft", "published", "archived"].includes(str(d, "status")) ? str(d, "status") : "draft";
     const body_md = str(d, "body_md");
-    if (status === "published" && body_md.length < 40) throw new Error("Write the article before publishing it.");
+    if (status === "published" && body_md.length < 40) throw fail("Write the article before publishing it.");
     const row = {
       title,
       slug: slugify(str(d, "slug") || title),
@@ -407,11 +408,11 @@ export async function saveArticle(_: ActionState, d: FormData) {
       status,
       is_featured: bool(d, "is_featured"),
     };
-    if (!row.slug) throw new Error("The address needs at least one letter or number.");
+    if (!row.slug) throw fail("The address needs at least one letter or number.");
     const res = id
       ? await supabase.from("articles").update(row).eq("id", id)
       : await supabase.from("articles").insert({ ...row, author_id: row.author_id ?? userId });
-    if (res.error?.code === "23505") throw new Error("Another article already uses that address. Change the slug.");
+    if (res.error?.code === "23505") throw fail("Another article already uses that address. Change the slug.");
     check(res.error);
     await logAdminAction(supabase, `article.${id ? "edit" : "create"}:${status}`, row.slug);
     return status === "published" ? "Saved and published." : "Saved as a draft.";
@@ -433,13 +434,13 @@ export async function saveDigest(_: ActionState, d: FormData) {
   return admin(async ({ supabase, userId }) => {
     const id = opt(d, "id");
     const article_ids = d.getAll("article_ids").map(String).filter((v) => /^[0-9a-f-]{36}$/i.test(v));
-    if (article_ids.length === 0) throw new Error("Pick at least one published article.");
+    if (article_ids.length === 0) throw fail("Pick at least one published article.");
     const when = str(d, "scheduled_at");
     const schedule = str(d, "intent") === "schedule";
-    if (schedule && !when) throw new Error("Choose a date and time to schedule it.");
+    if (schedule && !when) throw fail("Choose a date and time to schedule it.");
     // The form's date-time is India Standard Time.
     const scheduled_at = schedule ? new Date(`${when}:00+05:30`).toISOString() : null;
-    if (scheduled_at && +new Date(scheduled_at) < Date.now() - 60000) throw new Error("That time has already passed.");
+    if (scheduled_at && +new Date(scheduled_at) < Date.now() - 60000) throw fail("That time has already passed.");
     const row = {
       subject: must(str(d, "subject"), "Subject"),
       preheader: opt(d, "preheader"),
@@ -462,7 +463,7 @@ export async function sendDigestNow(_: ActionState, d: FormData) {
     const id = must(str(d, "id"), "Digest");
     const r = await sendDigest(supabase, { secret: null, digestId: id });
     await logAdminAction(supabase, "digest.send", id);
-    if (!r.sent) throw new Error(r.reason);
+    if (!r.sent) throw fail(r.reason);
     return `Sent to ${r.delivered} subscriber${r.delivered === 1 ? "" : "s"}${r.failed ? `, ${r.failed} failed` : ""}.`;
   });
 }

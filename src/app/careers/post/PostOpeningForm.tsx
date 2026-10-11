@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createPosting } from "../actions";
 import { EXPERIENCE_LEVELS } from "@/lib/constants";
 import type { PostingType } from "@/lib/types";
+import { said } from "@/lib/fail";
 
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none";
@@ -92,7 +93,7 @@ export default function PostOpeningForm() {
         router.push(`/careers/openings/${id}`);
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Could not publish.");
+        setError(said(e) ?? "Could not publish.");
       }
     });
   };

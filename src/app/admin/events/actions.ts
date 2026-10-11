@@ -2,19 +2,20 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { fail } from "@/lib/fail";
 
 async function requireAdmin() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("You need to be signed in.");
+  if (!user) throw fail("You need to be signed in.");
   const { data: me } = await supabase
     .from("profiles")
     .select("role")
     .eq("id", user.id)
     .single();
-  if (me?.role !== "admin") throw new Error("Not authorized.");
+  if (me?.role !== "admin") throw fail("Not authorized.");
   return { supabase, user };
 }
 
@@ -31,10 +32,10 @@ export type EventInput = {
 
 function validate(input: EventInput) {
   const title = input.title.trim();
-  if (!title) throw new Error("A title is required.");
-  if (!input.eventDate) throw new Error("A date and time is required.");
+  if (!title) throw fail("A title is required.");
+  if (!input.eventDate) throw fail("A date and time is required.");
   const d = new Date(input.eventDate);
-  if (isNaN(d.getTime())) throw new Error("That date doesn't look valid.");
+  if (isNaN(d.getTime())) throw fail("That date doesn't look valid.");
   return {
     title,
     description: input.description.trim() || null,
@@ -55,7 +56,7 @@ export async function createEvent(input: EventInput) {
     .insert({ ...row, created_by: user.id })
     .select("id")
     .single();
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/events");
   revalidatePath("/events");
   return data.id as string;
@@ -65,7 +66,7 @@ export async function updateEvent(id: string, input: EventInput) {
   const { supabase } = await requireAdmin();
   const row = validate(input);
   const { error } = await supabase.from("events").update(row).eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/events");
   revalidatePath("/events");
 }
@@ -73,7 +74,7 @@ export async function updateEvent(id: string, input: EventInput) {
 export async function deleteEvent(id: string) {
   const { supabase } = await requireAdmin();
   const { error } = await supabase.from("events").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/admin/events");
   revalidatePath("/events");
 }

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { setCareersEnabled } from "./actions";
+import { said } from "@/lib/fail";
 
 export default function CareersToggle({ enabled }: { enabled: boolean }) {
   const [on, setOn] = useState(enabled);
@@ -17,7 +18,7 @@ export default function CareersToggle({ enabled }: { enabled: boolean }) {
         await setCareersEnabled(next);
       } catch (e) {
         setOn(!next); // revert on failure
-        setError(e instanceof Error ? e.message : "Could not save.");
+        setError(said(e) ?? "Could not save.");
       }
     });
   };

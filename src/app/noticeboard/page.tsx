@@ -2,11 +2,25 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Wall from "@/components/v2/wall/Wall";
+import { unstable_cache } from "next/cache";
 import { getMe } from "@/lib/me";
+import { serverClient } from "@/lib/server/cron";
 import type { NoticeCard } from "@/lib/types";
 
 const DESCRIPTION =
   "The living noticeboard of the BMSCE alumni network: announcements, reunion photographs, achievements and official Instagram posts, pinned in one place.";
+// What a signed-out visitor sees is the same for everyone, so it is fetched
+// once and reused for two minutes instead of on every visit.
+const publicWall = unstable_cache(
+  async () => {
+    const { data, error } = await serverClient().rpc("noticeboard_feed", { p_limit: 120 });
+    if (error) throw new Error(error.message);
+    return (data ?? []) as NoticeCard[];
+  },
+  ["public-wall"],
+  { revalidate: 120 }
+);
+
 const ITEM = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 export const dynamic = "force-dynamic";
 
@@ -29,7 +43,12 @@ export default async function NoticeboardPage({ searchParams }: Props) {
   // One call returns only what this viewer may see: signed-out visitors get
   // official content; verified members also get what the community pinned.
   const [{ data, error }, { data: settings }] = await Promise.all([
-    supabase.rpc("noticeboard_feed", { p_limit: 120 }),
+    me
+      ? supabase.rpc("noticeboard_feed", { p_limit: 120 })
+      : publicWall().then(
+          (cards) => ({ data: cards as NoticeCard[] | null, error: null as unknown }),
+          () => ({ data: null as NoticeCard[] | null, error: true as unknown })
+        ),
     supabase.from("site_settings").select("ig_handle").eq("id", 1).maybeSingle(),
   ]);
 

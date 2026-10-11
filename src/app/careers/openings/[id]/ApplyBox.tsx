@@ -7,6 +7,7 @@ import { STATUS_LABEL } from "@/components/PostingsBrowser";
 import { createClient } from "@/lib/supabase/client";
 import { safeUrl } from "@/lib/url";
 import type { ApplicationStatus } from "@/lib/types";
+import { said } from "@/lib/fail";
 
 type State =
   | { kind: "anon" }
@@ -120,7 +121,7 @@ export default function ApplyBox({
         });
         setDone(true);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Could not apply.");
+        setError(said(e) ?? "Could not apply.");
       }
     });
   };

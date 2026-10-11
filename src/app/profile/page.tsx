@@ -10,7 +10,8 @@ import { safeUrl } from "@/lib/url";
 import type { Profile, EducationEntry } from "@/lib/types";
 import LinkedInBadge from "@/components/LinkedInBadge";
 import VerifyLinkedIn from "./VerifyLinkedIn";
-import MemberPhoto from "@/components/MemberPhoto";
+import IdCard from "@/components/v2/IdCard";
+import { deptLine, idLines } from "@/lib/dept";
 
 export const metadata: Metadata = {
   title: "My profile: BMSCE Alumni Network",
@@ -41,6 +42,14 @@ export default async function ProfilePage() {
     .order("year", { ascending: false })
     .returns<EducationEntry[]>();
   const eduList = education ?? [];
+  const { data: memberships } = await supabase
+    .from("chapter_members")
+    .select("chapter:chapters(name)")
+    .eq("profile_id", user.id)
+    .eq("status", "active");
+  const chapterNames = (memberships ?? [])
+    .map((m) => (Array.isArray(m.chapter) ? m.chapter[0]?.name : (m.chapter as { name: string } | null)?.name))
+    .filter((n): n is string => Boolean(n));
 
   const isStudent = profile.user_type === "student";
   const detail = [profile.job_title, profile.company].filter(Boolean).join(", ");
@@ -82,20 +91,48 @@ export default async function ProfilePage() {
               </div>
             )}
 
-            <div className="mt-8 flex items-center gap-5">
-              <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-gold/40 bg-ivory-dim font-display text-2xl italic text-oxblood">
-                {profile.photo_url ? (
-                  <MemberPhoto src={profile.photo_url} />
-                ) : (
-                  (profile.full_name || "?").charAt(0).toUpperCase()
-                )}
-              </div>
+            {/* Your college ID card, as it was printed. It turns over. */}
+            <div className="mt-10 grid gap-8 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center">
+              <IdCard
+                data={{
+                  name: profile.full_name || "BMS member",
+                  photo: profile.photo_url,
+                  dept: deptLine(profile.branch),
+                  ...idLines(profile),
+                  back: {
+                    kind: isStudent ? "Student" : profile.graduation_year ? `Alumni, batch of ${profile.graduation_year}` : "Alumni",
+                    verified: profile.verification_status === "verified",
+                    since: new Date(profile.created_at).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", month: "long", year: "numeric" }),
+                    role: [profile.job_title, profile.company].filter(Boolean).join(" at ") || null,
+                    place: [profile.current_city, profile.country].filter(Boolean).join(", ") || null,
+                    chapters: chapterNames,
+                  },
+                }}
+              />
               <div>
-                <h1 className="font-display text-3xl leading-tight text-ink">
+                <h1 className="font-display text-[clamp(2rem,6vw,3rem)] leading-[1.02] text-ink">
                   {profile.full_name || "Your name"}
                 </h1>
-                {detail && (
-                  <p className="mt-1 font-sans text-sm text-ink/70">{detail}</p>
+                {detail && <p className="mt-2 text-ink/70">{detail}</p>}
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <Link href="/profile/edit" className="btn btn-sm">
+                    Edit profile
+                  </Link>
+                  <a href="/profile/card" download="bms-id-card.png" className="btn btn-ghost btn-sm">
+                    Save my ID card
+                  </a>
+                  <Link href={`/directory/${profile.id}`} className="btn btn-ghost btn-sm">
+                    See it as others do
+                  </Link>
+                </div>
+                {!profile.usn && (
+                  <p className="mt-4 max-w-sm text-sm text-ink/65">
+                    Add your college ID number in{" "}
+                    <Link href="/profile/edit" className="font-semibold text-forest underline underline-offset-2">
+                      settings
+                    </Link>{" "}
+                    and it is printed on the card, with its barcode.
+                  </p>
                 )}
               </div>
             </div>

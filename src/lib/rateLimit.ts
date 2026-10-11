@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { fail } from "@/lib/fail";
 
 /**
  * Postgres-backed fixed-window rate limit (see check_rate_limit in
@@ -22,7 +23,7 @@ export async function rateLimit(
   });
   if (error) return; // fail open
   if (data === false) {
-    throw new Error(
+    throw fail(
       "You're doing that a bit too fast, please wait a moment and try again."
     );
   }

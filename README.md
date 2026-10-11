@@ -101,6 +101,69 @@ and `NEWSLETTER_FROM` a send is recorded as failed with that reason: the
 dashboard never reports a delivery that did not happen. Subscribers opt in
 with a consent checkbox and every email has a one-click unsubscribe link.
 
+### Posts: asks and offers, polls, mentions, link cards
+
+Two more kinds of post (Ask, Offer). A post can carry a poll: its options and
+running totals live on the post, and each vote is a row only its owner can
+read, so votes are private. Typing `@` offers members; the database rewrites
+the mention list from the profiles table and keeps only people whose name is
+really in the text, then notifies them. The first web address in a post gets a
+text-only card, fetched once on the server (`src/lib/linkPreview.ts`): https
+only, no bare IP addresses, the host must resolve to public addresses, the
+connection is pinned to the checked address, every redirect is re-checked.
+
+### Messages: typing, read receipts, who is online
+
+"Typing" and the online dots travel over private Realtime channels. Row Level
+Security on `realtime.messages` (see `realtime_topic_ok`) lets only the two
+people in a conversation join `dm:<thread id>`, and only verified members join
+`online`. A member can switch their own dot off in settings.
+
+### Events
+
+Events are posters with a strip of tear-off tabs: tearing one is the RSVP.
+`/events/<id>/calendar` serves an .ics file. `run_event_reminders()` (pg_cron,
+hourly) notifies everyone who is going, once, in the day before. A photograph
+posted on a past event's page is offered to The Wall for an admin to approve.
+
+### Install as an app, and push notifications
+
+`src/app/manifest.ts` and `public/sw.js` make the site installable. Push uses
+VAPID keys. Anything that tells a member something (a notification row, a
+direct message) adds a row to `private.push_outbox`; the app server collects
+the outbox with the server secret (`push_claim`) and delivers it
+(`src/lib/push.ts`), removing devices the push service reports as gone.
+There is no always-on worker: delivery is triggered right after the action
+that caused it, whenever a member opens the app, and by the daily job, so a
+scheduled reminder may wait until one of those happens.
+
+Status: the server path is tested end to end against a push service with a
+device that does not exist (it is asked, answers "gone", the device is
+removed). Delivery to a real phone has to be confirmed on a real phone:
+Notifications, This device, Turn on, Send a test.
+
+### Other things worth knowing
+
+- **The ID card** (`src/components/v2/IdCard.tsx`) follows the printed BMS card.
+  The barcode is real Code 39 of the roll number (`profiles.usn`, optional);
+  without one the card shows the batch. `/profile/card` draws the signed-in
+  member's own card as a PNG.
+- **The campus map** (`src/components/v2/campus/CampusMap.tsx`) is drawn from a
+  member's sketch. Every building is a data row: move one by editing `BLOCKS`.
+- **Share cards** (`src/lib/og.tsx`) are drawn on the server for the site,
+  articles, events and each item on The Wall (`/noticeboard?item=<id>`).
+- **Night theme:** a `theme` cookie sets `data-theme="night"` on `<html>`. The
+  page goes dark; paper, photo prints and the board keep their daytime colours
+  (the "islands" at the end of `src/app/v2.css`). Add `keep-day` or
+  `keep-dark` to an element that must not flip.
+- **Motion is always on.** The site does not follow the device's "reduce
+  motion" setting; this was a deliberate product decision.
+- **Messages from server actions:** a production build hides the text of
+  errors thrown on the server. Actions throw `fail("...")` and the browser reads
+  it with `said(e)` (`src/lib/fail.ts`).
+- **Archive photos** get WebP copies at two sizes before every `dev` and
+  `build` (`scripts/make-webp.mjs`; not committed).
+
 ## Environment variables
 
 See `.env.local.example`. In short:
@@ -113,6 +176,9 @@ See `.env.local.example`. In short:
 | `APP_SERVER_SECRET` | scheduled jobs calling database functions | yes |
 | `INSTAGRAM_ACCESS_TOKEN`, `INSTAGRAM_USER_ID` | Instagram import | yes |
 | `RESEND_API_KEY`, `NEWSLETTER_FROM` | email digests | yes |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | push notifications (sent to browsers) | no |
+| `VAPID_PRIVATE_KEY` | signing push notifications | yes |
+| `VAPID_SUBJECT` | contact URL sent to push services (https or mailto) | no |
 
 **Rotating the server secret:** generate a new 64-character hex string, set it
 as `APP_SERVER_SECRET`, and store its SHA-256 in the database:
@@ -138,13 +204,21 @@ These cannot be set from code:
 
 ```bash
 npm run build     # type-checks and builds every route
-npm run verify    # 88 end-to-end checks against the real database
+npm run verify    # 115 end-to-end checks against the real database
 ```
 
 `scripts/verify.mjs` signs in as three test accounts and checks permissions,
 posts, chapters, the noticeboard, private messages (including Realtime
 delivery and that a third account receives nothing), the student-to-alumni
-lifecycle, suspension and the newsletter. It cleans up after itself.
+lifecycle, suspension, the newsletter, polls and mentions, push, the private
+live channels, and the built-in logic (barcode, link-preview safety). It
+cleans up after itself. One check ("a member's suggestion waits for approval")
+fails if the script is run more than a few times in a day, because the test
+member hits the real daily limit on Wall suggestions.
+
+`scripts/lib/browser.mjs` is a small headless-Chrome driver (no dependencies)
+for clicking through the real pages: sign in with a test account, click, type,
+take screenshots at desktop or phone size.
 
 `scripts/export-migrations.mjs` writes the migrations recorded in the database
 into `supabase/migrations/`, so the repository always matches what is

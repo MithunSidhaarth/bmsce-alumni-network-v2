@@ -5,6 +5,7 @@ import { votePoll } from "@/app/posts/actions";
 import { createClient } from "@/lib/supabase/client";
 import { plural } from "@/lib/format";
 import Icon from "./Icon";
+import { said } from "@/lib/fail";
 
 /**
  * A poll on a post. Totals are stored on the post; who voted for what is
@@ -53,7 +54,7 @@ export default function Poll({ postId, options, counts, canVote }: { postId: str
       } catch (e) {
         setTally(before.tally);
         setMine(before.mine);
-        setError(e instanceof Error ? e.message : "That vote could not be counted.");
+        setError(said(e) ?? "That vote could not be counted.");
       }
     });
   };

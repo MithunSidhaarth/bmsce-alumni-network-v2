@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "@/lib/gsap";
 import { motionOK } from "@/lib/motion";
+import { pic } from "@/lib/pic";
 import Icon from "../Icon";
 
 export type RewindPhoto = { src: string; ratio: number; stamp: string; code: string };
@@ -128,7 +129,7 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
                 >
                   <span className="tape" aria-hidden="true" />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.src} alt="" loading="lazy" decoding="async" style={{ aspectRatio: String(p.ratio) }} className="block h-auto w-full" />
+                  <img {...pic(p.src, "(min-width: 768px) 19vw, 52vw")} alt="" loading="lazy" decoding="async" style={{ aspectRatio: String(p.ratio) }} className="block h-auto w-full" />
                   <span className="label-mono absolute bottom-2.5 left-3 text-ink/60">{p.stamp}</span>
                 </Link>
               </div>

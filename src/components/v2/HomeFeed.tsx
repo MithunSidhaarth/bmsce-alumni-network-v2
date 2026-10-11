@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Me } from "@/lib/me";
 import { listPosts, myReactions, type PostQuery } from "@/lib/posts";
+import { pic } from "@/lib/pic";
 import type { NoticeCard, PostKind } from "@/lib/types";
 import { seeded, stampDate, timeAgo } from "@/lib/format";
 import Avatar from "./Avatar";
@@ -322,7 +323,7 @@ export default async function HomeFeed({
                   >
                     {img ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={img} alt="" loading="lazy" className="aspect-square w-full object-cover" />
+                      <img {...pic(img, "6rem")} alt="" loading="lazy" className="aspect-square w-full object-cover" />
                     ) : (
                       <p className="flex aspect-square items-center p-1 text-[0.625rem] font-semibold leading-tight">
                         {(c.title ?? c.post?.title ?? c.post?.body ?? c.event?.title ?? "").slice(0, 60)}

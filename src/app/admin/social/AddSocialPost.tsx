@@ -4,6 +4,7 @@ import { useState, useTransition, type FormEvent } from "react";
 import { addSocialPost, deleteSocialPost } from "../actions";
 import { safeUrl } from "@/lib/url";
 import type { SocialPost } from "@/lib/types";
+import { said } from "@/lib/fail";
 
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
@@ -36,7 +37,7 @@ export default function AddSocialPost({ recent }: { recent: SocialPost[] }) {
         setHashtags("");
         setOk(true);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not add post.");
+        setError(said(err) ?? "Could not add post.");
       }
     });
   };
@@ -46,7 +47,7 @@ export default function AddSocialPost({ recent }: { recent: SocialPost[] }) {
       try {
         await deleteSocialPost(id);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not delete.");
+        setError(said(err) ?? "Could not delete.");
       }
     });
   };

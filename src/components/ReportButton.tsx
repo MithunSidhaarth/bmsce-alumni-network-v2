@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { reportContent } from "@/app/moderation/actions";
+import { said } from "@/lib/fail";
 
 export default function ReportButton({
   targetType,
@@ -32,7 +33,7 @@ export default function ReportButton({
         setDone(true);
         setOpen(false);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Could not send report.");
+        setError(said(e) ?? "Could not send report.");
       }
     });
   };

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { safeUrl } from "@/lib/url";
+import { fail } from "@/lib/fail";
 
 const CATEGORIES = ["Campus news", "Alumni initiative"];
 
@@ -12,13 +13,13 @@ async function requireAdmin() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("Not authenticated");
+  if (!user) throw fail("Not authenticated");
   const { data: me } = await supabase
     .from("profiles")
     .select("role")
     .eq("id", user.id)
     .single();
-  if (me?.role !== "admin") throw new Error("Not authorized");
+  if (me?.role !== "admin") throw fail("Not authorized");
   return { supabase, user };
 }
 
@@ -32,12 +33,12 @@ export async function addUpdate(input: {
 }) {
   const { supabase, user } = await requireAdmin();
   const title = input.title.trim();
-  if (!title) throw new Error("Title is required.");
-  if (!CATEGORIES.includes(input.category)) throw new Error("Bad category.");
+  if (!title) throw fail("Title is required.");
+  if (!CATEGORIES.includes(input.category)) throw fail("Bad category.");
   const image = input.imageUrl.trim();
   const link = input.linkUrl.trim();
-  if (image && !safeUrl(image)) throw new Error("Photo must be an http(s) URL.");
-  if (link && !safeUrl(link)) throw new Error("Link must be an http(s) URL.");
+  if (image && !safeUrl(image)) throw fail("Photo must be an http(s) URL.");
+  if (link && !safeUrl(link)) throw fail("Link must be an http(s) URL.");
   const { error } = await supabase.from("campus_updates").insert({
     title,
     body: input.body.trim() || null,
@@ -49,13 +50,13 @@ export async function addUpdate(input: {
       : new Date().toISOString(),
     created_by: user.id,
   });
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/", "layout");
 }
 
 export async function deleteUpdate(id: string) {
   const { supabase } = await requireAdmin();
   const { error } = await supabase.from("campus_updates").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw fail(error.message);
   revalidatePath("/", "layout");
 }

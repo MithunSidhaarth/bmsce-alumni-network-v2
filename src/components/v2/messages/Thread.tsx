@@ -12,6 +12,7 @@ import { clockTime, dayKey, longDate } from "@/lib/format";
 import Avatar from "../Avatar";
 import Icon from "../Icon";
 import { OnlineDot, useOnline } from "../Presence";
+import { said } from "@/lib/fail";
 
 export type Message = {
   id: number;
@@ -299,7 +300,7 @@ export default function Thread({
                     await blockMember(other.id, !blockedByMe);
                     router.refresh();
                   } catch (e) {
-                    setNotice(e instanceof Error ? e.message : "Could not update the block.");
+                    setNotice(said(e) ?? "Could not update the block.");
                   }
                 }}
               >
@@ -317,7 +318,7 @@ export default function Thread({
                     await reportContent("profile", other.id, `Reported from a direct message. ${reason}`);
                     setNotice("Reported to the admins. Thank you.");
                   } catch (e) {
-                    setNotice(e instanceof Error ? e.message : "Could not send the report.");
+                    setNotice(said(e) ?? "Could not send the report.");
                   }
                 }}
               >

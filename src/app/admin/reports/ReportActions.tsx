@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { setReportStatus } from "@/app/moderation/actions";
+import { said } from "@/lib/fail";
 
 export default function ReportActions({ id }: { id: string }) {
   const [busy, startTransition] = useTransition();
@@ -13,7 +14,7 @@ export default function ReportActions({ id }: { id: string }) {
       try {
         await setReportStatus(id, status);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Failed.");
+        setError(said(e) ?? "Failed.");
       }
     });
   };

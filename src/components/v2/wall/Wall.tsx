@@ -8,6 +8,7 @@ import { isBlankShot } from "@/data/instagram-blank";
 import type { NoticeCard } from "@/lib/types";
 import { longDate, seeded, stampDate } from "@/lib/format";
 import { motionOK } from "@/lib/motion";
+import { pic } from "@/lib/pic";
 import Avatar from "../Avatar";
 import Icon from "../Icon";
 import PanZoom from "./PanZoom";
@@ -235,7 +236,7 @@ function WallCard({
           {v.image && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={v.image}
+              {...pic(v.image, square ? "250px" : "(min-width: 1024px) 28vw, (min-width: 640px) 46vw, 92vw")}
               alt=""
               loading="lazy"
               decoding="async"
@@ -538,7 +539,7 @@ export default function Wall({
                   >
                     {v.image && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={v.image} alt="" loading="lazy" className="h-16 w-16 shrink-0 object-cover" />
+                      <img {...pic(v.image, "64px")} alt="" loading="lazy" className="h-16 w-16 shrink-0 object-cover" />
                     )}
                     <span className="min-w-0">
                       <span className="label-mono block text-tangerine">{longDate(v.date)}</span>
@@ -631,7 +632,7 @@ export default function Wall({
             {current.image && (
               <div className="flex max-h-[42dvh] items-center justify-center bg-ink md:max-h-[88dvh]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={current.image} alt="" className="max-h-[42dvh] w-full object-contain md:max-h-[88dvh]" />
+                <img {...pic(current.image, "(min-width: 768px) 50vw, 94vw")} alt="" className="max-h-[42dvh] w-full object-contain md:max-h-[88dvh]" />
               </div>
             )}
             <div className={`flex min-h-0 flex-col overflow-y-auto px-6 pb-6 pt-7 ${current.image ? "" : "md:col-span-2 md:mx-auto md:max-w-2xl"}`}>

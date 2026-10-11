@@ -10,6 +10,7 @@ import type { Mention, PostKind } from "@/lib/types";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import MentionTextarea, { mentionsIn } from "./MentionTextarea";
+import { said } from "@/lib/fail";
 
 const PROMPTS: Record<PostKind, string> = {
   post: "What is happening in your corner of the network?",
@@ -89,7 +90,7 @@ export default function Composer({
       }
       setPhotos((p) => [...p, ...next]);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "That photo could not be uploaded.");
+      setError(said(e) ?? "That photo could not be uploaded.");
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -120,7 +121,7 @@ export default function Composer({
         setOpen(false);
         router.refresh();
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Could not publish that.");
+        setError(said(e) ?? "Could not publish that.");
       }
     });
   };
