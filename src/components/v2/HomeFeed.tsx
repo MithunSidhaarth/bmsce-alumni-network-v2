@@ -4,6 +4,7 @@ import type { Me } from "@/lib/me";
 import { listPosts, myReactions, type PostQuery } from "@/lib/posts";
 import type { NoticeCard, PostKind } from "@/lib/types";
 import { seeded, stampDate, timeAgo } from "@/lib/format";
+import Avatar from "./Avatar";
 import Composer from "./Composer";
 import Icon from "./Icon";
 import PostCard from "./PostCard";
@@ -66,7 +67,7 @@ export default async function HomeFeed({
   const skipFeed = filter === "chapters" && myChapters.length === 0;
 
   const now = new Date().toISOString();
-  const [posts, pinned, events, articles, board, activity] = await Promise.all([
+  const [posts, pinned, events, articles, board, activity, people, mine] = await Promise.all([
     verified && !skipFeed ? listPosts(supabase, query) : Promise.resolve([]),
     verified
       ? supabase
@@ -95,7 +96,37 @@ export default async function HomeFeed({
       .select("id, title, link, created_at, read_at")
       .order("created_at", { ascending: false })
       .limit(4),
+    verified ? supabase.rpc("people_you_may_know", { p_limit: 4 }) : Promise.resolve({ data: [] }),
+    supabase
+      .from("profiles")
+      .select("photo_url, bio, job_title, company, current_city, skills, usn")
+      .eq("id", me.id)
+      .maybeSingle(),
   ]);
+
+  // What is still missing from the member's own profile, most useful first.
+  const profile = mine.data;
+  const steps: { label: string; done: boolean }[] = profile
+    ? [
+        { label: "Add a photo", done: Boolean(profile.photo_url) },
+        { label: "Say where you work", done: Boolean(profile.job_title || profile.company) },
+        { label: "Write a line about yourself", done: Boolean(profile.bio?.trim()) },
+        { label: "Add your city", done: Boolean(profile.current_city) },
+        { label: "List a few skills", done: (profile.skills ?? []).length > 0 },
+        { label: "Join a chapter", done: myChapters.length > 0 },
+        { label: "Add your college ID number", done: Boolean(profile.usn) },
+      ]
+    : [];
+  const stepsDone = steps.filter((s) => s.done).length;
+  const nextStep = steps.find((s) => !s.done);
+  const suggestions = ((people.data ?? []) as {
+    id: string;
+    full_name: string;
+    photo_url: string | null;
+    graduation_year: number | null;
+    branch: string | null;
+    reasons: string[];
+  }[]);
 
   const hasMore = posts.length > limit;
   const visible = posts.slice(0, limit);
@@ -222,6 +253,55 @@ export default async function HomeFeed({
 
       {/* ---- Context column ---- */}
       <aside className="flex flex-col gap-8 lg:sticky lg:top-[calc(var(--topbar)+1.5rem)] lg:max-h-[calc(100vh-var(--topbar)-3rem)] lg:overflow-y-auto lg:pb-4 no-scrollbar">
+        {nextStep && (
+          <section aria-labelledby="side-profile" className="sheet px-5 pb-5 pt-4">
+            <h2 id="side-profile" className="label-mono flex items-center justify-between text-ink/60">
+              Your profile
+              <span className="font-mono normal-case tracking-normal text-ink">
+                {stepsDone} of {steps.length}
+              </span>
+            </h2>
+            <div
+              className="mt-3 h-2 overflow-hidden rounded-full bg-ink/10"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={steps.length}
+              aria-valuenow={stepsDone}
+              aria-label="Profile completeness"
+            >
+              <div className="h-full rounded-full bg-forest" style={{ width: `${(stepsDone / steps.length) * 100}%` }} />
+            </div>
+            <p className="mt-3 text-sm text-ink/75">Next: {nextStep.label.toLowerCase()}.</p>
+            <Link href={nextStep.label === "Join a chapter" ? "/chapters" : "/profile/edit"} className="btn btn-sm mt-3">
+              {nextStep.label}
+            </Link>
+          </section>
+        )}
+
+        {suggestions.length > 0 && (
+          <section aria-labelledby="side-people">
+            <h2 id="side-people" className="label-mono mb-3 flex items-center justify-between text-ink/60">
+              People you may know
+              <Link href="/directory" className="normal-case tracking-normal text-forest hover:underline">
+                Everyone
+              </Link>
+            </h2>
+            <ul className="flex flex-col gap-3">
+              {suggestions.map((s) => (
+                <li key={s.id}>
+                  <Link href={`/directory/${s.id}`} className="group flex items-center gap-3">
+                    <Avatar name={s.full_name} src={s.photo_url} size={40} />
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-semibold group-hover:underline">{s.full_name}</span>
+                      <span className="block truncate text-xs text-ink/60">{s.reasons.join(" · ")}</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         <section aria-labelledby="side-wall">
           <Link href="/noticeboard" className="board group block overflow-hidden rounded-box px-5 pb-5 pt-4">
             <p id="side-wall" className="flex items-center justify-between font-display text-xl font-extrabold text-ivory">

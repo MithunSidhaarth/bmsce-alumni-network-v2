@@ -26,15 +26,27 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     ? await Promise.all([
         supabase
           .from("profiles")
-          .select("id, full_name, photo_url, user_type, graduation_year, branch, company, job_title, current_city")
+          .select("id, full_name, photo_url, user_type, graduation_year, branch, company, job_title, current_city, privacy")
           .eq("verification_status", "verified")
           .or(`full_name.ilike.%${like}%,company.ilike.%${like}%,job_title.ilike.%${like}%,current_city.ilike.%${like}%`)
-          .limit(12),
+          .limit(30),
         listPosts(supabase, { scope: "feed", q, limit: 15 }).catch(() => []),
       ])
     : [{ data: [] }, []];
   const reactions = await myReactions(supabase, me.id, posts.map((p) => p.id));
-  const found = people.data ?? [];
+  // A member who hides their work or city is neither matched on it nor shown with it.
+  const needle = like.toLowerCase().trim();
+  const hit = (v: string | null) => Boolean(v && v.toLowerCase().includes(needle));
+  const found = (people.data ?? [])
+    .map((p) => {
+      const privacy = (p.privacy ?? {}) as { show_work?: boolean; show_location?: boolean };
+      const own = p.id === me.id || isAdmin;
+      const work = own || privacy.show_work !== false;
+      const place = own || privacy.show_location !== false;
+      return { ...p, company: work ? p.company : null, job_title: work ? p.job_title : null, current_city: place ? p.current_city : null };
+    })
+    .filter((p) => hit(p.full_name) || hit(p.company) || hit(p.job_title) || hit(p.current_city))
+    .slice(0, 12);
 
   return (
     <>

@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { Me } from "@/lib/me";
 import Avatar from "./Avatar";
+import CommandPalette from "./CommandPalette";
 import Icon, { type IconName } from "./Icon";
 import Presence from "./Presence";
 
@@ -117,6 +118,7 @@ export default function AppChrome({ me }: { me: Me }) {
   return (
     <>
       {me.verification_status === "verified" && <Presence meId={me.id} announce={me.privacy?.show_online !== false} />}
+      {me.verification_status === "verified" && <CommandPalette />}
       {/* ---- Rail: tablet (icons) and desktop (labels) ---- */}
       <nav
         aria-label="Main"
@@ -231,8 +233,18 @@ export default function AppChrome({ me }: { me: Me }) {
             type="search"
             placeholder="Search people and posts"
             autoComplete="off"
-            className="h-10 w-full rounded-full border border-ink/15 bg-paper pl-9 pr-3 text-sm placeholder:text-ink/45 focus:border-ink focus:outline-none focus:ring-2 focus:ring-lime"
+            className="h-10 w-full rounded-full border border-ink/15 bg-paper pl-9 pr-3 text-sm placeholder:text-ink/45 focus:border-ink focus:outline-none focus:ring-2 focus:ring-lime md:pr-20"
           />
+          {me.verification_status === "verified" && (
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("palette:open"))}
+              aria-label="Open quick search"
+              className="label-mono absolute right-2 top-1/2 hidden -translate-y-1/2 rounded border border-ink/20 px-1.5 py-1 text-ink/55 hover:border-ink hover:text-ink md:block"
+            >
+              Ctrl K
+            </button>
+          )}
         </form>
 
         <div className="ml-auto flex items-center gap-1">
