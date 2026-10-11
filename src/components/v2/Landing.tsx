@@ -1,5 +1,6 @@
 import Link from "next/link";
 import archive from "@/data/instagram-archive.json";
+import sizes from "@/data/instagram-sizes.json";
 import { chapters, CHAPTER_COUNT, COUNTRY_COUNT } from "@/data/chapters";
 import { stampDate } from "@/lib/format";
 import Collage, { type CollagePhoto } from "./Collage";
@@ -8,11 +9,20 @@ import Icon from "./Icon";
 type ArchiveRow = { short_code: string; image_url: string | null; posted_at: string | null; post_type: string | null };
 
 // Real photographs from the network's own Instagram archive, newest first.
-const PHOTOS: CollagePhoto[] = (archive as ArchiveRow[])
-  .filter((p) => p.image_url && p.posted_at)
+const SIZES = sizes as Record<string, number[]>;
+const ALL = (archive as ArchiveRow[])
+  .filter((p) => p.image_url && p.posted_at && SIZES[p.short_code])
   .sort((a, b) => (a.posted_at! < b.posted_at! ? 1 : -1))
-  .slice(0, 9)
-  .map((p) => ({ src: p.image_url!, stamp: stampDate(p.posted_at!), code: p.short_code }));
+  .map((p) => ({
+    src: p.image_url!,
+    stamp: stampDate(p.posted_at!),
+    code: p.short_code,
+    ratio: SIZES[p.short_code][0] / SIZES[p.short_code][1],
+  }));
+// The hero prints are square frames, so they only ever hold square pictures:
+// nothing is cropped to fit. The teaser frames are cut to each picture.
+const SQUARE: CollagePhoto[] = ALL.filter((p) => Math.abs(p.ratio - 1) < 0.02).slice(0, 5);
+const TEASER = ALL.filter((p) => !SQUARE.some((s) => s.code === p.code) && p.ratio > 0.7).slice(0, 6);
 
 const INSIDE = [
   {
@@ -75,7 +85,7 @@ export default function Landing({ signedIn }: { signedIn: boolean }) {
             </p>
           </div>
 
-          <Collage photos={PHOTOS.slice(0, 5)} />
+          <Collage photos={SQUARE} />
         </div>
 
         {/* A strip of chapter names, like a departures board. */}
@@ -149,23 +159,23 @@ export default function Landing({ signedIn }: { signedIn: boolean }) {
       <section className="board overflow-hidden">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 md:px-10 md:py-28 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
-            <p className="label-mono text-ink/70">The signature thing</p>
-            <h2 className="mt-4 font-display text-[clamp(3.2rem,10vw,7rem)] font-extrabold leading-[0.82] tracking-[-0.05em] text-ink">
+            <p className="label-mono text-ivory/70">The signature thing</p>
+            <h2 className="mt-4 font-display text-[clamp(3.2rem,10vw,7rem)] font-extrabold leading-[0.82] tracking-[-0.05em] text-ivory">
               The
               <br />
               Wall.
             </h2>
-            <p className="mt-6 max-w-md text-lg leading-relaxed text-ink/85">
+            <p className="mt-6 max-w-md text-lg leading-relaxed text-ivory/85">
               A living noticeboard of the network: announcements, reunion photos, old fest posters
               and everything the alumni association posts on Instagram, pinned in one place.
             </p>
-            <Link href="/noticeboard" className="btn mt-8 h-12 px-6 text-base">
+            <Link href="/noticeboard" className="btn btn-paper mt-8 h-12 px-6 text-base">
               Walk up to the wall
               <Icon name="arrow" className="h-4 w-4" />
             </Link>
           </div>
-          <ul className="grid grid-cols-2 gap-5 sm:grid-cols-3" aria-label="Recent photos from the network">
-            {PHOTOS.slice(3, 9).map((p, i) => (
+          <ul className="grid grid-cols-2 items-start gap-5 sm:grid-cols-3" aria-label="Recent photos from the network">
+            {TEASER.map((p, i) => (
               <li
                 key={p.code}
                 className={`pinned relative bg-white p-2 pb-7 shadow-[0_14px_22px_-12px_rgb(0_0_0/0.55)] ${i > 3 ? "hidden sm:block" : ""}`}
@@ -173,7 +183,7 @@ export default function Landing({ signedIn }: { signedIn: boolean }) {
               >
                 <span className="pin" style={{ ["--pin" as string]: ["#e23a2e", "#6a4cff", "#ff5a1f"][i % 3] }} aria-hidden="true" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.src} alt="" loading="lazy" className="aspect-square w-full object-cover" />
+                <img src={p.src} alt="" loading="lazy" style={{ aspectRatio: String(p.ratio) }} className="block h-auto w-full" />
                 <span className="label-mono absolute bottom-2 left-2 text-ink/60">{p.stamp}</span>
               </li>
             ))}

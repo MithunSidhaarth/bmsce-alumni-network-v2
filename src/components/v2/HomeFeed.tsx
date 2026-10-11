@@ -215,7 +215,7 @@ export default async function HomeFeed({
       <aside className="flex flex-col gap-8 lg:sticky lg:top-[calc(var(--topbar)+1.5rem)] lg:max-h-[calc(100vh-var(--topbar)-3rem)] lg:overflow-y-auto lg:pb-4 no-scrollbar">
         <section aria-labelledby="side-wall">
           <Link href="/noticeboard" className="board group block overflow-hidden rounded-md px-5 pb-5 pt-4">
-            <p id="side-wall" className="flex items-center justify-between font-display text-xl font-extrabold text-ink">
+            <p id="side-wall" className="flex items-center justify-between font-display text-xl font-extrabold text-ivory">
               The Wall
               <Icon name="arrow" className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </p>

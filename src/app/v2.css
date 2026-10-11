@@ -22,9 +22,9 @@
   --color-paper: #fcf9f0; /* a clean sheet on top of the page */
   --color-forest: #0f3b2a;
   --color-lime: #c8f53c; /* highlighter */
-  --color-volt: #20dd6d; /* the board */
-  --color-board: #11ad56;
-  --color-board-deep: #07673a;
+  --color-volt: #2f8f5d; /* the board: noticeboard felt, lit from the top left */
+  --color-board: #1c6b45;
+  --color-board-deep: #0e3f29;
   --color-tangerine: #ff5a1f;
   --color-violet: #6a4cff;
   --color-kraft: #d9c49b;
@@ -276,6 +276,8 @@
   .btn-ghost { background: transparent; color: var(--color-ink); border-color: rgb(19 26 21 / 0.28); }
   .btn-ghost:hover { background: var(--color-paper); border-color: var(--color-ink); }
   .btn-sm { min-height: 2.25rem; padding: 0.4rem 0.85rem; font-size: 0.8125rem; }
+  .btn-paper { background: var(--color-paper); border-color: var(--color-paper); color: var(--color-ink); }
+  .btn-paper:hover { background: #fff; box-shadow: 0 3px 0 rgb(6 36 23 / 0.6); }
   .btn-danger { background: var(--color-pin); border-color: var(--color-pin); color: #fff; }
   .btn-danger:hover { background: #c22d22; }
 
@@ -331,8 +333,8 @@
     isolation: isolate;
     background-color: var(--color-board);
     background-image:
-      radial-gradient(120% 80% at 18% 0%, rgb(200 245 60 / 0.55), transparent 55%),
-      radial-gradient(90% 70% at 100% 100%, rgb(7 103 58 / 0.9), transparent 60%),
+      radial-gradient(120% 80% at 15% 0%, rgb(122 190 140 / 0.38), transparent 55%),
+      radial-gradient(90% 70% at 100% 100%, rgb(8 44 28 / 0.75), transparent 60%),
       linear-gradient(160deg, var(--color-volt), var(--color-board) 55%, var(--color-board-deep));
   }
   .board::before {
@@ -352,7 +354,7 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    box-shadow: inset 0 0 0 10px rgb(7 60 34 / 0.55), inset 0 0 90px rgb(4 48 27 / 0.55);
+    box-shadow: inset 0 0 0 10px rgb(6 36 23 / 0.5), inset 0 0 90px rgb(4 30 19 / 0.5);
   }
 
   /* A pinned thing on the board or the page. --tilt sets its resting angle. */
@@ -400,9 +402,19 @@
 /* ==========================================================================
    The Wall
    ========================================================================== */
-.wall-chip:not([aria-pressed="true"]) {
-  background: rgb(252 249 240 / 0.88);
-  border-color: rgb(19 26 21 / 0.35);
+/* Filter chips sit on the dark board: outlined in cream, filled when chosen. */
+.wall-chip {
+  background: transparent;
+  border-color: rgb(244 238 221 / 0.45);
+  color: var(--color-ivory);
+}
+.wall-chip:hover {
+  border-color: var(--color-ivory);
+}
+.wall-chip[aria-pressed="true"] {
+  background: var(--color-ivory);
+  border-color: var(--color-ivory);
+  color: var(--color-ink);
 }
 .wall-letter {
   transform: rotate(var(--tilt, 0deg));

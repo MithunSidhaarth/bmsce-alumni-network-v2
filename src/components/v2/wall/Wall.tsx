@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import Link from "next/link";
+import sizes from "@/data/instagram-sizes.json";
 import type { NoticeCard } from "@/lib/types";
 import { longDate, seeded, stampDate } from "@/lib/format";
 import Avatar from "../Avatar";
@@ -25,6 +26,15 @@ const FILTERS: { key: FilterKey; label: string }[] = [
   { key: "memories", label: "Memories" },
   { key: "events", label: "Events" },
 ];
+
+// Pixel sizes of the archived photographs, so each frame can be cut to its
+// picture before the image has loaded (no cropping, no layout jump).
+const SIZES = sizes as Record<string, number[]>;
+function ratioOf(src: string | null): string | undefined {
+  const code = src?.match(/^\/instagram\/(.+)\.jpg$/)?.[1];
+  const s = code ? SIZES[code] : undefined;
+  return s ? `${s[0]} / ${s[1]}` : undefined;
+}
 
 const NOTE_COLOURS = ["#c8f53c", "#ffd9c7", "#e2dbff", "#fff3a8"];
 const PIN_COLOURS = ["#e23a2e", "#6a4cff", "#ff5a1f", "#131a15"];
@@ -217,8 +227,8 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
   return (
     <div className="board min-h-[calc(100dvh-var(--topbar))] px-4 pb-24 pt-8 md:px-8 md:pt-12">
       <header className="mx-auto max-w-[1400px]">
-        <p className="label-mono text-ink/75">BMSCE Alumni Network · the noticeboard</p>
-        <h1 className="mt-3 flex flex-wrap items-end gap-x-[0.22em] font-display text-[clamp(4rem,17vw,13rem)] font-extrabold leading-[0.78] tracking-[-0.06em] text-ink" aria-label="The Wall">
+        <p className="label-mono text-ivory/75">BMSCE Alumni Network · the noticeboard</p>
+        <h1 className="mt-3 flex flex-wrap items-end gap-x-[0.22em] font-display text-[clamp(4rem,17vw,13rem)] font-extrabold leading-[0.78] tracking-[-0.06em] text-ivory" aria-label="The Wall">
           {["The", "Wall"].map((word, w) => (
             <span key={word} className="flex" aria-hidden="true">
               {word.split("").map((ch, i) => (
@@ -236,7 +246,7 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
             </span>
           ))}
           <span
-            className="stickynote mb-[0.12em] ml-2 hidden rotate-6 px-3 py-2 text-left align-top sm:inline-block"
+            className="stickynote mb-[0.12em] ml-2 hidden rotate-6 px-3 py-2 text-left align-top text-ink sm:inline-block"
             style={{ ["--note" as string]: "#fff3a8" }}
             aria-hidden="true"
           >
@@ -244,7 +254,7 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
             <span className="hand block text-[1.15rem] leading-none tracking-normal">pinned here</span>
           </span>
         </h1>
-        <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink/90">
+        <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ivory/90">
           Announcements, reunion photographs, achievements and everything the alumni association
           posts on Instagram, pinned in one place. Pick something up to read it.
         </p>
@@ -277,7 +287,7 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
           )}
         </div>
 
-        <p className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-ink/80">
+        <p className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-ivory/80">
           <span className="inline-flex items-center gap-1.5">
             <Icon name="instagram" className="h-4 w-4" /> Official posts from @{handle}
           </span>
@@ -341,10 +351,17 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
                     <span className="block bg-white p-2.5 pb-3 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
                       {v.image && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={v.image} alt="" loading="lazy" decoding="async" className="aspect-[4/5] w-full bg-ivory-dim object-cover" />
+                        <img
+                          src={v.image}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          style={{ aspectRatio: ratioOf(v.image) }}
+                          className={`block h-auto w-full bg-ivory-dim ${ratioOf(v.image) ? "" : "min-h-40"}`}
+                        />
                       )}
                       {(v.title || v.text) && (
-                        <span className="mt-2.5 line-clamp-2 block px-0.5 text-[0.8125rem] leading-snug text-ink/85">
+                        <span className="mt-2.5 line-clamp-2 px-0.5 text-[0.8125rem] leading-snug text-ink/85">
                           {v.title ?? v.text}
                         </span>
                       )}
@@ -359,7 +376,7 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
                     <span className="block bg-paper px-5 pb-5 pt-7 shadow-[0_16px_26px_-14px_rgb(0_0_0/0.6)]">
                       <span className="stamp text-tangerine">{v.group === "notices" ? "Notice" : "From a member"}</span>
                       {v.title && <span className="mt-3 block font-display text-[1.45rem] font-bold leading-[1.05]">{v.title}</span>}
-                      <span className="mt-2.5 line-clamp-6 block whitespace-pre-line text-sm leading-relaxed text-ink/80">{v.text}</span>
+                      <span className="mt-2.5 line-clamp-6 whitespace-pre-line text-sm leading-relaxed text-ink/80">{v.text}</span>
                       <span className="rule-dashed my-3 block" />
                       <span className="flex items-center justify-between gap-2">
                         <Attribution v={v} />
@@ -374,7 +391,7 @@ export default function Wall({ cards, isMember, handle }: { cards: NoticeCard[];
                       style={{ ["--note" as string]: NOTE_COLOURS[Math.floor(seeded(id, 13) * NOTE_COLOURS.length)] }}
                     >
                       {v.title && <span className="block font-display text-lg font-bold leading-tight">{v.title}</span>}
-                      <span className={`line-clamp-6 block ${v.text.length < 120 ? "hand text-[1.55rem] leading-[1.08]" : "mt-1 text-sm leading-relaxed"}`}>
+                      <span className={`line-clamp-6 ${v.text.length < 120 ? "hand text-[1.55rem] leading-[1.08]" : "mt-1 text-sm leading-relaxed"}`}>
                         {v.text}
                       </span>
                       <span className="mt-4 flex items-center justify-between gap-2">

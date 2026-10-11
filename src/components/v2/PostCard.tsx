@@ -33,7 +33,7 @@ function Media({ media, polaroid }: { media: string[]; polaroid: boolean }) {
     return (
       <div className="mb-4 bg-white p-2 pb-3 shadow-[0_1px_3px_rgb(19_26_21/0.18)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={media[0]} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
+        <img src={media[0]} alt="" loading="lazy" className="block h-auto max-h-[36rem] w-full object-contain" />
         {media.length > 1 && (
           <div className="mt-2 grid grid-cols-4 gap-2">
             {media.slice(1, 5).map((m) => (
