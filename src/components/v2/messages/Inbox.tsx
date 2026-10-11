@@ -60,13 +60,13 @@ export default function Inbox({ rows, meId, verified }: { rows: InboxRow[]; meId
           <label htmlFor="inbox-q" className="sr-only">
             Search conversations
           </label>
-          <Icon name="search" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/45" />
+          <Icon name="search" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/70" />
           <input
             id="inbox-q"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search conversations"
-            className="h-10 w-full rounded-full border border-ink/15 bg-ivory pl-9 pr-3 text-sm placeholder:text-ink/45 focus:border-ink focus:outline-none"
+            className="h-10 w-full rounded-full border border-ink/15 bg-ivory pl-9 pr-3 text-sm placeholder:text-ink/70 focus:border-ink focus:outline-none"
           />
         </div>
       </div>
@@ -93,12 +93,12 @@ export default function Inbox({ rows, meId, verified }: { rows: InboxRow[]; meId
                     <span className={`truncate text-[0.9375rem] ${r.unread ? "font-bold" : "font-semibold"}`}>
                       {r.other_name ?? "Member"}
                     </span>
-                    <time dateTime={r.last_message_at} className="shrink-0 text-xs text-ink/50">
+                    <time dateTime={r.last_message_at} className="shrink-0 text-xs text-ink/70">
                       {timeAgo(r.last_message_at)}
                     </time>
                   </span>
                   <span className="mt-0.5 flex items-center gap-2">
-                    <span className={`truncate text-sm ${r.unread ? "font-semibold text-ink" : "text-ink/60"}`}>
+                    <span className={`truncate text-sm ${r.unread ? "font-semibold text-ink" : "text-ink/70"}`}>
                       {mine && "You: "}
                       {r.last_preview}
                     </span>
@@ -117,7 +117,7 @@ export default function Inbox({ rows, meId, verified }: { rows: InboxRow[]; meId
         {shown.length === 0 && (
           <li className="px-6 py-12 text-center">
             <p className="hand text-[1.6rem] text-forest">{rows.length === 0 ? "No conversations yet" : "No matches"}</p>
-            <p className="mt-2 text-sm text-ink/65">
+            <p className="mt-2 text-sm text-ink/70">
               {!verified
                 ? "Messaging opens once an admin has verified your account."
                 : rows.length === 0

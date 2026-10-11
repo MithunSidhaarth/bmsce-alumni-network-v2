@@ -8,9 +8,9 @@ import type { PostingType } from "@/lib/types";
 import { said } from "@/lib/fail";
 
 const FIELD =
-  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none";
+  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 transition-colors focus:border-gold focus:outline-none";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60";
+  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
 
 const STEPS = ["Basics", "Requirements", "Details"] as const;
 
@@ -111,10 +111,10 @@ export default function PostOpeningForm() {
               className={`-mb-px border-b-2 px-4 py-3 font-sans text-[12px] font-medium uppercase tracking-[0.12em] transition-colors ${
                 step === i
                   ? "border-oxblood text-oxblood"
-                  : "border-transparent text-ink/50 hover:text-oxblood"
+                  : "border-transparent text-ink/70 hover:text-oxblood"
               }`}
             >
-              <span className="text-ink/35">{i + 1}.</span> {s}
+              <span className="text-ink/70">{i + 1}.</span> {s}
               {i === 0 && !basicsValid && (
                 <span className="ml-1 text-oxblood">*</span>
               )}
@@ -177,7 +177,7 @@ export default function PostOpeningForm() {
                     type="checkbox"
                     checked={remote}
                     onChange={(e) => setRemote(e.target.checked)}
-                    className="h-4 w-4 accent-[#5b1220]"
+                    className="h-4 w-4 accent-[#016ed2]"
                   />
                   <span className="font-sans text-sm text-ink/75">
                     Remote friendly
@@ -213,7 +213,7 @@ export default function PostOpeningForm() {
                           setSkills((cur) => cur.filter((x) => x !== s))
                         }
                         aria-label={`Remove ${s}`}
-                        className="text-oxblood/60 hover:text-oxblood"
+                        className="text-oxblood hover:text-oxblood"
                       >
                         ×
                       </button>
@@ -227,10 +227,10 @@ export default function PostOpeningForm() {
                     placeholder={
                       skills.length ? "Add another…" : "Type a skill, press Enter"
                     }
-                    className="min-w-[160px] flex-1 bg-transparent py-1 font-sans text-sm text-ink placeholder:text-ink/40 focus:outline-none"
+                    className="min-w-[160px] flex-1 bg-transparent py-1 font-sans text-sm text-ink placeholder:text-ink/70 focus:outline-none"
                   />
                 </div>
-                <span className="mt-1.5 block font-sans text-xs text-ink/50">
+                <span className="mt-1.5 block font-sans text-xs text-ink/70">
                   Press Enter after each skill.
                 </span>
               </div>
@@ -297,7 +297,7 @@ export default function PostOpeningForm() {
                   onChange={(e) => setExternalLink(e.target.value)}
                   placeholder="https://company.com/careers/…"
                 />
-                <span className="mt-1.5 block font-sans text-xs text-ink/50">
+                <span className="mt-1.5 block font-sans text-xs text-ink/70">
                   Optional: people can still apply here in-app.
                 </span>
               </Field>
@@ -306,7 +306,7 @@ export default function PostOpeningForm() {
         </div>
 
         {error && (
-          <p className="mt-6 rounded-xl border border-oxblood/30 bg-oxblood/5 px-4 py-3 font-sans text-sm text-oxblood">
+          <p className="mt-6 rounded-xl border border-oxblood/30 bg-paper px-4 py-3 font-sans text-sm text-oxblood">
             {error}
           </p>
         )}
@@ -340,7 +340,7 @@ export default function PostOpeningForm() {
           >
             {busy ? "Publishing…" : "Publish opening"}
           </button>
-          <span className="font-sans text-xs text-ink/45">
+          <span className="font-sans text-xs text-ink/70">
             Only the basics are required, and the rest is optional.
           </span>
         </div>
@@ -350,7 +350,7 @@ export default function PostOpeningForm() {
       <aside className="lg:sticky lg:top-28 lg:self-start">
         <p className={LABEL}>Live preview</p>
         <div className="mt-3 flex flex-col rounded-2xl border border-gold/25 bg-ivory-dim/60 p-6">
-          <span className="w-fit rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood/80">
+          <span className="w-fit rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
             {type === "job" ? "Job" : "Internship"}
           </span>
           <h3 className="mt-4 font-display text-xl leading-snug text-ink">
@@ -359,7 +359,7 @@ export default function PostOpeningForm() {
           <p className="mt-1 font-sans text-sm text-ink/70">
             {company || "Company"}
           </p>
-          <p className="mt-2 font-sans text-sm text-ink/55">
+          <p className="mt-2 font-sans text-sm text-ink/70">
             {remote
               ? location
                 ? `${location} · Remote`
@@ -367,7 +367,7 @@ export default function PostOpeningForm() {
               : location || "Location"}
           </p>
           {experienceLevel && (
-            <p className="mt-2 font-sans text-xs text-ink/50">
+            <p className="mt-2 font-sans text-xs text-ink/70">
               {experienceLevel}
             </p>
           )}
@@ -379,7 +379,7 @@ export default function PostOpeningForm() {
               {skills.slice(0, 4).map((s) => (
                 <span
                   key={s}
-                  className="rounded-full border border-gold/30 px-2.5 py-0.5 font-sans text-[10px] uppercase tracking-[0.1em] text-ink/60"
+                  className="rounded-full border border-gold/30 px-2.5 py-0.5 font-sans text-[10px] uppercase tracking-[0.1em] text-ink/70"
                 >
                   {s}
                 </span>

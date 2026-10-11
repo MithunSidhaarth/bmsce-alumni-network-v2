@@ -1,3 +1,4 @@
+import { clockTime } from "@/lib/format";
 import Link from "next/link";
 
 const TZ = "Asia/Kolkata";
@@ -17,7 +18,7 @@ export default function EventStub({
   const d = new Date(date);
   const day = d.toLocaleDateString("en-GB", { timeZone: TZ, day: "2-digit" });
   const month = d.toLocaleDateString("en-GB", { timeZone: TZ, month: "short" }).toUpperCase();
-  const time = d.toLocaleTimeString("en-GB", { timeZone: TZ, hour: "numeric", minute: "2-digit", hour12: true });
+  const time = clockTime(date);
   return (
     <Link
       href={`/events/${id}`}
@@ -31,7 +32,7 @@ export default function EventStub({
         <span className="block truncate font-display text-[1.02rem] font-bold leading-tight group-hover:underline">
           {title}
         </span>
-        <span className="mt-1 block truncate text-xs text-ink/60">
+        <span className="mt-1 block truncate text-xs text-ink/70">
           {time}
           {location ? ` · ${location}` : ""}
         </span>

@@ -6,9 +6,9 @@ import { useId, useRef, useState } from "react";
 // 2px lines, a light wash under a single series, a crosshair with a tooltip
 // on hover or keyboard focus, and a table view of the same numbers.
 // The two series colours are validated for colour-vision deficiency against
-// the paper surface (green #12a15c, violet #5b3fe0).
+// the paper surface (green #016ed2, violet #2f2543).
 
-export const SERIES_COLOURS = ["#12a15c", "#5b3fe0"] as const;
+export const SERIES_COLOURS = ["#016ed2", "#2f2543"] as const;
 
 type Series = { name: string; values: number[] };
 
@@ -70,7 +70,7 @@ export default function SeriesChart({
             ))}
           </span>
         ) : (
-          <span className="text-xs text-ink/60">{total(series[0])} in this period</span>
+          <span className="text-xs text-ink/70">{total(series[0])} in this period</span>
         )}
       </figcaption>
 
@@ -98,8 +98,8 @@ export default function SeriesChart({
           </desc>
           {[0, max / 2, max].map((t) => (
             <g key={t}>
-              <line x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} stroke="#131a15" strokeOpacity={t === 0 ? 0.3 : 0.1} />
-              <text x={PAD.left - 8} y={y(t) + 4} textAnchor="end" fontSize="11" fill="#131a15" fillOpacity="0.55">
+              <line x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} stroke="#212529" strokeOpacity={t === 0 ? 0.3 : 0.1} />
+              <text x={PAD.left - 8} y={y(t) + 4} textAnchor="end" fontSize="11" fill="#212529" fillOpacity="0.55">
                 {t.toLocaleString("en-IN")}
               </text>
             </g>
@@ -107,7 +107,7 @@ export default function SeriesChart({
           {[0, Math.floor((n - 1) / 2), n - 1]
             .filter((v, i, a) => n > 0 && a.indexOf(v) === i)
             .map((i) => (
-              <text key={i} x={x(i)} y={H - 6} textAnchor={i === 0 ? "start" : i === n - 1 ? "end" : "middle"} fontSize="11" fill="#131a15" fillOpacity="0.55">
+              <text key={i} x={x(i)} y={H - 6} textAnchor={i === 0 ? "start" : i === n - 1 ? "end" : "middle"} fontSize="11" fill="#212529" fillOpacity="0.55">
                 {dayLabel(days[i])}
               </text>
             ))}
@@ -120,8 +120,8 @@ export default function SeriesChart({
               <path d={path(s.values)} fill="none" stroke={SERIES_COLOURS[i]} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
               {n > 0 && (
                 <>
-                  <circle cx={x(n - 1)} cy={y(s.values[n - 1])} r="4.5" fill={SERIES_COLOURS[i]} stroke="#fcf9f0" strokeWidth="2" />
-                  <text x={x(n - 1) + 9} y={y(s.values[n - 1]) + 4} fontSize="12" fontWeight="700" fill="#131a15">
+                  <circle cx={x(n - 1)} cy={y(s.values[n - 1])} r="4.5" fill={SERIES_COLOURS[i]} stroke="#ffffff" strokeWidth="2" />
+                  <text x={x(n - 1) + 9} y={y(s.values[n - 1]) + 4} fontSize="12" fontWeight="700" fill="#212529">
                     {s.values[n - 1]}
                   </text>
                 </>
@@ -131,9 +131,9 @@ export default function SeriesChart({
 
           {at !== null && (
             <g pointerEvents="none">
-              <line x1={x(at)} x2={x(at)} y1={PAD.top} y2={PAD.top + innerH} stroke="#131a15" strokeOpacity="0.45" />
+              <line x1={x(at)} x2={x(at)} y1={PAD.top} y2={PAD.top + innerH} stroke="#212529" strokeOpacity="0.45" />
               {series.map((s, i) => (
-                <circle key={s.name} cx={x(at)} cy={y(s.values[at])} r="4.5" fill={SERIES_COLOURS[i]} stroke="#fcf9f0" strokeWidth="2" />
+                <circle key={s.name} cx={x(at)} cy={y(s.values[at])} r="4.5" fill={SERIES_COLOURS[i]} stroke="#ffffff" strokeWidth="2" />
               ))}
             </g>
           )}
@@ -158,12 +158,12 @@ export default function SeriesChart({
           </div>
         )}
         {empty && (
-          <p className="pointer-events-none absolute inset-x-0 top-[38%] text-center text-sm text-ink/50">No activity in this period yet.</p>
+          <p className="pointer-events-none absolute inset-x-0 top-[38%] text-center text-sm text-ink/70">No activity in this period yet.</p>
         )}
       </div>
 
       <details className="mt-2 text-xs">
-        <summary className="cursor-pointer text-ink/60 hover:text-ink">Show as a table</summary>
+        <summary className="cursor-pointer text-ink/70 hover:text-ink">Show as a table</summary>
         <div className="mt-2 max-h-56 overflow-auto">
           <table className="w-full border-collapse text-left">
             <thead>

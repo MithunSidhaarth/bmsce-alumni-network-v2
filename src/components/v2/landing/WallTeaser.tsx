@@ -11,7 +11,7 @@ export type TeaserPhoto = { src: string; ratio: number; stamp: string; code: str
 
 const TILTS = [-3.5, 2.5, -1.5, 3, -2.5, 1.5];
 const DROPS = [0, 22, 8, 14, 0, 26];
-const PINS = ["#e23a2e", "#6a4cff", "#ff5a1f"];
+const PINS = ["#c8312c", "#016ed2", "#0088cc"];
 // Where each print starts before it is thrown onto the board.
 const FROM = [
   { x: -260, y: -180, r: -34 },
@@ -74,8 +74,8 @@ export default function WallTeaser({ photos }: { photos: TeaserPhoto[] }) {
             ))}
           </h2>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-ivory/85">
-            A living noticeboard of the network: announcements, reunion photos, old fest posters
-            and everything the alumni association posts on Instagram, pinned in one place.
+            A living noticeboard of the Network: announcements, reunion photos, old fest posters
+            and everything the Network posts on Instagram, pinned in one place.
           </p>
           <Link href="/noticeboard" className="btn btn-paper mt-8 h-12 px-6 text-base">
             Walk up to the wall
@@ -83,7 +83,7 @@ export default function WallTeaser({ photos }: { photos: TeaserPhoto[] }) {
           </Link>
         </div>
 
-        <ul className="wt-board grid grid-cols-2 items-start gap-5 sm:grid-cols-3" aria-label="Recent photos from the network">
+        <ul className="wt-board grid grid-cols-2 items-start gap-5 sm:grid-cols-3" aria-label="Recent photos from the Network">
           {photos.map((p, i) => (
             <li key={p.code} className={`wt-print will-change-transform ${i > 3 ? "hidden sm:block" : ""}`} style={{ marginTop: DROPS[i % DROPS.length] }}>
               <Link
@@ -96,8 +96,8 @@ export default function WallTeaser({ photos }: { photos: TeaserPhoto[] }) {
               >
                 <span className="pin" style={{ ["--pin" as string]: PINS[i % PINS.length] }} aria-hidden="true" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img {...pic(p.src, "(min-width: 640px) 16rem, 44vw")} alt="" loading="lazy" style={{ aspectRatio: String(p.ratio) }} className="block h-auto w-full" />
-                <span className="label-mono absolute bottom-2 left-2 text-ink/60">{p.stamp}</span>
+                <img {...pic(p.src, "(min-width: 640px) 16rem, 44vw")} alt={`A photo pinned to The Wall, ${p.stamp}`} loading="lazy" style={{ aspectRatio: String(p.ratio) }} className="block h-auto w-full" />
+                <span className="label-mono absolute bottom-2 left-2 text-ink/70">{p.stamp}</span>
               </Link>
             </li>
           ))}

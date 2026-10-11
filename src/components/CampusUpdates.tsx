@@ -41,7 +41,7 @@ export default async function CampusUpdates() {
             <p className="font-display text-xl italic text-ink">
               Fresh updates from campus are on the way.
             </p>
-            <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/65">
+            <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/70">
               Campus news and alumni initiatives will appear here as soon as
               they&rsquo;re posted.
             </p>

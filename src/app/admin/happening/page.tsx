@@ -18,7 +18,7 @@ export default async function AdminHappeningPage() {
     .returns<CampusUpdate[]>();
   return (
     <>
-      <h1 className="font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
+      <h1 className="slash font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
         What&rsquo;s happening in BMSCE.
       </h1>
       <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-ink/70">

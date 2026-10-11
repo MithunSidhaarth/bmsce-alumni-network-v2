@@ -83,8 +83,8 @@ function calendarGap(a: { m: number; d: number }, b: { m: number; d: number }) {
   return Math.min(gap, 366 - gap);
 }
 
-const NOTE_COLOURS = ["#c8f53c", "#ffd9c7", "#e2dbff", "#fff3a8"];
-const PIN_COLOURS = ["#e23a2e", "#6a4cff", "#ff5a1f", "#131a15"];
+const NOTE_COLOURS = ["#dadde2", "#ffffff", "#dadde2", "#ffffff"];
+const PIN_COLOURS = ["#c8312c", "#016ed2", "#0088cc", "#212529"];
 
 type View = {
   card: NoticeCard;
@@ -99,6 +99,13 @@ type View = {
   byline: string | null;
   href: { url: string; label: string; external: boolean } | null;
 };
+
+/** Alt text for a pinned picture: the words it was pinned with. */
+function altFor(v: { title?: string | null; text: string }) {
+  const words = (v.title || v.text || "").replace(/\s+/g, " ").trim();
+  if (!words) return "A photo pinned to The Wall";
+  return words.length > 110 ? `${words.slice(0, 109).trimEnd()}…` : words;
+}
 
 function describe(card: NoticeCard): View {
   const base = { card, date: card.date, year: new Date(card.date).getFullYear() };
@@ -179,7 +186,7 @@ function describe(card: NoticeCard): View {
 function Attribution({ v, compact = false }: { v: View; compact?: boolean }) {
   if (v.card.source === "instagram") {
     return (
-      <span className="label-mono inline-flex items-center gap-1 text-ink/60">
+      <span className="label-mono inline-flex items-center gap-1 text-ink/70">
         <Icon name="instagram" className="h-3.5 w-3.5" />
         {compact ? "Instagram" : "Official Instagram"}
       </span>
@@ -193,7 +200,7 @@ function Attribution({ v, compact = false }: { v: View; compact?: boolean }) {
       </span>
     );
   }
-  return <span className="label-mono text-ink/60">{v.byline ?? "Alumni Network"}</span>;
+  return <span className="label-mono text-ink/70">{v.byline ?? "Alumni Network"}</span>;
 }
 
 /** One thing pinned to the board. The same card serves the list and the board view. */
@@ -237,7 +244,7 @@ function WallCard({
             // eslint-disable-next-line @next/next/no-img-element
             <img
               {...pic(v.image, square ? "250px" : "(min-width: 1024px) 28vw, (min-width: 640px) 46vw, 92vw")}
-              alt=""
+              alt={altFor(v)}
               loading="lazy"
               decoding="async"
               style={{ aspectRatio: ratioOf(v.image) ?? (square ? "1" : undefined) }}
@@ -251,7 +258,7 @@ function WallCard({
           )}
           <span className="mt-2 flex items-center justify-between gap-2 px-0.5">
             <Attribution v={v} compact />
-            <span className="label-mono shrink-0 text-ink/50">{stampDate(v.date)}</span>
+            <span className="label-mono shrink-0 text-ink/70">{stampDate(v.date)}</span>
           </span>
         </span>
       )}
@@ -264,7 +271,7 @@ function WallCard({
           <span className="rule-dashed my-3 block" />
           <span className="flex items-center justify-between gap-2">
             <Attribution v={v} />
-            <span className="label-mono shrink-0 text-ink/50">{stampDate(v.date)}</span>
+            <span className="label-mono shrink-0 text-ink/70">{stampDate(v.date)}</span>
           </span>
         </span>
       )}
@@ -280,7 +287,7 @@ function WallCard({
           </span>
           <span className="mt-4 flex items-center justify-between gap-2">
             <Attribution v={v} />
-            <span className="label-mono shrink-0 text-ink/55">{stampDate(v.date)}</span>
+            <span className="label-mono shrink-0 text-ink/70">{stampDate(v.date)}</span>
           </span>
         </span>
       )}
@@ -298,13 +305,13 @@ function WallCard({
           <span className="min-w-0 flex-1 px-4 py-4">
             <span className="label-mono text-tangerine">Admit one · Event</span>
             <span className="mt-1 block font-display text-xl font-bold leading-tight">{v.title}</span>
-            {v.text && <span className="mt-1 block truncate text-xs text-ink/60">{v.text}</span>}
+            {v.text && <span className="mt-1 block truncate text-xs text-ink/70">{v.text}</span>}
           </span>
         </span>
       )}
 
       {v.card.pinned && (
-        <span className="stamp absolute -right-2 -top-3 rotate-6 border-ink bg-lime text-ink">Pinned</span>
+        <span className="stamp absolute -right-2 -top-3 rotate-6 border-blue bg-blue text-white">Pinned</span>
       )}
     </button>
   );
@@ -458,7 +465,7 @@ export default function Wall({
           ))}
           <span
             className="stickynote mb-[0.12em] ml-2 hidden rotate-6 px-3 py-2 text-left align-top text-ink sm:inline-block"
-            style={{ ["--note" as string]: "#fff3a8" }}
+            style={{ ["--note" as string]: "#ffffff" }}
             aria-hidden="true"
           >
             <span className="hand block text-[1.5rem] leading-none tracking-normal">{cards.length} things</span>
@@ -466,7 +473,7 @@ export default function Wall({
           </span>
         </h1>
         <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ivory/90">
-          Announcements, reunion photographs, achievements and everything the alumni association
+          Announcements, reunion photographs, achievements and everything the Network
           posts on Instagram, pinned in one place. Pick something up to read it.
         </p>
 
@@ -539,7 +546,7 @@ export default function Wall({
                   >
                     {v.image && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img {...pic(v.image, "64px")} alt="" loading="lazy" className="h-16 w-16 shrink-0 object-cover" />
+                      <img {...pic(v.image, "64px")} alt={altFor(v)} loading="lazy" className="h-16 w-16 shrink-0 object-cover" />
                     )}
                     <span className="min-w-0">
                       <span className="label-mono block text-tangerine">{longDate(v.date)}</span>
@@ -632,7 +639,7 @@ export default function Wall({
             {current.image && (
               <div className="flex max-h-[42dvh] items-center justify-center bg-ink md:max-h-[88dvh]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img {...pic(current.image, "(min-width: 768px) 50vw, 94vw")} alt="" className="max-h-[42dvh] w-full object-contain md:max-h-[88dvh]" />
+                <img {...pic(current.image, "(min-width: 768px) 50vw, 94vw")} alt={altFor(current)} className="max-h-[42dvh] w-full object-contain md:max-h-[88dvh]" />
               </div>
             )}
             <div className={`flex min-h-0 flex-col overflow-y-auto px-6 pb-6 pt-7 ${current.image ? "" : "md:col-span-2 md:mx-auto md:max-w-2xl"}`}>
@@ -646,7 +653,7 @@ export default function Wall({
                     ? "Notice"
                     : "From a member"}
                 </span>
-                <time dateTime={current.date} className="label-mono text-ink/55">
+                <time dateTime={current.date} className="label-mono text-ink/70">
                   {longDate(current.date)}
                 </time>
               </p>
@@ -675,7 +682,7 @@ export default function Wall({
                     ))}
                 </p>
                 {current.card.source === "instagram" && (
-                  <p className="mt-3 text-xs text-ink/50">
+                  <p className="mt-3 text-xs text-ink/70">
                     Imported from the official @{handle} Instagram account. The original post is the source of record.
                   </p>
                 )}

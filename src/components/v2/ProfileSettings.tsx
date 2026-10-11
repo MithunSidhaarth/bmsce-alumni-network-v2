@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Privacy } from "@/lib/types";
 
 const DM_OPTIONS: { value: Privacy["dm"]; label: string; hint: string }[] = [
-  { value: "members", label: "Any verified member", hint: "Anyone in the network can start a conversation with you." },
+  { value: "members", label: "Any verified member", hint: "Anyone in the Network can start a conversation with you." },
   { value: "chapters", label: "Only people in my chapters", hint: "A member has to share a chapter with you to write first." },
   { value: "nobody", label: "Nobody", hint: "No new conversations. Ones you already have stay open." },
 ];
@@ -66,7 +66,7 @@ export default function ProfileSettings({
       <input type="checkbox" checked={p[key] !== false} onChange={(e) => setP({ ...p, [key]: e.target.checked })} className="mt-1 h-4 w-4" />
       <span className="text-sm">
         {label}
-        <span className="block text-xs text-ink/60">{hint}</span>
+        <span className="block text-xs text-ink/70">{hint}</span>
       </span>
     </label>
   );
@@ -98,7 +98,7 @@ export default function ProfileSettings({
           className="field font-mono"
           placeholder="1BM19CS001"
         />
-        <span className="mt-1 block text-xs text-ink/60">Printed on your ID card, which other members can see on your profile.</span>
+        <span className="mt-1 block text-xs text-ink/70">Printed on your ID card, which other members can see on your profile.</span>
       </label>
 
       <fieldset className="mt-7">
@@ -109,7 +109,7 @@ export default function ProfileSettings({
               <input type="radio" name="dm" checked={p.dm === o.value} onChange={() => setP({ ...p, dm: o.value })} className="mt-1 h-4 w-4" />
               <span className="text-sm">
                 {o.label}
-                <span className="block text-xs text-ink/60">{o.hint}</span>
+                <span className="block text-xs text-ink/70">{o.hint}</span>
               </span>
             </label>
           ))}
@@ -124,7 +124,7 @@ export default function ProfileSettings({
           {toggle("show_linkedin", "LinkedIn link", "Hidden from your profile page when off.")}
           {toggle("show_online", "A green dot while I am online", "Shown beside your name in Messages. You still see others when this is off.")}
         </div>
-        <p className="mt-3 text-xs leading-relaxed text-ink/60">
+        <p className="mt-3 text-xs leading-relaxed text-ink/70">
           Your email addresses and phone number are never shown on your profile. They are stored separately and are visible only to
           you, the admins, and a mentor or mentee you have accepted.
         </p>

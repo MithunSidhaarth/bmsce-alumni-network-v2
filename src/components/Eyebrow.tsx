@@ -9,7 +9,7 @@ export default function Eyebrow({
   tone = "ink",
   align = "left",
 }: EyebrowProps) {
-  const toneClass = tone === "ivory" ? "text-ivory/80" : "text-oxblood/80";
+  const toneClass = tone === "ivory" ? "text-ivory/80" : "text-oxblood";
   const alignClass = align === "center" ? "justify-center" : "justify-start";
 
   return (

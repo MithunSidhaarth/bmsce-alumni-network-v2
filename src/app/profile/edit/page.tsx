@@ -49,7 +49,7 @@ export default async function EditProfilePage() {
         <section id="top">
           <div className="mx-auto max-w-2xl px-6 pb-24 pt-16 md:pt-24">
             <Eyebrow>My profile</Eyebrow>
-            <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
+            <h1 className="slash mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
               Edit your details.
             </h1>
             <p className="mt-5 max-w-xl font-sans text-base leading-relaxed text-ink/70">

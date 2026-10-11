@@ -13,15 +13,15 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "Who can join the BMSCE Alumni Network?",
-    a: "Any graduate of BMS College of Engineering. Current students can also create an account and keep it after graduation.",
+    a: "Any graduate of B.M.S. College of Engineering. Current students can also create an account and keep it after graduation.",
   },
   {
     q: "How do I join?",
-    a: "Choose “Join the network”, sign in, and complete your profile. It takes a couple of minutes.",
+    a: "Choose “Join the Network”, sign in, and complete your profile. It takes a couple of minutes.",
   },
   {
     q: "Why is my profile “pending verification”?",
-    a: "We check that every member is a genuine BMSCE alumnus or student before opening up member-only areas like the directory and community. Verification is done by the alumni team, so it may take a little while.",
+    a: "We check that every member is a genuine BMSCE alum or student before opening up member-only areas like the directory and community. Verification is done by the alumni team, so it may take a little while.",
   },
   {
     q: "Who can see my profile?",
@@ -60,7 +60,7 @@ export default function FaqsPage() {
               <Eyebrow>FAQs</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-[1.02] tracking-tight text-ink">
+              <h1 className="slash mt-6 font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-[1.02] tracking-tight text-ink">
                 Frequently asked questions.
               </h1>
             </Reveal>

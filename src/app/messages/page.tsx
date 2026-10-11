@@ -33,7 +33,7 @@ export default async function MessagesIndex({
       ) : (
         <>
           <p className="hand text-[1.9rem] text-forest">Pick a conversation</p>
-          <p className="mt-2 max-w-sm text-sm text-ink/65">
+          <p className="mt-2 max-w-sm text-sm text-ink/70">
             Or start one from any member&rsquo;s profile in the{" "}
             <Link href="/directory" className="font-semibold text-forest underline underline-offset-4">
               Alumni Network

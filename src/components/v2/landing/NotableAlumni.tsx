@@ -83,7 +83,7 @@ export default function NotableAlumni({ heading = "h2" }: { heading?: "h1" | "h2
         {notableAlumni.map((person, i) => (
           <li key={person.name} className="w-[74vw] max-w-[19rem] shrink-0 snap-center sm:w-[19rem] sm:snap-start">
             <figure
-              className="na-card pinned relative rounded-print bg-white p-3 pb-5 shadow-[0_22px_38px_-18px_rgb(19_26_21/0.55)]"
+              className="na-card pinned relative rounded-print bg-white p-3 pb-5 shadow-[0_22px_38px_-18px_rgb(33_37_41/0.55)]"
               style={{ ["--tilt" as string]: `${TILTS[i % TILTS.length]}deg` }}
             >
               <span className={`tape ${i % 2 ? "tape-lime" : ""}`} aria-hidden="true" />
@@ -92,7 +92,7 @@ export default function NotableAlumni({ heading = "h2" }: { heading?: "h1" | "h2
               <figcaption className="px-1 pt-4">
                 <span className="hand block text-[2rem] leading-none text-ink">{person.name}</span>
                 <span className="mt-2 block text-sm leading-snug text-ink/70">{person.role}</span>
-                <span className="stamp mt-3 text-forest">Batch of {person.batch}</span>
+                <span className="stamp mt-3 text-forest">Class of {person.batch}</span>
               </figcaption>
             </figure>
           </li>

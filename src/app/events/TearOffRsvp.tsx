@@ -71,7 +71,7 @@ export default function TearOffRsvp({
 
   return (
     <div>
-      <p className="flex flex-wrap items-center justify-between gap-2 px-5 text-xs text-ink/65">
+      <p className="flex flex-wrap items-center justify-between gap-2 px-5 text-xs text-ink/70">
         <span className="font-mono">
           {n} going{going ? " · you are in" : ""}
         </span>
@@ -93,7 +93,7 @@ export default function TearOffRsvp({
           // Tabs go missing from the right-hand end first.
           const gone = i >= TABS - torn;
           // A torn-off tab leaves a gap you can see the desk through.
-          if (gone) return <span key={i} aria-hidden="true" className="flex-1 bg-ivory shadow-[inset_0_7px_6px_-5px_rgb(19_26_21/0.4)]" />;
+          if (gone) return <span key={i} aria-hidden="true" className="flex-1 bg-ivory shadow-[inset_0_7px_6px_-5px_rgb(33_37_41/0.4)]" />;
           const face = (
             <span className="rotate-180 font-mono text-[0.625rem] font-medium uppercase tracking-[0.14em] [writing-mode:vertical-rl]">{label}</span>
           );

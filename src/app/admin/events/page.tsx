@@ -1,3 +1,4 @@
+import { dateTime } from "@/lib/format";
 import type { Metadata } from "next";
 import Link from "next/link";
 import DeleteEventButton from "./DeleteEventButton";
@@ -43,7 +44,7 @@ export default async function AdminEventsPage() {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
+        <h1 className="slash font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
           Events.
         </h1>
         <Link
@@ -59,7 +60,7 @@ export default async function AdminEventsPage() {
                 <p className="font-display text-xl italic text-ink">
                   No events yet.
                 </p>
-                <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/65">
+                <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/70">
                   Create your first event, and it&rsquo;ll show on the public
                   Events page.
                 </p>
@@ -68,17 +69,7 @@ export default async function AdminEventsPage() {
               <ul className="mt-10 flex flex-col gap-4">
                 {list.map((ev) => {
                   const past = new Date(ev.event_date).getTime() < now;
-                  const label = new Date(ev.event_date).toLocaleDateString(
-                    "en-US",
-                    {
-                      weekday: "short",
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "2-digit",
-                    }
-                  );
+                  const label = dateTime(ev.event_date);
                   const rsvpNames = rsvpsByEvent.get(ev.id) ?? [];
                   return (
                     <li
@@ -91,7 +82,7 @@ export default async function AdminEventsPage() {
                             {label}
                           </span>
                           {past && (
-                            <span className="rounded-full border border-ink/25 bg-ink/5 px-2.5 py-0.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/55">
+                            <span className="rounded-full border border-ink/25 bg-ink/5 px-2.5 py-0.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/70">
                               Past
                             </span>
                           )}
@@ -100,12 +91,12 @@ export default async function AdminEventsPage() {
                           {ev.title}
                         </h3>
                         {ev.location && (
-                          <p className="mt-1 font-sans text-sm text-ink/60">
+                          <p className="mt-1 font-sans text-sm text-ink/70">
                             {ev.location}
                           </p>
                         )}
                         <details className="mt-3">
-                          <summary className="cursor-pointer font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/80">
+                          <summary className="cursor-pointer font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood">
                             {rsvpNames.length} RSVP
                             {rsvpNames.length === 1 ? "" : "s"}
                           </summary>

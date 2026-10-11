@@ -5,9 +5,9 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions: BMSCE Alumni Network",
+  title: "Terms and conditions: BMSCE Alumni Network",
   description:
-    "The Terms & Conditions governing use of the BMSCE Alumni Network: eligibility, acceptable use, content, job postings, mentorship, and more.",
+    "The terms and conditions governing use of the BMSCE Alumni Network: eligibility, acceptable use, content, job postings, mentorship, and more.",
 };
 
 const HEADING = "mt-12 font-display text-2xl text-ink md:text-3xl";
@@ -37,12 +37,12 @@ export default function TermsPage() {
               <Eyebrow>Terms</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,3.75rem)] leading-[1.03] tracking-tight text-ink">
-                Terms &amp; Conditions
+              <h1 className="slash mt-6 font-display text-[clamp(2.25rem,6vw,3.75rem)] leading-[1.03] tracking-tight text-ink">
+                Terms and conditions
               </h1>
             </Reveal>
             <Reveal delay={140}>
-              <p className="mt-5 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/45">
+              <p className="mt-5 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
                 Last updated: July 29, 2026
               </p>
             </Reveal>
@@ -50,7 +50,7 @@ export default function TermsPage() {
             <Reveal delay={200}>
               <div className="mt-10 border-t border-gold/30 pt-10">
                 <p className={BODY.replace("mt-4", "")}>
-                  Please read these Terms &amp; Conditions (&ldquo;Terms&rdquo;)
+                  Please read these Terms and Conditions (&ldquo;Terms&rdquo;)
                   carefully before using the BMSCE Alumni Network website (the
                   &ldquo;Service&rdquo;). By creating an account or using the
                   Service, you agree to be bound by these Terms. If you do not
@@ -60,7 +60,7 @@ export default function TermsPage() {
                 <h2 className={HEADING}>1. Eligibility</h2>
                 <p className={BODY}>
                   The Service is intended for verified alumni and current
-                  students of BMS College of Engineering (BMSCE). By
+                  students of B.M.S. College of Engineering (BMSCE). By
                   registering, you represent that the information you provide
                   (including your name, email, graduation status, and academic
                   details) is accurate and that you are who you claim to be. We
@@ -69,7 +69,7 @@ export default function TermsPage() {
                   contain false information.
                 </p>
 
-                <h2 className={HEADING}>2. Account Registration &amp; Security</h2>
+                <h2 className={HEADING}>2. Account registration and security</h2>
                 <ul className={LIST}>
                   <Bullet>
                     You are responsible for maintaining the confidentiality of
@@ -92,7 +92,7 @@ export default function TermsPage() {
                   </Bullet>
                 </ul>
 
-                <h2 className={HEADING}>3. Verification Process</h2>
+                <h2 className={HEADING}>3. Verification process</h2>
                 <p className={BODY}>
                   New accounts are reviewed by administrators before gaining full
                   access to member features (including the Directory,
@@ -100,7 +100,7 @@ export default function TermsPage() {
                   to approve, reject, or later revoke verification status.
                 </p>
 
-                <h2 className={HEADING}>4. Acceptable Use</h2>
+                <h2 className={HEADING}>4. Acceptable use</h2>
                 <p className={BODY}>You agree not to:</p>
                 <ul className={LIST}>
                   <Bullet>
@@ -138,12 +138,12 @@ export default function TermsPage() {
                   accounts that violate this section, at our discretion.
                 </p>
 
-                <h2 className={HEADING}>5. User-Generated Content</h2>
+                <h2 className={HEADING}>5. User-generated content</h2>
                 <p className={BODY}>
                   You retain ownership of content you submit (profile
                   information, job postings, mentorship messages, etc.), but by
                   submitting it you grant BMSCE Alumni Network a non-exclusive,
-                  worldwide, royalty-free license to display, store, and
+                  worldwide, royalty-free licence to display, store, and
                   distribute that content within the Service for its intended
                   purpose (e.g., displaying your profile in the Directory,
                   displaying a job posting to other members).
@@ -154,18 +154,18 @@ export default function TermsPage() {
                   mentorship communications.
                 </p>
 
-                <h2 className={HEADING}>6. Job Postings &amp; Applications</h2>
+                <h2 className={HEADING}>6. Job postings and applications</h2>
                 <p className={BODY}>
                   Job and internship postings are submitted by individual alumni
                   members, not vetted or guaranteed by BMSCE Alumni Network. We
                   are not a party to any employment relationship, offer, or
                   agreement arising from a posting or application made through
                   the Service, and we make no representations about the accuracy
-                  or legitimacy of any listing. Exercise your own judgment when
+                  or legitimacy of any listing. Exercise your own judgement when
                   applying to or posting opportunities.
                 </p>
 
-                <h2 className={HEADING}>7. Mentorship Program</h2>
+                <h2 className={HEADING}>7. Mentoring programme</h2>
                 <p className={BODY}>
                   Mentorship connections facilitated through the Service are
                   between individual members. BMSCE Alumni Network does not
@@ -175,7 +175,7 @@ export default function TermsPage() {
                   Service.
                 </p>
 
-                <h2 className={HEADING}>8. Intellectual Property</h2>
+                <h2 className={HEADING}>8. Intellectual property</h2>
                 <p className={BODY}>
                   The Service&rsquo;s design, branding, logo, and underlying
                   software are the property of BMSCE Alumni Network (or its
@@ -184,7 +184,7 @@ export default function TermsPage() {
                   the Service.
                 </p>
 
-                <h2 className={HEADING}>9. Third-Party Links &amp; Services</h2>
+                <h2 className={HEADING}>9. Third-party links and services</h2>
                 <p className={BODY}>
                   The Service may contain links to third-party websites (e.g.,
                   LinkedIn profiles, Instagram, external job application pages).
@@ -202,7 +202,7 @@ export default function TermsPage() {
                   profile details, job postings, or mentorship claims).
                 </p>
 
-                <h2 className={HEADING}>11. Limitation of Liability</h2>
+                <h2 className={HEADING}>11. Limitation of liability</h2>
                 <p className={BODY}>
                   To the maximum extent permitted by law, BMSCE Alumni Network
                   and its administrators shall not be liable for any indirect,
@@ -221,7 +221,7 @@ export default function TermsPage() {
                   settings.
                 </p>
 
-                <h2 className={HEADING}>13. Changes to These Terms</h2>
+                <h2 className={HEADING}>13. Changes to these Terms</h2>
                 <p className={BODY}>
                   We may update these Terms from time to time. Continued use of
                   the Service after changes are posted constitutes acceptance of
@@ -229,7 +229,7 @@ export default function TermsPage() {
                   updated&rdquo; date above when changes are made.
                 </p>
 
-                <h2 className={HEADING}>14. Governing Law</h2>
+                <h2 className={HEADING}>14. Governing law</h2>
                 <p className={BODY}>
                   These Terms are governed by the laws of India, without regard
                   to conflict-of-law principles. Any disputes arising from these
@@ -247,10 +247,9 @@ export default function TermsPage() {
                     {EMAIL}
                   </a>
                 </p>
-                <p className="mt-8 border-t border-gold/25 pt-8 font-sans text-sm leading-relaxed text-ink/55">
+                <p className="mt-8 border-t border-gold/25 pt-8 font-sans text-sm leading-relaxed text-ink/70">
                   By using the Service, you acknowledge that you have read,
-                  understood, and agree to be bound by these Terms &amp;
-                  Conditions.
+                  understood, and agree to be bound by these Terms and Conditions.
                 </p>
               </div>
             </Reveal>

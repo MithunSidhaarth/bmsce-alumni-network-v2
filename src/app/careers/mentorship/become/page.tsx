@@ -48,7 +48,7 @@ export default async function BecomeMentorPage() {
                 <p className="font-display text-xl italic text-ink">
                   Mentoring is for verified alumni.
                 </p>
-                <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/65">
+                <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/70">
                   {profile.user_type === "student"
                     ? "You're signed in as a current student. You can request mentorship from alumni instead."
                     : "Once an admin verifies your alumni profile, you'll be able to list yourself as a mentor."}

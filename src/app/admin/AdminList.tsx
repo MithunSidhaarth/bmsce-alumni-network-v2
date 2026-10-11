@@ -86,7 +86,7 @@ function MemberCard({
     .filter(Boolean)
     .join(", ");
   const meta = [
-    member.graduation_year ? `Batch of ${member.graduation_year}` : null,
+    member.graduation_year ? `Class of ${member.graduation_year}` : null,
     member.branch,
     member.current_city,
   ]
@@ -123,14 +123,14 @@ function MemberCard({
               <p className="mt-1 font-sans text-sm text-ink/70">{detail}</p>
             )}
             {meta && (
-              <p className="mt-1 font-sans text-sm text-ink/55">{meta}</p>
+              <p className="mt-1 font-sans text-sm text-ink/70">{meta}</p>
             )}
             {member.bio && (
-              <p className="mt-3 max-w-xl font-sans text-sm leading-relaxed text-ink/65">
+              <p className="mt-3 max-w-xl font-sans text-sm leading-relaxed text-ink/70">
                 {member.bio}
               </p>
             )}
-            <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 font-sans text-xs text-ink/55">
+            <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 font-sans text-xs text-ink/70">
               {contact?.personal_email && (
                 <span>{contact.personal_email}</span>
               )}
@@ -147,7 +147,7 @@ function MemberCard({
               )}
             </div>
             {member.rejection_reason && (
-              <p className="mt-3 font-sans text-xs italic text-oxblood/80">
+              <p className="mt-3 font-sans text-xs italic text-oxblood">
                 Rejection note: {member.rejection_reason}
               </p>
             )}
@@ -205,7 +205,7 @@ function MemberCard({
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="Optional reason (shown to the member)…"
-            className="flex-1 rounded-xl border border-gold/40 bg-ivory/60 px-4 py-2.5 font-sans text-sm text-ink placeholder:text-ink/40 focus:border-gold focus:outline-none"
+            className="flex-1 rounded-xl border border-gold/40 bg-ivory/60 px-4 py-2.5 font-sans text-sm text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none"
           />
           <button
             type="button"
@@ -246,7 +246,7 @@ function MemberCard({
           <button
             type="button"
             onClick={() => setConfirmingAdmin(false)}
-            className="font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-ink/50 hover:text-ink/75"
+            className="font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-ink/70 hover:text-ink/75"
           >
             Cancel
           </button>

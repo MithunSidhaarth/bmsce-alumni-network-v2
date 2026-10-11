@@ -49,7 +49,7 @@ export default function LoginPanel({
         className="grid grid-cols-2 gap-1 rounded-xl lg:mt-8 border border-gold/40 bg-ivory-dim/50 p-1"
       >
         {[
-          { label: "Alumnus", student: false },
+          { label: "Alum", student: false },
           { label: "Student", student: true },
         ].map((t) => (
           <button
@@ -61,7 +61,7 @@ export default function LoginPanel({
             className={`rounded-lg px-3 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] transition-colors ${
               isStudent === t.student
                 ? "bg-oxblood text-ivory shadow-sm"
-                : "text-ink/60 hover:text-oxblood"
+                : "text-ink/70 hover:text-oxblood"
             }`}
           >
             {t.label}
@@ -72,7 +72,7 @@ export default function LoginPanel({
       {error && (
         <p
           role="alert"
-          className="mt-6 rounded-xl border border-oxblood/30 bg-oxblood/5 px-4 py-3 font-sans text-sm text-oxblood"
+          className="mt-6 rounded-xl border border-oxblood/30 bg-paper px-4 py-3 font-sans text-sm text-oxblood"
         >
           Something went wrong signing you in. Please try again.
         </p>
@@ -87,7 +87,7 @@ export default function LoginPanel({
       </div>
 
       <div className="mt-10 flex items-center gap-4 border-t border-gold/30 pt-6">
-        <p className="font-sans text-sm text-ink/60">New to the network?</p>
+        <p className="font-sans text-sm text-ink/70">New to the Network?</p>
         <Link
           href={joinHref}
           className="rounded-sm border border-oxblood/30 px-4 py-2 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood transition-colors hover:border-oxblood"

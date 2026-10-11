@@ -17,7 +17,7 @@ const STAMP: Record<Post["kind"], string> = {
   post: "",
   discussion: "text-forest",
   announcement: "text-tangerine",
-  achievement: "text-forest bg-lime border-lime",
+  achievement: "border-blue bg-blue text-white",
   memory: "text-violet",
   ask: "border-ink bg-ink text-ivory",
   offer: "border-forest bg-forest text-ivory",
@@ -35,7 +35,7 @@ function byline(post: Post) {
   const a = post.author;
   if (!a) return "Former member";
   const bits = [
-    a.user_type === "student" ? "Student" : a.graduation_year ? `Batch of ${a.graduation_year}` : "Alumni",
+    a.user_type === "student" ? "Student" : a.graduation_year ? `Class of ${a.graduation_year}` : "Alumni",
     a.branch,
   ].filter(Boolean);
   return bits.join(" · ");
@@ -45,14 +45,14 @@ function Media({ media, polaroid }: { media: string[]; polaroid: boolean }) {
   if (media.length === 0) return null;
   if (polaroid) {
     return (
-      <div className="mb-4 rounded-print bg-white p-2 pb-3 shadow-[0_1px_3px_rgb(19_26_21/0.18)]">
+      <div className="mb-4 rounded-print bg-white p-2 pb-3 shadow-[0_1px_3px_rgb(33_37_41/0.18)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={media[0]} alt="" loading="lazy" className="block h-auto max-h-[36rem] w-full object-contain" />
+        <img src={media[0]} alt="Photo attached to this post" loading="lazy" className="block h-auto max-h-[36rem] w-full object-contain" />
         {media.length > 1 && (
           <div className="mt-2 grid grid-cols-4 gap-2">
             {media.slice(1, 5).map((m) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={m} src={m} alt="" loading="lazy" className="aspect-square w-full object-cover" />
+              <img key={m} src={m} alt="Another photo attached to this post" loading="lazy" className="aspect-square w-full object-cover" />
             ))}
           </div>
         )}
@@ -67,7 +67,7 @@ function Media({ media, polaroid }: { media: string[]; polaroid: boolean }) {
         <img
           key={m}
           src={m}
-          alt=""
+          alt={`Photo ${i + 1} attached to this post`}
           loading="lazy"
           className={`w-full object-cover ${media.length === 1 ? "max-h-[30rem]" : "aspect-square"} ${
             media.length === 3 && i === 0 ? "col-span-2 aspect-[2/1]" : ""
@@ -126,21 +126,21 @@ export default function PostCard({
         <div className="min-w-0 flex-1">
           <p className="flex flex-wrap items-baseline gap-x-2 text-[0.9375rem] leading-tight">
             {post.author ? (
-              <Link href={`/directory/${post.author.id}`} className="font-semibold hover:underline">
+              <Link href={`/directory/${post.author.id}`} className="font-semibold underline">
                 {post.author.full_name ?? "Member"}
               </Link>
             ) : (
-              <span className="font-semibold text-ink/60">Former member</span>
+              <span className="font-semibold text-ink/70">Former member</span>
             )}
             {post.chapter && (
-              <Link href={`/chapters/${post.chapter.slug}`} className="text-sm text-ink/60 hover:text-ink hover:underline">
+              <Link href={`/chapters/${post.chapter.slug}`} className="text-sm text-ink/70 hover:text-ink underline">
                 in {post.chapter.name}
               </Link>
             )}
           </p>
-          <p className="mt-1 text-[0.8125rem] text-ink/55">
+          <p className="mt-1 text-[0.8125rem] text-ink/70">
             {byline(post)} ·{" "}
-            <TransitionLink href={href} vtName={vtName} source="article" className="hover:underline">
+            <TransitionLink href={href} vtName={vtName} source="article" className="underline">
               <time dateTime={post.created_at}>{timeAgo(post.created_at)}</time>
             </TransitionLink>
             {post.updated_at && " · edited"}
@@ -154,7 +154,7 @@ export default function PostCard({
         {isMemory && <Media media={post.media} polaroid />}
         {post.title && (
           <h2 className="font-display text-[1.35rem] leading-[1.12] sm:text-2xl">
-            {full ? post.title : <TransitionLink href={href} vtName={vtName} source="article" className="hover:underline">{post.title}</TransitionLink>}
+            {full ? post.title : <TransitionLink href={href} vtName={vtName} source="article" className="underline">{post.title}</TransitionLink>}
           </h2>
         )}
         <p
@@ -165,7 +165,7 @@ export default function PostCard({
           <RichText text={post.body} mentions={post.mentions} />
         </p>
         {!full && long && (
-          <TransitionLink href={href} vtName={vtName} source="article" className="mt-1 inline-block text-sm font-semibold text-forest hover:underline">
+          <TransitionLink href={href} vtName={vtName} source="article" className="mt-1 inline-block text-sm font-semibold text-forest underline">
             Read the rest
           </TransitionLink>
         )}
@@ -178,14 +178,14 @@ export default function PostCard({
             rel="noopener noreferrer nofollow ugc"
             className="mt-4 flex items-start gap-3 rounded-md border border-ink/15 bg-ivory/60 px-4 py-3 transition-colors hover:border-ink/45"
           >
-            <Icon name="link" className="mt-0.5 h-4 w-4 text-ink/50" />
+            <Icon name="link" className="mt-0.5 h-4 w-4 text-ink/70" />
             <span className="min-w-0">
-              <span className="label-mono block truncate text-ink/55">
+              <span className="label-mono block truncate text-ink/70">
                 {post.link_preview.site ?? hostOf(post.link_preview.url)}
               </span>
               <span className="mt-1 line-clamp-2 font-semibold leading-snug">{post.link_preview.title}</span>
               {post.link_preview.description && (
-                <span className="mt-1 line-clamp-2 text-sm text-ink/65">{post.link_preview.description}</span>
+                <span className="mt-1 line-clamp-2 text-sm text-ink/70">{post.link_preview.description}</span>
               )}
             </span>
           </a>

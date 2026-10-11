@@ -4,7 +4,7 @@ import ComingSoon from "@/components/ComingSoon";
 export const metadata: Metadata = {
   title: "Give Back: BMSCE Alumni Network",
   description:
-    "Ways to support BMS College of Engineering and its students. Coming soon.",
+    "Ways to support B.M.S. College of Engineering and its students. Coming soon.",
 };
 
 export default function GiveBackPage() {

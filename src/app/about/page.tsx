@@ -8,21 +8,21 @@ import VolunteerForm from "./VolunteerForm";
 export const metadata: Metadata = {
   title: "About: BMSCE Alumni Network",
   description:
-    "The BMSCE Alumni Network: 30+ chapters across 10+ countries, and the programs that turn a shared campus into a lifelong community.",
+    "The BMSCE Alumni Network: 31 chapters across 12 countries, and the programmes that turn a shared campus into a lifelong community.",
 };
 
 const WHAT_WE_RUN = [
   {
     tag: "Scholarships",
-    body: "Alumni-funded scholarships cover tuition and living costs for BMS students who’d otherwise have to choose between the degree and the bill. The network paid it forward, and this is how it comes back.",
+    body: "Alumni-funded scholarships cover tuition and living costs for BMSCE students who’d otherwise have to choose between the degree and the bill. The Network paid it forward, and this is how it comes back.",
   },
   {
-    tag: "Reunions & meetups",
-    body: "Silver jubilees, decade meetups, and batch dinners bring people together on four continents, because some conversations are just better picked up in person.",
+    tag: "Reunions and meet-ups",
+    body: "Silver jubilees, decade meetups, and class dinners bring people together on four continents, because some conversations are just better picked up in person.",
   },
   {
     tag: "Entrepreneurship accelerator",
-    body: "An entrepreneurship accelerator backs alumni founders with mentorship, warm introductions, and early customers drawn from within the network itself. Three of your first five hires are probably already BMS.",
+    body: "An entrepreneurship accelerator backs alumni founders with mentorship, warm introductions, and early customers drawn from within the Network itself. Three of your first five hires are probably already BMSCE.",
   },
   {
     tag: "Recruiting bootcamp",
@@ -39,7 +39,7 @@ export default function AboutPage() {
         <section className="border-t border-gold/30">
           <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
             <Reveal>
-              <Eyebrow>The network</Eyebrow>
+              <Eyebrow>The Network</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
               <h2 className="mt-6 max-w-2xl font-display text-4xl leading-[1.05] text-ink md:text-5xl">
@@ -49,20 +49,43 @@ export default function AboutPage() {
             <Reveal delay={160}>
               <p className="mt-8 max-w-3xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
                 The BMSCE Alumni Network is what happens after convocation, the
-                part where a degree turns into a lifelong community. It spans 30+
-                chapters across 10+ countries, from Bengaluru to the Bay
+                part where a degree turns into a lifelong community. It spans 31
+                chapters across 12 countries, from Bengaluru to the Bay
                 Area to Singapore, each one already meeting, hiring, and looking
-                out for its own. Wherever a BMS graduate lands, a chapter is
+                out for its own. Wherever a BMSCE graduate lands, a chapter is
                 usually already there.
               </p>
             </Reveal>
             <Reveal delay={220}>
               <p className="mt-6 max-w-3xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
-                But chapters are just the map. What the network actually does is
+                But chapters are just the map. What the Network actually does is
                 bring alumni back into each other&rsquo;s lives, through the
-                programs below, whether you graduated last summer or thirty years
+                programmes below, whether you graduated last summer or thirty years
                 ago.
               </p>
+            </Reveal>
+            <Reveal delay={260}>
+              <p className="mt-6 max-w-3xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
+                B.M.S. College of Engineering (BMSCE) was founded in Bengaluru in 1946 by B. M.
+                Sreenivasaiah, the first private-sector initiative in engineering education in India.
+                It began with three undergraduate courses. BMSCE Alumni Network was founded in 2012.
+              </p>
+            </Reveal>
+            <Reveal delay={300}>
+              <dl className="mt-10 grid max-w-3xl gap-8 border-t border-gold/30 pt-8 md:grid-cols-2">
+                <div>
+                  <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">Our vision</dt>
+                  <dd className="mt-3 font-sans text-base leading-relaxed text-ink/80">
+                    To help every BMSCE student and graduate realise their full potential, for themselves, the college and the world.
+                  </dd>
+                </div>
+                <div>
+                  <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">Our mission</dt>
+                  <dd className="mt-3 font-sans text-base leading-relaxed text-ink/80">
+                    To engage alumni across the globe and open access to knowledge, talent and opportunities that benefit the whole BMSCE community.
+                  </dd>
+                </div>
+              </dl>
             </Reveal>
           </div>
         </section>
@@ -75,7 +98,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={80}>
               <h2 className="mt-6 max-w-2xl font-display text-4xl leading-[1.05] text-ink md:text-5xl">
-                Four ways the network shows up.
+                Four ways the Network shows up.
               </h2>
             </Reveal>
             <div className="mt-10 flex max-w-2xl flex-col gap-6">
@@ -134,7 +157,7 @@ export default function AboutPage() {
                 </Reveal>
                 <Reveal delay={160}>
                   <p className="mt-6 max-w-md font-sans text-base leading-relaxed text-ink/70">
-                    Questions about the network, your membership, or an event?
+                    Questions about the Network, your membership, or an event?
                     We&rsquo;d love to hear from you.
                   </p>
                 </Reveal>
@@ -143,7 +166,7 @@ export default function AboutPage() {
               <Reveal delay={160}>
                 <div className="rounded-2xl border border-maroon/40 bg-ivory p-8 shadow-sm md:p-10">
                   <h3 className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
-                    BMS College of Engineering
+                    B.M.S. College of Engineering
                   </h3>
                   <address className="mt-4 not-italic font-sans text-base leading-relaxed text-ink/80">
                     P.O. Box No.: 1908, Bull Temple Road,
@@ -155,7 +178,7 @@ export default function AboutPage() {
 
                   <dl className="mt-8 flex flex-col gap-5 border-t border-gold/40 pt-8">
                     <div>
-                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/55">
+                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                         Email
                       </dt>
                       <dd className="mt-1.5">
@@ -168,7 +191,7 @@ export default function AboutPage() {
                       </dd>
                     </div>
                     <div>
-                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/55">
+                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                         Phone
                       </dt>
                       <dd className="mt-1.5">

@@ -41,7 +41,7 @@ export default function MentorList({
         <p className="font-display text-2xl italic text-ink">
           No mentors have signed up yet.
         </p>
-        <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/65">
+        <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/70">
           As alumni volunteer their time, they&rsquo;ll appear here. Check back
           soon.
         </p>
@@ -93,7 +93,7 @@ function MentorCardView({
 
   const isSelf = viewer.state === "eligible" && viewer.id === mentor.id;
   const meta = [
-    mentor.batch ? `Batch of ${mentor.batch}` : null,
+    mentor.batch ? `Class of ${mentor.batch}` : null,
     mentor.branch,
   ]
     .filter(Boolean)
@@ -127,8 +127,8 @@ function MentorCardView({
         </div>
 
         <h2 className="mt-6 font-display text-xl text-ink">{mentor.name}</h2>
-        {role && <p className="mt-1 font-sans text-sm text-ink/65">{role}</p>}
-        {meta && <p className="mt-2 font-sans text-sm text-ink/55">{meta}</p>}
+        {role && <p className="mt-1 font-sans text-sm text-ink/70">{role}</p>}
+        {meta && <p className="mt-2 font-sans text-sm text-ink/70">{meta}</p>}
 
         {mentor.bio && (
           <p className="mt-4 font-sans text-sm leading-relaxed text-ink/70">
@@ -141,7 +141,7 @@ function MentorCardView({
             {[...mentor.expertise, ...mentor.industries].map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood/80"
+                className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood"
               >
                 {tag}
               </span>
@@ -150,7 +150,7 @@ function MentorCardView({
         )}
 
         {mentor.availability && (
-          <p className="mt-4 font-sans text-xs text-ink/50">
+          <p className="mt-4 font-sans text-xs text-ink/70">
             Availability: {mentor.availability}
           </p>
         )}
@@ -158,7 +158,7 @@ function MentorCardView({
         {/* Action */}
         <div className="mt-auto pt-6">
           {isSelf ? (
-            <p className="font-sans text-xs uppercase tracking-[0.12em] text-ink/45">
+            <p className="font-sans text-xs uppercase tracking-[0.12em] text-ink/70">
               This is you
             </p>
           ) : status ? (
@@ -177,7 +177,7 @@ function MentorCardView({
               Sign in to request
             </Link>
           ) : viewer.state === "unverified" ? (
-            <p className="font-sans text-xs text-ink/50">
+            <p className="font-sans text-xs text-ink/70">
               Your account must be verified before you can request mentorship.
             </p>
           ) : open ? (
@@ -186,7 +186,7 @@ function MentorCardView({
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="What are you hoping to learn, and why this mentor?"
-                className="min-h-[90px] w-full resize-y rounded-lg border border-gold/40 bg-ivory/60 px-3 py-2.5 font-sans text-sm text-ink placeholder:text-ink/40 focus:border-gold focus:outline-none"
+                className="min-h-[90px] w-full resize-y rounded-lg border border-gold/40 bg-ivory/60 px-3 py-2.5 font-sans text-sm text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none"
               />
               <div className="flex gap-2">
                 <button

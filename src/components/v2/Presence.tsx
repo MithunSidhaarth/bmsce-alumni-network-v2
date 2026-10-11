@@ -60,7 +60,7 @@ export function OnlineDot({ id, className = "" }: { id: string; className?: stri
   const here = useOnline().has(id);
   if (!here) return null;
   return (
-    <span className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-paper bg-[#12a15c] ${className}`}>
+    <span className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-paper bg-[#016ed2] ${className}`}>
       <span className="sr-only">Online now</span>
     </span>
   );

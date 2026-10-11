@@ -57,11 +57,11 @@ export default async function OnboardingPage({
         <section id="top">
           <div className="mx-auto max-w-2xl px-6 pb-24 pt-16 md:pt-24">
             <Eyebrow>Welcome</Eyebrow>
-            <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
+            <h1 className="slash mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
               Complete your profile.
             </h1>
             <p className="mt-5 max-w-xl font-sans text-base leading-relaxed text-ink/70">
-              A few details so the network knows who you are. Alumni profiles are
+              A few details so the Network knows who you are. Alumni profiles are
               reviewed before they appear in the directory.
             </p>
             <div className="mt-10">

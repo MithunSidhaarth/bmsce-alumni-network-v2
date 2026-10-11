@@ -14,9 +14,9 @@ import type { Newsletter } from "@/lib/types";
 import { said } from "@/lib/fail";
 
 const FIELD =
-  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60";
+  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
 const MAX_PDF = 20 * 1024 * 1024; // 20 MB, matches the bucket cap
 
 export default function NewsletterAdmin({
@@ -150,10 +150,10 @@ export default function NewsletterAdmin({
             type="file"
             accept="application/pdf"
             onChange={onPdf}
-            className="mt-2 block w-full text-xs text-ink/60 file:mr-3 file:cursor-pointer file:rounded-lg file:border file:border-gold/40 file:bg-ivory-dim/60 file:px-3 file:py-1.5 file:font-sans file:text-[11px] file:uppercase file:tracking-[0.12em] file:text-ink"
+            className="mt-2 block w-full text-xs text-ink/70 file:mr-3 file:cursor-pointer file:rounded-lg file:border file:border-gold/40 file:bg-ivory-dim/60 file:px-3 file:py-1.5 file:font-sans file:text-[11px] file:uppercase file:tracking-[0.12em] file:text-ink"
           />
           {pdf && (
-            <span className="mt-1.5 block font-sans text-xs text-ink/55">
+            <span className="mt-1.5 block font-sans text-xs text-ink/70">
               {pdf.name}
             </span>
           )}
@@ -198,7 +198,7 @@ export default function NewsletterAdmin({
                       {n.title || `Newsletter ${n.year}`}
                     </a>
                   ) : (
-                    <span className="block truncate font-sans text-sm text-ink/60">
+                    <span className="block truncate font-sans text-sm text-ink/70">
                       {n.title || `Newsletter ${n.year}`}
                     </span>
                   )}

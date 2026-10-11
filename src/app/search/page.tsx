@@ -80,16 +80,16 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             body="Once an admin has verified your account you can search members and posts."
           />
         )}
-        {verified && q.length < 2 && <p className="mt-8 text-ink/60">Type at least two letters to search members and posts.</p>}
+        {verified && q.length < 2 && <p className="mt-8 text-ink/70">Type at least two letters to search members and posts.</p>}
 
         {ready && (
           <>
             <section aria-labelledby="people-title" className="mt-10">
-              <h2 id="people-title" className="label-mono text-ink/60">
+              <h2 id="people-title" className="label-mono text-ink/70">
                 People · {plural(found.length, "match", "matches")}
               </h2>
               {found.length === 0 ? (
-                <p className="mt-3 text-sm text-ink/60">
+                <p className="mt-3 text-sm text-ink/70">
                   No members match. The{" "}
                   <Link href="/directory" className="font-semibold text-forest underline">
                     Alumni Network
@@ -107,9 +107,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                         <Avatar name={p.full_name} src={p.photo_url} size={44} />
                         <span className="min-w-0">
                           <span className="block truncate font-semibold">{p.full_name ?? "Member"}</span>
-                          <span className="block truncate text-xs text-ink/60">
+                          <span className="block truncate text-xs text-ink/70">
                             {[
-                              p.user_type === "student" ? "Student" : p.graduation_year ? `Batch of ${p.graduation_year}` : "Alumni",
+                              p.user_type === "student" ? "Student" : p.graduation_year ? `Class of ${p.graduation_year}` : "Alumni",
                               [p.job_title, p.company].filter(Boolean).join(" at "),
                               p.current_city,
                             ]
@@ -125,11 +125,11 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             </section>
 
             <section aria-labelledby="posts-title" className="mt-10">
-              <h2 id="posts-title" className="label-mono text-ink/60">
+              <h2 id="posts-title" className="label-mono text-ink/70">
                 Posts · {plural(posts.length, "match", "matches")}
               </h2>
               {posts.length === 0 ? (
-                <p className="mt-3 text-sm text-ink/60">No posts mention that yet.</p>
+                <p className="mt-3 text-sm text-ink/70">No posts mention that yet.</p>
               ) : (
                 <div className="mt-3 flex flex-col gap-5">
                   {posts.map((p) => (

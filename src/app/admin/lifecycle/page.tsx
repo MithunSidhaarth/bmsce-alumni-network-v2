@@ -75,7 +75,7 @@ export default async function LifecycleAdmin({ searchParams }: { searchParams: P
       </AdminHeader>
 
       {m && (
-        <Panel title={`${m.full_name ?? "Member"}: ${m.user_type === "student" ? "Student" : "Alumni"}`} aside={<Link href="/admin/lifecycle" className="text-sm font-semibold text-forest hover:underline">Close</Link>}>
+        <Panel title={`${m.full_name ?? "Member"}: ${m.user_type === "student" ? "Student" : "Alumni"}`} aside={<Link href="/admin/lifecycle" className="text-sm font-semibold text-forest underline">Close</Link>}>
           <div className="grid gap-6 lg:grid-cols-2">
             <AdminForm action={setPassingOutDate} hidden={{ id: m.id }} className="flex flex-col gap-3">
               <p className="text-sm font-bold">Passing-out date</p>
@@ -88,7 +88,7 @@ export default async function LifecycleAdmin({ searchParams }: { searchParams: P
                 <input name="note" className="field" placeholder="e.g. confirmed with the department" />
               </label>
               <div><Submit>Save date</Submit></div>
-              <p className="text-xs leading-relaxed text-ink/60">
+              <p className="text-xs leading-relaxed text-ink/70">
                 How a correction treats a transition that already happened: if this member was graduated <em>automatically</em> and
                 the corrected date is still in the future, that graduation is reversed and they become a student again until the new
                 date. A change made by an admin by hand is never reversed by a date. A corrected date that has already passed
@@ -109,7 +109,7 @@ export default async function LifecycleAdmin({ searchParams }: { searchParams: P
                 <input type="checkbox" name="hold" defaultChecked={m.lifecycle_hold} className="mt-1 h-4 w-4" />
                 <span>
                   Hold: do not graduate automatically
-                  <span className="block text-xs text-ink/60">For a postponed graduation, a year back, or any case that needs a person to decide.</span>
+                  <span className="block text-xs text-ink/70">For a postponed graduation, a year back, or any case that needs a person to decide.</span>
                 </span>
               </label>
               <label>
@@ -124,7 +124,7 @@ export default async function LifecycleAdmin({ searchParams }: { searchParams: P
 
       <Panel title={`Needs a person (${needs.length})`}>
         {needs.length === 0 ? (
-          <p className="text-sm text-ink/60">Every student has a usable passing-out date.</p>
+          <p className="text-sm text-ink/70">Every student has a usable passing-out date.</p>
         ) : (
           <>
             <p className="mb-3 text-sm text-ink/70">
@@ -140,7 +140,7 @@ export default async function LifecycleAdmin({ searchParams }: { searchParams: P
                       <td className={table.td}>{n.full_name ?? "No name yet"}</td>
                       <td className={table.td}>{n.graduation_year ?? "None"}</td>
                       <td className={table.td}>{n.reason}</td>
-                      <td className={table.td}><Link href={`/admin/lifecycle?member=${n.id}`} className="font-semibold text-forest hover:underline">Fix</Link></td>
+                      <td className={table.td}><Link href={`/admin/lifecycle?member=${n.id}`} className="font-semibold text-forest underline">Fix</Link></td>
                     </tr>
                   ))}
                 </tbody>
@@ -152,12 +152,12 @@ export default async function LifecycleAdmin({ searchParams }: { searchParams: P
 
       <Panel title="Next to graduate">
         {(due.data ?? []).length === 0 ? (
-          <p className="text-sm text-ink/60">No student has a passing-out date on file.</p>
+          <p className="text-sm text-ink/70">No student has a passing-out date on file.</p>
         ) : (
           <ul className="flex flex-col divide-y divide-ink/10 text-sm">
             {due.data!.map((d) => (
               <li key={d.id} className="flex flex-wrap items-center justify-between gap-3 py-2">
-                <Link href={`/admin/lifecycle?member=${d.id}`} className="font-semibold hover:underline">{d.full_name ?? "No name yet"}</Link>
+                <Link href={`/admin/lifecycle?member=${d.id}`} className="font-semibold underline">{d.full_name ?? "No name yet"}</Link>
                 <span className="flex items-center gap-2 text-ink/70">
                   {longDate(`${d.passing_out_date}T12:00:00+05:30`)}
                   {d.lifecycle_hold ? <Pill tone="warn">On hold</Pill> : d.passing_out_date! <= today ? <Pill tone="good">Due at the next run</Pill> : null}
@@ -178,11 +178,11 @@ export default async function LifecycleAdmin({ searchParams }: { searchParams: P
               <tbody>
                 {history.map((e) => (
                   <tr key={e.id}>
-                    <td className={table.td}>{shortDate(e.created_at)}<span className="block text-xs text-ink/55">{clockTime(e.created_at)}</span></td>
-                    <td className={table.td}><Link href={`/admin/lifecycle?member=${e.profile_id}`} className="font-semibold hover:underline">{name(e.profile) ?? "Member"}</Link></td>
+                    <td className={table.td}>{shortDate(e.created_at)}<span className="block text-xs text-ink/70">{clockTime(e.created_at)}</span></td>
+                    <td className={table.td}><Link href={`/admin/lifecycle?member=${e.profile_id}`} className="font-semibold underline">{name(e.profile) ?? "Member"}</Link></td>
                     <td className={table.td}>
                       {REASON[e.reason] ?? e.reason}
-                      <span className="block text-xs text-ink/55">
+                      <span className="block text-xs text-ink/70">
                         {e.from_type !== e.to_type ? `${e.from_type} to ${e.to_type}` : e.passing_out_date ? `date ${e.passing_out_date}` : ""}
                       </span>
                     </td>
@@ -198,7 +198,7 @@ export default async function LifecycleAdmin({ searchParams }: { searchParams: P
 
       <Panel title="Job runs">
         {(runs.data ?? []).length === 0 ? (
-          <p className="text-sm text-ink/60">The job has not run yet. Its first scheduled run is within six hours of deployment.</p>
+          <p className="text-sm text-ink/70">The job has not run yet. Its first scheduled run is within six hours of deployment.</p>
         ) : (
           <ul className="flex flex-col gap-1.5 text-sm">
             {runs.data!.map((r) => {
@@ -206,7 +206,7 @@ export default async function LifecycleAdmin({ searchParams }: { searchParams: P
               return (
                 <li key={r.id} className="flex flex-wrap items-center gap-3">
                   {r.ok ? <Pill tone="good">OK</Pill> : <Pill tone="bad">Failed</Pill>}
-                  <span className="font-mono text-xs text-ink/60">{shortDate(r.finished_at)} {clockTime(r.finished_at)}</span>
+                  <span className="font-mono text-xs text-ink/70">{shortDate(r.finished_at)} {clockTime(r.finished_at)}</span>
                   <span>{r.ok ? `${d.graduated ?? 0} graduated (${d.trigger ?? "schedule"})` : d.error}</span>
                 </li>
               );

@@ -11,10 +11,10 @@ export default async function EventOg({ params }: { params: Promise<{ id: string
   const { data: e } = /^[0-9a-f-]{36}$/.test(id)
     ? await serverClient().from("events").select("title, event_date, location, cover_image_url").eq("id", id).maybeSingle()
     : { data: null };
-  const when = e ? new Date(e.event_date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "long", year: "numeric" }) : null;
+  const when = e ? new Date(e.event_date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", weekday: "long", day: "numeric", month: "long", year: "numeric" }) : null;
   return ogCard({
     eyebrow: when ? `Event · ${when}` : "Events",
-    title: e?.title ?? "Where the network gathers",
+    title: e?.title ?? "Where the Network gathers",
     note: e?.location ? e.location : "tear off a tab to say you are coming",
     image: e?.cover_image_url ?? null,
   });

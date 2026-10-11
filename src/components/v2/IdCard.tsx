@@ -149,7 +149,7 @@ export default function IdCard({ data }: { data: IdCardData }) {
                 )}
                 {data.back.since && (
                   <div>
-                    <dt className="font-mono text-[3cqw] uppercase tracking-[0.14em] text-ink/50">On the network since</dt>
+                    <dt className="font-mono text-[3cqw] uppercase tracking-[0.14em] text-ink/50">On the Network since</dt>
                     <dd className="font-semibold">{data.back.since}</dd>
                   </div>
                 )}

@@ -134,10 +134,10 @@ export default function DeviceSetup() {
       </h2>
 
       <div className="mt-4 flex flex-wrap items-start gap-x-4 gap-y-3 border-t border-ink/10 pt-4">
-        <Icon name="bell" className="mt-0.5 h-5 w-5 text-ink/60" />
+        <Icon name="bell" className="mt-0.5 h-5 w-5 text-ink/70" />
         <div className="min-w-0 flex-1 basis-56">
           <p className="text-[0.9375rem] font-semibold">Push notifications</p>
-          <p className="mt-0.5 text-sm text-ink/65">{status[push]}</p>
+          <p className="mt-0.5 text-sm text-ink/70">{status[push]}</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {push === "off" && (
@@ -159,14 +159,14 @@ export default function DeviceSetup() {
       </div>
 
       <div className="mt-4 flex flex-wrap items-start gap-x-4 gap-y-3 border-t border-ink/10 pt-4">
-        <Icon name="home" className="mt-0.5 h-5 w-5 text-ink/60" />
+        <Icon name="home" className="mt-0.5 h-5 w-5 text-ink/70" />
         <div className="min-w-0 flex-1 basis-56">
           <p className="text-[0.9375rem] font-semibold">Install as an app</p>
-          <p className="mt-0.5 text-sm text-ink/65">
+          <p className="mt-0.5 text-sm text-ink/70">
             {installed
               ? "Installed: you are using the app."
               : installer
-              ? "Put the network on your home screen. It opens full screen, like any other app."
+              ? "Put the Network on your home screen. It opens full screen, like any other app."
               : ios
               ? "In Safari, tap Share, then Add to Home Screen."
               : "Use your browser's menu and choose Install app or Add to Home Screen."}

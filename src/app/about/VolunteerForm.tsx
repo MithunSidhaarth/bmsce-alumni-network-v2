@@ -4,9 +4,9 @@ import { useState, type FormEvent } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 const FIELD =
-  "w-full rounded-xl border border-gold/40 bg-ivory px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "w-full rounded-xl border border-gold/40 bg-ivory px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60";
+  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
 
 // Inserts straight into volunteer_signups (RLS: anyone may insert, only
 // admins may read). Column length checks are enforced by the database too.
@@ -58,7 +58,7 @@ export default function VolunteerForm() {
       </label>
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="flex flex-col gap-2">
-          <span className={LABEL}>Batch / branch</span>
+          <span className={LABEL}>Class year and branch</span>
           <input name="batch" maxLength={60} className={FIELD} />
         </label>
         <label className="flex flex-col gap-2">

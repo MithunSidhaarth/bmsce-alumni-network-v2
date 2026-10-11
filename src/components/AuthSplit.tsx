@@ -16,7 +16,7 @@ export default function AuthSplit({
 }) {
   return (
     <div className="lg:grid lg:min-h-[calc(100vh-88px)] lg:grid-cols-2">
-      <div className="relative overflow-hidden bg-oxblood px-6 pb-16 pt-10 text-ivory sm:px-10 lg:hidden">
+      <div className="relative overflow-hidden bg-brand-ink px-6 pb-16 pt-10 text-ivory sm:px-10 lg:hidden">
         <Aurora variant="dark" />
         <div className="relative mx-auto max-w-md">{mobileHero}</div>
       </div>
@@ -25,7 +25,7 @@ export default function AuthSplit({
         <div className="mx-auto w-full max-w-md">{children}</div>
       </div>
 
-      <aside className="relative hidden overflow-hidden bg-oxblood text-ivory lg:block">
+      <aside className="relative hidden overflow-hidden bg-brand-ink text-ivory lg:block">
         <Aurora variant="dark" />
         <div className="relative flex h-full flex-col justify-center px-14 py-24 xl:px-24">
           {panel}

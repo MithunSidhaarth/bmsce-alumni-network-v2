@@ -97,7 +97,7 @@ export default function LoginButtons({
         <button
           type="button"
           onClick={() => setShowPassword(true)}
-          className="mt-1 font-sans text-xs text-ink/50 underline underline-offset-2 hover:text-ink/70"
+          className="mt-1 font-sans text-xs text-ink/70 underline underline-offset-2 hover:text-ink/70"
         >
           Sign in with email and password instead
         </button>

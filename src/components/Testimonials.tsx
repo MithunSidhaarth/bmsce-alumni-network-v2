@@ -3,7 +3,7 @@ import { seeded } from "@/lib/format";
 type Testimonial = {
   quote: string;
   name: string;
-  batch: string | null; // "Batch of 2024" year; null when unknown
+  batch: string | null; // "Class of 2024" year; null when unknown
   initials: string;
 };
 
@@ -18,7 +18,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "In my final year, I was struggling to find a UI/UX design internship. I connected with an alumnus who referred me, and that internship converted into a full-time role at a company also started by a BMS alumnus. I'm grateful to be part of a community where alumni keep creating opportunities for each other.",
+      "In my final year, I was struggling to find a UI/UX design internship. I connected with an alumnus who referred me, and that internship converted into a full-time role at a company also started by a BMSCE alumnus. I'm grateful to be part of a community where alumni keep creating opportunities for each other.",
     name: "Bharath Gorental",
     batch: null,
     initials: "BG",
@@ -50,9 +50,9 @@ export default function Testimonials() {
               <figcaption className="mt-7 flex items-end justify-between gap-4 border-t border-dashed border-ink/25 pt-5">
                 <span>
                   <span className="hand block text-[2rem] leading-none text-forest">{t.name}</span>
-                  {t.batch && <span className="label-mono mt-2 block text-ink/55">Batch of {t.batch}</span>}
+                  {t.batch && <span className="label-mono mt-2 block text-ink/70">Class of {t.batch}</span>}
                 </span>
-                <span className="stamp text-ink/45">Member</span>
+                <span className="stamp text-ink/70">Member</span>
               </figcaption>
             </figure>
           ))}

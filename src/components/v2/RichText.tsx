@@ -20,7 +20,7 @@ export default function RichText({ text, mentions = [] }: { text: string; mentio
         if (part.startsWith("@")) {
           const who = named.find((m) => `@${m.name}` === part);
           return who ? (
-            <Link key={i} href={`/directory/${who.id}`} className="font-semibold text-forest hover:underline">
+            <Link key={i} href={`/directory/${who.id}`} className="font-semibold text-forest underline">
               {part}
             </Link>
           ) : (

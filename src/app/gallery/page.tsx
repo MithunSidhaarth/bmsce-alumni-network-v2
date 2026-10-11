@@ -10,7 +10,7 @@ import { GALLERY_PAGE_SIZE } from "@/lib/gallery";
 
 export const metadata: Metadata = {
   title: "Gallery: BMSCE Alumni Network",
-  description: "Photos from the BMS campus and the alumni network worldwide.",
+  description: "Photos from the BMSCE campus and from the Network around the world.",
 };
 
 export const dynamic = "force-dynamic";
@@ -40,8 +40,8 @@ export default async function GalleryPage() {
               <Eyebrow>Gallery</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
-                Moments from the network.
+              <h1 className="slash mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
+                Moments from the Network.
               </h1>
             </Reveal>
             <Reveal delay={160}>

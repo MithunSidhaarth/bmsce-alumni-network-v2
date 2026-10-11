@@ -43,7 +43,7 @@ function ChapterSpecimen({ postcards }: { postcards: Postcard[] }) {
           style={{ left: `${i * 20}%`, top: `${[10, 0, 16][i]}%`, transform: `rotate(${[-7, 2, 8][i]}deg)`, zIndex: i }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={p.image} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
+          <img src={p.image} alt={`Photo of ${p.name}`} loading="lazy" className="aspect-[4/3] w-full object-cover" />
           <span className="mt-1.5 block font-display text-sm font-bold text-ink">{p.name}</span>
         </div>
       ))}
@@ -57,7 +57,7 @@ function MessageSpecimen() {
       <span className="flex w-[62%] flex-col gap-1.5 self-start rounded-[4px_16px_16px_16px] bg-paper px-4 py-3">{bar("88%")}{bar("54%")}</span>
       <span className="flex w-[54%] flex-col gap-1.5 self-end rounded-[16px_4px_16px_16px] bg-forest px-4 py-3">{bar("80%", "bg-ivory/45")}</span>
       <span className="flex w-[70%] flex-col gap-1.5 self-start rounded-[4px_16px_16px_16px] bg-paper px-4 py-3">{bar("94%")}{bar("70%")}{bar("36%")}</span>
-      <span className="label-mono self-end text-ink/55">Seen</span>
+      <span className="label-mono self-end text-ink/70">Seen</span>
     </div>
   );
 }
@@ -125,16 +125,16 @@ export default function InsideStack({ chapters, countries, postcards }: { chapte
       body: "Private messages between verified members, with the privacy controls in your hands.",
       href: "/join",
       link: "Join to say hello",
-      tone: "rounded-box bg-[#e3f5ab] text-ink border border-ink/10 shadow-[var(--shadow-sheet)]",
+      tone: "rounded-box bg-[#f3f5f8] text-ink border border-ink/10 shadow-[var(--shadow-sheet)]",
       specimen: <MessageSpecimen />,
     },
     {
       kicker: "04 · Blog & Insights",
       title: "Stories worth keeping",
-      body: "Career journeys, startup lessons and campus memories, written by the network.",
+      body: "Career journeys, startup lessons and campus memories, written by the Network.",
       href: "/blog",
       link: "Start reading",
-      tone: "rounded-box bg-forest text-ivory shadow-[var(--shadow-sheet)]",
+      tone: "rounded-box bg-brand-ink text-ivory shadow-[var(--shadow-sheet)]",
       specimen: <BlogSpecimen />,
     },
   ];
@@ -153,7 +153,7 @@ export default function InsideStack({ chapters, countries, postcards }: { chapte
           <div key={s.kicker} className="stack-card sticky pb-6" style={{ top: `calc(5.5rem + ${i * 1.1}rem)` }}>
             <article className={`grid origin-top gap-8 px-6 py-9 will-change-transform md:grid-cols-[1.1fr_1fr] md:items-center md:px-12 md:py-14 ${s.tone}`}>
               <div>
-                <p className="label-mono opacity-60">{s.kicker}</p>
+                <p className="label-mono">{s.kicker}</p>
                 <h3 className={`mt-4 max-w-[16ch] text-[clamp(2rem,4.6vw,3.6rem)] leading-[0.98] ${i === 3 ? "font-serif font-normal tracking-tight" : "font-display"}`}>
                   {s.title}
                 </h3>

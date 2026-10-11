@@ -1,3 +1,4 @@
+import { longDate } from "@/lib/format";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -69,7 +70,7 @@ export default async function OpeningPage({
           <main>
             <div className="mx-auto max-w-2xl px-6 py-32 text-center">
               <Eyebrow align="center">Careers</Eyebrow>
-              <h1 className="mt-6 font-display text-3xl text-ink">
+              <h1 className="slash mt-6 font-display text-3xl text-ink">
                 Sign in to view this opening.
               </h1>
               <Link
@@ -128,11 +129,7 @@ export default async function OpeningPage({
     : posting.location ?? null;
 
   const deadline = posting.application_deadline
-    ? new Date(posting.application_deadline).toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      })
+    ? longDate(posting.application_deadline)
     : null;
 
   return (
@@ -149,16 +146,16 @@ export default async function OpeningPage({
             </Link>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood/80">
+              <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
                 {posting.type === "job" ? "Job" : "Internship"}
               </span>
               {posting.closed_at && (
-                <span className="rounded-full border border-ink/25 bg-ink/5 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/55">
+                <span className="rounded-full border border-ink/25 bg-ink/5 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/70">
                   Removed from board
                 </span>
               )}
               {posting.experience_level && (
-                <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/50">
+                <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/70">
                   {posting.experience_level}
                 </span>
               )}
@@ -172,7 +169,7 @@ export default async function OpeningPage({
               {place ? ` · ${place}` : ""}
             </p>
             {poster?.full_name && (
-              <p className="mt-1 font-sans text-sm text-ink/50">
+              <p className="mt-1 font-sans text-sm text-ink/70">
                 Posted by {poster.full_name}
               </p>
             )}
@@ -190,14 +187,14 @@ export default async function OpeningPage({
 
                 {(posting.skills_required ?? []).length > 0 && (
                   <div className="mt-8">
-                    <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60">
+                    <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                       Skills
                     </h2>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {(posting.skills_required ?? []).map((s) => (
                         <span
                           key={s}
-                          className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood/80"
+                          className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood"
                         >
                           {s}
                         </span>
@@ -262,7 +259,7 @@ export default async function OpeningPage({
 function Block({ title, body }: { title: string; body: string }) {
   return (
     <div className="mt-8">
-      <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60">
+      <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
         {title}
       </h2>
       <p className="mt-3 whitespace-pre-line font-sans text-base leading-relaxed text-ink/80">
@@ -276,7 +273,7 @@ function Fact({ label, value }: { label: string; value: string | null }) {
   if (!value) return null;
   return (
     <div>
-      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/50">
+      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
         {label}
       </dt>
       <dd className="mt-1 font-sans text-sm text-ink/80">{value}</dd>

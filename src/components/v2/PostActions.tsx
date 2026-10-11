@@ -162,7 +162,7 @@ export default function PostActions({
           onClick={() => setPicker((v) => !v)}
           aria-expanded={picker}
           aria-label="More reactions"
-          className="flex h-10 w-8 items-center justify-center rounded-full text-ink/45 hover:bg-ink/[0.06] hover:text-ink"
+          className="flex h-10 w-8 items-center justify-center rounded-full text-ink/70 hover:bg-ink/[0.06] hover:text-ink"
         >
           <span aria-hidden="true" className="text-base leading-none">+</span>
         </button>
@@ -173,12 +173,12 @@ export default function PostActions({
           {commentCount > 0 && <span className="font-mono text-xs">{commentCount}</span>}
         </Link>
 
-        <button type="button" onClick={share} className="flex h-10 items-center gap-1.5 rounded-full px-3 font-medium hover:bg-ink/[0.06]">
+        <button type="button" onClick={share} aria-label="Share this post" className="flex h-10 items-center gap-1.5 rounded-full px-3 font-medium hover:bg-ink/[0.06]">
           <Icon name="share" className="h-[1.15rem] w-[1.15rem]" />
           <span className="hidden sm:inline">Share</span>
         </button>
 
-        <span role="status" className="ml-1 truncate text-xs text-ink/55">
+        <span role="status" className="ml-1 truncate text-xs text-ink/70">
           {note}
         </span>
 

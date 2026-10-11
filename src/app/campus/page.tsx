@@ -21,11 +21,11 @@ export default function CampusPage() {
               The campus, <span className="serif-accent hl">from memory</span>.
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink/75">
-              Every block, road and gate where you left it. Walk up to a building and it opens the part of the network that
+              Every block, road and gate where you left it. Walk up to a building and it opens the part of the Network that
               belongs there: the canteen is the feed, the Indoor Stadium is events, and the noticeboard outside the
               Administration Block is The Wall.
             </p>
-            <h2 className="label-mono mt-9 text-ink/55">Where everything leads</h2>
+            <h2 className="label-mono mt-9 text-ink/70">Where everything leads</h2>
             <CampusLegend className="mt-3" />
             <p className="hand mt-7 text-[1.35rem] leading-snug text-forest">
               Drawn from a student&rsquo;s own sketch of the campus. Not to scale, and some corners are best left unlabelled.
@@ -35,7 +35,7 @@ export default function CampusPage() {
           <div className="sheet relative min-w-0 -rotate-[0.5deg] p-2.5 sm:p-4">
             <span className="tape" aria-hidden="true" />
             <CampusMap />
-            <p className="label-mono px-2 pb-1 pt-2 text-ink/50 md:hidden">Drag the map sideways to see all of it</p>
+            <p className="label-mono px-2 pb-1 pt-2 text-ink/70 md:hidden">Drag the map sideways to see all of it</p>
           </div>
         </div>
       </main>

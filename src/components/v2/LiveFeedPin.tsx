@@ -45,7 +45,7 @@ export default function LiveFeedPin({ meId }: { meId: string }) {
           window.scrollTo({ top: 0 });
         }}
         className="stickynote pointer-events-auto relative inline-flex -rotate-1 items-center gap-2 px-4 py-2 text-sm font-semibold motion-ok:animate-[var(--animate-pin-drop)]"
-        style={{ ["--note" as string]: "#c8f53c", ["--tilt" as string]: "-1deg" }}
+        style={{ ["--note" as string]: "#dadde2", ["--tilt" as string]: "-1deg" }}
       >
         <span className="pin" aria-hidden="true" />
         <Icon name="spark" className="h-4 w-4" />

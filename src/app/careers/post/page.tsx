@@ -46,7 +46,7 @@ export default async function PostOpeningPage() {
                 My postings →
               </Link>
             </div>
-            <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
+            <h1 className="slash mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
               Post an opening.
             </h1>
 
@@ -55,9 +55,9 @@ export default async function PostOpeningPage() {
                 <p className="font-display text-xl italic text-ink">
                   Your account is pending verification.
                 </p>
-                <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/65">
+                <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/70">
                   Once an admin verifies your profile, you&rsquo;ll be able to
-                  post jobs and internships to the network.
+                  post jobs and internships to the Network.
                 </p>
               </div>
             ) : (

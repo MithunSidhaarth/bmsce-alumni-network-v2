@@ -28,7 +28,7 @@ async function requireAdmin() {
     .eq("id", user.id)
     .single();
 
-  if (me?.role !== "admin") throw fail("Not authorized");
+  if (me?.role !== "admin") throw fail("Not authorised");
   return supabase;
 }
 

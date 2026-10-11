@@ -102,7 +102,7 @@ export default async function MembersAdmin({
           </select>
         </label>
         <label className="w-28">
-          <span className="field-label">Batch</span>
+          <span className="field-label">Class</span>
           <input name="batch" defaultValue={sp.batch ?? ""} className="field" inputMode="numeric" placeholder="2019" />
         </label>
         <label>
@@ -122,7 +122,7 @@ export default async function MembersAdmin({
         </Link>
       </form>
 
-      <p className="mb-3 text-sm text-ink/60">{error ? error.message : `${total} member${total === 1 ? "" : "s"}`}</p>
+      <p className="mb-3 text-sm text-ink/70">{error ? error.message : `${total} member${total === 1 ? "" : "s"}`}</p>
 
       {rows.length === 0 ? (
         <Empty>No members match these filters.</Empty>
@@ -142,14 +142,14 @@ export default async function MembersAdmin({
               {rows.map((r) => (
                 <tr key={r.id} id={r.id}>
                   <td className={table.td}>
-                    <Link href={`/directory/${r.id}`} className="font-semibold hover:underline">
+                    <Link href={`/directory/${r.id}`} className="font-semibold underline">
                       {r.full_name ?? "No name yet"}
                     </Link>
-                    <p className="text-xs text-ink/55">{[r.job_title, r.company].filter(Boolean).join(" at ") || r.current_city || ""}</p>
+                    <p className="text-xs text-ink/70">{[r.job_title, r.company].filter(Boolean).join(" at ") || r.current_city || ""}</p>
                   </td>
                   <td className={table.td}>
                     {r.user_type === "student" ? "Student" : "Alumni"}
-                    <p className="text-xs text-ink/55">{[r.graduation_year, r.branch].filter(Boolean).join(" · ")}</p>
+                    <p className="text-xs text-ink/70">{[r.graduation_year, r.branch].filter(Boolean).join(" · ")}</p>
                   </td>
                   <td className={table.td}>
                     <span className="flex flex-wrap gap-1">
@@ -163,18 +163,18 @@ export default async function MembersAdmin({
                       {r.role === "admin" && <Pill>Admin</Pill>}
                       {r.suspended_at && <Pill tone="bad">Suspended</Pill>}
                     </span>
-                    {r.suspended_reason && <p className="mt-1 text-xs text-ink/55">{r.suspended_reason}</p>}
+                    {r.suspended_reason && <p className="mt-1 text-xs text-ink/70">{r.suspended_reason}</p>}
                   </td>
                   <td className={table.td}>
                     {shortDate(r.created_at)}
-                    <p className="text-xs text-ink/55">{r.last_seen_at ? `seen ${shortDate(r.last_seen_at)}` : "not seen yet"}</p>
+                    <p className="text-xs text-ink/70">{r.last_seen_at ? `seen ${shortDate(r.last_seen_at)}` : "not seen yet"}</p>
                   </td>
                   <td className={table.td}>
                     <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold">
-                      <Link href={`${qs({ edit: sp.edit === r.id ? undefined : r.id })}#${r.id}`} className="text-forest hover:underline">
+                      <Link href={`${qs({ edit: sp.edit === r.id ? undefined : r.id })}#${r.id}`} className="text-forest underline">
                         {sp.edit === r.id ? "Close" : "Edit"}
                       </Link>
-                      <Link href={`/admin/lifecycle?member=${r.id}`} className="text-forest hover:underline">
+                      <Link href={`/admin/lifecycle?member=${r.id}`} className="text-forest underline">
                         Lifecycle
                       </Link>
                     </div>
@@ -246,7 +246,7 @@ export default async function MembersAdmin({
                             </AdminForm>
                           </>
                         )}
-                        <p className="mt-3 text-xs text-ink/55">
+                        <p className="mt-3 text-xs text-ink/70">
                           Admins suspend rather than delete, so posts and history are never lost by mistake. A member who wants
                           their account gone deletes it from their own profile.
                         </p>
@@ -269,7 +269,7 @@ export default async function MembersAdmin({
           ) : (
             <span />
           )}
-          <span className="text-ink/60">
+          <span className="text-ink/70">
             Page {page} of {Math.ceil(total / PAGE)}
           </span>
           {page * PAGE < total ? (

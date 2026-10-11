@@ -48,38 +48,38 @@ export default async function JoinPage({ searchParams }: Props) {
           <AuthSplit
             mobileHero={
               <>
-                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/70">
                   New here
                 </p>
                 <h1 className="mt-4 font-display text-[2.75rem] leading-[0.98] tracking-tight">
                   Join the <span className="italic text-accent">network.</span>
                 </h1>
                 <p className="mt-3 max-w-xs font-sans text-sm leading-relaxed text-ivory/70">
-                  Two minutes to set up, then the whole BMS network opens up.
+                  Two minutes to set up, then the whole Network opens up.
                 </p>
                 <div className="mt-6 flex gap-8">
                   <p>
-                    <span className="block font-display text-3xl text-accent"><CountUp value="10+" /></span>
-                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-ivory/60">Countries</span>
+                    <span className="block font-display text-3xl text-accent"><CountUp value="12" /></span>
+                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-ivory/70">Countries</span>
                   </p>
                   <p>
-                    <span className="block font-display text-3xl text-accent"><CountUp value="30+" /></span>
-                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-ivory/60">Chapters</span>
+                    <span className="block font-display text-3xl text-accent"><CountUp value="31" /></span>
+                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-ivory/70">Chapters</span>
                   </p>
                 </div>
               </>
             }
             panel={
               <>
-                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/70">
                   What you get
                 </p>
                 <ul className="mt-8 flex flex-col gap-3">
                   {[
-                    ["The directory", "Find classmates by batch, branch, city, industry or company."],
-                    ["Your chapter", "Meet BMS alumni in 30+ chapters across 10+ countries."],
-                    ["Events & reunions", "RSVP to meetups and reunions near you."],
-                    ["Mentorship & community", "Ask, answer and help, from campus to career."],
+                    ["The directory", "Find classmates by class year, branch, city, industry or company."],
+                    ["Your chapter", "Meet BMSCE alumni in 31 chapters across 12 countries."],
+                    ["Events and reunions", "RSVP to meetups and reunions near you."],
+                    ["Mentoring and community", "Ask, answer and help, from campus to career."],
                   ].map(([t, d], i) => (
                     <Reveal as="li" key={t} delay={i * 90}>
                       <SpotlightCard className="rounded-2xl border border-ivory/10 p-4 transition-colors hover:border-ivory/25">
@@ -89,7 +89,7 @@ export default async function JoinPage({ searchParams }: Props) {
                           </span>
                           <span>
                             <span className="block font-display text-xl text-ivory">{t}</span>
-                            <span className="mt-1 block font-sans text-sm leading-relaxed text-ivory/65">
+                            <span className="mt-1 block font-sans text-sm leading-relaxed text-ivory/70">
                               {d}
                             </span>
                           </span>
@@ -99,13 +99,13 @@ export default async function JoinPage({ searchParams }: Props) {
                   ))}
                 </ul>
                 <div className="mt-12 border-t border-ivory/15 pt-8">
-                  <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
+                  <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/70">
                     How it works
                   </p>
                   <ol className="mt-5 flex flex-col gap-2 font-sans text-sm text-ivory/80">
                     <li>1. Sign up and complete your profile.</li>
-                    <li>2. We confirm you&rsquo;re from BMS.</li>
-                    <li>3. You&rsquo;re in. Say hello to your batch.</li>
+                    <li>2. We confirm you&rsquo;re from BMSCE.</li>
+                    <li>3. You&rsquo;re in. Say hello to your class.</li>
                   </ol>
                 </div>
               </>

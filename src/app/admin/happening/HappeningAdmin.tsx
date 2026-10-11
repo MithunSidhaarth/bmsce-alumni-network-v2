@@ -1,5 +1,6 @@
 "use client";
 
+import { longDate } from "@/lib/format";
 import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { addUpdate, deleteUpdate } from "./actions";
@@ -7,9 +8,9 @@ import type { CampusUpdate } from "@/components/UpdateCard";
 import { said } from "@/lib/fail";
 
 const FIELD =
-  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60";
+  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
 
 export default function HappeningAdmin({ items }: { items: CampusUpdate[] }) {
   const router = useRouter();
@@ -115,15 +116,15 @@ export default function HappeningAdmin({ items }: { items: CampusUpdate[] }) {
           >
             <span className="font-sans text-sm text-ink">
               {u.title}
-              <span className="ml-2 text-ink/50">
+              <span className="ml-2 text-ink/70">
                 {u.category} ·{" "}
-                {new Date(u.published_at).toLocaleDateString("en-IN")}
+                {longDate(u.published_at)}
               </span>
             </span>
             <button
               onClick={() => remove(u.id)}
               disabled={busy}
-              className="font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/60 hover:text-oxblood"
+              className="font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 hover:text-oxblood"
             >
               Delete
             </button>

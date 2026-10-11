@@ -12,9 +12,9 @@ export default function LeadershipPage() {
     <ComingSoon
       eyebrow="Leadership"
       title="The people behind it."
-      body="Details of the alumni association's office bearers and committee will be published here once confirmed. We're not listing anyone until we can do it accurately and with their consent."
-      contactPrompt="Need to reach the alumni association directly, or interested in serving on the committee? Get in touch with the alumni office."
-      contactSubject="Alumni association leadership"
+      body="Details of the Network's office bearers and committee will be published here once confirmed. We're not listing anyone until we can do it accurately and with their consent."
+      contactPrompt="Need to reach the Network directly, or interested in serving on the committee? Get in touch with the alumni office."
+      contactSubject="BMSCE Alumni Network leadership"
     />
   );
 }

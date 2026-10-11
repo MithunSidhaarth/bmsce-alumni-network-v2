@@ -1,3 +1,4 @@
+import { dateTime } from "@/lib/format";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -5,6 +6,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Eyebrow from "@/components/Eyebrow";
 import TearOffRsvp from "../TearOffRsvp";
+import SecondZone from "@/components/v2/SecondZone";
 import EventCommunity from "@/components/v2/EventCommunity";
 import { createClient } from "@/lib/supabase/server";
 import { safeUrl } from "@/lib/url";
@@ -72,14 +74,7 @@ export default async function EventPage({ params }: Props) {
   const validDate = !isNaN(date.getTime());
   const isPast = validDate && date.getTime() < Date.now();
   const when = validDate
-    ? date.toLocaleString("en-IN", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-      })
+    ? dateTime(event.event_date)
     : "";
   const place = [event.location, event.state, event.country]
     .filter(Boolean)
@@ -110,10 +105,10 @@ export default async function EventPage({ params }: Props) {
               ← All events
             </Link>
 
-            <div className="mt-8 aspect-[16/9] overflow-hidden rounded-2xl bg-gradient-to-br from-maroon to-oxblood">
+            <div className="mt-8 aspect-[16/9] overflow-hidden rounded-2xl bg-[image:linear-gradient(90deg,var(--color-red),var(--color-dusk))]">
               {cover && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={cover} alt="" className="h-full w-full object-cover" />
+                <img src={cover} alt={`Poster for ${event.title}`} className="h-full w-full object-cover" />
               )}
             </div>
 
@@ -134,15 +129,15 @@ export default async function EventPage({ params }: Props) {
                 <dl className="flex flex-col gap-5">
                   {when && (
                     <div>
-                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/50">
+                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                         When
                       </dt>
-                      <dd className="mt-1 font-sans text-sm text-ink">{when}</dd>
+                      <dd className="mt-1 font-sans text-sm text-ink">{when}<SecondZone iso={event.event_date} /></dd>
                     </div>
                   )}
                   {place && (
                     <div>
-                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/50">
+                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                         Where
                       </dt>
                       <dd className="mt-1 font-sans text-sm text-ink">{place}</dd>
@@ -151,7 +146,7 @@ export default async function EventPage({ params }: Props) {
                 </dl>
                 <div className="mt-6 border-t border-gold/30 pt-6">
                   {isPast ? (
-                    <p className="font-sans text-sm text-ink/60">
+                    <p className="font-sans text-sm text-ink/70">
                       This event has ended.
                     </p>
                   ) : (
@@ -162,14 +157,14 @@ export default async function EventPage({ params }: Props) {
                         count={count}
                         canRsvp={canRsvp}
                         signedIn={!!user}
-                        label={new Date(event.event_date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" })}
+                        label={new Date(event.event_date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "long" })}
                       />
                     </div>
                   )}
                   {!isPast && (
                     <a
                       href={`/events/${event.id}/calendar`}
-                      className="mt-4 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 hover:text-oxblood"
+                      className="mt-4 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood hover:text-oxblood"
                     >
                       Add to calendar (.ics) →
                     </a>
@@ -179,7 +174,7 @@ export default async function EventPage({ params }: Props) {
                       href={calendar}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 hover:text-oxblood"
+                      className="mt-3 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood hover:text-oxblood"
                     >
                       Add to Google Calendar →
                     </a>
@@ -189,7 +184,7 @@ export default async function EventPage({ params }: Props) {
                       href={external}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 hover:text-oxblood"
+                      className="mt-3 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood hover:text-oxblood"
                     >
                       Event details →
                     </a>

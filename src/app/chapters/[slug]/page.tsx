@@ -105,12 +105,12 @@ export default async function ChapterPage({
       <Nav />
       <main className="pb-20">
         {/* Cover: the city photograph with the chapter name stamped over it. */}
-        <header {...vt(`chapter-${chapter.slug}`)} className="relative isolate overflow-hidden bg-forest text-ivory">
+        <header {...vt(`chapter-${chapter.slug}`)} className="relative isolate overflow-hidden bg-brand-ink text-ivory">
           {chapter.cover_url && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={chapter.cover_url} alt="" className="absolute inset-0 -z-10 h-full w-full object-cover opacity-55" />
+            <img src={chapter.cover_url} alt={`${chapter.name}: chapter photo`} className="absolute inset-0 -z-10 h-full w-full object-cover opacity-55" />
           )}
-          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-forest via-forest/70 to-forest/20" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-ink via-brand-ink/70 to-brand-ink/20" />
           <div className="mx-auto max-w-[1180px] px-4 pb-8 pt-16 md:px-8 md:pt-28">
             <Link href="/chapters" className="inline-flex items-center gap-2 text-sm font-semibold text-ivory/80 hover:text-lime">
               <Icon name="back" className="h-4 w-4" /> All chapters
@@ -164,7 +164,7 @@ export default async function ChapterPage({
             {!verified && (
               <EmptyState
                 title={user ? "Members only, once you are verified" : "This is a members' space"}
-                body="Chapter posts, members and photos are visible to verified members of the network."
+                body="Chapter posts, members and photos are visible to verified members of the Network."
                 action={user ? { href: "/profile", label: "Check your status" } : { href: `/login?next=/chapters/${slug}`, label: "Sign in" }}
               />
             )}
@@ -201,7 +201,7 @@ export default async function ChapterPage({
             {verified && tab === "members" && (
               <div className="mt-6">
                 {canManage && pending.length > 0 && (
-                  <section aria-labelledby="pending-title" className="stickynote mb-8 px-5 py-5" style={{ ["--note" as string]: "#ffd9c7" }}>
+                  <section aria-labelledby="pending-title" className="stickynote mb-8 px-5 py-5" style={{ ["--note" as string]: "#ffffff" }}>
                     <h2 id="pending-title" className="font-display text-lg font-bold">
                       {plural(pending.length, "request")} to join
                     </h2>
@@ -209,7 +209,7 @@ export default async function ChapterPage({
                       {pending.map((m) => (
                         <li key={m.profile!.id} className="flex flex-wrap items-center gap-3">
                           <Avatar name={m.profile!.full_name} src={m.profile!.photo_url} size={36} />
-                          <Link href={`/directory/${m.profile!.id}`} className="min-w-0 flex-1 truncate text-sm font-semibold hover:underline">
+                          <Link href={`/directory/${m.profile!.id}`} className="min-w-0 flex-1 truncate text-sm font-semibold underline">
                             {m.profile!.full_name ?? "Member"}
                           </Link>
                           <MemberReview chapterId={chapter.id} slug={slug} profileId={m.profile!.id} mode="pending" />
@@ -223,12 +223,12 @@ export default async function ChapterPage({
                     <li key={m.profile!.id} className="flex items-center gap-3 px-4 py-3 sm:px-5">
                       <Avatar name={m.profile!.full_name} src={m.profile!.photo_url} size={40} />
                       <div className="min-w-0 flex-1">
-                        <Link href={`/directory/${m.profile!.id}`} className="font-semibold hover:underline">
+                        <Link href={`/directory/${m.profile!.id}`} className="font-semibold underline">
                           {m.profile!.full_name ?? "Member"}
                         </Link>
-                        <p className="truncate text-xs text-ink/55">
+                        <p className="truncate text-xs text-ink/70">
                           {[
-                            m.profile!.user_type === "student" ? "Student" : m.profile!.graduation_year ? `Batch of ${m.profile!.graduation_year}` : "Alumni",
+                            m.profile!.user_type === "student" ? "Student" : m.profile!.graduation_year ? `Class of ${m.profile!.graduation_year}` : "Alumni",
                             [m.profile!.job_title, m.profile!.company].filter(Boolean).join(" at "),
                           ]
                             .filter(Boolean)
@@ -250,9 +250,9 @@ export default async function ChapterPage({
 
             {tab === "events" && (
               <div className="mt-6">
-                <h2 className="label-mono text-ink/60">Upcoming</h2>
+                <h2 className="label-mono text-ink/70">Upcoming</h2>
                 {(upcoming.data ?? []).length === 0 ? (
-                  <p className="mt-3 text-sm text-ink/60">No upcoming events for this chapter.</p>
+                  <p className="mt-3 text-sm text-ink/70">No upcoming events for this chapter.</p>
                 ) : (
                   <ul className="mt-3 grid gap-3 sm:grid-cols-2">
                     {upcoming.data!.map((e) => (
@@ -264,7 +264,7 @@ export default async function ChapterPage({
                 )}
                 {(past.data ?? []).length > 0 && (
                   <>
-                    <h2 className="label-mono mt-10 text-ink/60">Past reunions and meetups</h2>
+                    <h2 className="label-mono mt-10 text-ink/70">Past reunions and meetups</h2>
                     <ul className="mt-3 grid gap-3 sm:grid-cols-2">
                       {past.data!.map((e) => (
                         <li key={e.id} className="opacity-75">
@@ -300,24 +300,24 @@ export default async function ChapterPage({
 
           <aside className="flex flex-col gap-6">
             <section className="sheet sheet-kraft px-5 py-5">
-              <h2 className="label-mono text-ink/65">About this chapter</h2>
+              <h2 className="label-mono text-ink/70">About this chapter</h2>
               <p className="mt-3 text-[0.9375rem] leading-relaxed">
                 {chapter.description ?? `The ${chapter.name} chapter brings together BMSCE alumni and students in and around ${place}.`}
               </p>
               <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
-                <dt className="text-ink/60">Region</dt>
+                <dt className="text-ink/70">Region</dt>
                 <dd>{chapter.region}</dd>
-                <dt className="text-ink/60">Joining</dt>
+                <dt className="text-ink/70">Joining</dt>
                 <dd>{chapter.join_policy === "open" ? "Open to verified members" : "By request, approved by a lead"}</dd>
               </dl>
             </section>
             {verified && leads.length > 0 && (
               <section>
-                <h2 className="label-mono text-ink/60">Leadership</h2>
+                <h2 className="label-mono text-ink/70">Leadership</h2>
                 <ul className="mt-3 flex flex-col gap-3">
                   {leads.map((l) => (
                     <li key={l.profile!.id}>
-                      <Link href={`/directory/${l.profile!.id}`} className="flex items-center gap-3 hover:underline">
+                      <Link href={`/directory/${l.profile!.id}`} className="flex items-center gap-3 underline">
                         <Avatar name={l.profile!.full_name} src={l.profile!.photo_url} size={38} />
                         <span className="text-sm font-semibold">{l.profile!.full_name ?? "Member"}</span>
                       </Link>

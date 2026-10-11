@@ -32,9 +32,9 @@ export function Panel({ title, children, aside }: { title?: string; children: Re
 export function Stat({ label, value, hint }: { label: string; value: ReactNode; hint?: ReactNode }) {
   return (
     <div className="min-w-[9.5rem] flex-1 rounded-box border border-ink/12 bg-paper px-4 py-3.5">
-      <p className="label-mono text-ink/55">{label}</p>
+      <p className="label-mono text-ink/70">{label}</p>
       <p className="mt-1.5 font-display text-[1.9rem] font-bold leading-none">{value}</p>
-      {hint && <p className="mt-1.5 text-xs text-ink/55">{hint}</p>}
+      {hint && <p className="mt-1.5 text-xs text-ink/70">{hint}</p>}
     </div>
   );
 }
@@ -42,9 +42,9 @@ export function Stat({ label, value, hint }: { label: string; value: ReactNode; 
 export function Pill({ tone = "neutral", children }: { tone?: "neutral" | "good" | "warn" | "bad"; children: ReactNode }) {
   const tones = {
     neutral: "bg-ink/[0.07] text-ink/75",
-    good: "bg-lime/70 text-ink",
-    warn: "bg-[#ffe2b8] text-[#7a4a00]",
-    bad: "bg-[#ffd3cd] text-[#8f1d14]",
+    good: "bg-blue text-white",
+    warn: "bg-cloud text-brand-ink",
+    bad: "bg-red text-white",
   };
   return <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${tones[tone]}`}>{children}</span>;
 }
@@ -52,10 +52,10 @@ export function Pill({ tone = "neutral", children }: { tone?: "neutral" | "good"
 export const table = {
   wrap: "overflow-x-auto rounded-md border border-ink/12 bg-paper",
   table: "w-full min-w-[40rem] border-collapse text-left text-sm",
-  th: "label-mono border-b border-ink/12 px-4 py-2.5 font-medium text-ink/55",
+  th: "label-mono border-b border-ink/12 px-4 py-2.5 font-medium text-ink/70",
   td: "border-b border-ink/[0.07] px-4 py-3 align-top",
 };
 
 export function Empty({ children }: { children: ReactNode }) {
-  return <p className="rounded-md border border-dashed border-ink/25 px-5 py-8 text-center text-sm text-ink/60">{children}</p>;
+  return <p className="rounded-md border border-dashed border-ink/25 px-5 py-8 text-center text-sm text-ink/70">{children}</p>;
 }

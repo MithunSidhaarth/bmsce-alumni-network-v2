@@ -66,7 +66,7 @@ export default async function InstagramAdmin() {
         </AdminForm>
       </AdminHeader>
 
-      <div className={`mb-7 rounded-md border px-5 py-4 ${state.tone === "good" ? "border-forest/30 bg-lime/30" : state.tone === "bad" ? "border-pin/40 bg-[#ffe4e0]" : "border-[#c98a1a]/40 bg-[#fff1d6]"}`}>
+      <div className={`mb-7 rounded-md border px-5 py-4 ${state.tone === "good" ? "border-blue bg-white" : state.tone === "bad" ? "border-red bg-white" : "border-mist bg-white"}`}>
         <p className="font-display text-lg font-bold">Status: {state.title}</p>
         <p className="mt-1 text-sm text-ink/80">{state.text}</p>
       </div>
@@ -85,7 +85,7 @@ export default async function InstagramAdmin() {
         aside={(failures.data?.length ?? 0) > 0 ? <AdminForm action={retryInstagramFailures}><Submit className="btn btn-ghost btn-sm">Retry failed records</Submit></AdminForm> : undefined}
       >
         {(failures.data ?? []).length === 0 ? (
-          <p className="text-sm text-ink/60">No failed imports. If one post cannot be stored, it is listed here with the reason while the rest of the sync continues.</p>
+          <p className="text-sm text-ink/70">No failed imports. If one post cannot be stored, it is listed here with the reason while the rest of the sync continues.</p>
         ) : (
           <ul className="flex flex-col gap-2 text-sm">
             {failures.data!.map((f) => (
@@ -108,14 +108,14 @@ export default async function InstagramAdmin() {
               <tbody>
                 {all.map((r) => (
                   <tr key={r.id}>
-                    <td className={table.td}>{shortDate(r.finished_at)} <span className="text-xs text-ink/55">{clockTime(r.finished_at)}</span></td>
+                    <td className={table.td}>{shortDate(r.finished_at)} <span className="text-xs text-ink/70">{clockTime(r.finished_at)}</span></td>
                     <td className={table.td}>{r.trigger}</td>
                     <td className={table.td}><Pill tone={STATUS[r.status]?.tone ?? "warn"}>{STATUS[r.status]?.label ?? r.status}</Pill></td>
                     <td className={table.td}>{r.fetched}</td>
                     <td className={table.td}>{r.new_count}</td>
                     <td className={table.td}>{r.updated_count}</td>
                     <td className={table.td}>{r.failed_count}</td>
-                    <td className={`${table.td} max-w-xs text-xs text-ink/65`}>{r.error ?? (r.attempts > 1 ? `Succeeded after ${r.attempts} attempts` : "")}</td>
+                    <td className={`${table.td} max-w-xs text-xs text-ink/70`}>{r.error ?? (r.attempts > 1 ? `Succeeded after ${r.attempts} attempts` : "")}</td>
                   </tr>
                 ))}
               </tbody>
@@ -133,7 +133,7 @@ export default async function InstagramAdmin() {
             <li>Paste the token below (it is stored in a private database schema and refreshed automatically before it expires), or set <code className="font-mono text-xs">INSTAGRAM_ACCESS_TOKEN</code> in the hosting environment.</li>
             <li>Press <strong>Sync now</strong>. From then on the daily schedule keeps The Wall up to date.</li>
           </ol>
-          <p className="mt-3 text-xs text-ink/60">
+          <p className="mt-3 text-xs text-ink/70">
             Using a Facebook Page instead? Set <code className="font-mono">INSTAGRAM_USER_ID</code> to the Instagram business account id and use a system-user token with <code className="font-mono">instagram_basic</code> and <code className="font-mono">pages_read_engagement</code>.
           </p>
           <AdminForm action={saveInstagramToken} className="mt-4 flex flex-col gap-2">
@@ -142,7 +142,7 @@ export default async function InstagramAdmin() {
               <Submit>Store token</Submit>
               {conn.has_stored_token && <Submit name="remove" value="1" className="btn btn-ghost btn-sm" confirm="Remove the stored token? Automatic imports will stop.">Remove stored token</Submit>}
             </div>
-            <p className="text-xs text-ink/55">The token is never shown again and never sent to the browser.</p>
+            <p className="text-xs text-ink/70">The token is never shown again and never sent to the browser.</p>
           </AdminForm>
         </Panel>
 
@@ -152,11 +152,11 @@ export default async function InstagramAdmin() {
             <Submit>Save</Submit>
           </AdminForm>
           <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
-            <dt className="text-ink/60">Schedule</dt><dd>Daily at 07:00 India time (<code className="font-mono text-xs">vercel.json</code>, <code className="font-mono text-xs">/api/cron/instagram</code>)</dd>
-            <dt className="text-ink/60">Scheduled run can authenticate</dt><dd>{cronReady ? <Pill tone="good">Yes</Pill> : <Pill tone="bad">Missing CRON_SECRET or APP_SERVER_SECRET</Pill>}</dd>
-            <dt className="text-ink/60">New imports</dt><dd>{settings.data?.ig_auto_publish === false ? "Wait for approval (change under The Wall)" : "Shown on The Wall straight away (change under The Wall)"}</dd>
-            <dt className="text-ink/60">Duplicates</dt><dd>Matched on Instagram&rsquo;s media id, then on the post shortcode</dd>
-            <dt className="text-ink/60">Media</dt><dd>Linked from Meta&rsquo;s CDN and refreshed every sync; not copied</dd>
+            <dt className="text-ink/70">Schedule</dt><dd>Daily at 07:00 India time (<code className="font-mono text-xs">vercel.json</code>, <code className="font-mono text-xs">/api/cron/instagram</code>)</dd>
+            <dt className="text-ink/70">Scheduled run can authenticate</dt><dd>{cronReady ? <Pill tone="good">Yes</Pill> : <Pill tone="bad">Missing CRON_SECRET or APP_SERVER_SECRET</Pill>}</dd>
+            <dt className="text-ink/70">New imports</dt><dd>{settings.data?.ig_auto_publish === false ? "Wait for approval (change under The Wall)" : "Shown on The Wall straight away (change under The Wall)"}</dd>
+            <dt className="text-ink/70">Duplicates</dt><dd>Matched on Instagram&rsquo;s media id, then on the post shortcode</dd>
+            <dt className="text-ink/70">Media</dt><dd>Linked from Meta&rsquo;s CDN and refreshed every sync; not copied</dd>
           </dl>
           {(seedCount.count ?? 0) === 0 && (
             <AdminForm action={importStarterContent} className="mt-5">
@@ -175,14 +175,14 @@ export default async function InstagramAdmin() {
             {posts.data!.map((p) => (
               <li key={p.id} className={p.is_hidden ? "opacity-50" : ""}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.thumbnail_url ?? p.image_url ?? ""} alt="" loading="lazy" className="aspect-square w-full rounded bg-ivory-dim object-cover" />
+                <img src={p.thumbnail_url ?? p.image_url ?? ""} alt="Picture from an imported Instagram post" loading="lazy" className="aspect-square w-full rounded bg-ivory-dim object-cover" />
                 <p className="mt-1.5 line-clamp-2 text-xs text-ink/70">{p.caption}</p>
                 <p className="mt-1 flex flex-wrap items-center gap-2 text-xs">
                   <Pill>{p.source === "api" ? "Imported" : "Archive"}</Pill>
                   {p.permalink && <a href={p.permalink} target="_blank" rel="noreferrer" className="font-semibold text-forest underline">Original</a>}
                 </p>
                 <AdminForm action={setInstagramHidden} hidden={{ id: p.id, hidden: p.is_hidden ? "0" : "1" }}>
-                  <Submit className="mt-1 text-xs font-semibold text-ink/60 underline hover:text-ink">{p.is_hidden ? "Show on this site" : "Hide on this site"}</Submit>
+                  <Submit className="mt-1 text-xs font-semibold text-ink/70 underline hover:text-ink">{p.is_hidden ? "Show on this site" : "Hide on this site"}</Submit>
                 </AdminForm>
               </li>
             ))}

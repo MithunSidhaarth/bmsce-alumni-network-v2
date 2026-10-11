@@ -55,7 +55,7 @@ export default async function ProfilePage() {
   const detail = [profile.job_title, profile.company].filter(Boolean).join(", ");
   const meta = [
     profile.graduation_year
-      ? `${isStudent ? "Class of" : "Batch of"} ${profile.graduation_year}`
+      ? `Class of ${profile.graduation_year}`
       : null,
     profile.branch,
     profile.current_city,
@@ -95,12 +95,12 @@ export default async function ProfilePage() {
             <div className="mt-10 grid gap-8 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center">
               <IdCard
                 data={{
-                  name: profile.full_name || "BMS member",
+                  name: profile.full_name || "BMSCE member",
                   photo: profile.photo_url,
                   dept: deptLine(profile.branch),
                   ...idLines(profile),
                   back: {
-                    kind: isStudent ? "Student" : profile.graduation_year ? `Alumni, batch of ${profile.graduation_year}` : "Alumni",
+                    kind: isStudent ? "Student" : profile.graduation_year ? `Alumni, class of ${profile.graduation_year}` : "Alumni",
                     verified: profile.verification_status === "verified",
                     since: new Date(profile.created_at).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", month: "long", year: "numeric" }),
                     role: [profile.job_title, profile.company].filter(Boolean).join(" at ") || null,
@@ -126,7 +126,7 @@ export default async function ProfilePage() {
                   </Link>
                 </div>
                 {!profile.usn && (
-                  <p className="mt-4 max-w-sm text-sm text-ink/65">
+                  <p className="mt-4 max-w-sm text-sm text-ink/70">
                     Add your college ID number in{" "}
                     <Link href="/profile/edit" className="font-semibold text-forest underline underline-offset-2">
                       settings
@@ -138,7 +138,7 @@ export default async function ProfilePage() {
             </div>
 
             <dl className="mt-10 grid grid-cols-1 gap-x-10 gap-y-6 border-t border-gold/25 pt-8 sm:grid-cols-2">
-              <Row label={isStudent ? "Student" : "Alumnus"} value={meta} />
+              <Row label={isStudent ? "Student" : "Alum"} value={meta} />
               <Row label="Industry" value={profile.industry} />
               <Row label="LinkedIn" value={profile.linkedin_url} isLink />
               <Row
@@ -158,7 +158,7 @@ export default async function ProfilePage() {
 
             {eduList.length > 0 && (
               <div className="mt-8 border-t border-gold/25 pt-8">
-                <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/50">
+                <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                   Higher education
                 </h2>
                 <ul className="mt-3 flex flex-col gap-2">
@@ -167,7 +167,7 @@ export default async function ProfilePage() {
                       <span className="font-medium text-ink">{e.degree}</span>
                       {e.institution ? `, ${e.institution}` : ""}
                       {e.year ? (
-                        <span className="text-ink/50"> · {e.year}</span>
+                        <span className="text-ink/70"> · {e.year}</span>
                       ) : null}
                     </li>
                   ))}
@@ -199,7 +199,7 @@ function Row({
   const href = isLink ? safeUrl(value) : null;
   return (
     <div className={full ? "sm:col-span-2" : ""}>
-      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/50">
+      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
         {label}
       </dt>
       <dd className="mt-1.5 font-sans text-sm leading-relaxed text-ink/80">
@@ -225,8 +225,8 @@ function statusBanner(profile: Profile) {
     return {
       className: "border-gold/40 bg-gold/10 text-ink/75",
       text: profile.passing_out_date
-        ? `You're set up as a current BMS student. After your passing-out date (${new Date(`${profile.passing_out_date}T00:00:00+05:30`).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "long", year: "numeric" })}) your account becomes an alumni account automatically.`
-        : "You're set up as a current BMS student. Add your passing-out date and your account will become an alumni account automatically when the time comes.",
+        ? `You're set up as a current BMSCE student. After your passing-out date (${new Date(`${profile.passing_out_date}T00:00:00+05:30`).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "long", year: "numeric" })}) your account becomes an alumni account automatically.`
+        : "You're set up as a current BMSCE student. Add your passing-out date and your account will become an alumni account automatically when the time comes.",
     };
   }
   switch (profile.verification_status) {
@@ -237,7 +237,7 @@ function statusBanner(profile: Profile) {
       };
     case "rejected":
       return {
-        className: "border-oxblood/30 bg-oxblood/5 text-oxblood",
+        className: "border-oxblood/30 bg-paper text-oxblood",
         text: profile.rejection_reason
           ? `Your profile wasn't approved: ${profile.rejection_reason}. Update your details and it'll be reviewed again.`
           : "Your profile wasn't approved. Update your details and it'll be reviewed again.",

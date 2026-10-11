@@ -47,7 +47,7 @@ function Counter({ value }: { value: number }) {
 /** Three real numbers about the network, counted up as they come into view. */
 export default function Numbers({ figures }: { figures: Figure[] }) {
   return (
-    <section aria-label="The network in numbers" className="mx-auto max-w-7xl px-5 py-12 md:px-10 md:py-24">
+    <section aria-label="The Network in numbers" className="mx-auto max-w-7xl px-5 py-12 md:px-10 md:py-24">
       {/* Phones: one figure per row, the number on the left and its words beside
           it. Wider screens: three columns. */}
       <dl className="grid gap-y-7 sm:grid-cols-3 sm:gap-y-10 sm:divide-x sm:divide-ink/20">
@@ -62,7 +62,7 @@ export default function Numbers({ figures }: { figures: Figure[] }) {
               <Counter value={f.value} />
             </dd>
             <dt className="self-end font-display text-2xl font-bold leading-tight sm:order-2 sm:mt-3 sm:self-auto">{f.label}</dt>
-            <p className="mt-1 self-start text-sm text-ink/60 sm:order-3 sm:max-w-[22ch] sm:self-auto">{f.note}</p>
+            <p className="mt-1 self-start text-sm text-ink/70 sm:order-3 sm:max-w-[22ch] sm:self-auto">{f.note}</p>
           </div>
         ))}
       </dl>

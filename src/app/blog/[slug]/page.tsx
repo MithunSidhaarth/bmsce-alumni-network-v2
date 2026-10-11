@@ -74,7 +74,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const authorName = article.author_name ?? profile?.full_name ?? "BMSCE Alumni Network";
   const authorLine =
     article.author_title ??
-    ([profile?.job_title, profile?.company].filter(Boolean).join(" at ") || (profile?.graduation_year ? `Batch of ${profile.graduation_year}` : null));
+    ([profile?.job_title, profile?.company].filter(Boolean).join(" at ") || (profile?.graduation_year ? `Class of ${profile.graduation_year}` : null));
 
   return (
     <>
@@ -82,14 +82,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <main className="pb-20">
         <article>
           <header {...vt(`article-${article.slug}`)} className="mx-auto max-w-[46rem] px-5 pt-8 md:pt-14">
-            <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-ink/65 hover:text-ink">
+            <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-ink/70 hover:text-ink">
               <Icon name="back" className="h-4 w-4" /> Blog &amp; Insights
             </Link>
             {article.status !== "published" && (
               <p className="stamp ml-4 text-tangerine">{article.status === "draft" ? "Draft: only admins can see this" : "Archived"}</p>
             )}
             <p className="label-mono mt-8 text-tangerine">
-              <Link href={`/blog?category=${encodeURIComponent(article.category)}`} className="hover:underline">{article.category}</Link>
+              <Link href={`/blog?category=${encodeURIComponent(article.category)}`} className="underline">{article.category}</Link>
             </p>
             <h1 className="mt-3 font-serif text-[clamp(2.3rem,6.2vw,4rem)] font-normal leading-[1.02] tracking-[-0.03em]">{article.title}</h1>
             {article.excerpt && <p className="mt-5 font-serif text-[1.35rem] leading-snug text-ink/70">{article.excerpt}</p>}
@@ -97,11 +97,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               <Avatar name={authorName} src={profile?.photo_url} size={44} />
               <div className="min-w-0 flex-1">
                 <p className="font-semibold leading-tight">
-                  {profile ? <Link href={`/directory/${profile.id}`} className="hover:underline">{authorName}</Link> : authorName}
+                  {profile ? <Link href={`/directory/${profile.id}`} className="underline">{authorName}</Link> : authorName}
                 </p>
-                {authorLine && <p className="text-sm text-ink/60">{authorLine}</p>}
+                {authorLine && <p className="text-sm text-ink/70">{authorLine}</p>}
               </div>
-              <p className="label-mono text-ink/55">
+              <p className="label-mono text-ink/70">
                 {article.published_at ? <time dateTime={article.published_at}>{longDate(article.published_at)}</time> : "Not published"} · {article.reading_minutes} min read
               </p>
             </div>
@@ -110,7 +110,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           {article.cover_url && (
             <figure className="mx-auto mt-8 max-w-[62rem] px-0 md:px-5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={article.cover_url} alt="" className="max-h-[34rem] w-full object-cover md:rounded-box" />
+              <img src={article.cover_url} alt={`Cover picture for “${article.title}”`} className="max-h-[34rem] w-full object-cover md:rounded-box" />
             </figure>
           )}
 
@@ -133,11 +133,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <ul className="grid gap-x-10 md:grid-cols-3">
               {more.map((a) => (
                 <li key={a.id} className="border-b border-ink/15 py-6">
-                  <p className="label-mono text-ink/55">{a.published_at ? longDate(a.published_at) : ""} · {a.reading_minutes} min</p>
+                  <p className="label-mono text-ink/70">{a.published_at ? longDate(a.published_at) : ""} · {a.reading_minutes} min</p>
                   <h3 className="mt-2 font-serif text-[1.45rem] font-normal leading-[1.12]">
-                    <Link href={`/blog/${a.slug}`} className="hover:underline">{a.title}</Link>
+                    <Link href={`/blog/${a.slug}`} className="underline">{a.title}</Link>
                   </h3>
-                  {a.excerpt && <p className="mt-2 line-clamp-2 text-sm text-ink/65">{a.excerpt}</p>}
+                  {a.excerpt && <p className="mt-2 line-clamp-2 text-sm text-ink/70">{a.excerpt}</p>}
                 </li>
               ))}
             </ul>

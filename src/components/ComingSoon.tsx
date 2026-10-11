@@ -60,7 +60,7 @@ export default function ComingSoon({
                 >
                   Email the alumni office
                 </a>
-                <p className="mt-4 font-sans text-sm text-ink/55">
+                <p className="mt-4 font-sans text-sm text-ink/70">
                   <a
                     href="mailto:bmscealumni@bmsce.ac.in"
                     className="text-oxblood underline decoration-accent underline-offset-4 hover:text-maroon"

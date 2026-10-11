@@ -106,7 +106,7 @@ export default function GalleryLightbox({
       onTouchEnd={onTouchEnd}
     >
       <div className="flex items-center justify-between px-5 py-4">
-        <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ivory/60">
+        <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ivory/70">
           {index + 1} / {photos.length}
         </span>
         <button

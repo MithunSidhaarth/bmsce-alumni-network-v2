@@ -53,7 +53,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
         <main className="mx-auto max-w-2xl px-5 py-20">
           <EmptyState
             title="This profile is not visible to you"
-            body="Member profiles are visible to verified members of the network."
+            body="Member profiles are visible to verified members of the Network."
             action={{ href: "/directory", label: "Back to the Alumni Network" }}
           />
         </main>
@@ -96,7 +96,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
   return (
     <>
       <main className="mx-auto max-w-[1080px] px-4 pb-16 pt-6 md:px-8">
-        <Link href="/directory" className="inline-flex items-center gap-2 text-sm font-semibold text-ink/65 hover:text-ink">
+        <Link href="/directory" className="inline-flex items-center gap-2 text-sm font-semibold text-ink/70 hover:text-ink">
           <Icon name="back" className="h-4 w-4" /> Alumni Network
         </Link>
 
@@ -105,13 +105,13 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
         <div className="lg:col-start-1 lg:row-start-1">
           <IdCard
             data={{
-              name: p.full_name || "BMS member",
+              name: p.full_name || "BMSCE member",
               photo: p.photo_url,
               dept: deptLine(p.branch),
               // The roll number if the member gave one; otherwise their batch.
               ...idLines(p),
               back: {
-                kind: isStudent ? "Student" : p.graduation_year ? `Alumni, batch of ${p.graduation_year}` : "Alumni",
+                kind: isStudent ? "Student" : p.graduation_year ? `Alumni, class of ${p.graduation_year}` : "Alumni",
                 verified: p.verification_status === "verified",
                 since: p.created_at ? new Date(p.created_at).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", month: "long", year: "numeric" }) : null,
                 role: role || null,
@@ -132,10 +132,10 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
                 {p.verification_status !== "verified" && <span className="stamp text-tangerine">Not verified yet</span>}
                 {p.linkedin_verified && <LinkedInBadge />}
               </p>
-              <h1 className="mt-3 font-display text-[clamp(2rem,6vw,3.2rem)] leading-[0.98]">{p.full_name || "BMS member"}</h1>
+              <h1 className="mt-3 font-display text-[clamp(2rem,6vw,3.2rem)] leading-[0.98]">{p.full_name || "BMSCE member"}</h1>
               {role && <p className="mt-2 text-lg text-ink/75">{role}</p>}
-              <p className="label-mono mt-3 text-ink/55">
-                {[p.graduation_year ? `${isStudent ? "Class of" : "Batch of"} ${p.graduation_year}` : null, p.branch, place].filter(Boolean).join(" · ")}
+              <p className="label-mono mt-3 text-ink/70">
+                {[p.graduation_year ? `Class of ${p.graduation_year}` : null, p.branch, place].filter(Boolean).join(" · ")}
               </p>
             </div>
             <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:flex-col">
@@ -154,7 +154,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
                 </Link>
               ) : (
                 verified && (
-                  <span className="rounded-full border border-ink/20 px-3 py-2 text-xs text-ink/60">
+                  <span className="rounded-full border border-ink/20 px-3 py-2 text-xs text-ink/70">
                     {privacy.dm === "nobody" ? "Not accepting messages" : privacy.dm === "chapters" ? "Messages from chapter members only" : "Messaging unavailable"}
                   </span>
                 )
@@ -176,17 +176,17 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
           <div className="mt-8 min-w-0">
             {p.bio && (
               <section aria-labelledby="about-title">
-                <h2 id="about-title" className="label-mono text-ink/60">About</h2>
+                <h2 id="about-title" className="label-mono text-ink/70">About</h2>
                 <p className="mt-3 whitespace-pre-wrap font-serif text-[1.15rem] leading-relaxed">{p.bio}</p>
               </section>
             )}
 
             <section aria-labelledby="posts-title" className="mt-10">
-              <h2 id="posts-title" className="label-mono text-ink/60">
+              <h2 id="posts-title" className="label-mono text-ink/70">
                 {own ? "Your recent posts" : `Recent posts by ${(p.full_name ?? "this member").split(" ")[0]}`}
               </h2>
               {posts.length === 0 ? (
-                <p className="mt-3 text-sm text-ink/60">{own ? "You have not posted yet." : "Nothing posted yet."}</p>
+                <p className="mt-3 text-sm text-ink/70">{own ? "You have not posted yet." : "Nothing posted yet."}</p>
               ) : (
                 <div className="mt-4 flex flex-col gap-5">
                   {posts.map((post) => (
@@ -228,7 +228,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
                     <li key={e.id}>
                       <span className="font-semibold">{e.degree}</span>
                       {e.institution ? `, ${e.institution}` : ""}
-                      {e.year ? <span className="text-ink/55"> · {e.year}</span> : null}
+                      {e.year ? <span className="text-ink/70"> · {e.year}</span> : null}
                     </li>
                   ))}
                 </ul>
@@ -253,7 +253,7 @@ export default async function MemberProfilePage({ params }: { params: Promise<{ 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="label-mono mb-2.5 text-ink/60">{title}</h2>
+      <h2 className="label-mono mb-2.5 text-ink/70">{title}</h2>
       {children}
     </section>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { dateTime } from "@/lib/format";
 import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createEvent, updateEvent } from "./actions";
@@ -8,9 +9,9 @@ import type { EventRow } from "@/lib/types";
 import { said } from "@/lib/fail";
 
 const FIELD =
-  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60";
+  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
 
 // ISO -> value for <input type="datetime-local"> in the viewer's local time.
 function toLocalInput(iso: string | null): string {
@@ -87,15 +88,8 @@ export default function EventForm({ event }: { event?: EventRow }) {
   };
 
   const previewDate = date
-    ? new Date(date).toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-      })
-    : "Date & time";
+    ? dateTime(new Date(date).toISOString())
+    : "Date and time";
 
   return (
     <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px]">
@@ -114,7 +108,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
             />
           </Field>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <Field label="Date & time" required>
+            <Field label="Date and time" required>
               <input
                 className={FIELD}
                 type="datetime-local"
@@ -173,7 +167,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
         {/* Details */}
         <div className="flex flex-col gap-6 border-t border-gold/25 pt-8">
           <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
-            Details <span className="text-ink/40">(all optional)</span>
+            Details <span className="text-ink/70">(all optional)</span>
           </p>
           <Field label="Description">
             <textarea
@@ -204,7 +198,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
         </div>
 
         {error && (
-          <p className="rounded-xl border border-oxblood/30 bg-oxblood/5 px-4 py-3 font-sans text-sm text-oxblood">
+          <p className="rounded-xl border border-oxblood/30 bg-paper px-4 py-3 font-sans text-sm text-oxblood">
             {error}
           </p>
         )}
@@ -220,7 +214,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
           <button
             type="button"
             onClick={() => router.push("/admin/events")}
-            className="font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-ink/55 underline decoration-accent underline-offset-4 hover:text-oxblood"
+            className="font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-ink/70 underline decoration-accent underline-offset-4 hover:text-oxblood"
           >
             Cancel
           </button>
@@ -236,7 +230,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={coverImageUrl}
-                alt=""
+                alt="Preview of the event poster"
                 className="h-full w-full object-cover"
               />
             </div>
@@ -249,7 +243,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
               {title || "Event title"}
             </h3>
             {location && (
-              <p className="mt-1 font-sans text-sm text-ink/60">{location}</p>
+              <p className="mt-1 font-sans text-sm text-ink/70">{location}</p>
             )}
             {description && (
               <p className="mt-3 font-sans text-sm leading-relaxed text-ink/70">

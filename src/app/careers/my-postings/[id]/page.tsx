@@ -113,7 +113,7 @@ export default async function PostingApplicantsPage({
       person: {
         id: a.applicant_id,
         // Prefer the name submitted on the application; fall back to profile.
-        name: a.applicant_name ?? p?.full_name ?? "BMS member",
+        name: a.applicant_name ?? p?.full_name ?? "BMSCE member",
         photoUrl: p?.photo_url ?? null,
         branch: p?.branch ?? null,
         gradYear: p?.graduation_year ?? null,
@@ -151,7 +151,7 @@ export default async function PostingApplicantsPage({
             </p>
             <Link
               href={`/careers/openings/${posting.id}`}
-              className="mt-2 inline-block font-sans text-[12px] uppercase tracking-[0.12em] text-oxblood/70 underline decoration-accent underline-offset-4 hover:text-oxblood"
+              className="mt-2 inline-block font-sans text-[12px] uppercase tracking-[0.12em] text-oxblood underline decoration-accent underline-offset-4 hover:text-oxblood"
             >
               View public posting →
             </Link>

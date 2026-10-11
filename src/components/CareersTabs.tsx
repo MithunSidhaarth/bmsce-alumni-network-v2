@@ -24,7 +24,7 @@ export default function CareersTabs() {
             className={`-mb-px border-b-2 pb-3 font-sans text-[13px] font-medium uppercase tracking-[0.12em] transition-colors ${
               active
                 ? "border-gold text-oxblood"
-                : "border-transparent text-ink/55 hover:text-oxblood"
+                : "border-transparent text-ink/70 hover:text-oxblood"
             }`}
           >
             {tab.label}

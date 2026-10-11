@@ -13,13 +13,13 @@ export default function CampusTeaser() {
             You still know <span className="serif-accent hl">the way</span>.
           </h2>
           <p className="mt-5 max-w-md text-lg leading-relaxed text-ink/75">
-            The campus, drawn from memory. Every building opens a part of the network: start at the main gate, or go
+            The campus, drawn from memory. Every building opens a part of the Network: start at the main gate, or go
             straight to the canteen.
           </p>
           <Link href="/campus" className="btn mt-7">
             Open the full map <Icon name="arrow" className="h-4 w-4" />
           </Link>
-          <p className="label-mono mt-5 text-ink/50 md:hidden">Drag the map sideways to see all of it</p>
+          <p className="label-mono mt-5 text-ink/70 md:hidden">Drag the map sideways to see all of it</p>
         </div>
         <div className="sheet relative min-w-0 rotate-[0.8deg] p-2.5 sm:p-4">
           <span className="tape" aria-hidden="true" />

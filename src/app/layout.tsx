@@ -6,6 +6,7 @@ import {
   DM_Mono,
   Fraunces,
   Hanken_Grotesk,
+  Noto_Sans_Kannada,
 } from "next/font/google";
 import AuthProvider from "@/components/AuthProvider";
 import AppChrome from "@/components/v2/AppChrome";
@@ -50,23 +51,31 @@ const dmMono = DM_Mono({
   display: "swap",
   preload: false,
 });
+// Kannada text is set in Noto Sans Kannada (Brand Guidelines, p. 17). The file
+// is only fetched by a page that actually has Kannada on it.
+const kannada = Noto_Sans_Kannada({
+  subsets: ["kannada"],
+  variable: "--font-kannada",
+  display: "swap",
+  preload: false,
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const description =
-  "The home for every BMS graduate: the feed, the chapters, the forum and the wall of memories.";
+  "BMSCE Alumni Network: where graduates and students of B.M.S. College of Engineering (BMSCE) find their class, their chapter, events and The Wall.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "BMSCE Alumni Network: Once BMS. Always BMS.",
+    default: "BMSCE Alumni Network: Once BMSCE. Always BMSCE.",
     template: "%s",
   },
   description,
   applicationName: "BMSCE Alumni Network",
-  appleWebApp: { capable: true, title: "BMS Alumni", statusBarStyle: "default" },
-  icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
+  // The favicon and touch icon are the gear mark: app/icon.png and app/apple-icon.png.
+  appleWebApp: { capable: true, title: "BMSCE Alumni", statusBarStyle: "default" },
   openGraph: {
-    title: "BMSCE Alumni Network: Once BMS. Always BMS.",
+    title: "BMSCE Alumni Network: Once BMSCE. Always BMSCE.",
     description,
     siteName: "BMSCE Alumni Network",
     type: "website",
@@ -74,13 +83,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "BMSCE Alumni Network: Once BMS. Always BMS.",
+    title: "BMSCE Alumni Network: Once BMSCE. Always BMSCE.",
     description,
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f4eedd",
+  themeColor: "#f3f5f8",
   width: "device-width",
   initialScale: 1,
 };
@@ -100,7 +109,7 @@ export default async function RootLayout({
       lang="en"
       data-auth={inApp ? "in" : "out"}
       data-theme={night ? "night" : undefined}
-      className={`${bricolage.variable} ${hanken.variable} ${fraunces.variable} ${caveat.variable} ${dmMono.variable}`}
+      className={`${bricolage.variable} ${hanken.variable} ${fraunces.variable} ${caveat.variable} ${dmMono.variable} ${kannada.variable}`}
     >
       <body>
         <a

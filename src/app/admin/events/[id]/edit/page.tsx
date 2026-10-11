@@ -37,7 +37,7 @@ export default async function EditEventPage({
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
+        <h1 className="slash font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
           Edit event.
         </h1>
         <Link

@@ -15,7 +15,7 @@ import MemberPhoto from "@/components/MemberPhoto";
 export const metadata: Metadata = {
   title: "Directory: BMSCE Alumni Network",
   description:
-    "Search the BMS alumni directory by batch, branch, city, or company. Find your people.",
+    "Search the BMSCE alumni directory by class, branch, city, or company. Find your people.",
 };
 
 export const dynamic = "force-dynamic";
@@ -77,8 +77,8 @@ export default async function DirectoryPage({
           <p className="font-display text-2xl italic text-ink">
             Sign in to browse the directory.
           </p>
-          <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/65">
-            The alumni directory is for members of the network.
+          <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/70">
+            The alumni directory is for members of the Network.
           </p>
           <Link
             href="/login"
@@ -164,7 +164,7 @@ export default async function DirectoryPage({
               ? `No ${noun} match those filters.`
               : `No verified ${noun} yet.`}
           </p>
-          <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/65">
+          <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/70">
             {hasFilters
               ? "Try clearing a filter or two."
               : "As members join and get verified, they'll appear here."}
@@ -172,7 +172,7 @@ export default async function DirectoryPage({
         </div>
       ) : (
         <>
-          <p className="mt-8 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/55">
+          <p className="mt-8 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
             {total} {noun}
             {totalPages > 1 ? ` · page ${page} of ${totalPages}` : ""}
           </p>
@@ -199,13 +199,13 @@ function Shell({ children }: { children: React.ReactNode }) {
               <Eyebrow>Directory</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
+              <h1 className="slash mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
                 Find your people.
               </h1>
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
-                Filter by batch, branch, city, or company to find who you are
+                Filter by class, branch, city, or company to find who you are
                 looking for.
               </p>
             </Reveal>
@@ -233,13 +233,13 @@ function initials(name: string) {
 }
 
 function DirectoryCard({ row, index }: { row: Row; index: number }) {
-  const name = row.full_name ?? "BMS member";
+  const name = row.full_name ?? "BMSCE member";
   const isStudent = row.user_type === "student";
   const roleLine = [row.job_title, row.company].filter(Boolean).join(", ");
   const yearLabel = row.graduation_year
     ? isStudent
       ? `Class of ${row.graduation_year}`
-      : `Batch of ${row.graduation_year}`
+      : `Class of ${row.graduation_year}`
     : null;
   const batchLine = [yearLabel, row.branch].filter(Boolean).join(" · ");
 
@@ -268,13 +268,13 @@ function DirectoryCard({ row, index }: { row: Row; index: number }) {
           </span>
         )}
         {roleLine && (
-          <p className="mt-2 font-sans text-sm text-ink/65">{roleLine}</p>
+          <p className="mt-2 font-sans text-sm text-ink/70">{roleLine}</p>
         )}
         {row.industry && (
-          <p className="mt-1 font-sans text-xs text-ink/50">{row.industry}</p>
+          <p className="mt-1 font-sans text-xs text-ink/70">{row.industry}</p>
         )}
         {batchLine && (
-          <p className="mt-3 font-sans text-sm text-ink/55">{batchLine}</p>
+          <p className="mt-3 font-sans text-sm text-ink/70">{batchLine}</p>
         )}
         {row.current_city && (
           <p className="mt-auto pt-5 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">

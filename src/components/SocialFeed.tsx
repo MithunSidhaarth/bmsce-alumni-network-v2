@@ -16,7 +16,7 @@ export default function SocialFeed({ posts }: { posts: SocialPost[] }) {
         <p className="font-display text-xl italic text-ink">
           No highlights yet.
         </p>
-        <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/65">
+        <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/70">
           Moments from our Instagram will appear here soon.
         </p>
       </div>
@@ -85,8 +85,8 @@ export function PostCard({ post, index }: { post: SocialPost; index: number }) {
               />
             )
           ) : (
-            <div className="flex h-full w-full items-center justify-center font-display text-lg italic text-oxblood/50">
-              BMS
+            <div className="flex h-full w-full items-center justify-center font-display text-lg italic text-oxblood">
+              BMSCE
             </div>
           )}
 
@@ -110,13 +110,13 @@ export function PostCard({ post, index }: { post: SocialPost; index: number }) {
             <span>♥ {formatCount(post.likes_count)}</span>
             <span>✎ {formatCount(post.comments_count)}</span>
             {post.posted_at && (
-              <span className="ml-auto normal-case tracking-normal text-ink/45">
+              <span className="ml-auto normal-case tracking-normal text-ink/70">
                 {formatDate(post.posted_at)}
               </span>
             )}
           </div>
 
-          <span className="mt-4 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70 transition-colors group-hover:text-oxblood">
+          <span className="mt-4 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood transition-colors group-hover:text-oxblood">
             View on Instagram →
           </span>
         </div>
@@ -138,5 +138,5 @@ function formatCount(n: number) {
 function formatDate(iso: string) {
   const d = new Date(iso);
   if (isNaN(d.getTime())) return "";
-  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  return d.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", month: "long", year: "numeric" });
 }

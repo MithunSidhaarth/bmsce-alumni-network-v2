@@ -54,7 +54,7 @@ export default async function DigestsAdmin({ searchParams }: { searchParams: Pro
       </AdminHeader>
 
       {!ready && (
-        <div className="mb-7 rounded-md border border-[#c98a1a]/40 bg-[#fff1d6] px-5 py-4 text-sm">
+        <div className="mb-7 rounded-md border border-mist bg-white px-5 py-4 text-sm">
           <p className="font-display text-lg font-bold">Email sending is not configured</p>
           <p className="mt-1 text-ink/80">
             Digests can be written, previewed and scheduled, but nothing will be delivered until <code className="font-mono text-xs">RESEND_API_KEY</code> and{" "}
@@ -72,7 +72,7 @@ export default async function DigestsAdmin({ searchParams }: { searchParams: Pro
       </div>
 
       {showForm && (
-        <Panel title={editing ? `Digest: ${STATUS[editing.status]?.label}` : "New digest"} aside={<Link href="/admin/digests" className="text-sm font-semibold text-forest hover:underline">Close</Link>}>
+        <Panel title={editing ? `Digest: ${STATUS[editing.status]?.label}` : "New digest"} aside={<Link href="/admin/digests" className="text-sm font-semibold text-forest underline">Close</Link>}>
           {(articles ?? []).length === 0 ? (
             <p className="text-sm text-ink/70">There are no published articles to send yet. <Link href="/admin/blog?edit=new" className="font-semibold text-forest underline">Write one first</Link>.</p>
           ) : (
@@ -86,13 +86,13 @@ export default async function DigestsAdmin({ searchParams }: { searchParams: Pro
                   {articles!.map((a) => (
                     <label key={a.id} className="flex items-start gap-2 rounded px-2 py-1.5 text-sm hover:bg-ink/[0.05]">
                       <input type="checkbox" name="article_ids" value={a.id} defaultChecked={editing?.article_ids.includes(a.id)} className="mt-1 h-4 w-4" disabled={!editable} />
-                      <span>{a.title}<span className="block text-xs text-ink/55">{a.category} · {a.published_at ? shortDate(a.published_at) : ""}</span></span>
+                      <span>{a.title}<span className="block text-xs text-ink/70">{a.category} · {a.published_at ? shortDate(a.published_at) : ""}</span></span>
                     </label>
                   ))}
                 </div>
               </fieldset>
               <label><span className="field-label">Schedule for (India time)</span><input type="datetime-local" name="scheduled_at" defaultValue={editing?.scheduled_at ? istLocal(editing.scheduled_at) : ""} className="field" disabled={!editable} /></label>
-              <p className="self-end text-xs text-ink/60">Scheduled digests go out on the daily run at 09:00 India time, on or after the time you pick.</p>
+              <p className="self-end text-xs text-ink/70">Scheduled digests go out on the daily run at 09:00 India time, on or after the time you pick.</p>
               {editable && (
                 <div className="flex flex-wrap gap-2 sm:col-span-2">
                   <Submit name="intent" value="draft">Save draft</Submit>
@@ -130,8 +130,8 @@ export default async function DigestsAdmin({ searchParams }: { searchParams: Pro
               {rows.map((d) => (
                 <tr key={d.id}>
                   <td className={table.td}>
-                    <Link href={`/admin/digests?edit=${d.id}`} className="font-semibold hover:underline">{d.subject}</Link>
-                    <p className="text-xs text-ink/55">{d.article_ids.length} article{d.article_ids.length === 1 ? "" : "s"}</p>
+                    <Link href={`/admin/digests?edit=${d.id}`} className="font-semibold underline">{d.subject}</Link>
+                    <p className="text-xs text-ink/70">{d.article_ids.length} article{d.article_ids.length === 1 ? "" : "s"}</p>
                     {d.last_error && <p className="mt-1 max-w-md text-xs text-pin">{d.last_error}</p>}
                   </td>
                   <td className={table.td}><Pill tone={STATUS[d.status]?.tone}>{STATUS[d.status]?.label ?? d.status}</Pill></td>
@@ -148,14 +148,14 @@ export default async function DigestsAdmin({ searchParams }: { searchParams: Pro
       )}
 
       {subList && (
-        <Panel title="Subscribers" aside={<Link href="/admin/digests" className="text-sm font-semibold text-forest hover:underline">Close</Link>}>
+        <Panel title="Subscribers" aside={<Link href="/admin/digests" className="text-sm font-semibold text-forest underline">Close</Link>}>
           {subList.length === 0 ? (
-            <p className="text-sm text-ink/60">Nobody has subscribed yet. The sign-up form is in the site footer and on Blog &amp; Insights.</p>
+            <p className="text-sm text-ink/70">Nobody has subscribed yet. The sign-up form is in the site footer and on Blog &amp; Insights.</p>
           ) : (
             <ul className="flex flex-col divide-y divide-ink/10 text-sm">
               {subList.map((s) => (
                 <li key={s.id} className="flex flex-wrap items-center justify-between gap-3 py-2">
-                  <span>{s.email} <span className="text-xs text-ink/55">· consent {shortDate(s.consent_at)} via {s.consent_source}</span></span>
+                  <span>{s.email} <span className="text-xs text-ink/70">· consent {shortDate(s.consent_at)} via {s.consent_source}</span></span>
                   <span className="flex items-center gap-3">
                     <Pill tone={s.status === "subscribed" ? "good" : s.status === "bounced" ? "bad" : "neutral"}>{s.status}</Pill>
                     <AdminForm action={removeSubscriber} hidden={{ id: s.id }}><Submit className="text-xs font-semibold text-pin underline" confirm="Remove this address completely?">Remove</Submit></AdminForm>

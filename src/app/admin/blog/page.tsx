@@ -35,7 +35,7 @@ export default async function BlogAdmin({ searchParams }: { searchParams: Promis
       </AdminHeader>
 
       {showForm && (
-        <Panel title={editing ? "Edit article" : "New article"} aside={<Link href="/admin/blog" className="text-sm font-semibold text-forest hover:underline">Close</Link>}>
+        <Panel title={editing ? "Edit article" : "New article"} aside={<Link href="/admin/blog" className="text-sm font-semibold text-forest underline">Close</Link>}>
           <AdminForm action={saveArticle} hidden={{ id: editing?.id }} className="grid gap-3 sm:grid-cols-2">
             <label className="sm:col-span-2"><span className="field-label">Title</span><input name="title" defaultValue={editing?.title ?? ""} className="field font-serif text-lg" required maxLength={180} /></label>
             <label className="sm:col-span-2"><span className="field-label">Standfirst (one or two sentences shown under the title and in lists)</span><textarea name="excerpt" defaultValue={editing?.excerpt ?? ""} rows={2} maxLength={400} className="field" /></label>
@@ -44,7 +44,7 @@ export default async function BlogAdmin({ searchParams }: { searchParams: Promis
             </label>
             <label><span className="field-label">Tags (comma separated)</span><input name="tags" defaultValue={editing?.tags.join(", ") ?? ""} className="field" /></label>
             <label><span className="field-label">Author name as printed</span><input name="author_name" defaultValue={editing?.author_name ?? me.full_name ?? ""} className="field" /></label>
-            <label><span className="field-label">Author line (role, batch)</span><input name="author_title" defaultValue={editing?.author_title ?? ""} className="field" placeholder="e.g. Batch of 2009, Product at ..." /></label>
+            <label><span className="field-label">Author line (role, class)</span><input name="author_title" defaultValue={editing?.author_title ?? ""} className="field" placeholder="e.g. Class of 2009, Product at ..." /></label>
             <label className="sm:col-span-2"><span className="field-label">Cover image link</span><input name="cover_url" defaultValue={editing?.cover_url ?? ""} className="field" placeholder="https://" /></label>
             <label className="sm:col-span-2">
               <span className="field-label">Article (Markdown: # headings, **bold**, &gt; quotes, lists, links, images)</span>
@@ -82,8 +82,8 @@ export default async function BlogAdmin({ searchParams }: { searchParams: Promis
               {rows.map((a) => (
                 <tr key={a.id}>
                   <td className={table.td}>
-                    <Link href={`/admin/blog?edit=${a.id}`} className="font-semibold hover:underline">{a.title}</Link>
-                    <p className="text-xs text-ink/55">{a.author_name ?? "No byline"} · {a.reading_minutes} min</p>
+                    <Link href={`/admin/blog?edit=${a.id}`} className="font-semibold underline">{a.title}</Link>
+                    <p className="text-xs text-ink/70">{a.author_name ?? "No byline"} · {a.reading_minutes} min</p>
                   </td>
                   <td className={table.td}>{a.category}</td>
                   <td className={table.td}>

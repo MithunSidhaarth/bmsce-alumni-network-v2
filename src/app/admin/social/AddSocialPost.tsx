@@ -7,9 +7,9 @@ import type { SocialPost } from "@/lib/types";
 import { said } from "@/lib/fail";
 
 const FIELD =
-  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60";
+  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
 
 export default function AddSocialPost({ recent }: { recent: SocialPost[] }) {
   const [caption, setCaption] = useState("");
@@ -79,7 +79,7 @@ export default function AddSocialPost({ recent }: { recent: SocialPost[] }) {
             onChange={(e) => setImageUrl(e.target.value)}
             placeholder="https://… (or /instagram/xxx.jpg)"
           />
-          <span className="mt-1.5 block font-sans text-xs text-ink/50">
+          <span className="mt-1.5 block font-sans text-xs text-ink/70">
             Optional. If the image link later breaks, the card still opens the
             real post via the permalink.
           </span>
@@ -136,7 +136,7 @@ export default function AddSocialPost({ recent }: { recent: SocialPost[] }) {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={p.image_url}
-                      alt=""
+                      alt="Preview of the picture for this post"
                       className="h-full w-full object-cover"
                     />
                   )}
@@ -150,7 +150,7 @@ export default function AddSocialPost({ recent }: { recent: SocialPost[] }) {
                       href={permalinkHref}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-sans text-xs text-oxblood/70 underline decoration-accent underline-offset-2"
+                      className="font-sans text-xs text-oxblood underline decoration-accent underline-offset-2"
                     >
                       {p.permalink}
                     </a>

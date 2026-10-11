@@ -120,7 +120,7 @@ export default async function CareersList({
                     href="/careers/my-postings"
                     className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood underline decoration-accent underline-offset-4 hover:text-maroon"
                   >
-                    My postings &amp; applications →
+                    My postings and applications →
                   </Link>
                 </div>
               </Reveal>
@@ -136,7 +136,7 @@ export default async function CareersList({
             {!user ? (
               <Gate
                 title="Sign in to see openings."
-                body="The careers board is for members of the network."
+                body="The careers board is for members of the Network."
                 cta="Sign in"
                 href="/login"
               />
@@ -177,7 +177,7 @@ function Gate({
   return (
     <div className="mt-4 rounded-2xl border border-dashed border-gold/40 bg-ivory-dim/40 px-6 py-20 text-center">
       <p className="font-display text-2xl italic text-ink">{title}</p>
-      <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/65">
+      <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/70">
         {body}
       </p>
       <Link

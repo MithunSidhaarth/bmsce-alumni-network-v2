@@ -1,3 +1,4 @@
+import { longDate } from "@/lib/format";
 import type { Metadata } from "next";
 import Link from "next/link";
 import ReportActions from "./ReportActions";
@@ -126,7 +127,7 @@ export default async function AdminReportsPage() {
 
   return (
     <>
-      <h1 className="font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
+      <h1 className="slash font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
         Flagged content.
       </h1>
       <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-ink/70">
@@ -148,12 +149,12 @@ export default async function AdminReportsPage() {
                     className="flex flex-col gap-4 rounded-2xl border border-gold/25 bg-ivory-dim/50 p-6 sm:flex-row sm:items-start sm:justify-between"
                   >
                     <div>
-                      <span className="rounded-full border border-oxblood/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood/80">
+                      <span className="rounded-full border border-oxblood/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
                         {r.target_type}
                       </span>
                       <Link
                         href={targetHref(r)}
-                        className="mt-3 block font-display text-xl text-ink underline decoration-accent/0 underline-offset-4 hover:decoration-accent"
+                        className="mt-3 block font-display text-xl text-ink underline underline-offset-4 hover:decoration-accent"
                       >
                         {targetLabel(r)}
                       </Link>
@@ -162,17 +163,13 @@ export default async function AdminReportsPage() {
                           &ldquo;{r.reason}&rdquo;
                         </p>
                       )}
-                      <p className="mt-2 font-sans text-xs text-ink/50">
+                      <p className="mt-2 font-sans text-xs text-ink/70">
                         Reported by{" "}
                         {r.reporter_id
                           ? nameById.get(r.reporter_id) || "a member"
                           : "a former member"}{" "}
                         ·{" "}
-                        {new Date(r.created_at).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
+                        {longDate(r.created_at)}
                       </p>
                     </div>
                     <ReportActions id={r.id} />

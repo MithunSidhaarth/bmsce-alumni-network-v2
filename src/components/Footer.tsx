@@ -7,7 +7,7 @@ import SubscribeForm from "./v2/SubscribeForm";
 
 const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
   {
-    title: "The network",
+    title: "The Network",
     links: [
       { label: "Alumni Network", href: "/directory" },
       { label: "Chapters", href: "/chapters" },
@@ -46,8 +46,8 @@ export default function Footer() {
   if (inApp) {
     return (
       <footer className="border-t border-ink/10 px-5 py-6 md:px-8">
-        <p className="label-mono flex flex-wrap items-center gap-x-4 gap-y-2 text-ink/50">
-          <span>&copy; {new Date().getFullYear()} BMSCE Alumni Association</span>
+        <p className="label-mono flex flex-wrap items-center gap-x-4 gap-y-2 text-ink/70">
+          <span>&copy; {new Date().getFullYear()} BMSCE Alumni Network</span>
           <Link href="/about" className="hover:text-ink">About</Link>
           <Link href="/faqs" className="hover:text-ink">FAQs</Link>
           <Link href="/privacy" className="hover:text-ink">Privacy</Link>
@@ -59,17 +59,17 @@ export default function Footer() {
   }
 
   return (
-    <footer className="relative overflow-hidden bg-forest text-ivory">
+    <footer className="relative overflow-hidden bg-brand-ink text-ivory">
       <div className="mx-auto max-w-7xl px-5 pb-10 pt-16 md:px-10 md:pt-24">
         <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="label-mono text-lime">Est. 1946 · Basavanagudi, Bengaluru</p>
             <p className="mt-5 max-w-[14ch] font-display text-[clamp(2.4rem,6vw,4.25rem)] font-extrabold leading-[0.92] tracking-tight">
-              Once BMS. <span className="serif-accent text-lime">Always</span> BMS.
+              Once BMSCE. <span className="serif-accent text-lime">Always</span> BMSCE.
             </p>
             <div className="mt-9 max-w-md">
-              <p className="text-sm font-semibold">Stories from the network, in your inbox</p>
-              <p className="mt-1 text-sm text-ivory/60">
+              <p className="text-sm font-semibold">Stories from the Network, in your inbox</p>
+              <p className="mt-1 text-sm text-ivory/70">
                 A digest of new Blog &amp; Insights articles. Unsubscribe in one click.
               </p>
               <SubscribeForm source="footer" tone="dark" />
@@ -79,11 +79,11 @@ export default function Footer() {
           <div className="flex flex-wrap gap-x-10 gap-y-10 lg:justify-end">
             {COLUMNS.map((col) => (
               <div key={col.title} className="min-w-[9rem]">
-                <h2 className="label-mono text-ivory/50">{col.title}</h2>
+                <h2 className="label-mono text-ivory/70">{col.title}</h2>
                 <ul className="mt-4 flex flex-col gap-2.5">
                   {col.links.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="text-[0.9375rem] text-ivory/80 underline-offset-4 hover:text-lime hover:underline">
+                      <Link href={l.href} className="text-[0.9375rem] text-ivory/80 underline-offset-4 hover:text-lime underline">
                         {l.label}
                       </Link>
                     </li>
@@ -94,8 +94,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-4 border-t border-ivory/15 pt-7 text-sm text-ivory/55 sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {new Date().getFullYear()} BMSCE Alumni Association. All rights reserved.</p>
+        <div className="mt-16 flex flex-col gap-4 border-t border-ivory/15 pt-7 text-sm text-ivory/70 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; {new Date().getFullYear()} BMSCE Alumni Network. All rights reserved.</p>
           <p className="flex flex-wrap items-center gap-x-5 gap-y-2">
             {SOCIALS.map((s) => (
               <a key={s.label} href={s.href} target="_blank" rel="noreferrer" className="hover:text-lime">

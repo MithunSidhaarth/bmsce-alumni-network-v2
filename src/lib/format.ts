@@ -1,6 +1,11 @@
 // Formatting helpers shared by server and client components. Dates are
 // rendered in India Standard Time everywhere so server and browser output
-// match (no hydration drift, and one consistent clock for the network).
+// match (no hydration drift, and one consistent clock for the Network).
+//
+// House style (Brand Guidelines, Edition 2, p. 22):
+//   dates  "11 October 2026", or "Saturday, 11 October 2026". Never 11/10/26.
+//   times  "6:30 pm IST". The zone is always named, because the clock shown
+//          is the Network's, not the reader's.
 const TZ = "Asia/Kolkata";
 
 export function timeAgo(iso: string, now = Date.now()): string {
@@ -20,7 +25,7 @@ export function shortDate(iso: string): string {
   return d.toLocaleDateString("en-GB", {
     timeZone: TZ,
     day: "numeric",
-    month: "short",
+    month: "long",
     ...(sameYear ? {} : { year: "numeric" }),
   });
 }
@@ -34,25 +39,38 @@ export function longDate(iso: string): string {
   });
 }
 
-export function clockTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString("en-GB", {
+/** "Saturday, 11 October 2026" */
+export function dayDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-GB", {
     timeZone: TZ,
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 }
 
-/** "12 OCT 2026": the rubber-stamp date used on notices and tickets. */
+/** "6:30 pm IST" */
+export function clockTime(iso: string): string {
+  const t = new Date(iso)
+    .toLocaleTimeString("en-GB", { timeZone: TZ, hour: "numeric", minute: "2-digit", hour12: true })
+    .replace(/\s*([ap])\.?m\.?$/i, (_, p) => ` ${p.toLowerCase()}m`);
+  return `${t} IST`;
+}
+
+/** "Saturday, 11 October 2026, 6:30 pm IST" */
+export function dateTime(iso: string): string {
+  return `${dayDate(iso)}, ${clockTime(iso)}`;
+}
+
+/** "October 2026" */
+export function monthYear(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-GB", { timeZone: TZ, month: "long", year: "numeric" });
+}
+
+/** "12 OCTOBER 2026": the rubber-stamp date used on notices and tickets. */
 export function stampDate(iso: string): string {
-  return new Date(iso)
-    .toLocaleDateString("en-GB", {
-      timeZone: TZ,
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    })
-    .toUpperCase();
+  return longDate(iso).toUpperCase();
 }
 
 /** yyyy-mm-dd in network time, for grouping messages by day. */

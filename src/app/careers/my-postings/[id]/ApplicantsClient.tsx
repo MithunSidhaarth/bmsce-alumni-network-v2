@@ -61,7 +61,7 @@ export default function ApplicantsClient({
     return (
       <div className="rounded-2xl border border-dashed border-gold/40 bg-ivory-dim/40 px-6 py-16 text-center">
         <p className="font-display text-xl italic text-ink">No applicants yet.</p>
-        <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/65">
+        <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/70">
           When members apply, they&rsquo;ll show up here.
         </p>
       </div>
@@ -79,11 +79,11 @@ export default function ApplicantsClient({
             className={`-mb-px border-b-2 px-4 py-3 font-sans text-[12px] font-medium uppercase tracking-[0.12em] transition-colors ${
               filter === f.key
                 ? "border-oxblood text-oxblood"
-                : "border-transparent text-ink/50 hover:text-oxblood"
+                : "border-transparent text-ink/70 hover:text-oxblood"
             }`}
           >
             {f.label}
-            <span className="ml-2 text-ink/35">{counts[f.key] ?? 0}</span>
+            <span className="ml-2 text-ink/70">{counts[f.key] ?? 0}</span>
           </button>
         ))}
       </div>
@@ -150,12 +150,12 @@ function ApplicantCard({ row }: { row: ApplicantRow }) {
           <div>
             <Link
               href={`/directory/${p.id}`}
-              className="font-display text-xl text-ink underline decoration-accent/0 underline-offset-4 transition-colors hover:decoration-accent"
+              className="font-display text-xl text-ink underline underline-offset-4 transition-colors hover:decoration-accent"
             >
               {p.name}
             </Link>
             {meta && (
-              <p className="mt-1 font-sans text-sm text-ink/60">{meta}</p>
+              <p className="mt-1 font-sans text-sm text-ink/70">{meta}</p>
             )}
 
             {/* Contact + resume */}
@@ -186,7 +186,7 @@ function ApplicantCard({ row }: { row: ApplicantRow }) {
                   ↓ Resume (PDF)
                 </a>
               ) : (
-                <span className="text-[11px] uppercase tracking-[0.1em] text-ink/40">
+                <span className="text-[11px] uppercase tracking-[0.1em] text-ink/70">
                   No resume
                 </span>
               )}
@@ -264,8 +264,8 @@ function StatusPill({ status }: { status: ApplicationStatus }) {
     status === "accepted"
       ? "border-gold/50 bg-gold/10 text-accent"
       : status === "rejected"
-      ? "border-ink/20 bg-ink/5 text-ink/50"
-      : "border-gold/40 bg-ivory/60 text-ink/60";
+      ? "border-ink/20 bg-ink/5 text-ink/70"
+      : "border-gold/40 bg-ivory/60 text-ink/70";
   return (
     <span
       className={`self-start rounded-lg border px-3 py-1.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] ${tone}`}

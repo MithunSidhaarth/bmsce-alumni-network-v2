@@ -9,8 +9,8 @@ import SpotlightCard from "@/components/SpotlightCard";
 const AUDIENCES = [
   {
     key: "alumni" as const,
-    title: "I'm an alumnus",
-    body: "Graduated from BMSCE. Reconnect with your batch and chapter.",
+    title: "I'm an alum",
+    body: "Graduated from BMSCE. Reconnect with your class and chapter.",
   },
   {
     key: "student" as const,
@@ -52,13 +52,13 @@ export default function JoinPanel({
           Join the <span className="bg-gradient-to-r from-accent via-maroon to-accent bg-[length:200%_100%] bg-clip-text italic text-transparent motion-ok:animate-[shimmer_6s_linear_infinite]">network.</span>
         </h1>
         <p className="mt-4 font-sans text-base leading-relaxed text-ink/70">
-          Two minutes to set up. Once you&rsquo;re verified as a BMS graduate or
+          Two minutes to set up. Once you&rsquo;re verified as a BMSCE graduate or
           student, the whole network opens up.
         </p>
       </div>
 
       <fieldset className="lg:mt-8">
-        <legend className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/50">
+        <legend className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
           Step 1 · Who are you?
         </legend>
         <div className="mt-3 grid grid-cols-2 gap-3">
@@ -68,7 +68,7 @@ export default function JoinPanel({
               <SpotlightCard
                 key={a.key}
                 className="rounded-2xl"
-                glow={on ? "rgba(255,255,255,0.18)" : "rgba(20,34,64,0.08)"}
+                glow={on ? "rgba(255,255,255,0.18)" : "rgba(33,37,41,0.08)"}
               >
               <button
                 type="button"
@@ -76,14 +76,14 @@ export default function JoinPanel({
                 onClick={() => pick(a.key)}
                 className={`relative w-full rounded-2xl border p-4 text-left sm:p-5 transition-all duration-200 ${
                   on
-                    ? "border-oxblood bg-oxblood text-ivory shadow-[0_16px_36px_-20px_rgba(20,34,64,0.7)]"
+                    ? "border-oxblood bg-oxblood text-ivory shadow-[0_16px_36px_-20px_rgba(33,37,41,0.7)]"
                     : "border-gold/50 bg-ivory hover:-translate-y-0.5 hover:border-oxblood/50"
                 }`}
               >
                 <span className="block font-display text-lg leading-tight sm:text-xl">{a.title}</span>
                 <span
                   className={`mt-2 hidden font-sans text-[13px] leading-relaxed sm:block ${
-                    on ? "text-ivory/75" : "text-ink/60"
+                    on ? "text-white" : "text-ink/70"
                   }`}
                 >
                   {a.body}
@@ -98,20 +98,20 @@ export default function JoinPanel({
       {error && (
         <p
           role="alert"
-          className="mt-6 rounded-xl border border-oxblood/30 bg-oxblood/5 px-4 py-3 font-sans text-sm text-oxblood"
+          className="mt-6 rounded-xl border border-oxblood/30 bg-paper px-4 py-3 font-sans text-sm text-oxblood"
         >
           Something went wrong signing you up. Please try again.
         </p>
       )}
 
       <div className="mt-8">
-        <p className="mb-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/50">
+        <p className="mb-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
           Step 2 · Create your account
         </p>
         <LoginButtons userType={audience} next={next} mode="join" />
       </div>
 
-      <p className="mt-6 font-sans text-xs leading-relaxed text-ink/45">
+      <p className="mt-6 font-sans text-xs leading-relaxed text-ink/70">
         By continuing you agree to our{" "}
         <Link href="/terms" className="underline underline-offset-2 hover:text-ink/70">
           Terms
@@ -125,20 +125,20 @@ export default function JoinPanel({
 
       <ul className="mt-8 grid grid-cols-2 gap-3 lg:hidden">
         {[
-          ["Directory", "Find your batch"],
+          ["Directory", "Find your class"],
           ["Chapters", "30+ cities"],
           ["Events", "Meetups and reunions"],
           ["Mentorship", "Ask and help"],
         ].map(([t, d]) => (
           <li key={t} className="rounded-xl border border-gold/40 bg-ivory-dim/40 p-4">
             <span className="block font-display text-base text-ink">{t}</span>
-            <span className="mt-0.5 block font-sans text-xs text-ink/55">{d}</span>
+            <span className="mt-0.5 block font-sans text-xs text-ink/70">{d}</span>
           </li>
         ))}
       </ul>
 
       <div className="mt-8 flex items-center gap-4 border-t border-gold/30 pt-6">
-        <p className="font-sans text-sm text-ink/60">Already a member?</p>
+        <p className="font-sans text-sm text-ink/70">Already a member?</p>
         <Link
           href={next !== "/" ? `/login?next=${encodeURIComponent(next)}` : "/login"}
           className="rounded-sm border border-oxblood/30 px-4 py-2 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood transition-colors hover:border-oxblood"

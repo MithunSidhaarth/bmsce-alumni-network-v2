@@ -34,7 +34,7 @@ export default function DeleteEventButton({
       <button
         type="button"
         onClick={() => setConfirming(true)}
-        className="rounded-sm border border-oxblood/40 px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood/80 transition-colors hover:border-oxblood hover:bg-oxblood hover:text-ivory"
+        className="rounded-sm border border-oxblood/40 px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood transition-colors hover:border-oxblood hover:bg-oxblood hover:text-ivory"
       >
         Delete
       </button>
@@ -43,7 +43,7 @@ export default function DeleteEventButton({
 
   return (
     <div className="flex items-center gap-2">
-      <span className="font-sans text-xs text-ink/60">Delete “{title}”?</span>
+      <span className="font-sans text-xs text-ink/70">Delete “{title}”?</span>
       <button
         type="button"
         disabled={busy}

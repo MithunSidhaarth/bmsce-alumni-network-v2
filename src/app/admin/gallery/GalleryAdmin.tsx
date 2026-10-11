@@ -147,14 +147,14 @@ export default function GalleryAdmin({
         onDrop={onDrop}
         className={`flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-6 py-16 text-center transition-colors ${
           dragOver
-            ? "border-oxblood bg-oxblood/5"
+            ? "border-oxblood bg-paper"
             : "border-gold/40 bg-ivory-dim/40"
         }`}
       >
         <p className="font-display text-xl italic text-ink">
           Drag photos here
         </p>
-        <p className="font-sans text-sm text-ink/60">or</p>
+        <p className="font-sans text-sm text-ink/70">or</p>
         <label className="cursor-pointer rounded-lg border border-gold/40 bg-ivory-dim/60 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink transition-colors hover:border-gold">
           Choose files
           <input
@@ -166,7 +166,7 @@ export default function GalleryAdmin({
             onChange={(e) => uploadFiles(Array.from(e.target.files ?? []))}
           />
         </label>
-        <p className="mt-2 font-sans text-xs text-ink/45">
+        <p className="mt-2 font-sans text-xs text-ink/70">
           JPEG, PNG, or WebP, select as many as you like. Resized and
           compressed right in your browser before upload, so large batches
           upload reliably.
@@ -175,7 +175,7 @@ export default function GalleryAdmin({
 
       {busy && (
         <div className="rounded-xl border border-gold/30 bg-ivory-dim/40 px-5 py-4">
-          <div className="flex items-center justify-between font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/60">
+          <div className="flex items-center justify-between font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70">
             <span>Uploading…</span>
             <span>
               {done} / {total}
@@ -191,13 +191,13 @@ export default function GalleryAdmin({
       )}
 
       {failed.length > 0 && (
-        <div className="rounded-xl border border-oxblood/30 bg-oxblood/5 px-5 py-4">
+        <div className="rounded-xl border border-oxblood/30 bg-paper px-5 py-4">
           <p className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood">
             {failed.length} {failed.length === 1 ? "photo" : "photos"} failed
           </p>
           <ul className="mt-2 flex flex-col gap-1">
             {failed.map((msg, i) => (
-              <li key={i} className="font-sans text-xs text-oxblood/80">
+              <li key={i} className="font-sans text-xs text-oxblood">
                 {msg}
               </li>
             ))}

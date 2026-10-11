@@ -78,7 +78,7 @@ export default function Poll({ postId, options, counts, canVote }: { postId: str
               >
                 {showResults && (
                   <span
-                    className={`absolute inset-y-0 left-0 transition-[width] duration-500 ease-out ${chosen ? "bg-lime" : "bg-ink/[0.07]"}`}
+                    className={`absolute inset-y-0 left-0 transition-[width] duration-500 ease-out ${chosen ? "bg-blue/25" : "bg-ink/[0.07]"}`}
                     style={{ width: `${share}%` }}
                     aria-hidden="true"
                   />
@@ -93,7 +93,7 @@ export default function Poll({ postId, options, counts, canVote }: { postId: str
           );
         })}
       </ul>
-      <p className="mt-2 text-xs text-ink/55">
+      <p className="mt-2 text-xs text-ink/70">
         {plural(total, "vote", "votes")}
         {canVote && mine === null && ready ? " · results appear after you vote" : ""}
         {canVote && mine !== null ? " · tap your choice again to take it back" : ""}

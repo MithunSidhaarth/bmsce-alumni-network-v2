@@ -253,7 +253,7 @@ export default function Thread({
   const subtitle =
     other.user_type === "student"
       ? "Student"
-      : [other.graduation_year ? `Batch of ${other.graduation_year}` : null, [other.job_title, other.company].filter(Boolean).join(" at ")]
+      : [other.graduation_year ? `Class of ${other.graduation_year}` : null, [other.job_title, other.company].filter(Boolean).join(" at ")]
           .filter(Boolean)
           .join(" · ") || "Alumni";
 
@@ -270,7 +270,7 @@ export default function Thread({
           </span>
           <span className="min-w-0">
             <span className="block truncate font-semibold leading-tight">{other.full_name ?? "Member"}</span>
-            <span className="block truncate text-xs text-ink/55">{otherOnline ? "Online now" : subtitle}</span>
+            <span className="block truncate text-xs text-ink/70">{otherOnline ? "Online now" : subtitle}</span>
           </span>
         </Link>
         <div className="relative">
@@ -354,7 +354,7 @@ export default function Thread({
           <div className="flex h-full flex-col items-center justify-center text-center">
             <Avatar name={other.full_name} src={other.photo_url} size={72} />
             <p className="hand mt-4 text-[1.7rem] text-forest">Say hello to {(other.full_name ?? "them").split(" ")[0]}</p>
-            <p className="mt-1 max-w-xs text-sm text-ink/60">This is the start of your conversation. Only the two of you can read it.</p>
+            <p className="mt-1 max-w-xs text-sm text-ink/70">This is the start of your conversation. Only the two of you can read it.</p>
           </div>
         )}
         <ol className="flex flex-col">
@@ -373,7 +373,7 @@ export default function Thread({
             return (
               <li key={m.key ?? m.id} className={startsGroup ? "mt-3" : "mt-0.5"}>
                 {newDay && (
-                  <p className="label-mono my-4 text-center text-ink/45">
+                  <p className="label-mono my-4 text-center text-ink/70">
                     <time dateTime={m.created_at}>{longDate(m.created_at)}</time>
                   </p>
                 )}
@@ -392,7 +392,7 @@ export default function Thread({
                   </div>
                 </div>
                 {endsGroup && (
-                  <p className={`mt-1 flex items-center gap-2 text-[0.6875rem] text-ink/45 ${mine ? "justify-end" : "justify-start"}`}>
+                  <p className={`mt-1 flex items-center gap-2 text-[0.6875rem] text-ink/70 ${mine ? "justify-end" : "justify-start"}`}>
                     {m.state === "failed" ? (
                       <>
                         <span className="text-pin">Not sent.</span>
@@ -435,12 +435,12 @@ export default function Thread({
 
       <footer className="border-t border-ink/10 bg-paper px-3 py-3 md:px-5">
         {notice && (
-          <p role="status" className="mb-2 text-xs text-ink/65">
+          <p role="status" className="mb-2 text-xs text-ink/70">
             {notice}
           </p>
         )}
         {blocked ? (
-          <p className="py-2 text-center text-sm text-ink/60">
+          <p className="py-2 text-center text-sm text-ink/70">
             {blockedByMe ? "You blocked this member. Unblock them from the menu to message again." : "You can no longer send messages in this conversation."}
           </p>
         ) : (
@@ -465,7 +465,7 @@ export default function Thread({
               rows={1}
               maxLength={4000}
               placeholder="Write a message"
-              className="max-h-40 min-h-11 flex-1 resize-none rounded-[22px] border border-ink/20 bg-ivory px-4 py-2.5 text-[0.9375rem] placeholder:text-ink/45 focus:border-ink focus:outline-none [field-sizing:content]"
+              className="max-h-40 min-h-11 flex-1 resize-none rounded-[22px] border border-ink/20 bg-ivory px-4 py-2.5 text-[0.9375rem] placeholder:text-ink/70 focus:border-ink focus:outline-none [field-sizing:content]"
             />
             <button type="submit" disabled={!text.trim() || !online} aria-label="Send" className="btn h-11 w-11 shrink-0 p-0">
               <Icon name="send" className="h-[1.1rem] w-[1.1rem]" />

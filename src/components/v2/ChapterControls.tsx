@@ -57,7 +57,7 @@ export default function ChapterControls({
       )}
       {status === "pending" && (
         <>
-          <span className="stamp border-lime text-lime">Request sent</span>
+          <span className="stamp border-white text-white">Request sent</span>
           <button type="button" disabled={pending} onClick={() => run(() => leaveChapter(chapterId, slug))} className="text-sm font-semibold text-ivory/80 underline underline-offset-4 hover:text-ivory">
             Withdraw
           </button>
@@ -65,7 +65,7 @@ export default function ChapterControls({
       )}
       {status === "active" && (
         <>
-          <span className="stamp border-lime bg-lime text-ink">You are a member</span>
+          <span className="stamp border-white bg-white text-brand-ink">You are a member</span>
           {whatsappUrl && (
             <a href={whatsappUrl} target="_blank" rel="noreferrer" className="btn btn-sm border-ivory/50 bg-transparent text-ivory hover:bg-ivory/10">
               WhatsApp group
@@ -82,7 +82,7 @@ export default function ChapterControls({
         </>
       )}
       {error && (
-        <p role="alert" className="w-full text-sm text-[#ffb3a3]">
+        <p role="alert" className="w-full text-sm text-[#ffffff]">
           {error}
         </p>
       )}
@@ -131,7 +131,7 @@ export function MemberReview({
       type="button"
       disabled={pending}
       onClick={() => window.confirm("Remove this member from the chapter?") && run(() => removeMember(chapterId, slug, profileId))}
-      className="text-xs font-semibold text-ink/50 hover:text-pin"
+      className="text-xs font-semibold text-ink/70 hover:text-pin"
     >
       Remove
     </button>

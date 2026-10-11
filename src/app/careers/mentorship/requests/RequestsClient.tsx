@@ -73,7 +73,7 @@ function IncomingCard({ req }: { req: ReqView }) {
           <Avatar person={req.person} />
           <div>
             <h3 className="font-display text-xl text-ink">{req.person.name}</h3>
-            <p className="mt-1 font-sans text-sm text-ink/60">
+            <p className="mt-1 font-sans text-sm text-ink/70">
               {[
                 req.person.userType === "student" ? "Current student" : "Alum",
                 req.person.branch,
@@ -138,7 +138,7 @@ export function OutgoingList({ requests }: { requests: ReqView[] }) {
                 <h3 className="font-display text-xl text-ink">
                   {r.person.name}
                 </h3>
-                <p className="mt-1 font-sans text-sm text-ink/60">
+                <p className="mt-1 font-sans text-sm text-ink/70">
                   {[r.person.title, r.person.company].filter(Boolean).join(", ")}
                 </p>
                 {r.message && (
@@ -205,8 +205,8 @@ function StatusPill({ status }: { status: "accepted" | "declined" | "pending" })
     status === "accepted"
       ? "border-gold/50 bg-gold/10 text-accent"
       : status === "declined"
-      ? "border-ink/20 bg-ink/5 text-ink/50"
-      : "border-gold/40 bg-ivory/60 text-ink/60";
+      ? "border-ink/20 bg-ink/5 text-ink/70"
+      : "border-gold/40 bg-ivory/60 text-ink/70";
   return (
     <span
       className={`shrink-0 self-start rounded-lg border px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] ${tone}`}

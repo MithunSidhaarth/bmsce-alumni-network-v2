@@ -114,7 +114,7 @@ export default async function MentorshipRequestsPage() {
     const contact = p ? contactById.get(p.id) : undefined;
     return {
       id: p?.id ?? "",
-      name: p?.full_name ?? "BMS member",
+      name: p?.full_name ?? "BMSCE member",
       branch: p?.branch ?? null,
       gradYear: p?.graduation_year ?? null,
       userType: p?.user_type ?? null,
@@ -156,7 +156,7 @@ export default async function MentorshipRequestsPage() {
                 Browse mentors →
               </Link>
             </div>
-            <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
+            <h1 className="slash mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
               My mentorship.
             </h1>
 
@@ -167,12 +167,12 @@ export default async function MentorshipRequestsPage() {
                   <h2 className="font-display text-2xl text-ink md:text-3xl">
                     Requests to me
                   </h2>
-                  <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/45">
+                  <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                     {acceptedCount} accepted
                     {me.max_mentees != null ? ` / ${me.max_mentees} max` : ""}
                   </span>
                 </div>
-                <p className="mt-3 max-w-xl font-sans text-sm leading-relaxed text-ink/65">
+                <p className="mt-3 max-w-xl font-sans text-sm leading-relaxed text-ink/70">
                   You choose who to take on. Accepting shares your contact
                   details with them.
                 </p>
@@ -187,7 +187,7 @@ export default async function MentorshipRequestsPage() {
               <h2 className="font-display text-2xl text-ink md:text-3xl">
                 My requests
               </h2>
-              <p className="mt-3 max-w-xl font-sans text-sm leading-relaxed text-ink/65">
+              <p className="mt-3 max-w-xl font-sans text-sm leading-relaxed text-ink/70">
                 Mentorship you&rsquo;ve asked for. Once a mentor accepts,
                 you&rsquo;ll see their contact details here.
               </p>

@@ -8,7 +8,7 @@ import { motionOK } from "@/lib/motion";
 import Icon from "../Icon";
 import { said } from "@/lib/fail";
 
-const COLOURS = ["#fff3a8", "#ffd9c7", "#e2dbff", "#e3f5ab"];
+const COLOURS = ["#ffffff", "#ffffff", "#dadde2", "#f3f5f8"];
 const MAX = 240;
 
 type Mode = "pad" | "edit" | "sent";
@@ -122,7 +122,7 @@ export default function WallNotePad({ isAdmin }: { isAdmin: boolean }) {
         {mode === "pad" && (
           <>
             <p className="hand text-[1.7rem] leading-none text-ink">Leave a note</p>
-            <p className="mt-2 flex items-center gap-1.5 text-xs text-ink/65">
+            <p className="mt-2 flex items-center gap-1.5 text-xs text-ink/70">
               <Icon name="pin" className="h-3.5 w-3.5" />
               {canDrag ? "Drag me onto the wall" : "Tap to write"}
             </p>
@@ -131,7 +131,7 @@ export default function WallNotePad({ isAdmin }: { isAdmin: boolean }) {
 
         {mode === "edit" && (
           <>
-            <label htmlFor="wall-note" className="label-mono text-ink/60">
+            <label htmlFor="wall-note" className="label-mono text-ink/70">
               Your note
             </label>
             <textarea
@@ -141,18 +141,18 @@ export default function WallNotePad({ isAdmin }: { isAdmin: boolean }) {
               onChange={(e) => setText(e.target.value.slice(0, MAX))}
               rows={4}
               placeholder="A memory, a hello, a thank you"
-              className="hand mt-1 w-full resize-none border-0 bg-transparent text-[1.5rem] leading-[1.15] text-ink placeholder:text-ink/40 focus:outline-none"
+              className="hand mt-1 w-full resize-none border-0 bg-transparent text-[1.5rem] leading-[1.15] text-ink placeholder:text-ink/70 focus:outline-none"
             />
             <div className="mt-1 flex items-center gap-2">
               <button type="button" onClick={submit} disabled={pending || text.trim().length < 3} className="btn btn-sm">
                 {pending ? "Pinning" : "Pin it"}
               </button>
-              <button type="button" onClick={reset} disabled={pending} className="text-xs font-semibold text-ink/65 underline underline-offset-2">
+              <button type="button" onClick={reset} disabled={pending} className="text-xs font-semibold text-ink/70 underline underline-offset-2">
                 Take it back
               </button>
-              <span className="ml-auto font-mono text-[0.6875rem] text-ink/50">{MAX - text.length}</span>
+              <span className="ml-auto font-mono text-[0.6875rem] text-ink/70">{MAX - text.length}</span>
             </div>
-            <p className="mt-2 text-[0.6875rem] leading-snug text-ink/60">
+            <p className="mt-2 text-[0.6875rem] leading-snug text-ink/70">
               {isAdmin ? "Posted under your name and pinned for everyone." : "Posted under your name. An admin approves notes before everyone sees them."}
             </p>
             {error && (

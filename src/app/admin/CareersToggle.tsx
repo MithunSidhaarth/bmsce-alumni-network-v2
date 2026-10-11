@@ -28,7 +28,7 @@ export default function CareersToggle({ enabled }: { enabled: boolean }) {
       <div className="flex items-center justify-between gap-6">
         <div>
           <h3 className="font-display text-lg text-ink">Careers section</h3>
-          <p className="mt-1 max-w-md font-sans text-sm leading-relaxed text-ink/65">
+          <p className="mt-1 max-w-md font-sans text-sm leading-relaxed text-ink/70">
             Jobs, internships and mentorship. Off for now until there are mentors
             signed up. Flip it on and it appears in the nav, homepage and routes
             immediately, for everyone.
@@ -53,9 +53,9 @@ export default function CareersToggle({ enabled }: { enabled: boolean }) {
           />
         </button>
       </div>
-      <p className="mt-3 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-ink/45">
+      <p className="mt-3 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-ink/70">
         Careers is currently{" "}
-        <span className={on ? "text-oxblood" : "text-ink/60"}>
+        <span className={on ? "text-oxblood" : "text-ink/70"}>
           {on ? "ON" : "OFF"}
         </span>
       </p>

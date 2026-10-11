@@ -5,7 +5,7 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy: BMSCE Alumni Network",
+  title: "Privacy policy: BMSCE Alumni Network",
   description:
     "How the BMSCE Alumni Network collects, uses, shares, secures, and retains your information, and the rights you have over your data.",
 };
@@ -41,12 +41,12 @@ export default function PrivacyPage() {
               <Eyebrow>Privacy</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,3.75rem)] leading-[1.03] tracking-tight text-ink">
-                Privacy Policy
+              <h1 className="slash mt-6 font-display text-[clamp(2.25rem,6vw,3.75rem)] leading-[1.03] tracking-tight text-ink">
+                Privacy policy
               </h1>
             </Reveal>
             <Reveal delay={140}>
-              <p className="mt-5 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/45">
+              <p className="mt-5 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
                 Last updated: July 31, 2026
               </p>
             </Reveal>
@@ -56,12 +56,12 @@ export default function PrivacyPage() {
                 <p className={BODY.replace("mt-4", "")}>
                   BMSCE Alumni Network (&ldquo;we,&rdquo; &ldquo;us,&rdquo;
                   &ldquo;our&rdquo;) operates this website to connect alumni of
-                  BMS College of Engineering with each other, current students,
+                  B.M.S. College of Engineering with each other, current students,
                   and the wider alumni community. This policy explains what
                   information we collect, why, and how it&rsquo;s handled.
                 </p>
 
-                <h2 className={HEADING}>Information We Collect</h2>
+                <h2 className={HEADING}>Information we collect</h2>
                 <p className={BODY}>
                   When you create an account or use this site, we may collect:
                 </p>
@@ -98,11 +98,11 @@ export default function PrivacyPage() {
                   </Bullet>
                 </ul>
 
-                <h2 className={HEADING}>How We Use This Information</h2>
+                <h2 className={HEADING}>How we use this information</h2>
                 <p className={BODY}>We use the information above to:</p>
                 <ul className={LIST}>
                   <Bullet>
-                    Verify that you are a genuine BMS alumnus or current student
+                    Verify that you are a genuine BMSCE alum or current student
                     before granting access to the directory and other member
                     features
                   </Bullet>
@@ -131,11 +131,11 @@ export default function PrivacyPage() {
                 <p className={BODY}>
                   Verification may involve reviewing your graduation details,
                   institutional email address, or other information reasonably
-                  necessary to confirm your affiliation with BMS College of
+                  necessary to confirm your affiliation with B.M.S. College of
                   Engineering before granting full access to member features.
                 </p>
 
-                <h2 className={HEADING}>Children&rsquo;s Privacy</h2>
+                <h2 className={HEADING}>Children&rsquo;s privacy</h2>
                 <p className={BODY}>
                   This platform is intended for individuals aged 18 or older. We
                   do not knowingly collect personal information from children
@@ -143,7 +143,7 @@ export default function PrivacyPage() {
                   collected such information, we will take steps to delete it.
                 </p>
 
-                <h2 className={HEADING}>How We Share Information</h2>
+                <h2 className={HEADING}>How we share information</h2>
                 <p className={BODY}>
                   We do not sell your personal information. Your profile is
                   visible only to other verified, signed-in members of the
@@ -162,11 +162,11 @@ export default function PrivacyPage() {
                 <p className={BODY}>
                   Information submitted as part of a job or internship application
                   (including your resume, cover note, and phone number) is shared
-                  only with the specific organization or alumnus who posted that
+                  only with the specific organisation or alum who posted that
                   opportunity, not with the wider network.
                 </p>
 
-                <h2 className={HEADING}>International Users</h2>
+                <h2 className={HEADING}>International users</h2>
                 <p className={BODY}>
                   Alumni may access this service from anywhere in the world. Your
                   information may be stored and processed on servers located
@@ -174,7 +174,7 @@ export default function PrivacyPage() {
                   with different data protection laws than your own.
                 </p>
 
-                <h2 className={HEADING}>Security Measures</h2>
+                <h2 className={HEADING}>Security measures</h2>
                 <p className={BODY}>
                   We implement reasonable technical and organizational safeguards
                   to protect your information, including encrypted connections
@@ -184,7 +184,7 @@ export default function PrivacyPage() {
                   cannot fully eliminate all risk.
                 </p>
 
-                <h2 className={HEADING}>Your Rights</h2>
+                <h2 className={HEADING}>Your rights</h2>
                 <p className={BODY}>
                   Depending on your location, you may have the right to access,
                   correct, or delete your personal data, withdraw from mentorship
@@ -193,7 +193,7 @@ export default function PrivacyPage() {
                   by contacting us at the email below.
                 </p>
 
-                <h2 className={HEADING}>Data Retention</h2>
+                <h2 className={HEADING}>Data retention</h2>
                 <p className={BODY}>
                   We retain your information for as long as your account is
                   active. If you delete your account, we will remove your personal
@@ -213,7 +213,7 @@ export default function PrivacyPage() {
                   </a>
                   . We aim to respond to privacy-related requests within 30 days.
                 </p>
-                <p className="mt-8 border-t border-gold/25 pt-8 font-sans text-sm leading-relaxed text-ink/55">
+                <p className="mt-8 border-t border-gold/25 pt-8 font-sans text-sm leading-relaxed text-ink/70">
                   We will post any updates to this Privacy Policy on this page and
                   revise the &ldquo;Last updated&rdquo; date above. Your continued
                   use of the website after such updates indicates your acceptance

@@ -17,10 +17,12 @@ export default function BigCta({ cta }: { cta: { href: string; label: string } }
   useEffect(() => {
     if (!motionOK() || !root.current) return;
     const ctx = gsap.context(() => {
+      // The ink sweeps across once, when the section comes into view. It plays
+      // through on its own, so the headline can never be left half drawn.
       gsap.fromTo(
         ".cta-fill",
         { backgroundPositionX: "100%" },
-        { backgroundPositionX: "0%", ease: "none", stagger: 0.35, scrollTrigger: { trigger: root.current, start: "top 78%", end: "center 45%", scrub: 0.5 } }
+        { backgroundPositionX: "0%", duration: 0.9, ease: "power2.out", stagger: 0.22, scrollTrigger: { trigger: root.current, start: "top 82%", once: true } }
       );
     }, root);
 
@@ -44,7 +46,7 @@ export default function BigCta({ cta }: { cta: { href: string; label: string } }
   // Ink for the left half of the gradient, a faint outline tone for the right;
   // sliding the background reveals the ink from left to right.
   const fill =
-    "cta-fill block bg-[linear-gradient(90deg,var(--color-ink)_50%,rgb(19_26_21/0.14)_50%)] bg-[length:200%_100%] bg-clip-text text-transparent motion-ok:[background-position-x:100%]";
+    "cta-fill block bg-[linear-gradient(90deg,var(--color-ink)_50%,rgb(33_37_41/0.3)_50%)] bg-[length:200%_100%] bg-clip-text text-transparent motion-ok:[background-position-x:100%]";
 
   return (
     <section ref={root} aria-labelledby="cta-title" className="overflow-hidden border-t border-ink/10">
@@ -52,10 +54,10 @@ export default function BigCta({ cta }: { cta: { href: string; label: string } }
         <p className="label-mono text-tangerine">One more thing</p>
         <h2
           id="cta-title"
-          aria-label="Your batch is already here."
+          aria-label="Your class is already here."
           className="mt-5 font-display text-[clamp(3rem,11vw,9.5rem)] font-extrabold leading-[0.84] tracking-[-0.05em]"
         >
-          <span className={fill} aria-hidden="true">Your batch</span>
+          <span className={fill} aria-hidden="true">Your class</span>
           <span className={fill} aria-hidden="true">is already</span>
           <span className={`${fill} serif-accent`} aria-hidden="true">here.</span>
         </h2>
@@ -66,7 +68,7 @@ export default function BigCta({ cta }: { cta: { href: string; label: string } }
               <Icon name="arrow" className="h-5 w-5" />
             </Link>
           </div>
-          <p className="max-w-xs text-ink/65">It takes two minutes to join, and a lifetime of BMS to catch up on.</p>
+          <p className="max-w-xs text-ink/70">It takes two minutes to join, and a lifetime of BMSCE to catch up on.</p>
         </div>
       </div>
     </section>

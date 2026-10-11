@@ -25,13 +25,13 @@ export default function ArticleTools({ slug, title, url, count }: { slug: string
   const links = [
     { label: "LinkedIn", href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}` },
     { label: "WhatsApp", href: `https://wa.me/?text=${t}%20${u}` },
-    { label: "X", href: `https://twitter.com/intent/tweet?text=${t}&url=${u}` },
+    { label: "X", href: `https://twitter.com/intent/tweet?text=${t}&url=${u}&hashtags=BMSCEAlumni` },
     { label: "Email", href: `mailto:?subject=${t}&body=${u}` },
   ];
 
   return (
     <aside aria-label="Share this article" className="mt-12 flex flex-wrap items-center gap-2 border-t border-ink/15 pt-6">
-      <span className="label-mono mr-2 text-ink/55">Share</span>
+      <span className="label-mono mr-2 text-ink/70">Share</span>
       {links.map((l) => (
         <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="chip">
           {l.label}

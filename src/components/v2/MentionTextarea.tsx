@@ -130,7 +130,7 @@ export default function MentionTextarea({
               <Avatar name={hit.name} src={hit.photo} size={30} />
               <span className="min-w-0">
                 <span className="block truncate text-sm font-semibold">{hit.name}</span>
-                <span className="block truncate text-xs text-ink/60">{hit.line}</span>
+                <span className="block truncate text-xs text-ink/70">{hit.line}</span>
               </span>
             </li>
           ))}

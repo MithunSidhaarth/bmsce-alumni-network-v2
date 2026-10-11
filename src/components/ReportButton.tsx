@@ -40,7 +40,7 @@ export default function ReportButton({
 
   if (done) {
     return (
-      <p className="font-sans text-[11px] uppercase tracking-[0.12em] text-ink/45">
+      <p className="font-sans text-[11px] uppercase tracking-[0.12em] text-ink/70">
         Reported, thank you
       </p>
     );
@@ -51,7 +51,7 @@ export default function ReportButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/45 underline decoration-transparent underline-offset-4 transition-colors hover:text-oxblood hover:decoration-accent"
+        className="font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 underline decoration-transparent underline-offset-4 transition-colors hover:text-oxblood hover:decoration-accent"
       >
         {label}
       </button>
@@ -60,14 +60,14 @@ export default function ReportButton({
 
   return (
     <div className="rounded-xl border border-gold/30 bg-ivory-dim/50 p-4">
-      <p className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-ink/60">
+      <p className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-ink/70">
         Report this to the admins
       </p>
       <textarea
         value={reason}
         onChange={(e) => setReason(e.target.value)}
         placeholder="What's the problem? (optional)"
-        className="mt-2 min-h-[70px] w-full resize-y rounded-lg border border-gold/40 bg-ivory/70 px-3 py-2 font-sans text-sm text-ink placeholder:text-ink/40 focus:border-gold focus:outline-none"
+        className="mt-2 min-h-[70px] w-full resize-y rounded-lg border border-gold/40 bg-ivory/70 px-3 py-2 font-sans text-sm text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none"
       />
       <div className="mt-3 flex gap-2">
         <button

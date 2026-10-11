@@ -551,7 +551,7 @@ export function CampusLegend({ className = "" }: { className?: string }) {
         <li key={p.place}>
           <Link href={p.href} className="chip">
             <span className="hand text-[1.15rem] leading-none">{tidy(p.place)}</span>
-            <span className="label-mono text-ink/55">→ {p.opens}</span>
+            <span className="label-mono text-ink/70">→ {p.opens}</span>
           </Link>
         </li>
       ))}

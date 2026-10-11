@@ -4,7 +4,7 @@ import { BLANK_SHOTS } from "@/data/instagram-blank";
 import { OG_SIZE, ogCard } from "@/lib/og";
 
 // The default share card for the site (WhatsApp, LinkedIn and X link previews).
-export const alt = "BMSCE Alumni Network: Once BMS. Always BMS.";
+export const alt = "BMSCE Alumni Network: Once BMSCE. Always BMSCE.";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 
@@ -18,8 +18,8 @@ const cover = (archive as { short_code: string; image_url: string | null; posted
 export default function OgImage() {
   return ogCard({
     eyebrow: "Est. 1946 · Basavanagudi, Bengaluru",
-    title: "Once BMS. Always BMS.",
-    note: "find your batch, your city, your people",
+    title: "Once BMSCE. Always BMSCE.",
+    note: "find your class, your city, your people",
     image: cover?.image_url ?? null,
   });
 }

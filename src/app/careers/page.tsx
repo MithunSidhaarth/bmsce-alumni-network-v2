@@ -28,11 +28,11 @@ export default async function CareersUnavailablePage() {
         <section id="top">
           <div className="mx-auto max-w-2xl px-6 py-32 text-center md:px-10">
             <Eyebrow align="center">Careers</Eyebrow>
-            <h1 className="mt-6 font-display text-[clamp(2rem,6vw,3.5rem)] leading-[1.05] tracking-tight text-ink">
+            <h1 className="slash mt-6 font-display text-[clamp(2rem,6vw,3.5rem)] leading-[1.05] tracking-tight text-ink">
               Not available right now.
             </h1>
             <p className="mx-auto mt-5 max-w-md font-sans text-base leading-relaxed text-ink/70">
-              The careers &amp; referrals section is being reworked and
+              The careers and referrals section is being reworked and
               isn&rsquo;t open at the moment. Check back soon.
             </p>
             <Link

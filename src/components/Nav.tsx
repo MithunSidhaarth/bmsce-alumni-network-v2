@@ -3,12 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "./v2/ThemeToggle";
+import { GearMark, Logo } from "./v2/Brand";
 import { usePathname } from "next/navigation";
 import { useAuth } from "./AuthProvider";
 import AuthMenu from "./AuthMenu";
 
 // The public header. Signed-in members get the app shell (AppChrome) from the
 // root layout instead, so this renders nothing for them.
+//
+// Brand Guidelines, p. 26: the logo sits top left and links home. That is
+// the header on a wide screen. Where the full logo will not fit (a phone, or
+// the slim bar that follows a wide page down once the header has scrolled
+// away) the gear mark stands in, with the full name beside it (pp. 10, 11).
 const LINKS = [
   { label: "About", href: "/about" },
   { label: "Chapters", href: "/chapters" },
@@ -22,9 +28,13 @@ export default function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [past, setPast] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12);
+      setPast(window.scrollY > 110);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -41,63 +51,64 @@ export default function Nav() {
 
   if (inApp) return null;
 
-  return (
-    <>
-    <header
-      className={`sticky top-0 z-40 transition-[background-color,border-color] duration-200 ${
-        scrolled || open ? "border-b border-ink/10 bg-ivory/92 backdrop-blur-md" : "border-b border-transparent bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-5 md:px-10">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="BMSCE Alumni Network home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/bmsce-crest.png" alt="" className="h-9 w-9 object-contain" />
-          <span className="font-display text-[1.05rem] font-extrabold leading-[0.95] tracking-tight">
-            BMSCE
-            <span className="serif-accent block text-[0.95rem] font-normal">alumni network</span>
-          </span>
+  const bar = (slim: boolean) => (
+    <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-6 px-5 md:px-10">
+      <Link href="/" className="flex items-center" aria-label="BMSCE Alumni Network home">
+        {slim ? (
+          <GearMark />
+        ) : (
+          <>
+            <span className="hidden lg:block">
+              <Logo className="-ml-[17px]" />
+            </span>
+            <span className="lg:hidden">
+              <GearMark />
+            </span>
+          </>
+        )}
+      </Link>
+
+      <nav aria-label={slim ? "Main, pinned" : "Main"} className="ml-4 hidden items-center gap-1 lg:flex">
+        {LINKS.map((l) => {
+          const active = pathname.startsWith(l.href);
+          return (
+            <Link
+              key={l.href}
+              href={l.href}
+              aria-current={active ? "page" : undefined}
+              className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                active ? "bg-ink text-ivory" : "text-ink/75 hover:bg-ink/[0.07] hover:text-ink"
+              }`}
+            >
+              {l.label}
+            </Link>
+          );
+        })}
+        <Link
+          href="/noticeboard"
+          className="ml-1 inline-flex -rotate-2 items-center rounded-sm bg-red px-3 py-1.5 font-display text-sm font-bold text-white shadow-[2px_2px_0_var(--color-ink)] transition-transform hover:rotate-0"
+        >
+          The Wall
         </Link>
+      </nav>
 
-        <nav aria-label="Main" className="ml-4 hidden items-center gap-1 lg:flex">
-          {LINKS.map((l) => {
-            const active = pathname.startsWith(l.href);
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                aria-current={active ? "page" : undefined}
-                className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
-                  active ? "bg-ink text-ivory" : "text-ink/75 hover:bg-ink/[0.07] hover:text-ink"
-                }`}
-              >
-                {l.label}
-              </Link>
-            );
-          })}
-          <Link
-            href="/noticeboard"
-            className="ml-1 inline-flex -rotate-2 items-center rounded-sm bg-lime px-3 py-1.5 font-display text-sm font-bold text-ink shadow-[2px_2px_0_var(--color-ink)] transition-transform hover:rotate-0"
-          >
-            The Wall
-          </Link>
-        </nav>
+      <div className="ml-auto hidden items-center gap-2 lg:flex">
+        <ThemeToggle className="flex h-10 w-10 items-center justify-center rounded-full text-ink/75 hover:bg-ink/[0.06] hover:text-ink" />
+        {signedIn ? (
+          <AuthMenu />
+        ) : (
+          <>
+            <Link href="/login" className="btn btn-ghost btn-sm">
+              Sign in
+            </Link>
+            <Link href="/join" className="btn btn-sm">
+              Join the Network
+            </Link>
+          </>
+        )}
+      </div>
 
-        <div className="ml-auto hidden items-center gap-2 lg:flex">
-          <ThemeToggle className="flex h-10 w-10 items-center justify-center rounded-full text-ink/75 hover:bg-ink/[0.06] hover:text-ink" />
-          {signedIn ? (
-            <AuthMenu />
-          ) : (
-            <>
-              <Link href="/login" className="btn btn-ghost btn-sm">
-                Sign in
-              </Link>
-              <Link href="/join" className="btn btn-sm">
-                Join the network
-              </Link>
-            </>
-          )}
-        </div>
-
+      {!slim && (
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -111,9 +122,28 @@ export default function Nav() {
             <span className={`absolute bottom-0 left-0 h-[1.5px] w-full bg-ink transition-transform ${open ? "-translate-y-[5px] -rotate-45" : ""}`} />
           </span>
         </button>
-      </div>
+      )}
+    </div>
+  );
 
-    </header>
+  return (
+    <>
+      <header
+        className={`sticky top-0 z-40 border-b transition-[background-color,border-color] duration-200 lg:static lg:border-transparent lg:bg-transparent ${
+          scrolled || open ? "border-ink/10 bg-ivory/92 backdrop-blur-md lg:backdrop-blur-none" : "border-transparent bg-transparent"
+        }`}
+      >
+        {bar(false)}
+      </header>
+      {/* Wide screens: once the header has scrolled away, a slim bar follows the page. */}
+      <div
+        inert={!past}
+        className={`fixed inset-x-0 top-0 z-40 hidden border-b border-ink/10 bg-ivory/92 backdrop-blur-md transition-transform duration-200 lg:block ${
+          past ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
+        {bar(true)}
+      </div>
       {open && (
         <div
           id="public-menu"
@@ -137,7 +167,7 @@ export default function Nav() {
             ) : (
               <>
                 <Link href="/join" className="btn">
-                  Join the network
+                  Join the Network
                 </Link>
                 <Link href="/login" className="btn btn-ghost">
                   Sign in

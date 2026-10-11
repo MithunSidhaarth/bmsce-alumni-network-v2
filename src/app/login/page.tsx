@@ -45,7 +45,7 @@ export default async function LoginPage({ searchParams }: Props) {
           <AuthSplit
             mobileHero={
               <>
-                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/70">
                   Members
                 </p>
                 <h1 className="mt-4 font-display text-[2.75rem] leading-[0.98] tracking-tight">
@@ -59,7 +59,7 @@ export default async function LoginPage({ searchParams }: Props) {
             }
             panel={
               <>
-                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/70">
                   In their words
                 </p>
                 <blockquote className="mt-8 font-display text-[clamp(1.75rem,2.6vw,2.5rem)] italic leading-[1.2] text-ivory">
@@ -71,14 +71,14 @@ export default async function LoginPage({ searchParams }: Props) {
                 </p>
                 <div className="mt-14 grid grid-cols-2 gap-8 border-t border-ivory/15 pt-8">
                   <div>
-                    <p className="font-display text-5xl text-accent"><CountUp value="10+" /></p>
-                    <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.2em] text-ivory/60">
+                    <p className="font-display text-5xl text-accent"><CountUp value="12" /></p>
+                    <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.2em] text-ivory/70">
                       Countries
                     </p>
                   </div>
                   <div>
-                    <p className="font-display text-5xl text-accent"><CountUp value="30+" /></p>
-                    <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.2em] text-ivory/60">
+                    <p className="font-display text-5xl text-accent"><CountUp value="31" /></p>
+                    <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.2em] text-ivory/70">
                       Chapters
                     </p>
                   </div>

@@ -81,7 +81,7 @@ export default function AccountManagement({ userId }: { userId: string }) {
 
   return (
     <div className="mt-16 border-t border-gold/25 pt-10">
-      <h2 className="font-display text-2xl text-ink">Your data & account</h2>
+      <h2 className="font-display text-2xl text-ink">Your data and account</h2>
 
       <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
         <button
@@ -92,12 +92,12 @@ export default function AccountManagement({ userId }: { userId: string }) {
         >
           {exporting ? "Preparing…" : "Download my data (JSON)"}
         </button>
-        <p className="font-sans text-sm text-ink/55">
+        <p className="font-sans text-sm text-ink/70">
           A copy of your profile and activity.
         </p>
       </div>
 
-      <div className="mt-10 rounded-2xl border border-oxblood/25 bg-oxblood/5 p-6">
+      <div className="mt-10 rounded-2xl border border-oxblood/25 bg-paper p-6">
         <h3 className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood">
           Delete account
         </h3>
@@ -111,7 +111,7 @@ export default function AccountManagement({ userId }: { userId: string }) {
           <button
             type="button"
             onClick={() => setConfirming(true)}
-            className="mt-5 rounded-sm border border-oxblood/40 px-6 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood/80 transition-colors hover:border-oxblood hover:bg-oxblood hover:text-ivory"
+            className="mt-5 rounded-sm border border-oxblood/40 px-6 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood transition-colors hover:border-oxblood hover:bg-oxblood hover:text-ivory"
           >
             Delete my account
           </button>

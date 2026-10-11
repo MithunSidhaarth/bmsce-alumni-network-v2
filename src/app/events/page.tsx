@@ -1,3 +1,4 @@
+import { dayDate } from "@/lib/format";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
@@ -14,7 +15,7 @@ import type { EventRow, SocialPost } from "@/lib/types";
 export const metadata: Metadata = {
   title: "Events: BMSCE Alumni Network",
   description:
-    "Upcoming BMS alumni events and highlights from our community on Instagram.",
+    "Upcoming BMSCE alumni events and highlights from our community on Instagram.",
 };
 
 export const dynamic = "force-dynamic";
@@ -110,13 +111,13 @@ export default async function EventsPage() {
               <Eyebrow>Events</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
-                Where the network gathers.
+              <h1 className="slash mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
+                Where the Network gathers.
               </h1>
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">
-                Reunions, meetups, and moments from the BMS alumni community.
+                Reunions, meetups, and moments from the BMSCE alumni community.
               </p>
             </Reveal>
           </div>
@@ -129,7 +130,7 @@ export default async function EventsPage() {
               {EVENT_STATS.map((stat) => (
                 <div
                   key={stat.label}
-                  className="bg-maroon px-6 py-8 text-center md:py-10"
+                  className="bg-brand-ink px-6 py-8 text-center md:py-10"
                 >
                   <p className="font-display text-4xl text-ivory md:text-5xl">
                     {stat.value}
@@ -151,7 +152,7 @@ export default async function EventsPage() {
                 <h2 className="font-display text-3xl leading-[1.05] text-ink md:text-4xl">
                   Upcoming events
                 </h2>
-                <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/45">
+                <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
                   {upcoming.length} scheduled
                 </span>
               </div>
@@ -163,7 +164,7 @@ export default async function EventsPage() {
                   <p className="font-display text-xl italic text-ink">
                     No upcoming events just yet.
                   </p>
-                  <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/65">
+                  <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-ink/70">
                     Reunions and meetups will be posted here as they&rsquo;re
                     announced. Check back soon.
                   </p>
@@ -203,19 +204,19 @@ export default async function EventsPage() {
             </Reveal>
             <Reveal delay={80}>
               <h2 className="mt-6 max-w-2xl font-display text-3xl leading-[1.05] text-ink md:text-4xl">
-                Highlights &amp; moments.
+                Highlights and moments.
               </h2>
             </Reveal>
             <Reveal delay={140}>
               <p className="mt-5 max-w-xl font-sans text-base leading-relaxed text-ink/70">
                 Past moments from{" "}
                 <a
-                  href="https://www.instagram.com/bmsce_alumni/"
+                  href="https://www.instagram.com/bmscealumni/"
                   target="_blank"
                   rel="noreferrer"
                   className="text-oxblood underline decoration-accent underline-offset-2 hover:text-maroon"
                 >
-                  @bmsce_alumni
+                  @bmscealumni
                 </a>
                 . These are past posts for memory&rsquo;s sake, not upcoming
                 events. Tap any card to view the original on Instagram.
@@ -251,17 +252,12 @@ function EventCard({
   const date = new Date(event.event_date);
   const dateLabel = isNaN(date.getTime())
     ? ""
-    : date.toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
+    : dayDate(event.event_date);
   const rsvpHref = safeUrl(event.rsvp_url);
 
   const tabLabel = isNaN(date.getTime())
     ? "Count me in"
-    : date.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" });
+    : date.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "long" });
 
   // A poster pinned to the board: taped at the top, hung a touch crooked, with
   // a strip of tear-off tabs along the bottom for the RSVP.
@@ -269,10 +265,10 @@ function EventCard({
     <Reveal delay={Math.min(index, 6) * 70} className="h-full">
       <article className="sheet relative flex h-full flex-col pt-3" style={{ transform: `rotate(${index % 2 ? 0.7 : -0.7}deg)` }}>
         <span className={`tape ${index % 3 === 1 ? "tape-lime" : ""}`} aria-hidden="true" />
-        <div className="relative mx-3 aspect-[4/3] overflow-hidden rounded-md bg-forest">
+        <div className="relative mx-3 aspect-[4/3] overflow-hidden rounded-md bg-brand-ink">
           {event.cover_image_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={event.cover_image_url} alt="" loading="lazy" className="h-full w-full object-cover" />
+            <img src={event.cover_image_url} alt={`Poster for ${event.title}`} loading="lazy" className="h-full w-full object-cover" />
           ) : (
             <p className="flex h-full items-end break-words p-4 font-display text-[1.55rem] font-extrabold leading-[0.95] text-lime [overflow-wrap:anywhere]" aria-hidden="true">
               {event.title}
@@ -288,12 +284,12 @@ function EventCard({
         <div className="flex flex-1 flex-col px-5 pb-4 pt-4">
           <span className="label-mono text-tangerine">{dateLabel}</span>
           <h3 className="mt-2 font-display text-xl leading-tight">
-            <Link href={`/events/${event.id}`} className="hover:underline">
+            <Link href={`/events/${event.id}`} className="underline">
               {event.title}
             </Link>
           </h3>
           {event.location && (
-            <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-ink/65">
+            <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-ink/70">
               <span>{event.location}</span>
               {locationBadge && <span className="stamp text-forest">{locationBadge}</span>}
             </p>

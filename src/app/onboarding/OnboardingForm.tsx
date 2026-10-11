@@ -8,7 +8,7 @@ import type { Profile, UserType, EducationEntry } from "@/lib/types";
 import { said } from "@/lib/fail";
 
 const FIELD =
-  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 // Matches the avatars bucket's allowed_mime_types + file_size_limit exactly
 // (see migration 0023) — the bucket is the real enforcement, this is just
@@ -22,7 +22,7 @@ const AVATAR_MIME_EXT: Record<string, string> = {
 };
 const MAX_AVATAR = 5 * 1024 * 1024;
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60";
+  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
 
 export default function OnboardingForm({
   userId,
@@ -312,7 +312,7 @@ export default function OnboardingForm({
           You&rsquo;re all set
         </span>
         <p className="mx-auto mt-4 max-w-md font-display text-2xl italic leading-snug text-oxblood">
-          Verified as a BMS student.
+          Verified as a BMSCE student.
         </p>
         <p className="mx-auto mt-4 max-w-md font-sans text-sm leading-relaxed text-ink/70">
           We&rsquo;ve sent a confirmation link to{" "}
@@ -321,7 +321,7 @@ export default function OnboardingForm({
           college email. {error ? "" : ""}
         </p>
         {error && (
-          <p className="mx-auto mt-4 max-w-md rounded-xl border border-oxblood/30 bg-oxblood/5 px-4 py-3 font-sans text-sm text-oxblood">
+          <p className="mx-auto mt-4 max-w-md rounded-xl border border-oxblood/30 bg-paper px-4 py-3 font-sans text-sm text-oxblood">
             {error}
           </p>
         )}
@@ -333,7 +333,7 @@ export default function OnboardingForm({
           }}
           className="mt-8 inline-flex items-center justify-center rounded-sm bg-oxblood px-8 py-3.5 font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-ivory transition-colors hover:bg-maroon"
         >
-          Continue to the network
+          Continue to the Network
         </button>
       </div>
     );
@@ -349,7 +349,7 @@ export default function OnboardingForm({
           </span>
           <p className="mt-2 font-sans text-sm leading-relaxed text-ink/70">
             Your <span className="font-medium">{email}</span> address verifies
-            you as a current BMS student. Add a personal email below so you keep
+            you as a current BMSCE student. Add a personal email below so you keep
             access after you graduate. We&rsquo;ll use it for future sign-ins.
           </p>
         </div>
@@ -373,7 +373,7 @@ export default function OnboardingForm({
                     : "text-ink/70 hover:text-oxblood"
                 }`}
               >
-                {t === "alumni" ? "BMS Alumnus" : "Current student"}
+                {t === "alumni" ? "BMSCE alum" : "Current student"}
               </button>
             ))}
           </div>
@@ -407,11 +407,11 @@ export default function OnboardingForm({
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={photoUrl}
-              alt=""
+              alt="Your profile photo"
               className="h-full w-full object-cover"
             />
           ) : (
-            <span className="flex h-full w-full items-center justify-center font-display text-lg italic text-oxblood/60">
+            <span className="flex h-full w-full items-center justify-center font-display text-lg italic text-oxblood">
               {(fullName || "?").charAt(0)}
             </span>
           )}
@@ -430,7 +430,7 @@ export default function OnboardingForm({
             >
               {photoUrl ? "Change photo" : "Choose file"}
             </label>
-            <span className="text-xs text-ink/60">
+            <span className="text-xs text-ink/70">
               {photoFile
                 ? photoFile.name
                 : photoUrl
@@ -572,7 +572,7 @@ export default function OnboardingForm({
               clearError("passingOut");
             }}
           />
-          <p className="mt-1.5 font-sans text-xs leading-relaxed text-ink/55">
+          <p className="mt-1.5 font-sans text-xs leading-relaxed text-ink/70">
             The day your final results or convocation make you a graduate. On that date your
             membership changes from student to alumni automatically. Nothing else about your
             account changes, and an admin can correct the date if it moves.
@@ -670,8 +670,8 @@ export default function OnboardingForm({
       {/* Higher education — optional, repeatable (Master's, MBA, PhD, …). */}
       <div>
         <span className={LABEL}>Higher education</span>
-        <p className="mt-1 font-sans text-xs text-ink/50">
-          Any degrees beyond your BMS degree, optional.
+        <p className="mt-1 font-sans text-xs text-ink/70">
+          Any degrees beyond your BMSCE degree, optional.
         </p>
         {education.length > 0 && (
           <div className="mt-3 flex flex-col gap-3">
@@ -722,7 +722,7 @@ export default function OnboardingForm({
                   onClick={() =>
                     setEducation((cur) => cur.filter((_, j) => j !== i))
                   }
-                  className="rounded-sm border border-gold/50 px-3 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/60 transition-colors hover:border-oxblood hover:text-oxblood"
+                  className="rounded-sm border border-gold/50 px-3 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood"
                 >
                   Remove
                 </button>
@@ -745,7 +745,7 @@ export default function OnboardingForm({
       </div>
 
       {error && (
-        <p className="rounded-sm border border-oxblood/30 bg-oxblood/5 px-4 py-3 font-sans text-sm text-oxblood">
+        <p className="rounded-sm border border-oxblood/30 bg-paper px-4 py-3 font-sans text-sm text-oxblood">
           {error}
         </p>
       )}
@@ -753,7 +753,7 @@ export default function OnboardingForm({
       {Object.keys(errors).length > 0 && (
         <p
           role="alert"
-          className="rounded-xl border border-oxblood/30 bg-oxblood/5 px-4 py-3 font-sans text-sm text-oxblood"
+          className="rounded-xl border border-oxblood/30 bg-paper px-4 py-3 font-sans text-sm text-oxblood"
         >
           Please fill in the required fields marked above before continuing.
         </p>
@@ -768,7 +768,7 @@ export default function OnboardingForm({
           {saving ? "Saving…" : "Finish"}
         </button>
         {!isStudent && (
-          <p className="font-sans text-xs text-ink/50">
+          <p className="font-sans text-xs text-ink/70">
             You&rsquo;ll be reviewed before appearing in the directory.
           </p>
         )}

@@ -1,3 +1,4 @@
+import { longDate } from "@/lib/format";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 
@@ -15,20 +16,20 @@ export default async function AdminVolunteersPage() {
     .order("created_at", { ascending: false });
   return (
     <>
-      <h1 className="font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
+      <h1 className="slash font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
         Volunteers.
       </h1>
       <ul className="mt-10 flex max-w-2xl flex-col gap-4">
         {(data ?? []).map((v) => (
           <li key={v.id} className="rounded-xl border border-gold/30 p-5">
             <p className="font-display text-lg text-ink">{v.name}</p>
-            <p className="mt-1 font-sans text-sm text-ink/65">
+            <p className="mt-1 font-sans text-sm text-ink/70">
               <a className="text-oxblood underline" href={`mailto:${v.email}`}>
                 {v.email}
               </a>
-              {v.batch && ` · Batch ${v.batch}`}
+              {v.batch && ` · Class of ${v.batch}`}
               {v.city && ` · ${v.city}`} ·{" "}
-              {new Date(v.created_at).toLocaleDateString("en-IN")}
+              {longDate(v.created_at)}
             </p>
             {v.message && (
               <p className="mt-3 whitespace-pre-line font-sans text-sm text-ink/80">
@@ -38,7 +39,7 @@ export default async function AdminVolunteersPage() {
           </li>
         ))}
         {!data?.length && (
-          <p className="font-sans text-base text-ink/60">No sign-ups yet.</p>
+          <p className="font-sans text-base text-ink/70">No sign-ups yet.</p>
         )}
       </ul>
     </>

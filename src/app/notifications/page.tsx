@@ -66,8 +66,8 @@ export default async function NotificationsPage() {
                     <Avatar name={actor?.full_name ?? "BMSCE"} src={actor?.photo_url} size={40} />
                     <span className="min-w-0 flex-1">
                       <span className={`block text-[0.9375rem] leading-snug ${n.read_at ? "" : "font-semibold"}`}>{n.title}</span>
-                      {n.body && <span className="mt-0.5 line-clamp-2 text-sm text-ink/60">{n.body}</span>}
-                      <time dateTime={n.created_at} className="mt-1 block text-xs text-ink/50">
+                      {n.body && <span className="mt-0.5 line-clamp-2 text-sm text-ink/70">{n.body}</span>}
+                      <time dateTime={n.created_at} className="mt-1 block text-xs text-ink/70">
                         {timeAgo(n.created_at)}
                       </time>
                     </span>

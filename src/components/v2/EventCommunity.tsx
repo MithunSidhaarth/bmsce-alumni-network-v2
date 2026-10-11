@@ -58,7 +58,7 @@ export default async function EventCommunity({ eventId }: { eventId: string }) {
             <PostCard key={p.id} post={p} viewer={{ id: me.id, isAdmin }} myReaction={reactions[p.id] ?? null} />
           ))}
           {posts.length === 0 && (
-            <p className="text-sm text-ink/60">
+            <p className="text-sm text-ink/70">
               {isPast ? "Nobody has shared a photo or a story from this one yet." : "No posts about this event yet."}
             </p>
           )}

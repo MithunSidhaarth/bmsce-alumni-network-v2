@@ -8,9 +8,9 @@ import type { Profile } from "@/lib/types";
 import { said } from "@/lib/fail";
 
 const FIELD =
-  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/40 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/60";
+  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
 
 export default function BecomeMentorForm({ profile }: { profile: Profile }) {
   const router = useRouter();
@@ -77,7 +77,7 @@ export default function BecomeMentorForm({ profile }: { profile: Profile }) {
           placeholder="Product Management, Machine Learning, Fundraising"
           required
         />
-        <span className="mt-1.5 block font-sans text-xs text-ink/50">
+        <span className="mt-1.5 block font-sans text-xs text-ink/70">
           Comma-separated. Tap a suggestion to add it:
         </span>
         <span className="mt-3 flex flex-wrap gap-2">
@@ -86,7 +86,7 @@ export default function BecomeMentorForm({ profile }: { profile: Profile }) {
               key={tag}
               type="button"
               onClick={() => addTag(tag)}
-              className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood/70 transition-colors hover:border-oxblood hover:text-oxblood"
+              className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood transition-colors hover:border-oxblood hover:text-oxblood"
             >
               + {tag}
             </button>
@@ -135,14 +135,14 @@ export default function BecomeMentorForm({ profile }: { profile: Profile }) {
             onChange={(e) => setMaxMentees(e.target.value)}
             placeholder="e.g. 3 (optional)"
           />
-          <span className="mt-1.5 block font-sans text-xs text-ink/50">
+          <span className="mt-1.5 block font-sans text-xs text-ink/70">
             Leave blank for no limit. We won&rsquo;t let you accept beyond this.
           </span>
         </label>
       </div>
 
       {error && (
-        <p className="rounded-xl border border-oxblood/30 bg-oxblood/5 px-4 py-3 font-sans text-sm text-oxblood">
+        <p className="rounded-xl border border-oxblood/30 bg-paper px-4 py-3 font-sans text-sm text-oxblood">
           {error}
         </p>
       )}
@@ -160,7 +160,7 @@ export default function BecomeMentorForm({ profile }: { profile: Profile }) {
             type="button"
             onClick={withdraw}
             disabled={busy}
-            className="font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-ink/55 underline decoration-accent underline-offset-4 transition-colors hover:text-oxblood disabled:opacity-60"
+            className="font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-ink/70 underline decoration-accent underline-offset-4 transition-colors hover:text-oxblood disabled:opacity-60"
           >
             Withdraw as mentor
           </button>

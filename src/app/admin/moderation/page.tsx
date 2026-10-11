@@ -43,7 +43,7 @@ export default async function ModerationAdmin({ searchParams }: { searchParams: 
               {data!.map((c) => (
                 <tr key={c.id} className={c.is_hidden ? "opacity-60" : ""}>
                   <td className={table.td}>
-                    <Link href={`/community/${c.post_id}`} className="line-clamp-2 hover:underline">{c.body}</Link>
+                    <Link href={`/community/${c.post_id}`} className="line-clamp-2 underline">{c.body}</Link>
                     {c.is_hidden && <Pill tone="warn">Hidden</Pill>}
                   </td>
                   <td className={table.td}>{one(c.author)?.full_name ?? "Former member"}</td>
@@ -80,7 +80,7 @@ export default async function ModerationAdmin({ searchParams }: { searchParams: 
               {data!.map((p) => (
                 <tr key={p.id} className={p.is_hidden ? "opacity-60" : ""}>
                   <td className={table.td}>
-                    <Link href={`/community/${p.id}`} className="line-clamp-2 font-semibold hover:underline">{p.title ?? p.body}</Link>
+                    <Link href={`/community/${p.id}`} className="line-clamp-2 font-semibold underline">{p.title ?? p.body}</Link>
                     <span className="mt-1 flex flex-wrap gap-1">
                       <Pill>{KIND_LABEL[p.kind as PostKind]}</Pill>
                       {one(p.chapter)?.name && <Pill>{one(p.chapter)!.name}</Pill>}

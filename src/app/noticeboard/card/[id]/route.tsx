@@ -14,7 +14,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const image = card ? card.instagram?.image ?? card.photo?.image ?? card.event?.image ?? card.image ?? card.post?.media?.[0] ?? null : null;
   const text = card ? card.title ?? card.event?.title ?? card.post?.title ?? card.instagram?.caption ?? card.post?.body ?? card.photo?.caption ?? card.body ?? "" : "";
   const res = await ogCard({
-    eyebrow: card ? `The Wall · ${new Date(card.date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", year: "numeric" })}` : "The Wall",
+    eyebrow: card ? `The Wall · ${new Date(card.date).toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "long", year: "numeric" })}` : "The Wall",
     title: text.trim() || "Pinned to The Wall",
     note: "pinned to The Wall",
     image: isBlankShot(image) ? null : image,

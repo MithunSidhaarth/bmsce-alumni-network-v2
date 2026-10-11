@@ -67,6 +67,6 @@ export async function actionMember() {
 
 export async function actionAdmin() {
   const ctx = await actionMember();
-  if (!ctx.isAdmin) throw fail("Not authorized.");
+  if (!ctx.isAdmin) throw fail("Not authorised.");
   return ctx;
 }

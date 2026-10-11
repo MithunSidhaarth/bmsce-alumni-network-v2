@@ -29,7 +29,7 @@ export async function GET() {
     .maybeSingle();
   if (!p) return new Response("Finish your profile first.", { status: 404 });
 
-  const name = p.full_name || "BMS member";
+  const name = p.full_name || "BMSCE member";
   const dept = deptLine(p.branch);
   const { idLine, code } = idLines(p);
   const [photo, crestPng, fonts] = await Promise.all([ogPicture(p.photo_url, 700), readFile(join(process.cwd(), "public", "bmsce-crest.png")), ogFonts()]);

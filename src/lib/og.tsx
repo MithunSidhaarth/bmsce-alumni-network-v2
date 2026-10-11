@@ -7,9 +7,10 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import sharp from "sharp";
 
-export const OG_SIZE = { width: 1200, height: 630 };
+// 1200 x 627: the LinkedIn post size in the Brand Guidelines (p. 25).
+export const OG_SIZE = { width: 1200, height: 627 };
 
-const INK = "#131a15";
+const INK = "#212529";
 const asset = (name: string) => readFile(join(process.cwd(), "src/assets/og", name));
 
 type Face = { name: string; data: Buffer; weight: 700 | 800; style: "normal" };
@@ -60,11 +61,11 @@ export async function ogPicture(src: string | null | undefined, box = 760): Prom
 
 const clip = (s: string, n: number) => (s.length > n ? `${s.slice(0, n - 1).trimEnd()}…` : s);
 
-/** The standard card: brand, a small label, the title, a handwritten line, and a taped photo print if there is a picture. */
+/** The standard card: the logo, a small label, the title, a handwritten line, and a taped photo print if there is a picture. */
 export async function ogCard({
   eyebrow,
   title,
-  note = "Once BMS. Always BMS.",
+  note = "Once BMSCE. Always BMSCE.",
   image,
 }: {
   eyebrow?: string | null;
@@ -72,32 +73,29 @@ export async function ogCard({
   note?: string;
   image?: string | null;
 }) {
-  const [photo, crestPng, fonts] = await Promise.all([ogPicture(image, 760), readFile(join(process.cwd(), "public", "bmsce-crest.png")), ogFonts()]);
-  const crest = `data:image/png;base64,${crestPng.toString("base64")}`;
+  const [photo, logoPng, fonts] = await Promise.all([ogPicture(image, 760), readFile(join(process.cwd(), "public", "brand", "logo.png")), ogFonts()]);
+  // The logo itself, whole: never retyped or redrawn (Brand Guidelines, p. 8).
+  const logo = `data:image/png;base64,${logoPng.toString("base64")}`;
   const heading = clip(title.replace(/\s+/g, " ").trim(), photo ? 90 : 120);
   const size = heading.length > 70 ? 50 : heading.length > 40 ? 62 : 76;
 
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: "#f4eedd", color: INK, fontFamily: "Arimo", padding: 60 }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: "#f3f5f8", color: INK, fontFamily: "Arimo", padding: 60 }}>
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: photo ? 600 : 1080 }}>
           <div style={{ display: "flex", alignItems: "center" }}>
             {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
-            <img src={crest} width={70} height={70} />
-            <div style={{ display: "flex", flexDirection: "column", marginLeft: 18 }}>
-              <span style={{ fontFamily: "Bricolage", fontSize: 32, lineHeight: 1 }}>BMSCE</span>
-              <span style={{ fontFamily: "Caveat", fontSize: 30, lineHeight: 1, marginTop: 2 }}>alumni network</span>
-            </div>
+            <img src={logo} width={256} height={90} />
           </div>
 
           <div style={{ display: "flex", flexDirection: "column" }}>
             {eyebrow ? (
-              <div style={{ display: "flex", fontSize: 22, letterSpacing: 4, textTransform: "uppercase", color: "#e8501f" }}>{clip(eyebrow, 46)}</div>
+              <div style={{ display: "flex", fontSize: 22, letterSpacing: 4, textTransform: "uppercase", color: "#c8312c" }}>{clip(eyebrow, 46)}</div>
             ) : null}
             <div style={{ display: "flex", fontFamily: "Bricolage", fontSize: size, lineHeight: 1.03, letterSpacing: -2, marginTop: 14 }}>{heading}</div>
           </div>
 
-          <div style={{ display: "flex", fontFamily: "Caveat", fontSize: 44, color: "#0f3b2a" }}>{clip(note, 44)}</div>
+          <div style={{ display: "flex", fontFamily: "Caveat", fontSize: 44, color: "#016ed2" }}>{clip(note, 44)}</div>
         </div>
 
         {photo ? (
@@ -114,15 +112,15 @@ export async function ogCard({
               paddingBottom: 70,
               borderRadius: 8,
               transform: "rotate(4deg)",
-              boxShadow: "0 34px 54px rgba(19, 26, 21, 0.38)",
+              boxShadow: "0 34px 54px rgba(33, 37, 41, 0.38)",
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
             <img src={photo} width={400} height={400} style={{ objectFit: "cover" }} />
-            <div style={{ position: "absolute", top: -20, left: 150, width: 140, height: 40, background: "rgba(200, 245, 60, 0.88)", transform: "rotate(-4deg)" }} />
+            <div style={{ position: "absolute", top: -20, left: 150, width: 140, height: 40, background: "rgba(218, 221, 226, 0.92)", transform: "rotate(-4deg)" }} />
           </div>
         ) : (
-          <div style={{ position: "absolute", right: 60, bottom: 60, display: "flex", width: 150, height: 150, borderRadius: 75, background: "#c8f53c", transform: "rotate(8deg)", alignItems: "center", justifyContent: "center", fontFamily: "Caveat", fontSize: 34, textAlign: "center", lineHeight: 1 }}>
+          <div style={{ position: "absolute", right: 60, bottom: 60, display: "flex", width: 150, height: 150, borderRadius: 75, background: "#dadde2", transform: "rotate(8deg)", alignItems: "center", justifyContent: "center", fontFamily: "Caveat", fontSize: 34, textAlign: "center", lineHeight: 1 }}>
             est. 1946
           </div>
         )}

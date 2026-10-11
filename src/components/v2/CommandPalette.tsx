@@ -109,7 +109,7 @@ export default function CommandPalette() {
     >
       <div className="sheet overflow-hidden motion-ok:animate-[var(--animate-rise)]">
         <div className="flex items-center gap-3 border-b border-ink/10 px-4">
-          <Icon name="search" className="h-5 w-5 text-ink/45" />
+          <Icon name="search" className="h-5 w-5 text-ink/70" />
           <label htmlFor="palette-q" className="sr-only">
             Search people, posts, chapters and articles
           </label>
@@ -124,7 +124,7 @@ export default function CommandPalette() {
             aria-controls="palette-list"
             aria-activedescendant={rows[active] ? `palette-${active}` : undefined}
             placeholder="Search people, posts, chapters, articles"
-            className="h-14 min-w-0 flex-1 bg-transparent text-[1.05rem] placeholder:text-ink/40 focus:outline-none"
+            className="h-14 min-w-0 flex-1 bg-transparent text-[1.05rem] placeholder:text-ink/70 focus:outline-none"
             onKeyDown={(e) => {
               if (e.key === "ArrowDown" || e.key === "ArrowUp") {
                 e.preventDefault();
@@ -136,7 +136,7 @@ export default function CommandPalette() {
               }
             }}
           />
-          <kbd className="label-mono hidden rounded border border-ink/20 px-1.5 py-0.5 text-ink/50 sm:block">Esc</kbd>
+          <kbd className="label-mono hidden rounded border border-ink/20 px-1.5 py-0.5 text-ink/70 sm:block">Esc</kbd>
         </div>
 
         <ul id="palette-list" role="listbox" aria-label="Results" className="max-h-[min(60vh,26rem)] overflow-y-auto p-1.5">
@@ -145,7 +145,7 @@ export default function CommandPalette() {
             lastGroup = row.group;
             return (
               <li key={`${row.group}-${row.href}`} role="presentation">
-                {heading && <p className="label-mono px-3 pb-1 pt-3 text-ink/45">{heading}</p>}
+                {heading && <p className="label-mono px-3 pb-1 pt-3 text-ink/70">{heading}</p>}
                 <button
                   id={`palette-${i}`}
                   type="button"
@@ -157,7 +157,7 @@ export default function CommandPalette() {
                 >
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[0.9375rem] font-semibold">{row.title}</span>
-                    <span className="block truncate text-xs text-ink/60">{row.sub}</span>
+                    <span className="block truncate text-xs text-ink/70">{row.sub}</span>
                   </span>
                   {i === active && <Icon name="arrow" className="h-4 w-4" />}
                 </button>
@@ -165,12 +165,12 @@ export default function CommandPalette() {
             );
           })}
           {rows.length === 0 && (
-            <li className="px-3 py-6 text-center text-sm text-ink/60">
+            <li className="px-3 py-6 text-center text-sm text-ink/70">
               {busy ? "Searching" : "Nothing found. Press Enter to search every post."}
             </li>
           )}
         </ul>
-        <p className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-ink/10 px-4 py-2 text-xs text-ink/55" aria-live="polite">
+        <p className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-ink/10 px-4 py-2 text-xs text-ink/70" aria-live="polite">
           <span>↑ ↓ to move</span>
           <span>Enter to open</span>
           {busy && <span>Searching…</span>}

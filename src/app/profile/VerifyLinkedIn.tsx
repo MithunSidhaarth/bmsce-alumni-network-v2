@@ -29,7 +29,7 @@ export default function VerifyLinkedIn() {
         type="button"
         onClick={link}
         disabled={busy}
-        className="rounded-sm border border-[#0A66C2]/40 px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-[#0A66C2] transition-colors hover:bg-[#0A66C2]/5 disabled:opacity-60"
+        className="rounded-sm border border-oxblood/40 px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood transition-colors hover:bg-paper disabled:opacity-60"
       >
         {busy ? "Redirecting…" : "Verify with LinkedIn"}
       </button>

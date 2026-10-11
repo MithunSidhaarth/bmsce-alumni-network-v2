@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { flushPush } from "@/app/push/actions";
 import type { Me } from "@/lib/me";
 import Avatar from "./Avatar";
+import { GearMark, Logo } from "./Brand";
 import CommandPalette from "./CommandPalette";
 import Icon, { type IconName } from "./Icon";
 import Presence from "./Presence";
@@ -125,16 +126,14 @@ export default function AppChrome({ me }: { me: Me }) {
         aria-label="Main"
         className="fixed inset-y-0 left-0 z-40 hidden w-[var(--rail-slim)] flex-col border-r border-ink/10 md:flex rail:w-[var(--rail)]"
       >
-        <Link
-          href="/"
-          className="flex h-[var(--topbar)] items-center gap-2.5 px-4 rail:px-5"
-          aria-label="BMSCE Alumni Network home"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/bmsce-crest.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
-          <span className="hidden font-display text-[1.05rem] font-extrabold leading-[0.95] tracking-tight rail:block">
-            BMSCE
-            <span className="serif-accent block text-[0.95rem] font-normal">alumni network</span>
+        {/* The wide rail has room for the full logo and its clear space. The
+            narrow rail carries the gear mark; the name is in the top bar. */}
+        <Link href="/" className="flex min-h-[var(--topbar)] items-center justify-center rail:justify-start rail:pl-1.5" aria-label="BMSCE Alumni Network home">
+          <span className="hidden rail:block">
+            <Logo />
+          </span>
+          <span className="rail:hidden">
+            <GearMark name={false} />
           </span>
         </Link>
 
@@ -148,7 +147,7 @@ export default function AppChrome({ me }: { me: Me }) {
                   aria-current={active ? "page" : undefined}
                   title={item.label}
                   className={`group relative flex h-11 items-center gap-3 rounded-lg px-3 text-[0.9375rem] transition-colors ${
-                    active ? "bg-ink font-semibold text-ivory" : "font-medium text-ink/75 hover:bg-ink/[0.06] hover:text-ink"
+                    active ? "bg-blue font-semibold text-white" : "font-medium text-ink/75 hover:bg-ink/[0.06] hover:text-ink"
                   }`}
                 >
                   <span className="relative">
@@ -173,7 +172,7 @@ export default function AppChrome({ me }: { me: Me }) {
               aria-current={onWall ? "page" : undefined}
               title="The Wall"
               className={`keep-day relative flex h-12 items-center gap-3 rounded-lg border-[1.5px] border-ink px-3 font-display text-[0.95rem] font-bold transition-transform hover:-translate-y-0.5 ${
-                onWall ? "bg-ink text-lime" : "bg-lime text-ink"
+                onWall ? "bg-brand-ink text-white" : "bg-red text-white"
               }`}
             >
               <Icon name="pin" />
@@ -214,30 +213,31 @@ export default function AppChrome({ me }: { me: Me }) {
 
       {/* ---- Top bar ---- */}
       <header className="fixed left-0 right-0 top-0 z-30 flex h-[var(--topbar)] items-center gap-2 border-b border-ink/10 bg-ivory/90 px-3 backdrop-blur-md md:left-[var(--rail-slim)] md:px-6 rail:left-[var(--rail)]">
-        <Link href="/" className="flex items-center gap-2 md:hidden" aria-label="Home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/bmsce-crest.png" alt="" className="h-8 w-8 object-contain" />
+        {/* Phones: the gear mark with the full name beside it. */}
+        <Link href="/" className="flex items-center md:hidden" aria-label="BMSCE Alumni Network home">
+          <GearMark size={36} className="[&>span]:max-w-[6.5rem]" />
         </Link>
+        <span className="hidden font-display text-sm font-bold md:block rail:hidden">BMSCE Alumni Network</span>
 
-        <form action="/search" role="search" className="keep-day relative min-w-0 flex-1 md:max-w-md">
+        <form action="/search" role="search" className="keep-day relative hidden min-w-0 flex-1 md:block md:max-w-md">
           <label htmlFor="global-search" className="sr-only">
             Search people and posts
           </label>
-          <Icon name="search" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/45" />
+          <Icon name="search" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/70" />
           <input
             id="global-search"
             name="q"
             type="search"
             placeholder="Search people and posts"
             autoComplete="off"
-            className="h-10 w-full rounded-full border border-ink/15 bg-paper pl-9 pr-3 text-sm placeholder:text-ink/45 focus:border-ink focus:outline-none focus:ring-2 focus:ring-lime md:pr-20"
+            className="h-10 w-full rounded-full border border-ink/15 bg-paper pl-9 pr-3 text-sm placeholder:text-ink/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-blue/40 md:pr-20"
           />
           {me.verification_status === "verified" && (
             <button
               type="button"
               onClick={() => window.dispatchEvent(new Event("palette:open"))}
               aria-label="Open quick search"
-              className="label-mono absolute right-2 top-1/2 hidden -translate-y-1/2 rounded border border-ink/20 px-1.5 py-1 text-ink/55 hover:border-ink hover:text-ink md:block"
+              className="label-mono absolute right-2 top-1/2 hidden -translate-y-1/2 rounded border border-ink/20 px-1.5 py-1 text-ink/70 hover:border-ink hover:text-ink md:block"
             >
               Ctrl K
             </button>
@@ -245,6 +245,9 @@ export default function AppChrome({ me }: { me: Me }) {
         </form>
 
         <div className="ml-auto flex items-center gap-1">
+          <Link href="/search" aria-label="Search people and posts" className="flex h-10 w-10 items-center justify-center rounded-full text-ink/75 hover:bg-ink/[0.06] hover:text-ink md:hidden">
+            <Icon name="search" />
+          </Link>
           <ThemeToggle className="flex h-10 w-10 items-center justify-center rounded-full text-ink/75 hover:bg-ink/[0.06] hover:text-ink" />
           <Link
             href="/notifications"
@@ -273,8 +276,8 @@ export default function AppChrome({ me }: { me: Me }) {
               >
                 <div className="border-b border-ink/10 px-3 pb-2.5 pt-2">
                   <p className="truncate text-sm font-semibold">{me.full_name ?? "Member"}</p>
-                  <p className="label-mono mt-1 text-ink/55">
-                    {me.user_type === "student" ? "Student" : "Alumni"}
+                  <p className="label-mono mt-1 text-ink/70">
+                    {me.user_type === "student" ? "Student" : "Alum"}
                     {me.verification_status !== "verified" && " · pending review"}
                   </p>
                 </div>
@@ -294,13 +297,13 @@ export default function AppChrome({ me }: { me: Me }) {
                     role="menuitem"
                     className="flex items-center gap-3 rounded px-3 py-2 text-sm hover:bg-ink/[0.06]"
                   >
-                    <Icon name={icon} className="h-4 w-4 text-ink/60" />
+                    <Icon name={icon} className="h-4 w-4 text-ink/70" />
                     {label}
                   </Link>
                 ))}
                 {isAdmin && (
                   <Link href="/admin" role="menuitem" className="flex items-center gap-3 rounded px-3 py-2 text-sm hover:bg-ink/[0.06]">
-                    <Icon name="shield" className="h-4 w-4 text-ink/60" />
+                    <Icon name="shield" className="h-4 w-4 text-ink/70" />
                     Admin console
                   </Link>
                 )}
@@ -310,7 +313,7 @@ export default function AppChrome({ me }: { me: Me }) {
                   onClick={signOut}
                   className="mt-1 flex w-full items-center gap-3 rounded border-t border-ink/10 px-3 py-2.5 text-left text-sm hover:bg-ink/[0.06]"
                 >
-                  <Icon name="logout" className="h-4 w-4 text-ink/60" />
+                  <Icon name="logout" className="h-4 w-4 text-ink/70" />
                   Sign out
                 </button>
               </div>
@@ -335,7 +338,7 @@ export default function AppChrome({ me }: { me: Me }) {
               href="/noticeboard"
               aria-current={onWall ? "page" : undefined}
               className={`keep-day -mt-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border-[1.5px] border-ink shadow-[0_3px_0_var(--color-ink)] ${
-                onWall ? "bg-ink text-lime" : "bg-lime text-ink"
+                onWall ? "bg-brand-ink text-white" : "bg-red text-white"
               }`}
             >
               <Icon name="pin" />
@@ -359,7 +362,7 @@ function Tab({ item, active, badge = 0 }: { item: Item; active: boolean; badge?:
         href={item.href}
         aria-current={active ? "page" : undefined}
         className={`relative flex h-full flex-col items-center justify-center gap-1 text-[0.6875rem] font-medium ${
-          active ? "text-ink" : "text-ink/55"
+          active ? "text-ink" : "text-ink/70"
         }`}
       >
         <span className="relative">

@@ -4,13 +4,13 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "BMSCE Alumni Network",
-    short_name: "BMS Alumni",
-    description: "The alumni network of B.M.S. College of Engineering: your batch, your city chapter, messages and The Wall.",
+    short_name: "BMSCE Alumni",
+    description: "BMSCE Alumni Network: your class, your chapter, messages, events and The Wall, for graduates and students of B.M.S. College of Engineering (BMSCE).",
     start_url: "/",
     scope: "/",
     display: "standalone",
-    background_color: "#f4eedd",
-    theme_color: "#f4eedd",
+    background_color: "#f3f5f8",
+    theme_color: "#f3f5f8",
     categories: ["social", "education"],
     icons: [
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },

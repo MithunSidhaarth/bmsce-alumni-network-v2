@@ -28,7 +28,7 @@ const securityHeaders = [
 // Share cards and the ID card image read fonts, the crest and archive
 // photographs from disk when they are drawn, so those files are bundled with
 // the routes that draw them.
-const CARD_FILES = ["./src/assets/og/*", "./public/bmsce-crest.png"];
+const CARD_FILES = ["./src/assets/og/*", "./public/bmsce-crest.png", "./public/brand/logo.png"];
 
 const nextConfig: NextConfig = {
   outputFileTracingIncludes: {

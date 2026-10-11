@@ -13,10 +13,10 @@ import MentionTextarea, { mentionsIn } from "./MentionTextarea";
 import { said } from "@/lib/fail";
 
 const PROMPTS: Record<PostKind, string> = {
-  post: "What is happening in your corner of the network?",
+  post: "What is happening in your corner of the Network?",
   discussion: "Lay out the question or the idea. The more context, the better the replies.",
   announcement: "Write the announcement. It will also be pinned to The Wall.",
-  achievement: "A new role, a launch, a paper, a marathon. Tell the network.",
+  achievement: "A new role, a launch, a paper, a marathon. Tell the Network.",
   memory: "A canteen story, a fest, a professor you still quote. Add a photo if you have one.",
   ask: "What do you need? A referral, an introduction, advice, a room in a new city.",
   offer: "What can you offer? A role on your team, a referral, an hour of your time.",
@@ -63,7 +63,7 @@ export default function Composer({
   if (disabledReason) {
     return (
       <div className="sheet flex items-center gap-3 px-5 py-4 text-sm text-ink/70">
-        <Icon name="lock" className="h-5 w-5 text-ink/45" />
+        <Icon name="lock" className="h-5 w-5 text-ink/70" />
         {disabledReason}
       </div>
     );
@@ -133,7 +133,7 @@ export default function Composer({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="h-11 min-w-0 flex-1 truncate rounded-full border border-ink/15 bg-ivory px-4 text-left text-[0.9375rem] text-ink/55 transition-colors hover:border-ink/40"
+          className="h-11 min-w-0 flex-1 truncate rounded-full border border-ink/15 bg-ivory px-4 text-left text-[0.9375rem] text-ink/70 transition-colors hover:border-ink/40"
         >
           {chapterName ? `Post to ${chapterName}` : PROMPTS[defaultKind]}
         </button>
@@ -184,7 +184,7 @@ export default function Composer({
             onChange={(e) => setTitle(e.target.value)}
             maxLength={200}
             placeholder={kind === "discussion" ? "Your question or topic" : "Headline"}
-            className="mb-2 w-full border-0 border-b border-ink/15 bg-transparent pb-2 font-display text-xl font-bold placeholder:text-ink/35 focus:border-ink focus:outline-none"
+            className="mb-2 w-full border-0 border-b border-ink/15 bg-transparent pb-2 font-display text-xl font-bold placeholder:text-ink/70 focus:border-ink focus:outline-none"
           />
         </>
       )}
@@ -201,7 +201,7 @@ export default function Composer({
         rows={4}
         maxLength={10000}
         placeholder={PROMPTS[kind]}
-        className="w-full resize-y border-0 bg-transparent text-[1rem] leading-relaxed placeholder:text-ink/40 focus:outline-none"
+        className="w-full resize-y border-0 bg-transparent text-[1rem] leading-relaxed placeholder:text-ink/70 focus:outline-none"
       />
 
       {photos.length > 0 && (
@@ -209,7 +209,7 @@ export default function Composer({
           {photos.map((p) => (
             <li key={p} className="relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p} alt="" className="h-20 w-20 rounded object-cover" />
+              <img src={p} alt="Photo to attach to your post" className="h-20 w-20 rounded object-cover" />
               <button
                 type="button"
                 onClick={() => setPhotos((all) => all.filter((x) => x !== p))}
@@ -225,7 +225,7 @@ export default function Composer({
 
       {poll && (
         <fieldset className="mt-3 rounded-md border border-ink/15 p-3">
-          <legend className="label-mono px-1 text-ink/55">Poll</legend>
+          <legend className="label-mono px-1 text-ink/70">Poll</legend>
           <div className="flex flex-col gap-2">
             {poll.map((option, i) => (
               <div key={i} className="flex items-center gap-2">
@@ -245,7 +245,7 @@ export default function Composer({
                     type="button"
                     onClick={() => setPoll((all) => (all ?? []).filter((_, n) => n !== i))}
                     aria-label={`Remove option ${i + 1}`}
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink/60 hover:bg-ink/[0.06] hover:text-ink"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink/70 hover:bg-ink/[0.06] hover:text-ink"
                   >
                     <Icon name="x" className="h-4 w-4" />
                   </button>
@@ -255,21 +255,21 @@ export default function Composer({
           </div>
           <div className="mt-2 flex items-center gap-3 text-xs">
             {poll.length < 4 && (
-              <button type="button" onClick={() => setPoll((all) => [...(all ?? []), ""])} className="font-semibold text-forest hover:underline">
+              <button type="button" onClick={() => setPoll((all) => [...(all ?? []), ""])} className="font-semibold text-forest underline">
                 Add an option
               </button>
             )}
-            <button type="button" onClick={() => setPoll(null)} className="font-semibold text-ink/60 hover:text-ink hover:underline">
+            <button type="button" onClick={() => setPoll(null)} className="font-semibold text-ink/70 hover:text-ink underline">
               Remove the poll
             </button>
-            <span className="ml-auto text-ink/50">Votes are private.</span>
+            <span className="ml-auto text-ink/70">Votes are private.</span>
           </div>
         </fieldset>
       )}
 
       {kind === "discussion" && !chapterId && (
         <fieldset className="mt-3">
-          <legend className="label-mono text-ink/55">Tag it (optional)</legend>
+          <legend className="label-mono text-ink/70">Tag it (optional)</legend>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {FORUM_TAGS.map((t) => {
               const on = tags.includes(t);

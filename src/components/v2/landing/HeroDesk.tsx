@@ -174,19 +174,19 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
         <div className="hero-pre relative z-10 motion-ok:invisible motion-ok:[animation:hero-failsafe_0s_4s_forwards]">
           <p className="hero-stamp stamp text-forest">Est. 1946 · Basavanagudi, Bengaluru</p>
           <h1
-            aria-label="Once BMS. Always BMS."
+            aria-label="Once BMSCE. Always BMSCE."
             className="mt-6 font-display text-[clamp(3.2rem,13vw,6.5rem)] font-extrabold leading-[0.86] tracking-[-0.045em] lg:text-[clamp(3.6rem,7.3vw,7.4rem)]"
           >
             <span className="-my-[0.14em] block overflow-hidden py-[0.14em]">
-              <Letters text="Once BMS." />
+              <Letters text="Once BMSCE." />
             </span>
             <span className="-my-[0.14em] block overflow-hidden py-[0.14em]">
               <Letters text="Always" className="hero-hl hl serif-accent bg-no-repeat pr-[0.08em] text-[0.96em] tracking-[-0.03em]" />
-              <Letters text=" BMS." />
+              <Letters text=" BMSCE." />
             </span>
           </h1>
           <p className="hero-fade mt-6 max-w-[34rem] text-lg leading-relaxed text-ink/75">
-            The alumni network of B.M.S. College of Engineering. Find your batch, join your city
+            The alumni network of B.M.S. College of Engineering. Find your class, join your city
             chapter, and leave something on the wall for whoever comes next.
           </p>
           <div className="hero-fade mt-7 flex flex-wrap items-center gap-3">
@@ -198,8 +198,8 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
               See The Wall
             </Link>
           </div>
-          <p className="hero-fade hand mt-7 -rotate-2 text-[1.55rem] text-forest/80" aria-hidden="true">
-            {live && !spun ? "grab the photos and spin them →" : "your batch is in here somewhere →"}
+          <p className="hero-fade hand mt-7 -rotate-2 text-[1.55rem] text-forest" aria-hidden="true">
+            {live && !spun ? "grab the photos and spin them →" : "your class is in here somewhere →"}
           </p>
         </div>
 
@@ -220,13 +220,13 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
                 <Link
                   href="/noticeboard"
                   draggable={false}
-                  aria-label="A moment from the network. Open The Wall."
+                  aria-label="A moment from the Network. Open The Wall."
                   onClick={(e) => dragged.current && e.preventDefault()}
-                  className="block rounded-print bg-white p-[4%] pb-[14%] shadow-[0_24px_40px_-18px_rgb(19_26_21/0.65)]"
+                  className="block rounded-print bg-white p-[4%] pb-[14%] shadow-[0_24px_40px_-18px_rgb(33_37_41/0.65)]"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img {...pic(p.src, "(min-width: 1024px) 15rem, 40vw")} alt="" draggable={false} loading={i < 4 ? "eager" : "lazy"} className="pointer-events-none aspect-square w-full object-cover" />
-                  <span className="label-mono absolute bottom-[4%] left-[6%] text-ink/55">{p.stamp}</span>
+                  <img {...pic(p.src, "(min-width: 1024px) 15rem, 40vw")} alt={`A photo from the Network, ${p.stamp}`} draggable={false} loading={i < 4 ? "eager" : "lazy"} className="pointer-events-none aspect-square w-full object-cover" />
+                  <span className="label-mono absolute bottom-[4%] left-[6%] text-ink/70">{p.stamp}</span>
                 </Link>
               </div>
             ))}

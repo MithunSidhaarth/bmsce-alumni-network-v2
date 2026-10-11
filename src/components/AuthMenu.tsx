@@ -74,7 +74,7 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
           href="/join"
           className="rounded-sm bg-oxblood px-5 py-3 text-center font-sans text-sm font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon"
         >
-          Join the network
+          Join the Network
         </Link>
       </div>
     );
@@ -127,7 +127,7 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-3 min-w-[200px] overflow-hidden rounded-xl border border-gold/30 bg-ivory shadow-[0_12px_32px_-14px_rgba(26,20,18,0.3)]">
+        <div className="absolute right-0 top-full mt-3 min-w-[200px] overflow-hidden rounded-xl border border-gold/30 bg-ivory shadow-[0_12px_32px_-14px_rgba(33,37,41,0.3)]">
           <div className="border-b border-gold/20 px-4 py-3">
             <p className="font-sans text-sm font-medium text-ink">
               {p?.full_name || "Your profile"}
@@ -154,7 +154,7 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
             <li>
               <button
                 onClick={signOut}
-                className="block w-full px-4 py-2.5 text-left font-sans text-[12px] font-medium uppercase tracking-[0.1em] text-oxblood/80 transition-colors hover:bg-gold/10 hover:text-oxblood"
+                className="block w-full px-4 py-2.5 text-left font-sans text-[12px] font-medium uppercase tracking-[0.1em] text-oxblood transition-colors hover:bg-gold/10 hover:text-oxblood"
               >
                 Sign out
               </button>

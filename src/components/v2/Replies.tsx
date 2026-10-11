@@ -82,17 +82,17 @@ export default function Replies({
                 <div className="rounded-[4px_14px_14px_14px] border border-ink/10 bg-paper px-4 py-3">
                   <p className="flex flex-wrap items-baseline gap-x-2 text-sm">
                     {r.author ? (
-                      <Link href={`/directory/${r.author.id}`} className="font-semibold hover:underline">
+                      <Link href={`/directory/${r.author.id}`} className="font-semibold underline">
                         {r.author.full_name ?? "Member"}
                       </Link>
                     ) : (
-                      <span className="font-semibold text-ink/60">Former member</span>
+                      <span className="font-semibold text-ink/70">Former member</span>
                     )}
-                    <span className="text-xs text-ink/50">
+                    <span className="text-xs text-ink/70">
                       {r.author?.user_type === "student"
                         ? "Student"
                         : r.author?.graduation_year
-                        ? `Batch of ${r.author.graduation_year}`
+                        ? `Class of ${r.author.graduation_year}`
                         : ""}
                     </span>
                   </p>
@@ -100,7 +100,7 @@ export default function Replies({
                     <RichText text={r.body} mentions={r.mentions} />
                   </p>
                 </div>
-                <p className="mt-1.5 flex items-center gap-4 pl-1 text-xs text-ink/55">
+                <p className="mt-1.5 flex items-center gap-4 pl-1 text-xs text-ink/70">
                   <time dateTime={r.created_at}>{timeAgo(r.created_at)}</time>
                   <button
                     type="button"
@@ -175,7 +175,7 @@ export default function Replies({
             <button type="submit" disabled={pending || !body.trim()} className="btn btn-sm">
               {pending ? "Sending" : "Reply"}
             </button>
-            <p role="status" className="text-xs text-ink/55">
+            <p role="status" className="text-xs text-ink/70">
               {note}
             </p>
             {error && (

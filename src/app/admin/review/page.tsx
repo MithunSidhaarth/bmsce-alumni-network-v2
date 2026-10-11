@@ -112,7 +112,7 @@ export default async function AdminPage({
 
   return (
     <>
-      <h1 className="font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
+      <h1 className="slash font-display text-[clamp(2rem,5vw,3rem)] leading-[1.02] tracking-tight text-ink">
         Overview.
       </h1>
       <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-ink/70">
@@ -135,7 +135,7 @@ export default async function AdminPage({
             >
               {s.value}
             </p>
-            <p className="mt-1 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/55">
+            <p className="mt-1 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70">
               {s.label}
             </p>
           </Link>
@@ -151,11 +151,11 @@ export default async function AdminPage({
             className={`-mb-px border-b-2 px-4 py-3 font-sans text-[12px] font-medium uppercase tracking-[0.12em] transition-colors ${
               active.key === t.key
                 ? "border-oxblood text-oxblood"
-                : "border-transparent text-ink/55 hover:text-oxblood"
+                : "border-transparent text-ink/70 hover:text-oxblood"
             }`}
           >
             {t.label}
-            <span className="ml-2 text-ink/40">{counts[t.key]}</span>
+            <span className="ml-2 text-ink/70">{counts[t.key]}</span>
           </Link>
         ))}
       </div>

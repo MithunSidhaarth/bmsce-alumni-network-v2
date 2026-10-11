@@ -110,12 +110,12 @@ export default async function AdminOverview({ searchParams }: { searchParams: Pr
           </dl>
           {m.blog.top.some((a) => a.views > 0) && (
             <>
-              <p className="label-mono mt-5 text-ink/55">Most read articles</p>
+              <p className="label-mono mt-5 text-ink/70">Most read articles</p>
               <ol className="mt-2 flex flex-col gap-1 text-sm">
                 {m.blog.top.filter((a) => a.views > 0).map((a) => (
                   <li key={a.slug} className="flex justify-between gap-4">
-                    <Link href={`/blog/${a.slug}`} className="truncate hover:underline">{a.title}</Link>
-                    <span className="font-mono text-ink/60">{a.views}</span>
+                    <Link href={`/blog/${a.slug}`} className="truncate underline">{a.title}</Link>
+                    <span className="font-mono text-ink/70">{a.views}</span>
                   </li>
                 ))}
               </ol>
@@ -123,9 +123,9 @@ export default async function AdminOverview({ searchParams }: { searchParams: Pr
           )}
         </Panel>
 
-        <Panel title="Chapter participation" aside={<Link href="/admin/chapters" className="text-sm font-semibold text-forest hover:underline">Manage</Link>}>
+        <Panel title="Chapter participation" aside={<Link href="/admin/chapters" className="text-sm font-semibold text-forest underline">Manage</Link>}>
           {topChapters.length === 0 ? (
-            <p className="text-sm text-ink/60">No chapter has members or posts yet.</p>
+            <p className="text-sm text-ink/70">No chapter has members or posts yet.</p>
           ) : (
             <div className={table.wrap}>
               <table className="w-full border-collapse text-left text-sm">
@@ -140,7 +140,7 @@ export default async function AdminOverview({ searchParams }: { searchParams: Pr
                 <tbody>
                   {topChapters.map((c) => (
                     <tr key={c.slug}>
-                      <td className={table.td}><Link href={`/chapters/${c.slug}`} className="font-semibold hover:underline">{c.name}</Link></td>
+                      <td className={table.td}><Link href={`/chapters/${c.slug}`} className="font-semibold underline">{c.name}</Link></td>
                       <td className={table.td}>{c.members}</td>
                       <td className={table.td}>{c.pending}</td>
                       <td className={table.td}>{c.posts}</td>
@@ -157,7 +157,7 @@ export default async function AdminOverview({ searchParams }: { searchParams: Pr
             <li className="flex flex-wrap items-center justify-between gap-2">
               <span>
                 <span className="font-semibold">Student to alumni job</span>
-                <span className="block text-xs text-ink/60">
+                <span className="block text-xs text-ink/70">
                   {m.lifecycle.last_run ? `Last run: ${timeAgo(m.lifecycle.last_run)}` : "Has not run yet"} · {m.lifecycle.graduated_in_range} graduated in {label} · {m.lifecycle.due_next_30} due in 30 days · {m.lifecycle.on_hold} on hold
                 </span>
               </span>
@@ -166,7 +166,7 @@ export default async function AdminOverview({ searchParams }: { searchParams: Pr
             <li className="flex flex-wrap items-center justify-between gap-2">
               <span>
                 <span className="font-semibold">Instagram import</span>
-                <span className="block text-xs text-ink/60">
+                <span className="block text-xs text-ink/70">
                   {m.instagram.imported} imported by API · {m.instagram.archive} from the archive · {m.instagram.open_failures} failed records ·{" "}
                   {m.instagram.last_success ? `last success ${shortDate(m.instagram.last_success)}` : "no successful sync yet"}
                 </span>
@@ -197,7 +197,7 @@ export default async function AdminOverview({ searchParams }: { searchParams: Pr
 function Row({ k, v }: { k: string; v: number | string }) {
   return (
     <div>
-      <dt className="text-xs text-ink/60">{k}</dt>
+      <dt className="text-xs text-ink/70">{k}</dt>
       <dd className="font-display text-xl font-bold">{v}</dd>
     </div>
   );

@@ -21,7 +21,7 @@ export const dynamic = "force-dynamic";
 
 function Byline({ a }: { a: ArticleCard }) {
   return (
-    <p className="label-mono text-ink/55">
+    <p className="label-mono text-ink/70">
       {a.author_name ? `${a.author_name} · ` : ""}
       {a.published_at ? longDate(a.published_at) : ""} · {a.reading_minutes} min read
     </p>
@@ -73,7 +73,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
           </nav>
           <form action="/blog" role="search" className="keep-day relative lg:ml-auto lg:w-64">
             <label htmlFor="blog-q" className="sr-only">Search articles</label>
-            <Icon name="search" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/45" />
+            <Icon name="search" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/70" />
             <input id="blog-q" name="q" defaultValue={q} placeholder="Search articles" className="field rounded-full pl-9" />
             {category && <input type="hidden" name="category" value={category} />}
           </form>
@@ -82,7 +82,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
         {articles.length === 0 && (
           <div className="mx-auto mt-16 max-w-lg text-center">
             <p className="font-serif text-3xl">{filtered ? "No articles match." : "The first issue is being written."}</p>
-            <p className="mt-3 font-serif text-lg text-ink/65">
+            <p className="mt-3 font-serif text-lg text-ink/70">
               {filtered
                 ? "Try another category or a different word."
                 : "Articles appear here as soon as the editors publish them. Subscribe below and the first one will find you."}
@@ -93,10 +93,10 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
 
         {lead && (
           <article className="mt-10 grid gap-8 border-b border-ink/15 pb-10 lg:grid-cols-[1.25fr_1fr] lg:items-center">
-            <Link href={`/blog/${lead.slug}`} className="group block overflow-hidden rounded-box bg-forest">
+            <Link href={`/blog/${lead.slug}`} className="group block overflow-hidden rounded-box bg-brand-ink">
               {lead.cover_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={lead.cover_url} alt="" className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                <img src={lead.cover_url} alt={`Cover picture for “${lead.title}”`} className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
               ) : (
                 <span className="flex aspect-[16/10] items-end p-6 font-display text-[clamp(2rem,6vw,4rem)] font-extrabold leading-[0.9] text-lime">{lead.category}</span>
               )}
@@ -104,7 +104,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
             <div>
               <p className="label-mono text-tangerine">Featured · {lead.category}</p>
               <h2 className="mt-3 font-serif text-[clamp(2rem,4.6vw,3.4rem)] font-normal leading-[1.02] tracking-[-0.025em]">
-                <TransitionLink href={`/blog/${lead.slug}`} vtName={`article-${lead.slug}`} source="article" className="hover:underline">{lead.title}</TransitionLink>
+                <TransitionLink href={`/blog/${lead.slug}`} vtName={`article-${lead.slug}`} source="article" className="underline">{lead.title}</TransitionLink>
               </h2>
               {lead.excerpt && <p className="mt-4 font-serif text-xl leading-snug text-ink/70">{lead.excerpt}</p>}
               <div className="mt-5"><Byline a={lead} /></div>
@@ -118,7 +118,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
               <article key={a.id} className={`py-8 ${i === 1 ? "md:pl-10" : ""}`}>
                 <p className="label-mono text-tangerine">{a.category}</p>
                 <h2 className="mt-2 font-serif text-[1.9rem] font-normal leading-[1.08] tracking-[-0.02em]">
-                  <TransitionLink href={`/blog/${a.slug}`} vtName={`article-${a.slug}`} source="article" className="hover:underline">{a.title}</TransitionLink>
+                  <TransitionLink href={`/blog/${a.slug}`} vtName={`article-${a.slug}`} source="article" className="underline">{a.title}</TransitionLink>
                 </h2>
                 {a.excerpt && <p className="mt-3 font-serif text-lg leading-snug text-ink/70">{a.excerpt}</p>}
                 <div className="mt-4"><Byline a={a} /></div>
@@ -135,12 +135,12 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                   {a.cover_url && (
                     <Link href={`/blog/${a.slug}`} className="mb-4 block overflow-hidden rounded-box">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={a.cover_url} alt="" loading="lazy" className="aspect-[3/2] w-full object-cover" />
+                      <img src={a.cover_url} alt={`Cover picture for “${a.title}”`} loading="lazy" className="aspect-[3/2] w-full object-cover" />
                     </Link>
                   )}
                   <p className="label-mono text-tangerine">{a.category}</p>
                   <h2 className="mt-2 font-serif text-2xl font-normal leading-[1.12] tracking-[-0.015em]">
-                    <TransitionLink href={`/blog/${a.slug}`} vtName={`article-${a.slug}`} source="article" className="hover:underline">{a.title}</TransitionLink>
+                    <TransitionLink href={`/blog/${a.slug}`} vtName={`article-${a.slug}`} source="article" className="underline">{a.title}</TransitionLink>
                   </h2>
                   {a.excerpt && <p className="mt-2 line-clamp-3 text-[0.9375rem] leading-relaxed text-ink/70">{a.excerpt}</p>}
                   <div className="mt-3"><Byline a={a} /></div>
@@ -150,7 +150,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
           </ul>
         )}
 
-        <section aria-labelledby="subscribe-title" className="mt-14 grid gap-8 rounded-box bg-forest px-6 py-10 text-ivory md:grid-cols-2 md:px-12 md:py-14">
+        <section aria-labelledby="subscribe-title" className="mt-14 grid gap-8 rounded-box bg-brand-ink px-6 py-10 text-ivory md:grid-cols-2 md:px-12 md:py-14">
           <div>
             <p className="label-mono text-lime">By email</p>
             <h2 id="subscribe-title" className="mt-3 font-serif text-[clamp(1.9rem,4vw,2.8rem)] font-normal leading-[1.02]">
@@ -167,7 +167,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
           <h2 id="archive-title" className="border-b-[1.5px] border-ink pb-2 font-display text-2xl">Newsletter archive</h2>
           <p className="mt-3 max-w-2xl text-ink/70">Earlier printed and PDF editions of the alumni newsletter, kept here for the record.</p>
           {(pdfs ?? []).length === 0 ? (
-            <p className="mt-5 text-sm text-ink/55">No past editions have been uploaded yet.</p>
+            <p className="mt-5 text-sm text-ink/70">No past editions have been uploaded yet.</p>
           ) : (
             <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {pdfs!.map((n) => {
@@ -175,7 +175,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                 return (
                   <li key={n.id} className="sheet flex items-center justify-between gap-4 px-5 py-4">
                     <span>
-                      <span className="label-mono text-ink/55">{n.year}</span>
+                      <span className="label-mono text-ink/70">{n.year}</span>
                       <span className="block font-serif text-lg">{n.title ?? `${n.year} edition`}</span>
                     </span>
                     {url && <a href={url} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">PDF</a>}

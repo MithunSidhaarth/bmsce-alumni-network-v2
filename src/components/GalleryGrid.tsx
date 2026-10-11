@@ -1,5 +1,6 @@
 "use client";
 
+import { longDate } from "@/lib/format";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
@@ -8,11 +9,7 @@ import type { GalleryPhoto } from "@/lib/types";
 import { GALLERY_PAGE_SIZE } from "@/lib/gallery";
 
 function formatPhotoDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  return longDate(iso);
 }
 
 export default function GalleryGrid({
@@ -74,7 +71,7 @@ export default function GalleryGrid({
         <p className="font-display text-xl italic text-ink">
           No photos yet.
         </p>
-        <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/65">
+        <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/70">
           Check back soon. This fills up as photos are added.
         </p>
       </div>
@@ -129,7 +126,7 @@ export default function GalleryGrid({
                     {photo.caption}
                   </p>
                 )}
-                <p className="mt-1 font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-ivory/60">
+                <p className="mt-1 font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-ivory/70">
                   {formatPhotoDate(photo.uploaded_at)}
                 </p>
               </div>
@@ -143,7 +140,7 @@ export default function GalleryGrid({
       <div ref={sentinelRef} className="h-1 w-full" aria-hidden="true" />
 
       {loadingMore && (
-        <p className="mt-6 text-center font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/45">
+        <p className="mt-6 text-center font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
           Loading more…
         </p>
       )}

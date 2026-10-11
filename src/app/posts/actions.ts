@@ -230,7 +230,7 @@ export async function searchMembers(q: string): Promise<{ id: string; name: stri
       id: p.id as string,
       name: p.full_name as string,
       photo: (p.photo_url as string | null) ?? null,
-      line: [p.user_type === "student" ? "Student" : p.graduation_year ? `Batch of ${p.graduation_year}` : "Alumni", p.branch].filter(Boolean).join(" · "),
+      line: [p.user_type === "student" ? "Student" : p.graduation_year ? `Class of ${p.graduation_year}` : "Alumni", p.branch].filter(Boolean).join(" · "),
     }));
 }
 

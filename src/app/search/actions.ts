@@ -48,7 +48,7 @@ export async function quickSearch(q: string): Promise<QuickHit[]> {
       group: "People",
       href: `/directory/${p.id}`,
       title: p.full_name ?? "Member",
-      sub: [p.user_type === "student" ? "Student" : p.graduation_year ? `Batch of ${p.graduation_year}` : "Alumni", p.branch].filter(Boolean).join(" · "),
+      sub: [p.user_type === "student" ? "Student" : p.graduation_year ? `Class of ${p.graduation_year}` : "Alumni", p.branch].filter(Boolean).join(" · "),
     })),
     ...(posts.data ?? []).map((p): QuickHit => ({
       group: "Posts",

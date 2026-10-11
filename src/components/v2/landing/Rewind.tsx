@@ -99,7 +99,7 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
             <span className="serif-accent text-[0.92em] text-ivory/70">We are going back.</span>
           </h2>
           <p className="mt-6 max-w-md text-lg text-ivory/70">
-            {total} moments from the alumni association&rsquo;s own photographs, year by year.
+            {total} moments from the Network&rsquo;s own photographs, year by year.
             {pinned ? "" : " Swipe sideways."}
           </p>
           <Icon name="arrow" className="mt-8 h-10 w-10 text-tangerine" />
@@ -110,13 +110,13 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
             {/* The year, as a huge outline behind its photographs. */}
             <p
               aria-hidden="true"
-              className="rw-year pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 select-none font-display text-[46vh] font-extrabold leading-none tracking-[-0.06em] text-transparent [-webkit-text-stroke:1.5px_rgb(244_238_221/0.2)] md:text-[62vh]"
+              className="rw-year pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 select-none font-display text-[46vh] font-extrabold leading-none tracking-[-0.06em] text-transparent [-webkit-text-stroke:1.5px_rgb(255_255_255/0.2)] md:text-[62vh]"
             >
               {y.year}
             </p>
             <div className="relative w-40 shrink-0 md:w-56">
               <h3 className="font-display text-6xl font-extrabold leading-none md:text-8xl">{y.year}</h3>
-              <p className="label-mono mt-3 text-ivory/60">{y.count} moments pinned</p>
+              <p className="label-mono mt-3 text-ivory/70">{y.count} moments pinned</p>
             </div>
             {y.photos.map((p, i) => (
               <div key={p.code} data-depth={DEPTHS[i % DEPTHS.length]} className="relative shrink-0" style={{ top: DROPS[i % DROPS.length] }}>
@@ -128,8 +128,8 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
                 >
                   <span className="tape" aria-hidden="true" />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img {...pic(p.src, "(min-width: 768px) 19vw, 52vw")} alt="" loading="lazy" decoding="async" style={{ aspectRatio: String(p.ratio) }} className="block h-auto w-full" />
-                  <span className="label-mono absolute bottom-2.5 left-3 text-ink/60">{p.stamp}</span>
+                  <img {...pic(p.src, "(min-width: 768px) 19vw, 52vw")} alt={`A photo from the Network, ${p.stamp}`} loading="lazy" decoding="async" style={{ aspectRatio: String(p.ratio) }} className="block h-auto w-full" />
+                  <span className="label-mono absolute bottom-2.5 left-3 text-ink/70">{p.stamp}</span>
                 </Link>
               </div>
             ))}

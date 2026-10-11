@@ -18,7 +18,7 @@ export function deptLine(branch: string | null | undefined): string | null {
 /** The line under the department, and what the barcode carries. */
 export function idLines(p: { id: string; usn: string | null; graduation_year: number | null; user_type: string }) {
   return {
-    idLine: p.usn ?? (p.graduation_year ? `${p.user_type === "student" ? "CLASS" : "BATCH"} OF ${p.graduation_year}` : "ALUMNI NETWORK"),
+    idLine: p.usn ?? (p.graduation_year ? `CLASS OF ${p.graduation_year}` : "ALUMNI NETWORK"),
     code: p.usn ?? `BMS-${p.id.slice(0, 8)}`,
   };
 }

@@ -12,7 +12,7 @@ import type { MentorshipRequest, Profile } from "@/lib/types";
 export const metadata: Metadata = {
   title: "Find a Mentor: BMSCE Alumni Network",
   description:
-    "Get paired with a BMS alum who has already walked the path you are on, one conversation at a time.",
+    "Get paired with a BMSCE alum who has already walked the path you are on, one conversation at a time.",
 };
 
 export const dynamic = "force-dynamic";
@@ -50,7 +50,7 @@ export default async function MentorshipPage() {
 
   const mentors: MentorCard[] = (mentorRows ?? []).map((m) => ({
     id: m.id as string,
-    name: (m.full_name as string) ?? "BMS alum",
+    name: (m.full_name as string) ?? "BMSCE alum",
     title: (m.job_title as string) ?? null,
     company: (m.company as string) ?? null,
     batch: (m.graduation_year as number) ?? null,
@@ -92,7 +92,7 @@ export default async function MentorshipPage() {
               <Eyebrow>Careers</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
+              <h1 className="slash mt-6 max-w-3xl font-display text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-tight text-ink">
                 Find a mentor.
               </h1>
             </Reveal>

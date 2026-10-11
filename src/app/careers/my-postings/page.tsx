@@ -101,7 +101,7 @@ export default async function MyPostingsPage() {
                 Post an opening
               </Link>
             </div>
-            <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
+            <h1 className="slash mt-6 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.02] tracking-tight text-ink">
               My postings.
             </h1>
 
@@ -125,11 +125,11 @@ export default async function MyPostingsPage() {
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                           <div>
                             <div className="flex flex-wrap items-center gap-2">
-                              <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood/80">
+                              <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
                                 {p.type === "job" ? "Job" : "Internship"}
                               </span>
                               {p.closed_at && (
-                                <span className="rounded-full border border-ink/25 bg-ink/5 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/55">
+                                <span className="rounded-full border border-ink/25 bg-ink/5 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/70">
                                   Removed from board
                                 </span>
                               )}
@@ -137,7 +137,7 @@ export default async function MyPostingsPage() {
                             <h3 className="mt-3 font-display text-xl text-ink">
                               {p.title}
                             </h3>
-                            <p className="mt-1 font-sans text-sm text-ink/65">
+                            <p className="mt-1 font-sans text-sm text-ink/70">
                               {p.company}
                             </p>
                           </div>
@@ -146,7 +146,7 @@ export default async function MyPostingsPage() {
                               <p className="font-display text-2xl text-oxblood">
                                 {total}
                               </p>
-                              <p className="font-sans text-[10px] uppercase tracking-[0.12em] text-ink/50">
+                              <p className="font-sans text-[10px] uppercase tracking-[0.12em] text-ink/70">
                                 {total === 1 ? "applicant" : "applicants"}
                                 {fresh > 0 ? ` · ${fresh} new` : ""}
                               </p>
@@ -193,15 +193,15 @@ export default async function MyPostingsPage() {
                         <div>
                           <Link
                             href={`/careers/openings/${a.job_id}`}
-                            className="font-display text-lg text-ink underline decoration-accent/0 underline-offset-4 hover:decoration-accent"
+                            className="font-display text-lg text-ink underline underline-offset-4 hover:decoration-accent"
                           >
                             {job?.title ?? "Opening"}
                           </Link>
-                          <p className="mt-0.5 font-sans text-sm text-ink/60">
+                          <p className="mt-0.5 font-sans text-sm text-ink/70">
                             {job?.company}
                           </p>
                         </div>
-                        <span className="rounded-lg border border-gold/40 bg-ivory/60 px-3 py-1.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/65">
+                        <span className="rounded-lg border border-gold/40 bg-ivory/60 px-3 py-1.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/70">
                           {STATUS_LABEL[a.status]}
                         </span>
                       </li>

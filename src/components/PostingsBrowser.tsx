@@ -91,7 +91,7 @@ export default function PostingsBrowser({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search role or company…"
-              className="w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-2.5 font-sans text-sm text-ink placeholder:text-ink/40 focus:border-gold focus:outline-none"
+              className="w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-2.5 font-sans text-sm text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none"
             />
           </div>
 
@@ -145,7 +145,7 @@ export default function PostingsBrowser({
       </div>
 
       <div className="mt-8 flex items-center justify-between">
-        <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/55">
+        <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
           Showing {filtered.length} of {postings.length}
         </p>
         {canPost && (
@@ -206,7 +206,7 @@ function PostingCardView({
         className="flex h-full flex-col rounded-2xl border border-gold/25 bg-ivory-dim/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-gold/60"
       >
         <div className="flex items-center justify-between">
-          <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood/80">
+          <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
             {posting.type === "job" ? "Job" : "Internship"}
           </span>
           {appliedStatus && (
@@ -220,10 +220,10 @@ function PostingCardView({
           {posting.title}
         </h3>
         <p className="mt-1 font-sans text-sm text-ink/70">{posting.company}</p>
-        <p className="mt-2 font-sans text-sm text-ink/55">{place}</p>
+        <p className="mt-2 font-sans text-sm text-ink/70">{place}</p>
 
         {posting.experience_level && (
-          <p className="mt-2 font-sans text-xs text-ink/50">
+          <p className="mt-2 font-sans text-xs text-ink/70">
             {posting.experience_level}
           </p>
         )}
@@ -237,7 +237,7 @@ function PostingCardView({
             {(posting.skills_required ?? []).slice(0, 4).map((s) => (
               <span
                 key={s}
-                className="rounded-full border border-gold/30 px-2.5 py-0.5 font-sans text-[10px] uppercase tracking-[0.1em] text-ink/60"
+                className="rounded-full border border-gold/30 px-2.5 py-0.5 font-sans text-[10px] uppercase tracking-[0.1em] text-ink/70"
               >
                 {s}
               </span>
@@ -245,8 +245,8 @@ function PostingCardView({
           </div>
         )}
 
-        <span className="mt-auto pt-5 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood/70">
-          View &amp; apply →
+        <span className="mt-auto pt-5 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood">
+          View and apply →
         </span>
       </Link>
     </Reveal>
@@ -287,7 +287,7 @@ function Empty({ title, body }: { title: string; body: string }) {
   return (
     <div className="mt-8 rounded-2xl border border-dashed border-gold/40 bg-ivory-dim/40 px-6 py-20 text-center">
       <p className="font-display text-2xl italic text-ink">{title}</p>
-      <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/65">
+      <p className="mx-auto mt-3 max-w-sm font-sans text-sm leading-relaxed text-ink/70">
         {body}
       </p>
     </div>

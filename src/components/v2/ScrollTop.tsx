@@ -56,7 +56,7 @@ export default function ScrollTop() {
     >
       <svg viewBox="0 0 56 56" className="absolute inset-0 h-full w-full -rotate-90" aria-hidden="true">
         <circle cx="28" cy="28" r={R} fill="var(--color-paper)" stroke="rgb(19 26 21 / 0.16)" strokeWidth="2.5" className="transition-[fill] duration-200 group-hover:fill-[var(--color-lime)]" />
-        <circle ref={ring} cx="28" cy="28" r={R} fill="none" stroke="var(--color-tangerine)" strokeWidth="2.5" strokeLinecap="round" strokeDasharray={LENGTH} strokeDashoffset={LENGTH} />
+        <circle ref={ring} cx="28" cy="28" r={R} fill="none" stroke="var(--color-blue)" strokeWidth="2.5" strokeLinecap="round" strokeDasharray={LENGTH} strokeDashoffset={LENGTH} />
       </svg>
       <Icon name="up" className="relative h-5 w-5 text-ink transition-transform duration-200 group-hover:-translate-y-0.5" />
       <span className="hand pointer-events-none absolute right-[calc(100%+0.6rem)] top-1/2 hidden -translate-y-1/2 whitespace-nowrap text-[1.35rem] text-forest opacity-0 transition-opacity duration-200 group-hover:opacity-100 md:block" aria-hidden="true">

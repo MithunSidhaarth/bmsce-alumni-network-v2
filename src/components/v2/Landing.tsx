@@ -56,11 +56,11 @@ const POSTCARDS = ["Bengaluru", "London", "San Francisco"]
   .map((c) => ({ name: c.name, image: c.image }));
 
 export default function Landing({ signedIn }: { signedIn: boolean }) {
-  const cta = signedIn ? { href: "/onboarding", label: "Finish your profile" } : { href: "/join", label: "Join the network" };
+  const cta = signedIn ? { href: "/onboarding", label: "Finish your profile" } : { href: "/join", label: "Join the Network" };
   const figures = [
     { value: CHAPTER_COUNT, label: "chapters", note: "City and region communities, each with its own page." },
     { value: COUNTRY_COUNT, label: "countries", note: "Where those chapters are, outside the regional ones." },
-    { value: new Date().getFullYear() - 1946, label: "years of BMS", note: "Since the college opened in Basavanagudi in 1946." },
+    { value: new Date().getFullYear() - 1946, label: "years of BMSCE", note: "Since the college opened in Basavanagudi in 1946." },
   ];
 
   return (

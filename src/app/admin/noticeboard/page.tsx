@@ -112,7 +112,7 @@ export default async function WallAdmin({ searchParams }: { searchParams: Promis
           </table>
         </div>
       )}
-      <p className="mb-7 mt-2 text-xs text-ink/55">Lower order numbers appear first. Items with the same number are sorted newest first. Imported Instagram posts cannot be edited here; hide them if needed and edit the original on Instagram.</p>
+      <p className="mb-7 mt-2 text-xs text-ink/70">Lower order numbers appear first. Items with the same number are sorted newest first. Imported Instagram posts cannot be edited here; hide them if needed and edit the original on Instagram.</p>
 
       <div className="grid gap-x-7 lg:grid-cols-2">
         <Panel title="Pin a notice">
@@ -136,18 +136,18 @@ export default async function WallAdmin({ searchParams }: { searchParams: Promis
             <hr className="rule-dashed my-2" />
             <label className="flex items-start gap-2 text-sm">
               <input type="checkbox" name="ig_auto_publish" defaultChecked={settings?.ig_auto_publish ?? true} className="mt-1 h-4 w-4" />
-              <span>Show new Instagram imports straight away<span className="block text-xs text-ink/60">Off: each new import waits under &ldquo;Waiting for review&rdquo; until an admin approves it.</span></span>
+              <span>Show new Instagram imports straight away<span className="block text-xs text-ink/70">Off: each new import waits under &ldquo;Waiting for review&rdquo; until an admin approves it.</span></span>
             </label>
             <div className="mt-2"><Submit>Save</Submit></div>
           </AdminForm>
         </Panel>
 
         <Panel title="Feature an upcoming event">
-          {(events.data ?? []).length === 0 ? <p className="text-sm text-ink/60">No upcoming events.</p> : (
+          {(events.data ?? []).length === 0 ? <p className="text-sm text-ink/70">No upcoming events.</p> : (
             <ul className="flex flex-col gap-2 text-sm">
               {events.data!.map((e) => (
                 <li key={e.id} className="flex items-center justify-between gap-3">
-                  <span className="min-w-0 truncate">{e.title} <span className="text-ink/55">· {shortDate(e.event_date)}</span></span>
+                  <span className="min-w-0 truncate">{e.title} <span className="text-ink/70">· {shortDate(e.event_date)}</span></span>
                   <AdminForm action={featureOnWall} hidden={{ source: "event", ref: e.id }}><Submit className={link}>Add</Submit></AdminForm>
                 </li>
               ))}
@@ -156,11 +156,11 @@ export default async function WallAdmin({ searchParams }: { searchParams: Promis
         </Panel>
 
         <Panel title="Feature a memory or achievement">
-          {(posts.data ?? []).length === 0 ? <p className="text-sm text-ink/60">No memories or achievements posted yet.</p> : (
+          {(posts.data ?? []).length === 0 ? <p className="text-sm text-ink/70">No memories or achievements posted yet.</p> : (
             <ul className="flex flex-col gap-2 text-sm">
               {posts.data!.map((p) => (
                 <li key={p.id} className="flex items-center justify-between gap-3">
-                  <Link href={`/community/${p.id}`} className="min-w-0 truncate hover:underline">{p.title ?? p.body}</Link>
+                  <Link href={`/community/${p.id}`} className="min-w-0 truncate underline">{p.title ?? p.body}</Link>
                   <AdminForm action={featureOnWall} hidden={{ source: "post", ref: p.id }}><Submit className={link}>Add</Submit></AdminForm>
                 </li>
               ))}
@@ -169,7 +169,7 @@ export default async function WallAdmin({ searchParams }: { searchParams: Promis
         </Panel>
 
         <Panel title="Feature a gallery photograph">
-          {(photos.data ?? []).length === 0 ? <p className="text-sm text-ink/60">The gallery is empty.</p> : (
+          {(photos.data ?? []).length === 0 ? <p className="text-sm text-ink/70">The gallery is empty.</p> : (
             <ul className="grid grid-cols-4 gap-3">
               {photos.data!.map((p) => (
                 <li key={p.id}>

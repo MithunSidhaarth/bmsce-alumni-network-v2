@@ -8,7 +8,7 @@ import Reveal from "@/components/Reveal";
 export const metadata: Metadata = {
   title: "Press: BMSCE Alumni Network",
   description:
-    "Press and media enquiries for BMS College of Engineering and its alumni network.",
+    "Press and media enquiries for BMSCE Alumni Network, the alumni network of B.M.S. College of Engineering (BMSCE).",
 };
 
 export default function PressPage() {
@@ -22,8 +22,8 @@ export default function PressPage() {
               <Eyebrow>Press</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-[1.02] tracking-tight text-ink">
-                Press &amp; media.
+              <h1 className="slash mt-6 font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-[1.02] tracking-tight text-ink">
+                Press and media.
               </h1>
             </Reveal>
             <Reveal delay={160}>
@@ -44,7 +44,7 @@ export default function PressPage() {
 
                 <dl className="mt-6 flex flex-col gap-5">
                   <div>
-                    <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/50">
+                    <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                       Email
                     </dt>
                     <dd className="mt-1.5">
@@ -57,7 +57,7 @@ export default function PressPage() {
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/50">
+                    <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                       Phone
                     </dt>
                     <dd className="mt-1.5">
@@ -70,12 +70,12 @@ export default function PressPage() {
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/50">
+                    <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
                       Address
                     </dt>
                     <dd className="mt-1.5">
                       <address className="not-italic font-sans text-base leading-relaxed text-ink/75">
-                        BMS College of Engineering
+                        B.M.S. College of Engineering
                         <br />
                         P.O. Box No.: 1908, Bull Temple Road,
                         <br />

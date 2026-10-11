@@ -92,11 +92,11 @@ export default function DirectoryControls({
             className={`-mb-px border-b-2 px-5 py-3 font-sans text-[13px] font-medium uppercase tracking-[0.12em] transition-colors ${
               tab === t.key
                 ? "border-oxblood text-oxblood"
-                : "border-transparent text-ink/50 hover:text-oxblood"
+                : "border-transparent text-ink/70 hover:text-oxblood"
             }`}
           >
             {t.label}
-            <span className="ml-2 text-ink/35">{t.count}</span>
+            <span className="ml-2 text-ink/70">{t.count}</span>
           </button>
         ))}
       </div>
@@ -116,16 +116,16 @@ export default function DirectoryControls({
               placeholder={
                 isStudents ? "Search by name…" : "Search by name or company…"
               }
-              className="w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-2.5 font-sans text-sm text-ink placeholder:text-ink/40 focus:border-gold focus:outline-none"
+              className="w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-2.5 font-sans text-sm text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:flex-1 lg:grid-cols-7">
             <Select
-              label={isStudents ? "Class" : "Batch"}
+              label="Class"
               value={cur("year")}
               onChange={(v) => navigate({ year: v === "all" ? null : v })}
-              allLabel={isStudents ? "All years" : "All batches"}
+              allLabel={isStudents ? "All years" : "All classes"}
               options={facets.years.map((y) => ({
                 value: String(y),
                 label: String(y),
@@ -172,7 +172,7 @@ export default function DirectoryControls({
               onChange={(v) => navigate({ sort: v === "all" ? null : v })}
               allLabel="Name (A–Z)"
               options={[
-                { value: "batch", label: "Batch (newest)" },
+                { value: "batch", label: "Class (newest)" },
                 { value: "industry", label: "Industry" },
                 { value: "role", label: "Job role" },
               ]}
@@ -273,7 +273,7 @@ export function Pagination({
       >
         Previous
       </button>
-      <span className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-ink/60">
+      <span className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-ink/70">
         Page {page} of {totalPages}
       </span>
       <button

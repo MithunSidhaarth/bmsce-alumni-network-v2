@@ -45,7 +45,7 @@ export default async function ChaptersAdmin({ searchParams }: { searchParams: Pr
       {chapters.length === 0 && (
         <Panel title="Start with the existing chapter list">
           <p className="text-sm text-ink/70">
-            The site ships with the network&rsquo;s current list of chapters and its Instagram archive. Load them once to fill the
+            The site ships with the Network&rsquo;s current list of chapters and its Instagram archive. Load them once to fill the
             Chapters page and The Wall. You can edit or archive anything afterwards.
           </p>
           <AdminForm action={importStarterContent} className="mt-4">
@@ -55,7 +55,7 @@ export default async function ChaptersAdmin({ searchParams }: { searchParams: Pr
       )}
 
       {showForm && (
-        <Panel title={editing ? `Edit ${editing.name}` : "New chapter"} aside={<Link href="/admin/chapters" className="text-sm font-semibold text-forest hover:underline">Close</Link>}>
+        <Panel title={editing ? `Edit ${editing.name}` : "New chapter"} aside={<Link href="/admin/chapters" className="text-sm font-semibold text-forest underline">Close</Link>}>
           <AdminForm action={saveChapter} hidden={{ id: editing?.id }} className="grid gap-3 sm:grid-cols-2">
             <label><span className="field-label">Name</span><input name="name" defaultValue={editing?.name ?? ""} className="field" required /></label>
             <label><span className="field-label">Address (after /chapters/)</span><input name="slug" defaultValue={editing?.slug ?? ""} className="field" placeholder="made from the name if empty" /></label>
@@ -96,7 +96,7 @@ export default async function ChaptersAdmin({ searchParams }: { searchParams: Pr
                     </li>
                   );
                 })}
-                {(members ?? []).length === 0 && <li className="text-ink/60">No members yet.</li>}
+                {(members ?? []).length === 0 && <li className="text-ink/70">No members yet.</li>}
               </ul>
               <form action="/admin/chapters" className="mt-4 flex flex-wrap items-end gap-2">
                 <input type="hidden" name="edit" value={editing.id} />
@@ -107,13 +107,13 @@ export default async function ChaptersAdmin({ searchParams }: { searchParams: Pr
                 <ul className="mt-3 flex flex-col gap-2 text-sm">
                   {(found ?? []).map((p) => (
                     <li key={p.id} className="flex flex-wrap items-center gap-3">
-                      <span className="min-w-[10rem]">{p.full_name} {p.graduation_year ? <span className="text-ink/55">· {p.graduation_year}</span> : null}</span>
+                      <span className="min-w-[10rem]">{p.full_name} {p.graduation_year ? <span className="text-ink/70">· {p.graduation_year}</span> : null}</span>
                       <AdminForm action={setChapterLead} hidden={{ chapter_id: editing.id, profile_id: p.id, role: "lead" }}>
                         <Submit className="text-xs font-semibold text-forest underline">Make lead</Submit>
                       </AdminForm>
                     </li>
                   ))}
-                  {(found ?? []).length === 0 && <li className="text-ink/60">No verified member matches that name.</li>}
+                  {(found ?? []).length === 0 && <li className="text-ink/70">No verified member matches that name.</li>}
                 </ul>
               )}
             </>
@@ -130,16 +130,16 @@ export default async function ChaptersAdmin({ searchParams }: { searchParams: Pr
             <tbody>
               {chapters.map((c) => (
                 <tr key={c.id} className={c.status === "archived" ? "opacity-60" : ""}>
-                  <td className={table.td}><Link href={`/chapters/${c.slug}`} className="font-semibold hover:underline">{c.name}</Link></td>
+                  <td className={table.td}><Link href={`/chapters/${c.slug}`} className="font-semibold underline">{c.name}</Link></td>
                   <td className={table.td}>{[c.city, c.country].filter(Boolean).join(", ") || c.region}</td>
                   <td className={table.td}>{n[c.id] ?? 0}</td>
                   <td className={table.td}>{c.join_policy === "open" ? "Open" : "By request"}</td>
                   <td className={table.td}>{c.status === "active" ? <Pill tone="good">Active</Pill> : <Pill>Archived</Pill>}</td>
                   <td className={table.td}>
                     <div className="flex flex-wrap items-center gap-3 text-xs font-semibold">
-                      <Link href={`/admin/chapters?edit=${c.id}`} className="text-forest hover:underline">Edit</Link>
+                      <Link href={`/admin/chapters?edit=${c.id}`} className="text-forest underline">Edit</Link>
                       <AdminForm action={setChapterArchived} hidden={{ id: c.id, archived: c.status === "active" ? "1" : "0" }}>
-                        <Submit className="text-xs font-semibold text-ink/60 underline hover:text-ink" confirm={c.status === "active" ? `Archive ${c.name}? Members will no longer see it. Nothing is deleted.` : undefined}>
+                        <Submit className="text-xs font-semibold text-ink/70 underline hover:text-ink" confirm={c.status === "active" ? `Archive ${c.name}? Members will no longer see it. Nothing is deleted.` : undefined}>
                           {c.status === "active" ? "Archive" : "Restore"}
                         </Submit>
                       </AdminForm>

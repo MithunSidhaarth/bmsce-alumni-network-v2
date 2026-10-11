@@ -21,7 +21,7 @@ const FILTERS: { key: string; label: string }[] = [
   { key: "achievement", label: "Achievements" },
   { key: "memory", label: "Memories" },
   { key: "discussion", label: "Discussions" },
-  { key: "asks", label: "Asks & offers" },
+  { key: "asks", label: "Asks and offers" },
 ];
 
 const PAGE = 15;
@@ -148,7 +148,7 @@ export default async function HomeFeed({
       <div className="min-w-0">
         <header className="mb-6 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="label-mono text-ink/55">{stampDate(now)} · Bengaluru time</p>
+            <p className="label-mono text-ink/70">{stampDate(now)} · Bengaluru time</p>
             <h1 className="mt-2 font-display text-[clamp(1.9rem,5vw,2.9rem)] leading-[0.98]">
               {greeting()}
               {first ? <>, <span className="serif-accent hl">{first}</span></> : null}.
@@ -157,7 +157,7 @@ export default async function HomeFeed({
         </header>
 
         {!verified && (
-          <div className="stickynote mb-6 max-w-xl px-5 py-4" style={{ ["--note" as string]: "#ffd9c7" }}>
+          <div className="stickynote mb-6 max-w-xl px-5 py-4" style={{ ["--note" as string]: "#ffffff" }}>
             <p className="font-display text-lg font-bold">
               {me.verification_status === "rejected" ? "Your registration was not approved" : "Your account is waiting for review"}
             </p>
@@ -201,11 +201,11 @@ export default async function HomeFeed({
                       className="stickynote pinned block px-5 pb-4 pt-6 motion-ok:animate-[var(--animate-pin-drop)]"
                       style={{
                         ["--tilt" as string]: `${((seeded(p.id) - 0.5) * 3).toFixed(2)}deg`,
-                        ["--note" as string]: ["#c8f53c", "#ffd9c7", "#e2dbff"][i % 3],
+                        ["--note" as string]: ["#dadde2", "#ffffff", "#dadde2"][i % 3],
                       }}
                     >
                       <span className="pin" aria-hidden="true" />
-                      <p className="label-mono text-ink/60">Pinned{chapter?.name ? ` · ${chapter.name}` : ""}</p>
+                      <p className="label-mono text-ink/70">Pinned{chapter?.name ? ` · ${chapter.name}` : ""}</p>
                       <p className="mt-2 line-clamp-3 font-display text-lg font-bold leading-snug">
                         {p.title ?? p.body}
                       </p>
@@ -229,7 +229,7 @@ export default async function HomeFeed({
               (skipFeed ? (
                 <EmptyState
                   title="You have not joined a chapter yet"
-                  body="Chapters are the city and region communities of the network. Join one and its posts show up here."
+                  body="Chapters are the city and region communities of the Network. Join one and its posts show up here."
                   action={{ href: "/chapters", label: "Find your chapter" }}
                 />
               ) : (
@@ -262,7 +262,7 @@ export default async function HomeFeed({
       <aside className="flex flex-col gap-8 lg:sticky lg:top-[calc(var(--topbar)+1.5rem)] lg:max-h-[calc(100vh-var(--topbar)-3rem)] lg:overflow-y-auto lg:pb-4 no-scrollbar">
         {nextStep && (
           <section aria-labelledby="side-profile" className="sheet px-5 pb-5 pt-4">
-            <h2 id="side-profile" className="label-mono flex items-center justify-between text-ink/60">
+            <h2 id="side-profile" className="label-mono flex items-center justify-between text-ink/70">
               Your profile
               <span className="font-mono normal-case tracking-normal text-ink">
                 {stepsDone} of {steps.length}
@@ -286,8 +286,8 @@ export default async function HomeFeed({
         )}
 
         {isStudent && profile?.passing_out_date && (
-          <section aria-labelledby="side-student" className="stickynote px-5 py-4" style={{ ["--note" as string]: "#e2dbff" }}>
-            <h2 id="side-student" className="label-mono text-ink/60">
+          <section aria-labelledby="side-student" className="stickynote px-5 py-4" style={{ ["--note" as string]: "#dadde2" }}>
+            <h2 id="side-student" className="label-mono text-ink/70">
               Student account
             </h2>
             <p className="mt-2 text-sm leading-relaxed">
@@ -302,9 +302,9 @@ export default async function HomeFeed({
 
         {suggestions.length > 0 && (
           <section aria-labelledby="side-people">
-            <h2 id="side-people" className="label-mono mb-3 flex items-center justify-between text-ink/60">
+            <h2 id="side-people" className="label-mono mb-3 flex items-center justify-between text-ink/70">
               People you may know
-              <Link href="/directory" className="normal-case tracking-normal text-forest hover:underline">
+              <Link href="/directory" className="normal-case tracking-normal text-forest underline">
                 Everyone
               </Link>
             </h2>
@@ -315,7 +315,7 @@ export default async function HomeFeed({
                     <Avatar name={s.full_name} src={s.photo_url} size={40} />
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-semibold group-hover:underline">{s.full_name}</span>
-                      <span className="block truncate text-xs text-ink/60">{s.reasons.join(" · ")}</span>
+                      <span className="block truncate text-xs text-ink/70">{s.reasons.join(" · ")}</span>
                     </span>
                   </Link>
                 </li>
@@ -344,7 +344,7 @@ export default async function HomeFeed({
                   >
                     {img ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img {...pic(img, "6rem")} alt="" loading="lazy" className="aspect-square w-full object-cover" />
+                      <img {...pic(img, "6rem")} alt="A photo pinned to The Wall" loading="lazy" className="aspect-square w-full object-cover" />
                     ) : (
                       <p className="flex aspect-square items-center p-1 text-[0.625rem] font-semibold leading-tight">
                         {(c.title ?? c.post?.title ?? c.post?.body ?? c.event?.title ?? "").slice(0, 60)}
@@ -358,14 +358,14 @@ export default async function HomeFeed({
         </section>
 
         <section aria-labelledby="side-events">
-          <h2 id="side-events" className="label-mono mb-3 flex items-center justify-between text-ink/60">
+          <h2 id="side-events" className="label-mono mb-3 flex items-center justify-between text-ink/70">
             Coming up
-            <Link href="/events" className="normal-case tracking-normal text-forest hover:underline">
+            <Link href="/events" className="normal-case tracking-normal text-forest underline">
               All events
             </Link>
           </h2>
           {(events.data ?? []).length === 0 ? (
-            <p className="text-sm text-ink/60">No events on the calendar right now.</p>
+            <p className="text-sm text-ink/70">No events on the calendar right now.</p>
           ) : (
             <ul className="flex flex-col gap-3">
               {events.data!.map((e) => (
@@ -378,16 +378,16 @@ export default async function HomeFeed({
         </section>
 
         <section aria-labelledby="side-chapters">
-          <h2 id="side-chapters" className="label-mono mb-3 flex items-center justify-between text-ink/60">
+          <h2 id="side-chapters" className="label-mono mb-3 flex items-center justify-between text-ink/70">
             Your chapters
-            <Link href="/chapters" className="normal-case tracking-normal text-forest hover:underline">
+            <Link href="/chapters" className="normal-case tracking-normal text-forest underline">
               Browse
             </Link>
           </h2>
           {myChapters.length === 0 ? (
-            <p className="text-sm text-ink/60">
+            <p className="text-sm text-ink/70">
               You are not in a chapter yet.{" "}
-              <Link href="/chapters" className="font-semibold text-forest hover:underline">
+              <Link href="/chapters" className="font-semibold text-forest underline">
                 Find your city
               </Link>
               .
@@ -408,9 +408,9 @@ export default async function HomeFeed({
 
         {(articles.data ?? []).length > 0 && (
           <section aria-labelledby="side-blog">
-            <h2 id="side-blog" className="label-mono mb-3 flex items-center justify-between text-ink/60">
+            <h2 id="side-blog" className="label-mono mb-3 flex items-center justify-between text-ink/70">
               From Blog &amp; Insights
-              <Link href="/blog" className="normal-case tracking-normal text-forest hover:underline">
+              <Link href="/blog" className="normal-case tracking-normal text-forest underline">
                 Read
               </Link>
             </h2>
@@ -420,7 +420,7 @@ export default async function HomeFeed({
                   <Link href={`/blog/${a.slug}`} className="group block py-3">
                     <p className="label-mono text-tangerine">{a.category}</p>
                     <p className="mt-1 font-serif text-[1.05rem] leading-snug group-hover:underline">{a.title}</p>
-                    <p className="mt-1 text-xs text-ink/50">{a.reading_minutes} min read</p>
+                    <p className="mt-1 text-xs text-ink/70">{a.reading_minutes} min read</p>
                   </Link>
                 </li>
               ))}
@@ -430,9 +430,9 @@ export default async function HomeFeed({
 
         {(activity.data ?? []).length > 0 && (
           <section aria-labelledby="side-activity">
-            <h2 id="side-activity" className="label-mono mb-3 flex items-center justify-between text-ink/60">
+            <h2 id="side-activity" className="label-mono mb-3 flex items-center justify-between text-ink/70">
               Recent activity
-              <Link href="/notifications" className="normal-case tracking-normal text-forest hover:underline">
+              <Link href="/notifications" className="normal-case tracking-normal text-forest underline">
                 See all
               </Link>
             </h2>
@@ -440,8 +440,8 @@ export default async function HomeFeed({
               {activity.data!.map((n) => (
                 <li key={n.id} className="flex gap-2 text-sm leading-snug">
                   <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${n.read_at ? "bg-ink/20" : "bg-tangerine"}`} />
-                  <Link href={n.link ?? "/notifications"} className="hover:underline">
-                    {n.title} <span className="text-ink/45">· {timeAgo(n.created_at)}</span>
+                  <Link href={n.link ?? "/notifications"} className="underline">
+                    {n.title} <span className="text-ink/70">· {timeAgo(n.created_at)}</span>
                   </Link>
                 </li>
               ))}

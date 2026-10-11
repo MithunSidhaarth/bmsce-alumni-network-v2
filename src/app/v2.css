@@ -6,36 +6,53 @@
 
 /* ==========================================================================
    BMSCE Alumni Network v2 design system: "The Wall".
-   A campus noticeboard and scrapbook: warm paper, ink, forest green, with
-   lime as the highlighter and electric green reserved for the board itself.
+   A campus noticeboard and scrapbook. Its colours are the brand palette
+   (Brand Guidelines, Edition 2, p. 15): Paper and white grounds, Ink text,
+   Network Blue as the lead colour, BMSCE Red for accents, Ink and Dusk
+   Purple for the board.
 
    The legacy token names below (oxblood, ivory, gold...) are kept because
    every page from v1 is written against them. Only their values change, so
    untouched pages take on the new identity too.
    ========================================================================== */
 @theme {
-  --color-oxblood: #0f3b2a; /* forest: primary buttons, dark sections */
-  --color-maroon: #1b5e41; /* forest, one step lighter: hover */
-  --color-ivory: #f4eedd; /* page paper */
-  --color-ivory-dim: #eae2cb; /* darker paper: wells, insets */
-  --color-ink: #131a15; /* green-black text */
-  --color-gold: #cdc3a5; /* paper rule: borders, dividers */
-  --color-gold-soft: #cdc3a5a0;
-  --color-accent: #e8501f; /* tangerine: eyebrows, small accents */
+  /* The brand palette (Brand Guidelines, Edition 2, p. 15), under its own names. */
+  --color-blue: #016ed2; /* Network Blue: lead colour */
+  --color-sky: #0088cc; /* Sky Blue: large type and graphics */
+  --color-red: #c8312c; /* BMSCE Red: highlights and signature */
+  --color-dusk: #2f2543; /* Dusk Purple: signature and dark accents */
+  --color-slate: #50555b; /* body text */
+  --color-mist: #7a7c7f; /* lines and icons */
+  --color-cloud: #dadde2; /* rules and borders */
+  --color-brand-ink: #212529; /* Ink for dark grounds: stays dark at night */
 
-  --color-paper: #fcf9f0; /* a clean sheet on top of the page */
-  --color-forest: #0f3b2a;
-  --color-lime: #c8f53c; /* highlighter */
-  --color-volt: #2f8f5d; /* the board: noticeboard felt, lit from the top left */
-  --color-board: #1c6b45;
-  --color-board-deep: #0e3f29;
-  --color-tangerine: #ff5a1f;
-  --color-violet: #6a4cff;
-  --color-kraft: #d9c49b;
-  --color-pin: #e23a2e;
+  /* The older role names below are what every page is written against. Each
+     now holds a palette colour: paper grounds are Paper and white, text is
+     Ink, the lead colour is Network Blue, the accent is BMSCE Red, rules are
+     Cloud. */
+  --color-oxblood: #016ed2; /* Network Blue: the lead colour. Primary blocks, links */
+  --color-maroon: #075fb0; /* Network Blue, one step deeper: hover */
+  --color-ivory: #f3f5f8; /* the page: Paper */
+  --color-ivory-dim: #ffffff; /* wells and insets: white, so Network Blue text on them stays above 4.5:1 */
+  --color-ink: #212529; /* text: Ink */
+  --color-gold: #dadde2; /* rules and borders: Cloud */
+  --color-gold-soft: #dadde2;
+  --color-accent: #016ed2; /* labels and small accents: Network Blue */
 
-  --font-display: var(--font-bricolage), "Arial Narrow", Arial, sans-serif;
-  --font-sans: var(--font-hanken), "Helvetica Neue", Arial, sans-serif;
+  --color-paper: #ffffff; /* panels on top of the page: white */
+  --color-forest: #016ed2;
+  --color-lime: #dadde2; /* quiet highlight grounds: Cloud */
+  --color-volt: #50555b; /* the board: Slate where the light falls, Ink, then Dusk Purple */
+  --color-board: #212529;
+  --color-board-deep: #2f2543;
+  --color-tangerine: #c8312c;
+  --color-violet: #2f2543;
+  --color-kraft: #dadde2;
+  --color-pin: #c8312c;
+
+  --font-display: var(--font-bricolage), var(--font-kannada), "Arial Narrow", Arial, sans-serif;
+  /* Noto Sans Kannada is only used for Kannada text (Brand Guidelines, p. 17). */
+  --font-sans: var(--font-hanken), var(--font-kannada), "Helvetica Neue", Arial, sans-serif;
   --font-serif: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --font-hand: var(--font-caveat), "Segoe Print", cursive;
   --font-mono: var(--font-dmmono), ui-monospace, "Courier New", monospace;
@@ -86,9 +103,9 @@
   --rail-slim: 4.75rem;
   --topbar: 3.75rem;
   --tabbar: 4rem;
-  --shadow-sheet: 0 1px 0 rgb(19 26 21 / 0.04), 0 2px 4px rgb(19 26 21 / 0.05),
-    0 10px 24px -12px rgb(19 26 21 / 0.22);
-  --shadow-lift: 0 2px 2px rgb(19 26 21 / 0.06), 0 18px 34px -14px rgb(19 26 21 / 0.4);
+  --shadow-sheet: 0 1px 0 rgb(33 37 41 / 0.04), 0 2px 4px rgb(33 37 41 / 0.05),
+    0 10px 24px -12px rgb(33 37 41 / 0.22);
+  --shadow-lift: 0 2px 2px rgb(33 37 41 / 0.06), 0 18px 34px -14px rgb(33 37 41 / 0.4);
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -126,8 +143,8 @@
     text-wrap: balance;
   }
   ::selection {
-    background: var(--color-lime);
-    color: #131a15;
+    background: var(--color-blue);
+    color: #ffffff;
   }
   :focus-visible {
     outline: 2px solid var(--color-ink);
@@ -179,7 +196,7 @@
     background-image: linear-gradient(
       to top,
       transparent 8%,
-      var(--hl, var(--color-lime)) 8% 62%,
+      var(--hl, rgb(0 136 204 / 0.3)) 8% 62%,
       transparent 62%
     );
     box-decoration-break: clone;
@@ -192,7 +209,7 @@
   .sheet {
     position: relative;
     background: var(--color-paper);
-    border: 1px solid rgb(19 26 21 / 0.1);
+    border: 1px solid rgb(33 37 41 / 0.1);
     border-radius: var(--radius-box);
     box-shadow: var(--shadow-sheet);
   }
@@ -204,18 +221,18 @@
     background-image: repeating-linear-gradient(
       to bottom,
       transparent 0 1.74rem,
-      rgb(15 59 42 / 0.09) 1.74rem 1.8rem
+      rgb(1 110 210 / 0.09) 1.74rem 1.8rem
     );
     background-position: 0 3.1rem;
   }
   .sheet-kraft {
     background: var(--color-kraft);
-    border-color: rgb(19 26 21 / 0.14);
+    border-color: rgb(33 37 41 / 0.14);
   }
   .stickynote {
     position: relative;
     background: var(--note, var(--color-lime));
-    box-shadow: 0 1px 1px rgb(19 26 21 / 0.1), 0 14px 18px -12px rgb(19 26 21 / 0.45);
+    box-shadow: 0 1px 1px rgb(33 37 41 / 0.1), 0 14px 18px -12px rgb(33 37 41 / 0.45);
     border-radius: 5px 5px 14px 6px / 5px 5px 26px 6px;
   }
   /* A strip of masking tape. Place inside a position:relative parent. */
@@ -226,12 +243,12 @@
     width: 5.25rem;
     height: 1.5rem;
     transform: translateX(-50%) rotate(var(--tape-tilt, -2.5deg));
-    background: rgb(232 223 190 / 0.82);
-    box-shadow: 0 1px 2px rgb(19 26 21 / 0.12);
+    background: rgb(218 221 226 / 0.86);
+    box-shadow: 0 1px 2px rgb(33 37 41 / 0.12);
     clip-path: polygon(0 12%, 3% 0, 97% 6%, 100% 20%, 98% 92%, 96% 100%, 4% 94%, 0 80%);
     pointer-events: none;
   }
-  .tape-lime { background: rgb(200 245 60 / 0.78); }
+  .tape-lime { background: rgb(0 136 204 / 0.32); }
   .tape-left { left: 18%; --tape-tilt: -9deg; }
   .tape-right { left: 82%; --tape-tilt: 8deg; }
   .pin {
@@ -242,8 +259,8 @@
     height: 1.05rem;
     border-radius: 999px;
     transform: translateX(-50%);
-    background: radial-gradient(circle at 35% 30%, #ffb3ab 0 12%, var(--pin, var(--color-pin)) 38%, #7d1911 100%);
-    box-shadow: 0 5px 5px -1px rgb(19 26 21 / 0.45), 0 1px 0 rgb(255 255 255 / 0.2) inset;
+    background: radial-gradient(circle at 35% 30%, #f3f5f8 0 12%, var(--pin, var(--color-pin)) 38%, #2f2543 100%);
+    box-shadow: 0 5px 5px -1px rgb(33 37 41 / 0.45), 0 1px 0 rgb(255 255 255 / 0.2) inset;
     pointer-events: none;
   }
   .stamp {
@@ -274,26 +291,26 @@
     font-size: 0.875rem;
     font-weight: 600;
     line-height: 1;
-    border: 1.5px solid var(--color-ink);
+    border: 1.5px solid var(--color-blue);
     border-radius: 999px;
-    background: var(--color-ink);
-    color: var(--color-ivory);
+    background: var(--color-blue);
+    color: #ffffff;
     transition: transform 0.18s var(--ease-settle), box-shadow 0.18s var(--ease-settle),
       background-color 0.18s, color 0.18s;
     cursor: pointer;
   }
-  .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 0 var(--color-ink); background: var(--color-forest); }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 0 var(--color-brand-ink); background: var(--color-blue-deep, #075fb0); }
   .btn:active { transform: translateY(1px); box-shadow: none; }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-  .btn-lime { background: var(--color-lime); color: var(--color-ink); }
-  .btn-lime:hover { background: #d6fb5c; }
-  .btn-ghost { background: transparent; color: var(--color-ink); border-color: color-mix(in oklab, var(--color-ink) 28%, transparent); }
-  .btn-ghost:hover { background: color-mix(in oklab, var(--color-ink) 8%, transparent); border-color: var(--color-ink); }
+  .btn-lime { background: #ffffff; border-color: var(--color-brand-ink); color: var(--color-brand-ink); }
+  .btn-lime:hover { background: var(--color-cloud); }
+  .btn-ghost { background: transparent; box-shadow: none; color: var(--color-ink); border-color: color-mix(in oklab, var(--color-ink) 28%, transparent); }
+  .btn-ghost:hover { background: color-mix(in oklab, var(--color-ink) 8%, transparent); border-color: var(--color-ink); box-shadow: none; }
   .btn-sm { min-height: 2.25rem; padding: 0.4rem 0.85rem; font-size: 0.8125rem; }
-  .btn-paper { background: var(--color-paper); border-color: var(--color-paper); color: var(--color-ink); }
-  .btn-paper:hover { background: #fff; box-shadow: 0 3px 0 rgb(6 36 23 / 0.6); }
+  .btn-paper { background: var(--color-paper); border-color: var(--color-paper); color: var(--color-brand-ink); }
+  .btn-paper:hover { background: var(--color-cloud); box-shadow: 0 3px 0 rgb(0 0 0 / 0.35); }
   .btn-danger { background: var(--color-pin); border-color: var(--color-pin); color: #fff; }
-  .btn-danger:hover { background: #c22d22; }
+  .btn-danger:hover { background: #a62a27; }
 
   .chip {
     display: inline-flex;
@@ -314,9 +331,9 @@
   .chip[aria-pressed="true"],
   .chip[aria-current="page"],
   .chip[data-active="true"] {
-    background: var(--color-ink);
-    border-color: var(--color-ink);
-    color: var(--color-ivory);
+    background: var(--color-blue);
+    border-color: var(--color-blue);
+    color: #ffffff;
   }
 
   .field {
@@ -327,12 +344,12 @@
     font-size: 0.9375rem;
     color: var(--color-ink);
     background: var(--color-paper);
-    border: 1px solid rgb(19 26 21 / 0.22);
+    border: 1px solid rgb(33 37 41 / 0.22);
     border-radius: var(--radius-md);
     transition: border-color 0.15s, box-shadow 0.15s;
   }
-  .field::placeholder { color: rgb(19 26 21 / 0.42); }
-  .field:focus { outline: none; border-color: var(--color-ink); box-shadow: 0 0 0 3px rgb(200 245 60 / 0.7); }
+  .field::placeholder { color: rgb(33 37 41 / 0.42); }
+  .field:focus { outline: none; border-color: var(--color-ink); box-shadow: 0 0 0 3px rgb(1 110 210 / 0.3); }
   .field-label {
     display: block;
     margin-bottom: 0.4rem;
@@ -347,8 +364,8 @@
     isolation: isolate;
     background-color: var(--color-board);
     background-image:
-      radial-gradient(120% 80% at 15% 0%, rgb(122 190 140 / 0.38), transparent 55%),
-      radial-gradient(90% 70% at 100% 100%, rgb(8 44 28 / 0.75), transparent 60%),
+      radial-gradient(120% 80% at 15% 0%, rgb(255 255 255 / 0.1), transparent 55%),
+      radial-gradient(90% 70% at 100% 100%, rgb(47 37 67 / 0.85), transparent 60%),
       linear-gradient(160deg, var(--color-volt), var(--color-board) 55%, var(--color-board-deep));
   }
   .board::before {
@@ -368,7 +385,7 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    box-shadow: inset 0 0 0 10px rgb(6 36 23 / 0.5), inset 0 0 90px rgb(4 30 19 / 0.5);
+    box-shadow: inset 0 0 0 10px rgb(0 0 0 / 0.28), inset 0 0 90px rgb(0 0 0 / 0.4);
   }
 
   /* A pinned thing on the board or the page. --tilt sets its resting angle. */
@@ -440,7 +457,7 @@
 /* Filter chips sit on the dark board: outlined in cream, filled when chosen. */
 .wall-chip {
   background: transparent;
-  border-color: rgb(244 238 221 / 0.45);
+  border-color: rgb(255 255 255 / 0.5);
   color: var(--color-ivory);
 }
 .wall-chip:hover {
@@ -616,18 +633,18 @@
 @layer base {
   html[data-theme="night"] {
     color-scheme: dark;
-    --color-ivory: #0d1511;
-    --color-ivory-dim: #18231d;
-    --color-ink: #efe8d6;
-    --color-gold: #3b4a41;
-    --color-gold-soft: #3b4a41a0;
-    --color-oxblood: #8fd6a9;
-    --color-forest: #8fd6a9;
-    --color-maroon: #a9e2bd;
-    --color-accent: #ff7a45;
+    --color-ivory: #212529;
+    --color-ivory-dim: #2f3439;
+    --color-ink: #ffffff;
+    --color-gold: #50555b;
+    --color-gold-soft: #50555b;
+    --color-oxblood: #ffffff;
+    --color-forest: #ffffff;
+    --color-maroon: #dadde2;
+    --color-accent: #dadde2;
   }
   html[data-theme="night"] body {
-    background-image: radial-gradient(70rem 42rem at 50% -8rem, rgb(255 205 130 / 0.1), transparent 70%);
+    background-image: radial-gradient(70rem 42rem at 50% -8rem, rgb(255 255 255 / 0.06), transparent 70%);
     background-attachment: fixed;
   }
   html[data-theme="night"] body::before {
@@ -648,43 +665,46 @@
   [class~="bg-white"], [class^="bg-white/"], [class*=" bg-white/"],
   [class~="bg-lime"], [class^="bg-lime/"], [class*=" bg-lime/"],
   [class~="bg-kraft"], [class^="bg-kraft/"], [class*=" bg-kraft/"],
+  [class~="bg-cloud"],
   [class^="bg-[#"], [class*=" bg-[#"]
   ) {
-    --color-ivory: #f4eedd;
-    --color-ivory-dim: #eae2cb;
-    --color-ink: #131a15;
-    --color-gold: #cdc3a5;
-    --color-gold-soft: #cdc3a5a0;
-    --color-oxblood: #0f3b2a;
-    --color-forest: #0f3b2a;
-    --color-maroon: #1b5e41;
-    --color-accent: #e8501f;
+    --color-ivory: #f3f5f8;
+    --color-ivory-dim: #ffffff;
+    --color-ink: #212529;
+    --color-gold: #dadde2;
+    --color-gold-soft: #dadde2;
+    --color-oxblood: #016ed2;
+    --color-forest: #016ed2;
+    --color-maroon: #075fb0;
+    --color-accent: #016ed2;
     color: var(--color-ink);
   }
   /* Dark things (the board, forest-green bands): daytime colours, their own light writing. */
   html[data-theme="night"] :is(
   .board,
   .keep-dark,
-  [class~="bg-forest"], [class^="bg-forest/"], [class*=" bg-forest/"],
-  [class~="bg-oxblood"], [class^="bg-oxblood/"], [class*=" bg-oxblood/"],
-  [class~="bg-maroon"], [class^="bg-maroon/"], [class*=" bg-maroon/"],
+  [class~="bg-forest"],
+  [class~="bg-oxblood"],
+  [class~="bg-maroon"],
   [class~="bg-board"], [class^="bg-board/"], [class*=" bg-board/"],
   [class~="bg-board-deep"], [class^="bg-board-deep/"], [class*=" bg-board-deep/"],
-  [class~="from-maroon"], [class~="from-oxblood"]
+  [class~="from-maroon"], [class~="from-oxblood"],
+  [class~="bg-brand-ink"], [class^="bg-brand-ink/"], [class*=" bg-brand-ink/"],
+  [class~="bg-blue"], [class~="bg-dusk"], [class~="bg-red"], [class~="bg-tangerine"], [class~="bg-pin"]
   ) {
-    --color-ivory: #f4eedd;
-    --color-ivory-dim: #eae2cb;
-    --color-ink: #131a15;
-    --color-gold: #cdc3a5;
-    --color-gold-soft: #cdc3a5a0;
-    --color-oxblood: #0f3b2a;
-    --color-forest: #0f3b2a;
-    --color-maroon: #1b5e41;
-    --color-accent: #e8501f;
+    --color-ivory: #f3f5f8;
+    --color-ivory-dim: #ffffff;
+    --color-ink: #212529;
+    --color-gold: #dadde2;
+    --color-gold-soft: #dadde2;
+    --color-oxblood: #016ed2;
+    --color-forest: #016ed2;
+    --color-maroon: #075fb0;
+    --color-accent: #016ed2;
   }
   /* A lamp-lit room: paper is a touch warmer and less glaring. */
   html[data-theme="night"] :is(.sheet, [class~="bg-paper"]) {
-    --color-paper: #f3ecd9;
+    --color-paper: #f3f5f8;
   }
 }
 
@@ -771,7 +791,7 @@
 .campus .cm-lift { transition: transform 0.28s var(--ease-pop); }
 .campus .cm-link:hover .cm-lift,
 .campus .cm-link:focus-visible .cm-lift { transform: translateY(-8px); }
-.campus .cm-link:focus-visible .cm-tag > rect:first-child { stroke: var(--color-tangerine); stroke-width: 2.6; }
+.campus .cm-link:focus-visible .cm-tag > rect:first-child { stroke: var(--color-blue); stroke-width: 2.6; }
 .campus .cm-tag { pointer-events: none; }
 .campus .cm-label { transition: transform 0.28s var(--ease-pop); }
 .campus .cm-label.is-hot { transform: translateY(-8px); }
@@ -808,7 +828,7 @@
   visibility: hidden;
   transform: translateY(1rem) scale(0.8);
   transition: opacity 0.25s, transform 0.35s var(--ease-pop), visibility 0s 0.35s, bottom 0.25s;
-  filter: drop-shadow(0 10px 14px rgb(19 26 21 / 0.28));
+  filter: drop-shadow(0 10px 14px rgb(33 37 41 / 0.28));
 }
 .scroll-top[data-show="true"] {
   opacity: 1;
@@ -822,6 +842,58 @@
 
 @layer components {
   html[data-theme="night"] .hl {
-    background-image: linear-gradient(to top, transparent 3%, var(--hl, var(--color-lime)) 3% 97%, transparent 97%);
+    background-image: linear-gradient(to top, transparent 3%, var(--hl, #dadde2) 3% 97%, transparent 97%);
   }
+}
+
+/* ==========================================================================
+   Brand Guidelines, Edition 2
+   ========================================================================== */
+/* The logo is two files, one for light grounds and one for dark; exactly one
+   is shown. "page" follows the theme. (components/v2/Brand.tsx) */
+.brand .brand-dark { display: none; }
+.brand[data-on="dark"] .brand-light,
+html[data-theme="night"] .brand[data-on="page"] .brand-light { display: none; }
+.brand[data-on="dark"] .brand-dark,
+html[data-theme="night"] .brand[data-on="page"] .brand-dark { display: block; }
+
+/* The slash (p. 19): leans down to the right, sits before a heading, as tall
+   as its capitals. One per heading. */
+.slash::before {
+  content: "";
+  display: inline-block;
+  width: 0.95em;
+  height: 0.66em;
+  margin-right: 0.3em;
+  background: currentColor;
+  clip-path: polygon(0 0, 44% 0, 100% 100%, 56% 100%);
+}
+
+/* Text links are underlined (p. 26). */
+.link {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+/* Dark grounds: accents turn white (Network Blue on Ink is 3:1, BMSCE Red 2.9:1). */
+:is(.board, .keep-dark, [class~="bg-brand-ink"], [class~="bg-dusk"]) {
+  --color-accent: #ffffff;
+  --color-tangerine: #ffffff;
+  --color-forest: #ffffff;
+  --color-oxblood: #ffffff;
+  --color-maroon: #dadde2;
+}
+/* A panel on a dark ground is light again. */
+:is(.board, .keep-dark, [class~="bg-brand-ink"], [class~="bg-dusk"]) :is(.sheet, .stickynote, .field, .keep-day, [class~="bg-paper"], [class~="bg-white"], [class~="bg-lime"], [class~="bg-ivory"]) {
+  --color-accent: #016ed2;
+  --color-tangerine: #c8312c;
+  --color-forest: #016ed2;
+  --color-oxblood: #016ed2;
+  --color-maroon: #075fb0;
+}
+html[data-theme="night"] {
+  --color-tangerine: #dadde2;
+}
+html[data-theme="night"] :is(.sheet, .stickynote, .field, .keep-day, [class~="bg-paper"], [class~="bg-white"], [class~="bg-lime"], [class~="bg-tangerine"], [class~="bg-pin"], [class~="bg-red"]) {
+  --color-tangerine: #c8312c;
 }
