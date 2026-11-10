@@ -150,9 +150,9 @@ export default function WallNotePad({ isAdmin }: { isAdmin: boolean }) {
               <button type="button" onClick={reset} disabled={pending} className="text-xs font-semibold text-ink/70 underline underline-offset-2">
                 Take it back
               </button>
-              <span className="ml-auto font-mono text-[0.6875rem] text-ink/70">{MAX - text.length}</span>
+              <span className="ml-auto font-mono text-xs text-ink/70">{MAX - text.length}</span>
             </div>
-            <p className="mt-2 text-[0.6875rem] leading-snug text-ink/70">
+            <p className="mt-2 text-xs leading-snug text-ink/70">
               {isAdmin ? "Posted under your name and pinned for everyone." : "Posted under your name. An admin approves notes before everyone sees them."}
             </p>
             {error && (

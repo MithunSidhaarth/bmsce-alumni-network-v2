@@ -16,7 +16,7 @@ export default function Eyebrow({
     <div className={`flex items-center gap-3 ${alignClass}`}>
       <span className="h-px w-8 bg-gold" aria-hidden="true" />
       <span
-        className={`font-sans text-[11px] font-medium uppercase tracking-[0.28em] ${toneClass}`}
+        className={`font-sans text-xs font-medium uppercase tracking-[0.28em] ${toneClass}`}
       >
         {children}
       </span>

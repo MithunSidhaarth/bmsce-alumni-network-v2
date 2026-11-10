@@ -167,7 +167,7 @@ export default async function MentorshipRequestsPage() {
                   <h2 className="font-display text-2xl text-ink md:text-3xl">
                     Requests to me
                   </h2>
-                  <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                  <span className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                     {acceptedCount} accepted
                     {me.max_mentees != null ? ` / ${me.max_mentees} max` : ""}
                   </span>

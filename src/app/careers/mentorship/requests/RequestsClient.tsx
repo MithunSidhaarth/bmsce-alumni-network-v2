@@ -174,7 +174,7 @@ function Contact({ person }: { person: Person }) {
   const linkedinHref = safeUrl(person.linkedin);
   return (
     <div className="mt-4 rounded-xl border border-gold/40 bg-gold/10 px-4 py-3">
-      <p className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-accent">
+      <p className="font-sans text-xs font-medium uppercase tracking-[0.14em] text-accent">
         Contact
       </p>
       <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-1 font-sans text-sm text-ink/75">
@@ -209,7 +209,7 @@ function StatusPill({ status }: { status: "accepted" | "declined" | "pending" })
       : "border-gold/40 bg-ivory/60 text-ink/70";
   return (
     <span
-      className={`shrink-0 self-start rounded-lg border px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] ${tone}`}
+      className={`shrink-0 self-start rounded-lg border px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] ${tone}`}
     >
       {label}
     </span>

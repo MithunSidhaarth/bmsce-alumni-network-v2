@@ -11,7 +11,7 @@ import { said } from "@/lib/fail";
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
+  "font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70";
 
 // ISO -> value for <input type="datetime-local"> in the viewer's local time.
 function toLocalInput(iso: string | null): string {
@@ -96,7 +96,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
       <form onSubmit={submit} className="flex flex-col gap-8">
         {/* Basics */}
         <div className="flex flex-col gap-6">
-          <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
+          <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent">
             Basics
           </p>
           <Field label="Event title" required>
@@ -166,7 +166,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
 
         {/* Details */}
         <div className="flex flex-col gap-6 border-t border-gold/25 pt-8">
-          <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
+          <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent">
             Details <span className="text-ink/70">(all optional)</span>
           </p>
           <Field label="Description">
@@ -236,7 +236,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
             </div>
           )}
           <div className="p-6">
-            <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">
+            <span className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-accent">
               {previewDate}
             </span>
             <h3 className="mt-3 font-display text-xl text-ink">

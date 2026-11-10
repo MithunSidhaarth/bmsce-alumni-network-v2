@@ -83,7 +83,7 @@ export default function Footer() {
                 <ul className="mt-2 flex flex-col">
                   {col.links.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="inline-flex min-h-11 items-center text-[0.9375rem] text-ivory/80 underline-offset-4 hover:text-lime underline">
+                      <Link href={l.href} className="inline-flex min-h-11 min-w-11 items-center text-[0.9375rem] text-ivory/80 underline-offset-4 hover:text-lime underline">
                         {l.label}
                       </Link>
                     </li>
@@ -98,13 +98,13 @@ export default function Footer() {
           <p>&copy; {new Date().getFullYear()} BMSCE Alumni Network. All rights reserved.</p>
           <p className="flex flex-wrap items-center gap-x-5">
             {SOCIALS.map((s) => (
-              <a key={s.label} href={s.href} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center hover:text-lime">
+              <a key={s.label} href={s.href} target="_blank" rel="noreferrer" className="inline-flex min-h-11 min-w-11 items-center hover:text-lime">
                 {s.label}
               </a>
             ))}
-            <Link href="/privacy" className="inline-flex min-h-11 items-center hover:text-lime">Privacy</Link>
-            <Link href="/terms" className="inline-flex min-h-11 items-center hover:text-lime">Terms</Link>
-            <ThemeToggle label className="inline-flex min-h-11 items-center gap-1.5 hover:text-lime [&>svg]:h-4 [&>svg]:w-4" />
+            <Link href="/privacy" className="inline-flex min-h-11 min-w-11 items-center hover:text-lime">Privacy</Link>
+            <Link href="/terms" className="inline-flex min-h-11 min-w-11 items-center hover:text-lime">Terms</Link>
+            <ThemeToggle label className="inline-flex min-h-11 min-w-11 items-center gap-1.5 hover:text-lime [&>svg]:h-4 [&>svg]:w-4" />
           </p>
         </div>
       </div>

@@ -141,7 +141,7 @@ function MentorCardView({
             {[...mentor.expertise, ...mentor.industries].map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood"
+                className="rounded-full border border-gold/40 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.1em] text-oxblood"
               >
                 {tag}
               </span>

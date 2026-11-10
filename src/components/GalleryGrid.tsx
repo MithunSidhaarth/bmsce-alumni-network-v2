@@ -126,7 +126,7 @@ export default function GalleryGrid({
                     {photo.caption}
                   </p>
                 )}
-                <p className="mt-1 font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-ivory/70">
+                <p className="mt-1 font-sans text-xs font-medium uppercase tracking-[0.14em] text-ivory/70">
                   {formatPhotoDate(photo.uploaded_at)}
                 </p>
               </div>
@@ -140,7 +140,7 @@ export default function GalleryGrid({
       <div ref={sentinelRef} className="h-1 w-full" aria-hidden="true" />
 
       {loadingMore && (
-        <p className="mt-6 text-center font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
+        <p className="mt-6 text-center font-sans text-xs font-medium uppercase tracking-[0.2em] text-ink/70">
           Loading more…
         </p>
       )}

@@ -92,7 +92,7 @@ export function PostCard({ post, index }: { post: SocialPost; index: number }) {
 
           {/* type badge */}
           {(isVideo || isSidecar) && (
-            <span className="absolute right-3 top-3 rounded-lg bg-ink/70 px-2 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.1em] text-ivory backdrop-blur-sm">
+            <span className="absolute right-3 top-3 rounded-lg bg-ink/70 px-2 py-1 font-sans text-xs font-medium uppercase tracking-[0.1em] text-ivory backdrop-blur-sm">
               {isVideo ? "▸ Video" : "▦ Album"}
             </span>
           )}
@@ -106,7 +106,7 @@ export function PostCard({ post, index }: { post: SocialPost; index: number }) {
             </p>
           )}
 
-          <div className="mt-auto flex items-center gap-4 pt-5 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-accent">
+          <div className="mt-auto flex items-center gap-4 pt-5 font-sans text-xs font-medium uppercase tracking-[0.14em] text-accent">
             <span>♥ {formatCount(post.likes_count)}</span>
             <span>✎ {formatCount(post.comments_count)}</span>
             {post.posted_at && (
@@ -116,7 +116,7 @@ export function PostCard({ post, index }: { post: SocialPost; index: number }) {
             )}
           </div>
 
-          <span className="mt-4 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood transition-colors group-hover:text-oxblood">
+          <span className="mt-4 font-sans text-xs font-medium uppercase tracking-[0.14em] text-oxblood transition-colors group-hover:text-oxblood">
             View on Instagram →
           </span>
         </div>

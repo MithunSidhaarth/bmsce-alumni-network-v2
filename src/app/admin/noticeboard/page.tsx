@@ -69,7 +69,7 @@ export default async function WallAdmin({ searchParams }: { searchParams: Promis
       <nav aria-label="Views" className="mb-5 flex flex-wrap gap-1.5">
         <Link href="/admin/noticeboard" data-active={show === "live"} className="chip">On the wall</Link>
         <Link href="/admin/noticeboard?show=pending" data-active={show === "pending"} className="chip">
-          Waiting for review {pendingCount.count ? <span className="rounded-full bg-tangerine px-1.5 font-mono text-[10px] text-white">{pendingCount.count}</span> : null}
+          Waiting for review {pendingCount.count ? <span className="rounded-full bg-tangerine px-1.5 font-mono text-xs text-white">{pendingCount.count}</span> : null}
         </Link>
         <Link href="/admin/noticeboard?show=hidden" data-active={show === "hidden"} className="chip">Hidden</Link>
       </nav>

@@ -65,7 +65,7 @@ export default function Nav() {
 
   const bar = (slim: boolean) => (
     <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-6 px-5 md:px-10">
-      <Link href="/" className="flex items-center" aria-label="BMSCE Alumni Network home">
+      <Link href="/" className="flex min-h-11 items-center" aria-label="BMSCE Alumni Network home">
         {slim ? (
           <GearMark />
         ) : (

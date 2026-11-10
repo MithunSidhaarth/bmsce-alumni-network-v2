@@ -392,7 +392,7 @@ export default function Thread({
                   </div>
                 </div>
                 {endsGroup && (
-                  <p className={`mt-1 flex items-center gap-2 text-[0.6875rem] text-ink/70 ${mine ? "justify-end" : "justify-start"}`}>
+                  <p className={`mt-1 flex items-center gap-2 text-xs text-ink/70 ${mine ? "justify-end" : "justify-start"}`}>
                     {m.state === "failed" ? (
                       <>
                         <span className="text-pin">Not sent.</span>

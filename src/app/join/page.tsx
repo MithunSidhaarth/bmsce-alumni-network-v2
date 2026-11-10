@@ -48,7 +48,7 @@ export default async function JoinPage({ searchParams }: Props) {
           <AuthSplit
             mobileHero={
               <>
-                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/70">
+                <p className="font-sans text-xs font-medium uppercase tracking-[0.28em] text-ivory/70">
                   New here
                 </p>
                 <h1 className="mt-4 font-display text-[2.75rem] leading-[0.98] tracking-tight">
@@ -60,18 +60,18 @@ export default async function JoinPage({ searchParams }: Props) {
                 <div className="mt-6 flex gap-8">
                   <p>
                     <span className="block font-display text-3xl text-accent"><CountUp value="12" /></span>
-                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-ivory/70">Countries</span>
+                    <span className="font-sans text-xs uppercase tracking-[0.2em] text-ivory/70">Countries</span>
                   </p>
                   <p>
                     <span className="block font-display text-3xl text-accent"><CountUp value="31" /></span>
-                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-ivory/70">Chapters</span>
+                    <span className="font-sans text-xs uppercase tracking-[0.2em] text-ivory/70">Chapters</span>
                   </p>
                 </div>
               </>
             }
             panel={
               <>
-                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/70">
+                <p className="font-sans text-xs font-medium uppercase tracking-[0.28em] text-ivory/70">
                   What you get
                 </p>
                 <ul className="mt-8 flex flex-col gap-3">
@@ -99,7 +99,7 @@ export default async function JoinPage({ searchParams }: Props) {
                   ))}
                 </ul>
                 <div className="mt-12 border-t border-ivory/15 pt-8">
-                  <p className="font-sans text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/70">
+                  <p className="font-sans text-xs font-medium uppercase tracking-[0.28em] text-ivory/70">
                     How it works
                   </p>
                   <ol className="mt-5 flex flex-col gap-2 font-sans text-sm text-ivory/80">

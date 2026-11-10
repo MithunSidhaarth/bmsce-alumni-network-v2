@@ -9,7 +9,7 @@ import { said } from "@/lib/fail";
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 transition-colors focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
+  "font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70";
 
 export default function AddSocialPost({ recent }: { recent: SocialPost[] }) {
   const [caption, setCaption] = useState("");
@@ -160,7 +160,7 @@ export default function AddSocialPost({ recent }: { recent: SocialPost[] }) {
                   type="button"
                   disabled={busy}
                   onClick={() => remove(p.id)}
-                  className="shrink-0 rounded-sm border border-gold/50 px-3 py-1.5 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood disabled:opacity-60"
+                  className="shrink-0 rounded-sm border border-gold/50 px-3 py-1.5 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood disabled:opacity-60"
                 >
                   Delete
                 </button>

@@ -125,11 +125,11 @@ export default async function MyPostingsPage() {
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                           <div>
                             <div className="flex flex-wrap items-center gap-2">
-                              <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
+                              <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.12em] text-oxblood">
                                 {p.type === "job" ? "Job" : "Internship"}
                               </span>
                               {p.closed_at && (
-                                <span className="rounded-full border border-ink/25 bg-ink/5 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/70">
+                                <span className="rounded-full border border-ink/25 bg-ink/5 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70">
                                   Removed from board
                                 </span>
                               )}
@@ -146,7 +146,7 @@ export default async function MyPostingsPage() {
                               <p className="font-display text-2xl text-oxblood">
                                 {total}
                               </p>
-                              <p className="font-sans text-[10px] uppercase tracking-[0.12em] text-ink/70">
+                              <p className="font-sans text-xs uppercase tracking-[0.12em] text-ink/70">
                                 {total === 1 ? "applicant" : "applicants"}
                                 {fresh > 0 ? ` · ${fresh} new` : ""}
                               </p>
@@ -201,7 +201,7 @@ export default async function MyPostingsPage() {
                             {job?.company}
                           </p>
                         </div>
-                        <span className="rounded-lg border border-gold/40 bg-ivory/60 px-3 py-1.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/70">
+                        <span className="rounded-lg border border-gold/40 bg-ivory/60 px-3 py-1.5 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70">
                           {STATUS_LABEL[a.status]}
                         </span>
                       </li>

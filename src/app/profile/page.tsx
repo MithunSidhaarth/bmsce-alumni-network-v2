@@ -157,7 +157,7 @@ export default async function ProfilePage() {
 
             {eduList.length > 0 && (
               <div className="mt-8 border-t border-gold/25 pt-8">
-                <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                <h2 className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                   Higher education
                 </h2>
                 <ul className="mt-3 flex flex-col gap-2">
@@ -198,7 +198,7 @@ function Row({
   const href = isLink ? safeUrl(value) : null;
   return (
     <div className={full ? "sm:col-span-2" : ""}>
-      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+      <dt className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
         {label}
       </dt>
       <dd className="mt-1.5 font-sans text-sm leading-relaxed text-ink/80">

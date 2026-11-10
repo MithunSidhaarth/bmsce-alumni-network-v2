@@ -346,7 +346,7 @@ export default async function HomeFeed({
                       // eslint-disable-next-line @next/next/no-img-element
                       <img {...pic(img, "6rem")} alt="A photo pinned to The Wall" loading="lazy" className="aspect-square w-full object-cover" />
                     ) : (
-                      <p className="flex aspect-square items-center p-1 text-[0.625rem] font-semibold leading-tight">
+                      <p className="flex aspect-square items-center p-1 text-xs font-semibold leading-tight">
                         {(c.title ?? c.post?.title ?? c.post?.body ?? c.event?.title ?? "").slice(0, 60)}
                       </p>
                     )}

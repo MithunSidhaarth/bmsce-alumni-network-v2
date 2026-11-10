@@ -83,13 +83,13 @@ export default function AboutPage() {
             <Reveal delay={300}>
               <dl className="mt-10 grid max-w-3xl gap-8 border-t border-gold/30 pt-8 md:grid-cols-2">
                 <div>
-                  <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">Our vision</dt>
+                  <dt className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent">Our vision</dt>
                   <dd className="mt-3 font-sans text-base leading-relaxed text-ink/80">
                     To help every BMSCE student and graduate realise their full potential, for themselves, the college and the world.
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">Our mission</dt>
+                  <dt className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent">Our mission</dt>
                   <dd className="mt-3 font-sans text-base leading-relaxed text-ink/80">
                     To engage alumni across the globe and open access to knowledge, talent and opportunities that benefit the whole BMSCE community.
                   </dd>
@@ -125,7 +125,7 @@ export default function AboutPage() {
               {WHAT_WE_RUN.map((item, i) => (
                 <Reveal key={item.tag} delay={160 + i * 70}>
                   <div className="rounded-2xl border border-maroon/40 bg-ivory px-6 py-8 shadow-sm md:px-8">
-                    <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
+                    <span className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent">
                       {item.tag}
                     </span>
                     <p className="mt-3 font-sans text-base leading-relaxed text-ink/80 md:text-lg">
@@ -185,7 +185,7 @@ export default function AboutPage() {
 
               <Reveal delay={160}>
                 <div className="rounded-2xl border border-maroon/40 bg-ivory p-8 shadow-sm md:p-10">
-                  <h3 className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
+                  <h3 className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent">
                     B.M.S. College of Engineering
                   </h3>
                   <address className="mt-4 not-italic font-sans text-base leading-relaxed text-ink/80">
@@ -198,26 +198,26 @@ export default function AboutPage() {
 
                   <dl className="mt-8 flex flex-col gap-5 border-t border-gold/40 pt-8">
                     <div>
-                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                      <dt className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                         Email
                       </dt>
                       <dd className="mt-1.5">
                         <a
                           href="mailto:bmscealumni@bmsce.ac.in"
-                          className="font-sans text-base text-oxblood underline decoration-accent underline-offset-4 transition-colors hover:text-maroon"
+                          className="inline-flex min-h-11 items-center font-sans text-base text-oxblood underline decoration-accent underline-offset-4 transition-colors hover:text-maroon"
                         >
                           bmscealumni@bmsce.ac.in
                         </a>
                       </dd>
                     </div>
                     <div>
-                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                      <dt className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                         Phone
                       </dt>
                       <dd className="mt-1.5">
                         <a
                           href="tel:+918660230306"
-                          className="font-sans text-base text-oxblood underline decoration-accent underline-offset-4 transition-colors hover:text-maroon"
+                          className="inline-flex min-h-11 items-center font-sans text-base text-oxblood underline decoration-accent underline-offset-4 transition-colors hover:text-maroon"
                         >
                           +91 86602 30306
                         </a>

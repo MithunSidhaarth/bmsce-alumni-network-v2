@@ -172,7 +172,7 @@ export default async function DirectoryPage({
         </div>
       ) : (
         <>
-          <p className="mt-8 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
+          <p className="mt-8 font-sans text-xs font-medium uppercase tracking-[0.2em] text-ink/70">
             {total} {noun}
             {totalPages > 1 ? ` · page ${page} of ${totalPages}` : ""}
           </p>
@@ -263,7 +263,7 @@ function DirectoryCard({ row, index }: { row: Row; index: number }) {
           </span>
         )}
         {isStudent && (
-          <span className="mt-2 w-fit rounded-full border border-gold/40 px-2.5 py-0.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-accent">
+          <span className="mt-2 w-fit rounded-full border border-gold/40 px-2.5 py-0.5 font-sans text-xs font-medium uppercase tracking-[0.12em] text-accent">
             Current student
           </span>
         )}
@@ -277,7 +277,7 @@ function DirectoryCard({ row, index }: { row: Row; index: number }) {
           <p className="mt-3 font-sans text-sm text-ink/70">{batchLine}</p>
         )}
         {row.current_city && (
-          <p className="mt-auto pt-5 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">
+          <p className="mt-auto pt-5 font-sans text-xs font-medium uppercase tracking-[0.16em] text-accent">
             {row.current_city}
           </p>
         )}

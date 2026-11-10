@@ -58,7 +58,7 @@ export default function JoinPanel({
       </div>
 
       <fieldset className="lg:mt-8">
-        <legend className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
+        <legend className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-ink/70">
           Step 1 · Who are you?
         </legend>
         <div className="mt-3 grid grid-cols-2 gap-3">
@@ -105,7 +105,7 @@ export default function JoinPanel({
       )}
 
       <div className="mt-8">
-        <p className="mb-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
+        <p className="mb-3 font-sans text-xs font-medium uppercase tracking-[0.2em] text-ink/70">
           Step 2 · Create your account
         </p>
         <LoginButtons userType={audience} next={next} mode="join" />

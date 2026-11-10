@@ -145,7 +145,7 @@ export default function PostingsBrowser({
       </div>
 
       <div className="mt-8 flex items-center justify-between">
-        <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-ink/70">
           Showing {filtered.length} of {postings.length}
         </p>
         {canPost && (
@@ -206,11 +206,11 @@ function PostingCardView({
         className="flex h-full flex-col rounded-2xl border border-gold/25 bg-ivory-dim/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-gold/60"
       >
         <div className="flex items-center justify-between">
-          <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
+          <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.12em] text-oxblood">
             {posting.type === "job" ? "Job" : "Internship"}
           </span>
           {appliedStatus && (
-            <span className="font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-accent">
+            <span className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-accent">
               {STATUS_LABEL[appliedStatus]}
             </span>
           )}
@@ -237,7 +237,7 @@ function PostingCardView({
             {(posting.skills_required ?? []).slice(0, 4).map((s) => (
               <span
                 key={s}
-                className="rounded-full border border-gold/30 px-2.5 py-0.5 font-sans text-[10px] uppercase tracking-[0.1em] text-ink/70"
+                className="rounded-full border border-gold/30 px-2.5 py-0.5 font-sans text-xs uppercase tracking-[0.1em] text-ink/70"
               >
                 {s}
               </span>
@@ -245,7 +245,7 @@ function PostingCardView({
           </div>
         )}
 
-        <span className="mt-auto pt-5 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood">
+        <span className="mt-auto pt-5 font-sans text-xs font-medium uppercase tracking-[0.14em] text-oxblood">
           View and apply →
         </span>
       </Link>

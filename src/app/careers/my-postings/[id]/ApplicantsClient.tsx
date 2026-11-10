@@ -181,12 +181,12 @@ function ApplicantCard({ row }: { row: ApplicantRow }) {
                   href={resumeHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 rounded-sm border border-gold/50 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood transition-colors hover:border-oxblood hover:bg-oxblood hover:text-ivory"
+                  className="inline-flex items-center gap-1 rounded-sm border border-gold/50 px-3 py-1 text-xs font-medium uppercase tracking-[0.1em] text-oxblood transition-colors hover:border-oxblood hover:bg-oxblood hover:text-ivory"
                 >
                   ↓ Resume (PDF)
                 </a>
               ) : (
-                <span className="text-[11px] uppercase tracking-[0.1em] text-ink/70">
+                <span className="text-xs uppercase tracking-[0.1em] text-ink/70">
                   No resume
                 </span>
               )}
@@ -244,8 +244,8 @@ function Action({
       disabled={busy}
       className={
         primary
-          ? "rounded-sm bg-oxblood px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
-          : "rounded-sm border border-gold/50 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood disabled:opacity-60"
+          ? "rounded-sm bg-oxblood px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
+          : "rounded-sm border border-gold/50 px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood disabled:opacity-60"
       }
     >
       {children}
@@ -268,7 +268,7 @@ function StatusPill({ status }: { status: ApplicationStatus }) {
       : "border-gold/40 bg-ivory/60 text-ink/70";
   return (
     <span
-      className={`self-start rounded-lg border px-3 py-1.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] ${tone}`}
+      className={`self-start rounded-lg border px-3 py-1.5 font-sans text-xs font-medium uppercase tracking-[0.12em] ${tone}`}
     >
       {label}
     </span>

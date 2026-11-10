@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
+  "font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70";
 
 // Inserts straight into volunteer_signups (RLS: anyone may insert, only
 // admins may read). Column length checks are enforced by the database too.

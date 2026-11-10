@@ -38,39 +38,39 @@ export default function PressPage() {
 
             <Reveal delay={240}>
               <div className="mt-12 rounded-2xl border border-gold/30 bg-ivory-dim/50 p-8 md:p-10">
-                <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
+                <span className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent">
                   Media enquiries
                 </span>
 
                 <dl className="mt-6 flex flex-col gap-5">
                   <div>
-                    <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                    <dt className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                       Email
                     </dt>
                     <dd className="mt-1.5">
                       <a
                         href="mailto:bmscealumni@bmsce.ac.in?subject=Press%20enquiry"
-                        className="font-sans text-base text-oxblood underline decoration-accent underline-offset-4 transition-colors hover:text-maroon"
+                        className="inline-flex min-h-11 items-center font-sans text-base text-oxblood underline decoration-accent underline-offset-4 transition-colors hover:text-maroon"
                       >
                         bmscealumni@bmsce.ac.in
                       </a>
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                    <dt className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                       Phone
                     </dt>
                     <dd className="mt-1.5">
                       <a
                         href="tel:+918660230306"
-                        className="font-sans text-base text-oxblood underline decoration-accent underline-offset-4 transition-colors hover:text-maroon"
+                        className="inline-flex min-h-11 items-center font-sans text-base text-oxblood underline decoration-accent underline-offset-4 transition-colors hover:text-maroon"
                       >
                         +91 86602 30306
                       </a>
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                    <dt className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                       Address
                     </dt>
                     <dd className="mt-1.5">

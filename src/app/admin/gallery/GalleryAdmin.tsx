@@ -155,7 +155,7 @@ export default function GalleryAdmin({
           Drag photos here
         </p>
         <p className="font-sans text-sm text-ink/70">or</p>
-        <label className="cursor-pointer rounded-lg border border-gold/40 bg-ivory-dim/60 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink transition-colors hover:border-gold">
+        <label className="cursor-pointer rounded-lg border border-gold/40 bg-ivory-dim/60 px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink transition-colors hover:border-gold">
           Choose files
           <input
             ref={inputRef}
@@ -175,7 +175,7 @@ export default function GalleryAdmin({
 
       {busy && (
         <div className="rounded-xl border border-gold/30 bg-ivory-dim/40 px-5 py-4">
-          <div className="flex items-center justify-between font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70">
+          <div className="flex items-center justify-between font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70">
             <span>Uploading…</span>
             <span>
               {done} / {total}
@@ -192,7 +192,7 @@ export default function GalleryAdmin({
 
       {failed.length > 0 && (
         <div className="rounded-xl border border-oxblood/30 bg-paper px-5 py-4">
-          <p className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood">
+          <p className="font-sans text-xs font-medium uppercase tracking-[0.14em] text-oxblood">
             {failed.length} {failed.length === 1 ? "photo" : "photos"} failed
           </p>
           <ul className="mt-2 flex flex-col gap-1">

@@ -26,7 +26,7 @@ export default function DeletePostingButton({
   const [busy, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const pad = size === "small" ? "px-4 py-2 text-[11px]" : "px-5 py-2.5 text-[12px]";
+  const pad = size === "small" ? "px-4 py-2 text-xs" : "px-5 py-2.5 text-[12px]";
 
   const run = (fn: () => Promise<void>) => {
     setError(null);

@@ -48,7 +48,7 @@ export default function DeleteEventButton({
         type="button"
         disabled={busy}
         onClick={remove}
-        className="rounded-sm bg-oxblood px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
+        className="rounded-sm bg-oxblood px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
       >
         {busy ? "…" : "Yes"}
       </button>
@@ -56,7 +56,7 @@ export default function DeleteEventButton({
         type="button"
         disabled={busy}
         onClick={() => setConfirming(false)}
-        className="rounded-sm border border-gold/50 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 hover:text-oxblood disabled:opacity-60"
+        className="rounded-sm border border-gold/50 px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70 hover:text-oxblood disabled:opacity-60"
       >
         No
       </button>
