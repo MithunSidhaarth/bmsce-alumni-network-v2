@@ -63,7 +63,7 @@ export default function ComingSoon({
                 <p className="mt-4 font-sans text-sm text-ink/70">
                   <a
                     href="mailto:bmscealumni@bmsce.ac.in"
-                    className="text-oxblood underline decoration-accent underline-offset-4 hover:text-maroon"
+                    className="inline-flex min-h-11 items-center text-oxblood underline decoration-accent underline-offset-4 hover:text-maroon"
                   >
                     bmscealumni@bmsce.ac.in
                   </a>
@@ -75,7 +75,7 @@ export default function ComingSoon({
               <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
                 <Link
                   href="/about"
-                  className="group font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
+                  className="group inline-flex min-h-11 items-center font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
                 >
                   <span className="border-b border-gold pb-1 transition-colors group-hover:border-oxblood">
                     About the college
@@ -83,7 +83,7 @@ export default function ComingSoon({
                 </Link>
                 <Link
                   href="/directory"
-                  className="group font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
+                  className="group inline-flex min-h-11 items-center font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
                 >
                   <span className="border-b border-gold pb-1 transition-colors group-hover:border-oxblood">
                     Browse the directory

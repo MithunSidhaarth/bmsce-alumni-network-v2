@@ -158,7 +158,7 @@ export default function InsideStack({ chapters, countries, postcards }: { chapte
                   {s.title}
                 </h3>
                 <p className="mt-4 max-w-md text-lg opacity-80">{s.body}</p>
-                <Link href={s.href} className="mt-6 inline-flex items-center gap-2 font-semibold underline decoration-2 underline-offset-4">
+                <Link href={s.href} className="mt-6 inline-flex min-h-11 items-center gap-2 font-semibold underline decoration-2 underline-offset-4">
                   {s.link} <Icon name="arrow" className="h-4 w-4" />
                 </Link>
               </div>

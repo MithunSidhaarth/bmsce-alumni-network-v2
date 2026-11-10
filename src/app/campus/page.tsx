@@ -32,7 +32,7 @@ export default function CampusPage() {
             </p>
           </div>
 
-          <div className="sheet relative min-w-0 -rotate-[0.5deg] p-2.5 sm:p-4">
+          <div className="sheet relative min-w-0 p-2.5 sm:-rotate-[0.5deg] sm:p-4">
             <span className="tape" aria-hidden="true" />
             <CampusMap />
             <p className="label-mono px-2 pb-1 pt-2 text-ink/70 md:hidden">Drag the map sideways to see all of it</p>

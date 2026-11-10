@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 const FIELD =
-  "w-full rounded-xl border border-gold/40 bg-ivory px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "w-full rounded-xl border border-gold/40 bg-ivory px-4 py-3 font-sans text-base text-ink placeholder:text-ink/70 focus:border-gold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const LABEL =
   "font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70";
 

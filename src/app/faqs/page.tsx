@@ -70,7 +70,7 @@ export default function FaqsPage() {
                   key={f.q}
                   className="group rounded-2xl border border-gold/40 bg-ivory px-6 py-5"
                 >
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg text-ink">
+                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 font-display text-lg text-ink">
                     {f.q}
                     <span
                       aria-hidden="true"

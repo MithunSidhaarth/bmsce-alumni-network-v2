@@ -141,7 +141,7 @@ export default function JoinPanel({
         <p className="font-sans text-sm text-ink/70">Already a member?</p>
         <Link
           href={next !== "/" ? `/login?next=${encodeURIComponent(next)}` : "/login"}
-          className="rounded-sm border border-oxblood/30 px-4 py-2 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood transition-colors hover:border-oxblood"
+          className="inline-flex min-h-11 items-center rounded-sm border border-oxblood/30 px-4 py-2 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood transition-colors hover:border-oxblood"
         >
           Sign in →
         </Link>
