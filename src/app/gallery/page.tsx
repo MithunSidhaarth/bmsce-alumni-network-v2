@@ -9,6 +9,7 @@ import type { GalleryPhoto } from "@/lib/types";
 import { GALLERY_PAGE_SIZE } from "@/lib/gallery";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/gallery" },
   title: "Gallery: BMSCE Alumni Network",
   description: "Photos from the BMSCE campus and from the Network around the world.",
 };

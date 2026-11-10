@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CampusMap from "@/components/v2/campus/CampusMap";
+
+export const metadata: Metadata = { title: "Page not found: BMSCE Alumni Network" };
 
 // Lost? Here is the map.
 export default function NotFound() {

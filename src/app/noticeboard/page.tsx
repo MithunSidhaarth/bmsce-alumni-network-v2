@@ -28,7 +28,7 @@ type Props = { searchParams: Promise<{ item?: string }> };
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { item } = await searchParams;
-  const base: Metadata = { title: "The Wall: BMSCE Alumni Network", description: DESCRIPTION };
+  const base: Metadata = { title: "The Wall: BMSCE Alumni Network", description: DESCRIPTION, alternates: { canonical: "/noticeboard" } };
   // A link to one pinned item shows that item's own card when it is shared.
   if (!item || !ITEM.test(item)) return base;
   const image = { url: `/noticeboard/card/${item}`, width: 1200, height: 630 };

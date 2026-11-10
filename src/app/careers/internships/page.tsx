@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import CareersList from "../CareersList";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/careers/internships" },
   title: "Internships: BMSCE Alumni Network",
   description:
     "Internships posted by BMSCE alumni and students, a foot in the door where someone can vouch for you.",

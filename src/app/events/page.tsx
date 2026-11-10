@@ -13,6 +13,7 @@ import { safeUrl } from "@/lib/url";
 import type { EventRow, SocialPost } from "@/lib/types";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/events" },
   title: "Events: BMSCE Alumni Network",
   description:
     "Upcoming BMSCE alumni events and highlights from our community on Instagram.",

@@ -12,10 +12,11 @@ import { safeUrl } from "@/lib/url";
 import type { Newsletter } from "@/lib/types";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog" },
   title: "Blog & Insights: BMSCE Alumni Network",
   description:
     "Alumni stories, career advice, startup journeys, industry perspectives and campus memories from the BMSCE alumni network.",
-  openGraph: { title: "Blog & Insights: BMSCE Alumni Network", type: "website" },
+  openGraph: { title: "Blog & Insights: BMSCE Alumni Network", type: "website", images: ["/opengraph-image"] },
 };
 export const dynamic = "force-dynamic";
 

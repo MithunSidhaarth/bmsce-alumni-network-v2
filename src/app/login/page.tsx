@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/nav";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/login" },
   title: "Sign in: BMSCE Alumni Network",
 };
 

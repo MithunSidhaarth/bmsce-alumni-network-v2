@@ -5,6 +5,7 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy policy: BMSCE Alumni Network",
   description:
     "How the BMSCE Alumni Network collects, uses, shares, secures, and retains your information, and the rights you have over your data.",
