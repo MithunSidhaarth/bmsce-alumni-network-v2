@@ -34,7 +34,7 @@ function Badge({ n, className = "" }: { n: number; className?: string }) {
   if (n <= 0) return null;
   return (
     <span
-      className={`inline-flex h-[1.15rem] min-w-[1.15rem] items-center justify-center rounded-full bg-tangerine px-1 font-mono text-[10px] font-medium leading-none text-white ${className}`}
+      className={`inline-flex h-[1.15rem] min-w-[1.15rem] items-center justify-center rounded-full bg-tangerine px-1 font-mono text-xs font-medium leading-none text-white ${className}`}
     >
       {n > 99 ? "99+" : n}
       <span className="sr-only"> unread</span>
@@ -337,7 +337,7 @@ export default function AppChrome({ me }: { me: Me }) {
             <Link
               href="/noticeboard"
               aria-current={onWall ? "page" : undefined}
-              className={`-mt-4 flex flex-col items-center gap-1 text-[0.6875rem] font-medium ${onWall ? "text-ink" : "text-ink/70"}`}
+              className={`-mt-4 flex flex-col items-center gap-1 text-xs font-medium ${onWall ? "text-ink" : "text-ink/70"}`}
             >
               <span
                 className={`keep-day flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-ink shadow-[0_3px_0_var(--color-ink)] ${
@@ -367,7 +367,7 @@ function Tab({ item, active, badge = 0 }: { item: Item; active: boolean; badge?:
       <Link
         href={item.href}
         aria-current={active ? "page" : undefined}
-        className={`relative flex h-full flex-col items-center justify-center gap-1 text-[0.6875rem] font-medium ${
+        className={`relative flex h-full flex-col items-center justify-center gap-1 text-xs font-medium ${
           active ? "text-ink" : "text-ink/70"
         }`}
       >

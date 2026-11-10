@@ -78,11 +78,11 @@ export default async function AdminEventsPage() {
                     >
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">
+                          <span className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-accent">
                             {label}
                           </span>
                           {past && (
-                            <span className="rounded-full border border-ink/25 bg-ink/5 px-2.5 py-0.5 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/70">
+                            <span className="rounded-full border border-ink/25 bg-ink/5 px-2.5 py-0.5 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70">
                               Past
                             </span>
                           )}
@@ -96,7 +96,7 @@ export default async function AdminEventsPage() {
                           </p>
                         )}
                         <details className="mt-3">
-                          <summary className="cursor-pointer font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood">
+                          <summary className="cursor-pointer font-sans text-xs font-medium uppercase tracking-[0.14em] text-oxblood">
                             {rsvpNames.length} RSVP
                             {rsvpNames.length === 1 ? "" : "s"}
                           </summary>

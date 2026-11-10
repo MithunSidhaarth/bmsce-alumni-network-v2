@@ -103,7 +103,7 @@ export default function Inbox({ rows, meId, verified }: { rows: InboxRow[]; meId
                       {r.last_preview}
                     </span>
                     {r.unread > 0 && (
-                      <span className="ml-auto inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-tangerine px-1.5 font-mono text-[10px] text-white">
+                      <span className="ml-auto inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-tangerine px-1.5 font-mono text-xs text-white">
                         {r.unread}
                         <span className="sr-only"> unread</span>
                       </span>

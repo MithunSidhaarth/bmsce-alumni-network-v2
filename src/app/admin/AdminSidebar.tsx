@@ -72,7 +72,7 @@ export default function AdminSidebar({
                 >
                   {item.label}
                   {badge > 0 && (
-                    <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-tangerine px-1.5 font-mono text-[10px] text-white">
+                    <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-tangerine px-1.5 font-mono text-xs text-white">
                       {badge}
                     </span>
                   )}

@@ -40,7 +40,7 @@ export default function ReportButton({
 
   if (done) {
     return (
-      <p className="font-sans text-[11px] uppercase tracking-[0.12em] text-ink/70">
+      <p className="font-sans text-xs uppercase tracking-[0.12em] text-ink/70">
         Reported, thank you
       </p>
     );
@@ -51,7 +51,7 @@ export default function ReportButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 underline decoration-transparent underline-offset-4 transition-colors hover:text-oxblood hover:decoration-accent"
+        className="font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70 underline decoration-transparent underline-offset-4 transition-colors hover:text-oxblood hover:decoration-accent"
       >
         {label}
       </button>
@@ -60,7 +60,7 @@ export default function ReportButton({
 
   return (
     <div className="rounded-xl border border-gold/30 bg-ivory-dim/50 p-4">
-      <p className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-ink/70">
+      <p className="font-sans text-xs font-medium uppercase tracking-[0.14em] text-ink/70">
         Report this to the admins
       </p>
       <textarea
@@ -74,7 +74,7 @@ export default function ReportButton({
           type="button"
           disabled={busy}
           onClick={submit}
-          className="rounded-sm bg-oxblood px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
+          className="rounded-sm bg-oxblood px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
         >
           {busy ? "Sending…" : "Submit report"}
         </button>
@@ -82,7 +82,7 @@ export default function ReportButton({
           type="button"
           disabled={busy}
           onClick={() => setOpen(false)}
-          className="rounded-sm border border-gold/50 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 hover:text-oxblood disabled:opacity-60"
+          className="rounded-sm border border-gold/50 px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70 hover:text-oxblood disabled:opacity-60"
         >
           Cancel
         </button>

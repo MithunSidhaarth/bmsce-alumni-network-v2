@@ -22,7 +22,7 @@ const AVATAR_MIME_EXT: Record<string, string> = {
 };
 const MAX_AVATAR = 5 * 1024 * 1024;
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
+  "font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70";
 
 export default function OnboardingForm({
   userId,
@@ -308,7 +308,7 @@ export default function OnboardingForm({
   if (done) {
     return (
       <div className="rounded-2xl border border-gold/40 bg-ivory-dim/40 px-6 py-8 text-center">
-        <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
+        <span className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent">
           You&rsquo;re all set
         </span>
         <p className="mx-auto mt-4 max-w-md font-display text-2xl italic leading-snug text-oxblood">
@@ -344,7 +344,7 @@ export default function OnboardingForm({
       {/* Type toggle — hidden for college-email users (always verified students) */}
       {isCollegeEmail ? (
         <div className="rounded-xl border border-gold/40 bg-gold/10 px-5 py-4">
-          <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">
+          <span className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-accent">
             ✓ Verified student
           </span>
           <p className="mt-2 font-sans text-sm leading-relaxed text-ink/70">
@@ -426,7 +426,7 @@ export default function OnboardingForm({
           <div className="mt-2 flex items-center">
             <label
               htmlFor="onboarding-photo-upload"
-              className="mr-3 cursor-pointer rounded-lg border border-gold/40 bg-ivory-dim/60 px-3 py-1.5 font-sans text-[11px] uppercase tracking-[0.12em] text-ink"
+              className="mr-3 cursor-pointer rounded-lg border border-gold/40 bg-ivory-dim/60 px-3 py-1.5 font-sans text-xs uppercase tracking-[0.12em] text-ink"
             >
               {photoUrl ? "Change photo" : "Choose file"}
             </label>
@@ -722,7 +722,7 @@ export default function OnboardingForm({
                   onClick={() =>
                     setEducation((cur) => cur.filter((_, j) => j !== i))
                   }
-                  className="rounded-sm border border-gold/50 px-3 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood"
+                  className="rounded-sm border border-gold/50 px-3 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood"
                 >
                   Remove
                 </button>
@@ -738,7 +738,7 @@ export default function OnboardingForm({
               { degree: "", institution: "", year: "" },
             ])
           }
-          className="mt-3 rounded-sm border border-gold/50 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood"
+          className="mt-3 rounded-sm border border-gold/50 px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood"
         >
           + Add education
         </button>

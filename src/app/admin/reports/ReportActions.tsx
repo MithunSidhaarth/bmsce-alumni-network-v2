@@ -26,7 +26,7 @@ export default function ReportActions({ id }: { id: string }) {
           type="button"
           disabled={busy}
           onClick={() => act("resolved")}
-          className="rounded-sm bg-oxblood px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
+          className="rounded-sm bg-oxblood px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
         >
           Resolve
         </button>
@@ -34,7 +34,7 @@ export default function ReportActions({ id }: { id: string }) {
           type="button"
           disabled={busy}
           onClick={() => act("dismissed")}
-          className="rounded-sm border border-gold/50 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood disabled:opacity-60"
+          className="rounded-sm border border-gold/50 px-4 py-2 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-oxblood hover:text-oxblood disabled:opacity-60"
         >
           Dismiss
         </button>

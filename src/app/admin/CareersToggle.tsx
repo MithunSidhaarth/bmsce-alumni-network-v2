@@ -53,7 +53,7 @@ export default function CareersToggle({ enabled }: { enabled: boolean }) {
           />
         </button>
       </div>
-      <p className="mt-3 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-ink/70">
+      <p className="mt-3 font-sans text-xs font-medium uppercase tracking-[0.14em] text-ink/70">
         Careers is currently{" "}
         <span className={on ? "text-oxblood" : "text-ink/70"}>
           {on ? "ON" : "OFF"}

@@ -135,7 +135,7 @@ export default async function AdminPage({
             >
               {s.value}
             </p>
-            <p className="mt-1 font-sans text-[11px] font-medium uppercase tracking-[0.12em] text-ink/70">
+            <p className="mt-1 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70">
               {s.label}
             </p>
           </Link>

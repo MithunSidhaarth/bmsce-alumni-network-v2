@@ -10,7 +10,7 @@ import { said } from "@/lib/fail";
 const FIELD =
   "w-full rounded-xl border border-gold/40 bg-ivory-dim/40 px-4 py-3 font-sans text-sm text-ink placeholder:text-ink/70 transition-colors focus:border-gold focus:outline-none";
 const LABEL =
-  "font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70";
+  "font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70";
 
 const STEPS = ["Basics", "Requirements", "Details"] as const;
 
@@ -204,7 +204,7 @@ export default function PostOpeningForm() {
                   {skills.map((s) => (
                     <span
                       key={s}
-                      className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-ivory/70 px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood"
+                      className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-ivory/70 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.1em] text-oxblood"
                     >
                       {s}
                       <button
@@ -350,7 +350,7 @@ export default function PostOpeningForm() {
       <aside className="lg:sticky lg:top-28 lg:self-start">
         <p className={LABEL}>Live preview</p>
         <div className="mt-3 flex flex-col rounded-2xl border border-gold/25 bg-ivory-dim/60 p-6">
-          <span className="w-fit rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
+          <span className="w-fit rounded-full border border-gold/40 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.12em] text-oxblood">
             {type === "job" ? "Job" : "Internship"}
           </span>
           <h3 className="mt-4 font-display text-xl leading-snug text-ink">
@@ -379,7 +379,7 @@ export default function PostOpeningForm() {
               {skills.slice(0, 4).map((s) => (
                 <span
                   key={s}
-                  className="rounded-full border border-gold/30 px-2.5 py-0.5 font-sans text-[10px] uppercase tracking-[0.1em] text-ink/70"
+                  className="rounded-full border border-gold/30 px-2.5 py-0.5 font-sans text-xs uppercase tracking-[0.1em] text-ink/70"
                 >
                   {s}
                 </span>

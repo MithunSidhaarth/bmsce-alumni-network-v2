@@ -46,7 +46,7 @@ export default function PrivacyPage() {
               </h1>
             </Reveal>
             <Reveal delay={140}>
-              <p className="mt-5 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
+              <p className="mt-5 font-sans text-xs font-medium uppercase tracking-[0.2em] text-ink/70">
                 Last updated: July 31, 2026
               </p>
             </Reveal>

@@ -30,7 +30,7 @@ export default function UpdateCard({ u }: { u: CampusUpdate }) {
         )}
       </div>
       <div className="flex flex-1 flex-col px-6 py-6">
-        <p className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-accent">
+        <p className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-accent">
           {u.category} ·{" "}
           {longDate(u.published_at)}
         </p>

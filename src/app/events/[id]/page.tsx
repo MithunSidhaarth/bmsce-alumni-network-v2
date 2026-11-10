@@ -129,7 +129,7 @@ export default async function EventPage({ params }: Props) {
                 <dl className="flex flex-col gap-5">
                   {when && (
                     <div>
-                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                      <dt className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                         When
                       </dt>
                       <dd className="mt-1 font-sans text-sm text-ink">{when}<SecondZone iso={event.event_date} /></dd>
@@ -137,7 +137,7 @@ export default async function EventPage({ params }: Props) {
                   )}
                   {place && (
                     <div>
-                      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                      <dt className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                         Where
                       </dt>
                       <dd className="mt-1 font-sans text-sm text-ink">{place}</dd>
@@ -164,7 +164,7 @@ export default async function EventPage({ params }: Props) {
                   {!isPast && (
                     <a
                       href={`/events/${event.id}/calendar`}
-                      className="mt-4 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood hover:text-oxblood"
+                      className="mt-4 block font-sans text-xs font-medium uppercase tracking-[0.14em] text-oxblood hover:text-oxblood"
                     >
                       Add to calendar (.ics) →
                     </a>
@@ -174,7 +174,7 @@ export default async function EventPage({ params }: Props) {
                       href={calendar}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood hover:text-oxblood"
+                      className="mt-3 block font-sans text-xs font-medium uppercase tracking-[0.14em] text-oxblood hover:text-oxblood"
                     >
                       Add to Google Calendar →
                     </a>
@@ -184,7 +184,7 @@ export default async function EventPage({ params }: Props) {
                       href={external}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 block font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-oxblood hover:text-oxblood"
+                      className="mt-3 block font-sans text-xs font-medium uppercase tracking-[0.14em] text-oxblood hover:text-oxblood"
                     >
                       Event details →
                     </a>

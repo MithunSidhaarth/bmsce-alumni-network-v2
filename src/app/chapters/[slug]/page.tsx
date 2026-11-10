@@ -155,7 +155,7 @@ export default async function ChapterPage({
                 >
                   {t.label}
                   {t.key === "members" && canManage && pending.length > 0 && (
-                    <span className="rounded-full bg-tangerine px-1.5 font-mono text-[10px] text-white">{pending.length}</span>
+                    <span className="rounded-full bg-tangerine px-1.5 font-mono text-xs text-white">{pending.length}</span>
                   )}
                 </Link>
               ))}

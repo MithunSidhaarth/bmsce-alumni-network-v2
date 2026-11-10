@@ -132,7 +132,7 @@ export default function AuthMenu({ variant = "desktop" }: { variant?: "desktop" 
             <p className="font-sans text-sm font-medium text-ink">
               {p?.full_name || "Your profile"}
             </p>
-            <p className="mt-0.5 font-sans text-[11px] uppercase tracking-[0.12em] text-accent">
+            <p className="mt-0.5 font-sans text-xs uppercase tracking-[0.12em] text-accent">
               {p?.user_type === "student"
                 ? "Student"
                 : p?.verification_status === "verified"

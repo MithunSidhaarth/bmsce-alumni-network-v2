@@ -48,7 +48,7 @@ export default function ComingSoon({
 
             <Reveal delay={240}>
               <div className="mt-12 rounded-2xl border border-gold/30 bg-ivory-dim/50 p-8 md:p-10">
-                <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-accent">
+                <span className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-accent">
                   In the meantime
                 </span>
                 <p className="mt-4 font-sans text-base leading-relaxed text-ink/75">
@@ -63,7 +63,7 @@ export default function ComingSoon({
                 <p className="mt-4 font-sans text-sm text-ink/70">
                   <a
                     href="mailto:bmscealumni@bmsce.ac.in"
-                    className="text-oxblood underline decoration-accent underline-offset-4 hover:text-maroon"
+                    className="inline-flex min-h-11 items-center text-oxblood underline decoration-accent underline-offset-4 hover:text-maroon"
                   >
                     bmscealumni@bmsce.ac.in
                   </a>
@@ -75,7 +75,7 @@ export default function ComingSoon({
               <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
                 <Link
                   href="/about"
-                  className="group font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
+                  className="group inline-flex min-h-11 items-center font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
                 >
                   <span className="border-b border-gold pb-1 transition-colors group-hover:border-oxblood">
                     About the college
@@ -83,7 +83,7 @@ export default function ComingSoon({
                 </Link>
                 <Link
                   href="/directory"
-                  className="group font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
+                  className="group inline-flex min-h-11 items-center font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
                 >
                   <span className="border-b border-gold pb-1 transition-colors group-hover:border-oxblood">
                     Browse the directory

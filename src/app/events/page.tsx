@@ -135,7 +135,7 @@ export default async function EventsPage() {
                   <p className="font-display text-4xl text-ivory md:text-5xl">
                     {stat.value}
                   </p>
-                  <p className="mt-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ivory/70">
+                  <p className="mt-3 font-sans text-xs font-medium uppercase tracking-[0.2em] text-ivory/70">
                     {stat.label}
                   </p>
                 </div>
@@ -152,7 +152,7 @@ export default async function EventsPage() {
                 <h2 className="font-display text-3xl leading-[1.05] text-ink md:text-4xl">
                   Upcoming events
                 </h2>
-                <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-ink/70">
+                <span className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-ink/70">
                   {upcoming.length} scheduled
                 </span>
               </div>

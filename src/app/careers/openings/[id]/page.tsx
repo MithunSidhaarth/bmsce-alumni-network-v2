@@ -146,16 +146,16 @@ export default async function OpeningPage({
             </Link>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
+              <span className="rounded-full border border-gold/40 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.12em] text-oxblood">
                 {posting.type === "job" ? "Job" : "Internship"}
               </span>
               {posting.closed_at && (
-                <span className="rounded-full border border-ink/25 bg-ink/5 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-ink/70">
+                <span className="rounded-full border border-ink/25 bg-ink/5 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.12em] text-ink/70">
                   Removed from board
                 </span>
               )}
               {posting.experience_level && (
-                <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/70">
+                <span className="font-sans text-xs uppercase tracking-[0.14em] text-ink/70">
                   {posting.experience_level}
                 </span>
               )}
@@ -187,14 +187,14 @@ export default async function OpeningPage({
 
                 {(posting.skills_required ?? []).length > 0 && (
                   <div className="mt-8">
-                    <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+                    <h2 className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
                       Skills
                     </h2>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {(posting.skills_required ?? []).map((s) => (
                         <span
                           key={s}
-                          className="rounded-full border border-gold/40 px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-oxblood"
+                          className="rounded-full border border-gold/40 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.1em] text-oxblood"
                         >
                           {s}
                         </span>
@@ -259,7 +259,7 @@ export default async function OpeningPage({
 function Block({ title, body }: { title: string; body: string }) {
   return (
     <div className="mt-8">
-      <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+      <h2 className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
         {title}
       </h2>
       <p className="mt-3 whitespace-pre-line font-sans text-base leading-relaxed text-ink/80">
@@ -273,7 +273,7 @@ function Fact({ label, value }: { label: string; value: string | null }) {
   if (!value) return null;
   return (
     <div>
-      <dt className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-ink/70">
+      <dt className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-ink/70">
         {label}
       </dt>
       <dd className="mt-1 font-sans text-sm text-ink/80">{value}</dd>

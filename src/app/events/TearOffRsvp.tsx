@@ -95,7 +95,7 @@ export default function TearOffRsvp({
           // A torn-off tab leaves a gap you can see the desk through.
           if (gone) return <span key={i} aria-hidden="true" className="flex-1 bg-ivory shadow-[inset_0_7px_6px_-5px_rgb(33_37_41/0.4)]" />;
           const face = (
-            <span className="rotate-180 font-mono text-[0.625rem] font-medium uppercase tracking-[0.14em] [writing-mode:vertical-rl]">{label}</span>
+            <span className="rotate-180 font-mono text-xs font-medium uppercase tracking-[0.14em] [writing-mode:vertical-rl]">{label}</span>
           );
           const shape = "flex flex-1 items-center justify-center border-l border-dashed border-ink/25 bg-paper text-ink/75 first:border-l-0";
           return canRsvp && !going ? (

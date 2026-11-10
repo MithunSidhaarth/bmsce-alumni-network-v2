@@ -521,7 +521,7 @@ export default function Wall({
             <Icon name="user" className="h-4 w-4" /> Posts from members carry their name
           </span>
           {!isMember && (
-            <Link href="/login?next=/noticeboard" className="font-semibold underline underline-offset-4">
+            <Link href="/login?next=/noticeboard" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
               Sign in to see what members have pinned
             </Link>
           )}

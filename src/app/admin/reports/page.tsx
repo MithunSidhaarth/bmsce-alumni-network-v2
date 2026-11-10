@@ -149,7 +149,7 @@ export default async function AdminReportsPage() {
                     className="flex flex-col gap-4 rounded-2xl border border-gold/25 bg-ivory-dim/50 p-6 sm:flex-row sm:items-start sm:justify-between"
                   >
                     <div>
-                      <span className="rounded-full border border-oxblood/40 px-3 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.12em] text-oxblood">
+                      <span className="rounded-full border border-oxblood/40 px-3 py-1 font-sans text-xs font-medium uppercase tracking-[0.12em] text-oxblood">
                         {r.target_type}
                       </span>
                       <Link

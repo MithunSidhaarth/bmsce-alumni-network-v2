@@ -41,7 +41,7 @@ export default function ErrorScreen({
               )}
               <Link
                 href="/"
-                className="group font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
+                className="group inline-flex min-h-11 items-center font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-oxblood"
               >
                 <span className="border-b border-gold pb-1 transition-colors group-hover:border-oxblood">
                   Back home

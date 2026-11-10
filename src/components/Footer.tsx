@@ -60,7 +60,7 @@ export default function Footer() {
 
   return (
     <footer className="sig relative overflow-hidden bg-brand-ink text-ivory">
-      <div className="mx-auto max-w-7xl px-5 pb-24 pt-16 md:px-10 md:pb-10 md:pt-24">
+      <div className="mx-auto max-w-7xl px-5 pb-24 pt-16 md:px-10 md:pt-24">
         <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="label-mono text-lime">Est. 1946 · Basavanagudi, Bengaluru</p>
@@ -80,10 +80,10 @@ export default function Footer() {
             {COLUMNS.map((col) => (
               <div key={col.title} className="min-w-[9rem]">
                 <h2 className="label-mono text-ivory/70">{col.title}</h2>
-                <ul className="mt-4 flex flex-col gap-2.5">
+                <ul className="mt-2 flex flex-col">
                   {col.links.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="text-[0.9375rem] text-ivory/80 underline-offset-4 hover:text-lime underline">
+                      <Link href={l.href} className="inline-flex min-h-11 min-w-11 items-center text-[0.9375rem] text-ivory/80 underline-offset-4 hover:text-lime underline">
                         {l.label}
                       </Link>
                     </li>
@@ -96,15 +96,15 @@ export default function Footer() {
 
         <div className="mt-16 flex flex-col gap-4 border-t border-ivory/15 pt-7 text-sm text-ivory/70 sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; {new Date().getFullYear()} BMSCE Alumni Network. All rights reserved.</p>
-          <p className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <p className="flex flex-wrap items-center gap-x-5">
             {SOCIALS.map((s) => (
-              <a key={s.label} href={s.href} target="_blank" rel="noreferrer" className="hover:text-lime">
+              <a key={s.label} href={s.href} target="_blank" rel="noreferrer" className="inline-flex min-h-11 min-w-11 items-center hover:text-lime">
                 {s.label}
               </a>
             ))}
-            <Link href="/privacy" className="hover:text-lime">Privacy</Link>
-            <Link href="/terms" className="hover:text-lime">Terms</Link>
-            <ThemeToggle label className="inline-flex items-center gap-1.5 hover:text-lime [&>svg]:h-4 [&>svg]:w-4" />
+            <Link href="/privacy" className="inline-flex min-h-11 min-w-11 items-center hover:text-lime">Privacy</Link>
+            <Link href="/terms" className="inline-flex min-h-11 min-w-11 items-center hover:text-lime">Terms</Link>
+            <ThemeToggle label className="inline-flex min-h-11 min-w-11 items-center gap-1.5 hover:text-lime [&>svg]:h-4 [&>svg]:w-4" />
           </p>
         </div>
       </div>

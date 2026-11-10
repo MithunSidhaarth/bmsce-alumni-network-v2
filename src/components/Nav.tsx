@@ -43,6 +43,18 @@ export default function Nav() {
   useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        document.querySelector<HTMLButtonElement>('[aria-controls="public-menu"]')?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
@@ -53,7 +65,7 @@ export default function Nav() {
 
   const bar = (slim: boolean) => (
     <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-6 px-5 md:px-10">
-      <Link href="/" className="flex items-center" aria-label="BMSCE Alumni Network home">
+      <Link href="/" className="flex min-h-11 items-center" aria-label="BMSCE Alumni Network home">
         {slim ? (
           <GearMark />
         ) : (
@@ -77,7 +89,7 @@ export default function Nav() {
               key={l.href}
               href={l.href}
               aria-current={active ? "page" : undefined}
-              className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+              className={`inline-flex min-h-11 items-center rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
                 active ? "bg-ink text-ivory" : "text-ink/75 hover:bg-ink/[0.07] hover:text-ink"
               }`}
             >
@@ -94,7 +106,7 @@ export default function Nav() {
       </nav>
 
       <div className="ml-auto hidden items-center gap-2 lg:flex">
-        <ThemeToggle className="flex h-10 w-10 items-center justify-center rounded-full text-ink/75 hover:bg-ink/[0.06] hover:text-ink" />
+        <ThemeToggle className="flex h-11 w-11 items-center justify-center rounded-full text-ink/75 hover:bg-ink/[0.06] hover:text-ink" />
         {signedIn ? (
           <AuthMenu />
         ) : (

@@ -58,7 +58,7 @@ export default function LoginPanel({
             role="tab"
             aria-selected={isStudent === t.student}
             onClick={() => choose(t.student)}
-            className={`rounded-lg px-3 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] transition-colors ${
+            className={`min-h-11 rounded-lg px-3 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.12em] transition-colors ${
               isStudent === t.student
                 ? "bg-oxblood text-ivory shadow-sm"
                 : "text-ink/70 hover:text-oxblood"
@@ -90,7 +90,7 @@ export default function LoginPanel({
         <p className="font-sans text-sm text-ink/70">New to the Network?</p>
         <Link
           href={joinHref}
-          className="rounded-sm border border-oxblood/30 px-4 py-2 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood transition-colors hover:border-oxblood"
+          className="inline-flex min-h-11 items-center rounded-sm border border-oxblood/30 px-4 py-2 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-oxblood transition-colors hover:border-oxblood"
         >
           Join now →
         </Link>
