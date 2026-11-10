@@ -5,6 +5,7 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/faqs" },
   title: "FAQs: BMSCE Alumni Network",
   description:
     "Answers to common questions about joining the BMSCE Alumni Network, verification, the directory, chapters, and events.",

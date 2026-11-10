@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { MentorshipRequest, Profile } from "@/lib/types";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/careers/mentorship" },
   title: "Find a Mentor: BMSCE Alumni Network",
   description:
     "Get paired with a BMSCE alum who has already walked the path you are on, one conversation at a time.",

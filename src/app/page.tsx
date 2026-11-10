@@ -3,10 +3,13 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import HomeFeed from "@/components/v2/HomeFeed";
 import Landing from "@/components/v2/Landing";
+import type { Metadata } from "next";
 import { getMe } from "@/lib/me";
 
 // Auth state decides which homepage is served, so this renders per request.
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function Home({
   searchParams,

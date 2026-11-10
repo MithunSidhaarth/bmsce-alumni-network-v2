@@ -4,9 +4,10 @@ import Footer from "@/components/Footer";
 import CampusMap, { CampusLegend } from "@/components/v2/campus/CampusMap";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/campus" },
   title: "Campus map: BMSCE Alumni Network",
   description: "A hand-drawn map of the BMSCE campus. Walk up to a building to open that part of the alumni network.",
-  openGraph: { title: "The BMSCE campus, from memory", type: "website" },
+  openGraph: { title: "The BMSCE campus, from memory", type: "website", images: ["/opengraph-image"] },
 };
 
 export default function CampusPage() {

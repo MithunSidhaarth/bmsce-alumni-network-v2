@@ -9,6 +9,7 @@ import { seeded } from "@/lib/format";
 import type { Chapter } from "@/lib/types";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/chapters" },
   title: "Chapters: BMSCE Alumni Network",
   description: "City and region chapters of the BMSCE alumni network. Find yours and join its community.",
 };

@@ -5,6 +5,7 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/terms" },
   title: "Terms and conditions: BMSCE Alumni Network",
   description:
     "The terms and conditions governing use of the BMSCE Alumni Network: eligibility, acceptable use, content, job postings, mentorship, and more.",

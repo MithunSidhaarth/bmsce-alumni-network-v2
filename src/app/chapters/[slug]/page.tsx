@@ -38,6 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: data ? `${data.name} chapter: BMSCE Alumni Network` : "Chapter: BMSCE Alumni Network",
     description: data?.description ?? (data ? `The ${data.name} chapter of the BMSCE alumni network.` : undefined),
+    alternates: { canonical: `/chapters/${encodeURIComponent(slug)}` },
   };
 }
 

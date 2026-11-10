@@ -6,6 +6,7 @@ import Reveal from "@/components/Reveal";
 import VolunteerForm from "./VolunteerForm";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "About: BMSCE Alumni Network",
   description:
     "The BMSCE Alumni Network: 31 chapters across 12 countries, and the programmes that turn a shared campus into a lifelong community.",
@@ -51,9 +52,9 @@ export default function AboutPage() {
               <Eyebrow>The Network</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
-              <h2 className="mt-6 max-w-2xl font-display text-4xl leading-[1.05] text-ink md:text-5xl">
+              <h1 className="mt-6 max-w-2xl font-display text-4xl leading-[1.05] text-ink md:text-5xl">
                 Built by alumni, for alumni.
-              </h2>
+              </h1>
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-8 max-w-3xl font-sans text-base leading-relaxed text-ink/70 md:text-lg">

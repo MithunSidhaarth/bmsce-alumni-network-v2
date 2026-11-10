@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ComingSoon from "@/components/ComingSoon";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/give-back" },
   title: "Give Back: BMSCE Alumni Network",
   description:
     "Ways to support B.M.S. College of Engineering and its students. Coming soon.",
