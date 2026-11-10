@@ -58,11 +58,11 @@ export default function Numbers({ figures }: { figures: Figure[] }) {
               i ? "sm:pl-10" : ""
             }`}
           >
-            <dd className="row-span-2 font-display text-[clamp(4.5rem,25vw,7rem)] font-extrabold leading-[0.82] tracking-[-0.05em] sm:order-1 sm:text-[clamp(4.5rem,13vw,10rem)]">
+            <dt className="col-start-2 row-start-1 self-end font-display text-2xl font-bold leading-tight sm:order-2 sm:mt-3 sm:self-auto">{f.label}</dt>
+            <dd className="col-start-1 row-span-2 row-start-1 font-display text-[clamp(4.5rem,25vw,7rem)] font-extrabold leading-[0.82] tracking-[-0.05em] sm:order-1 sm:text-[clamp(4.5rem,13vw,10rem)]">
               <Counter value={f.value} />
             </dd>
-            <dt className="self-end font-display text-2xl font-bold leading-tight sm:order-2 sm:mt-3 sm:self-auto">{f.label}</dt>
-            <p className="mt-1 self-start text-sm text-ink/70 sm:order-3 sm:max-w-[22ch] sm:self-auto">{f.note}</p>
+            <dd className="col-start-2 row-start-2 mt-1 self-start text-sm text-ink/70 sm:order-3 sm:max-w-[22ch] sm:self-auto">{f.note}</dd>
           </div>
         ))}
       </dl>

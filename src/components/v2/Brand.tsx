@@ -23,8 +23,8 @@ export function Logo({ height = 52, on = "page", clear = true, className = "" }:
   const x = clear ? Math.round(h / 3) : 0;
   return (
     <span className={`brand inline-block shrink-0 ${className}`} data-on={on} style={{ padding: x }}>
-      <img src="/brand/logo.png" alt={NAME} width={w} height={h} className="brand-light block max-w-none" style={{ width: w, height: h }} />
-      <img src="/brand/logo-white.png" alt={NAME} width={w} height={h} className="brand-dark max-w-none" style={{ width: w, height: h }} />
+      <img src="/brand/logo.webp" alt={NAME} width={w} height={h} className="brand-light block max-w-none" style={{ width: w, height: h }} />
+      <img src="/brand/logo-white.webp" alt={NAME} width={w} height={h} className="brand-dark max-w-none" style={{ width: w, height: h }} />
     </span>
   );
 }

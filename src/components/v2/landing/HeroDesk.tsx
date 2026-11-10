@@ -62,19 +62,14 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
 
     const ctx = gsap.context(() => {
       gsap.set(".hero-pre", { visibility: "visible" });
-      gsap.set(".hero-char", { yPercent: 118, rotate: 7 });
       gsap.set(".hero-hl", { backgroundSize: "0% 100%" });
-      gsap.set([".hero-stamp", ".hero-fade"], { autoAlpha: 0 });
       gsap.set(cards, { "--pop": "1500px", autoAlpha: 0 });
 
       // The entrance waits until the hero is really on screen, so it is never
       // spent while the page sits in a background tab.
       const intro = gsap
         .timeline({ paused: true, defaults: { ease: "power4.out" } })
-        .to(".hero-stamp", { autoAlpha: 1, duration: 0.5 })
-        .to(".hero-char", { yPercent: 0, rotate: 0, duration: 0.95, stagger: 0.03 }, "-=0.3")
-        .to(".hero-hl", { backgroundSize: "100% 100%", duration: 0.7, ease: "power2.inOut" }, "-=0.45")
-        .to(".hero-fade", { autoAlpha: 1, duration: 0.7, stagger: 0.1 }, "-=0.5")
+        .to(".hero-hl", { backgroundSize: "100% 100%", duration: 0.7, ease: "power2.inOut" }, 0.1)
         .to(cards, { "--pop": "0px", autoAlpha: 1, duration: 1.3, stagger: 0.09, ease: "expo.out" }, 0.15)
         .add(() => {
           state.started = true;
@@ -170,8 +165,9 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
   return (
     <section ref={root} className="relative overflow-hidden">
       <div className="mx-auto grid max-w-7xl gap-8 px-5 pb-14 pt-8 md:px-10 md:pb-20 md:pt-12 lg:grid-cols-[1.02fr_1fr] lg:items-center">
-        {/* Hidden for a moment while motion is on, so the entrance never flashes. */}
-        <div className="hero-pre relative z-10 motion-ok:invisible motion-ok:[animation:hero-failsafe_0s_4s_forwards]">
+        {/* The words show on first paint (they are the page's largest content);
+            only the photo ring waits for its entrance. */}
+        <div className="relative z-10">
           <p className="hero-stamp stamp text-forest">Est. 1946 · Basavanagudi, Bengaluru</p>
           <h1
             aria-label="Once BMSCE. Always BMSCE."
@@ -220,7 +216,7 @@ export default function HeroDesk({ prints, cta }: { prints: Print[]; cta: { href
                 <Link
                   href="/noticeboard"
                   draggable={false}
-                  aria-label="A moment from the Network. Open The Wall."
+                  aria-label={`${p.stamp}: a moment from the Network. Open The Wall.`}
                   onClick={(e) => dragged.current && e.preventDefault()}
                   className="block rounded-print bg-white p-[4%] pb-[14%] shadow-[0_24px_40px_-18px_rgb(33_37_41/0.65)]"
                 >
