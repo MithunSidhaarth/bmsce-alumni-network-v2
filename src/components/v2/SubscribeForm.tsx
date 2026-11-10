@@ -58,7 +58,7 @@ export default function SubscribeForm({
           required
           autoComplete="email"
           placeholder="you@example.com"
-          className={`h-11 min-w-0 flex-1 rounded-full border px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue/40 ${
+          className={`h-11 min-w-0 flex-1 rounded-full border px-4 text-base focus:outline-none focus:ring-2 focus:ring-blue/40 ${
             dark
               ? "border-ivory/30 bg-ivory/10 text-ivory placeholder:text-ivory/70"
               : "border-ink/25 bg-paper text-ink placeholder:text-ink/70"
@@ -68,8 +68,8 @@ export default function SubscribeForm({
           {state === "busy" ? "Adding" : "Subscribe"}
         </button>
       </div>
-      <label className={`mt-3 flex items-start gap-2 text-xs ${dark ? "text-ivory/70" : "text-ink/70"}`}>
-        <input type="checkbox" name="consent" className="mt-0.5 h-4 w-4 accent-[#dadde2]" />
+      <label className={`mt-3 flex min-h-11 items-center gap-3 text-xs ${dark ? "text-ivory/70" : "text-ink/70"}`}>
+        <input type="checkbox" name="consent" className="h-6 w-6 shrink-0 accent-[#dadde2]" />
         <span>I agree to receive the BMSCE Alumni Network digest by email.</span>
       </label>
       {state === "error" && (

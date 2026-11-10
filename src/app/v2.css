@@ -175,7 +175,7 @@
   /* ---- Type helpers ---------------------------------------------------- */
   .label-mono {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
@@ -341,7 +341,7 @@
     min-height: 2.75rem;
     padding: 0.6rem 0.85rem;
     font-family: var(--font-sans);
-    font-size: 0.9375rem;
+    font-size: 1rem; /* 16px: below this iOS Safari zooms on focus */
     color: var(--color-ink);
     background: var(--color-paper);
     border: 1px solid rgb(33 37 41 / 0.22);
@@ -362,6 +362,8 @@
   .board {
     position: relative;
     isolation: isolate;
+    /* Tilted, offset cards must never push the page sideways. */
+    overflow-x: clip;
     background-color: var(--color-board);
     background-image:
       radial-gradient(120% 80% at 15% 0%, rgb(255 255 255 / 0.1), transparent 55%),
@@ -915,4 +917,23 @@ html[data-theme="night"] :is(.sheet, .stickynote, .field, .keep-day, [class~="bg
 }
 .sig ::placeholder {
   color: rgb(255 255 255 / 0.9);
+}
+
+/* Touch screens: iOS Safari zooms the page when a focused field's text is
+   under 16px, so form text never goes below that on phones and tablets. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    font-size: max(16px, 1em);
+  }
+}
+
+/* Very large screens (4K TVs, 1440p+ monitors): scale everything up so the
+   layout fills the screen and text is readable from a distance. */
+@media (min-width: 2200px) {
+  html { font-size: 125%; }
+}
+@media (min-width: 3200px) {
+  html { font-size: 175%; }
 }

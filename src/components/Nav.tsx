@@ -43,6 +43,18 @@ export default function Nav() {
   useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        document.querySelector<HTMLButtonElement>('[aria-controls="public-menu"]')?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
