@@ -1,16 +1,11 @@
 "use client";
 
-import { longDate } from "@/lib/format";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import GalleryLightbox from "./GalleryLightbox";
 import type { GalleryPhoto } from "@/lib/types";
 import { GALLERY_PAGE_SIZE } from "@/lib/gallery";
-
-function formatPhotoDate(iso: string) {
-  return longDate(iso);
-}
 
 export default function GalleryGrid({
   initialPhotos,
@@ -109,27 +104,28 @@ export default function GalleryGrid({
                 src={photo.thumbnail_url}
                 alt={photo.caption ?? ""}
                 fill
-                sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                sizes={big ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw" : "(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"}
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
                 // Only the first row needs eager loading; next/image lazy-loads
                 // (native loading="lazy") everything else by default.
                 priority={i < 5}
               />
-              {/* Caption + date reveal on hover/focus instead of sitting on
-                  the tile permanently — keeps the mosaic clean at rest. */}
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ink/85 via-ink/10 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
-              >
-                {photo.caption && (
-                  <p className="line-clamp-2 font-display text-sm italic leading-snug text-ivory">
+              {/* The caption reveals on hover/focus so the mosaic stays clean
+                  at rest. Big tiles on touch screens (no hover) keep theirs
+                  showing. No date: uploaded_at is when a photo was added, not
+                  when it was taken, which reads wrong on archive photos. */}
+              {photo.caption && (
+                <div
+                  aria-hidden="true"
+                  className={`absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ink/85 via-ink/10 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 md:p-4 ${
+                    big ? "[@media(hover:none)]:opacity-100" : ""
+                  }`}
+                >
+                  <p className={`line-clamp-2 font-display italic leading-snug text-ivory ${big ? "text-base md:text-lg" : "text-sm"}`}>
                     {photo.caption}
                   </p>
-                )}
-                <p className="mt-1 font-sans text-xs font-medium uppercase tracking-[0.14em] text-ivory/70">
-                  {formatPhotoDate(photo.uploaded_at)}
-                </p>
-              </div>
+                </div>
+              )}
             </button>
           );
         })}
