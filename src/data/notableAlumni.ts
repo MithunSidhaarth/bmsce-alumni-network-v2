@@ -5,7 +5,7 @@ export type NotableAlum = {
   batch?: string;
   /** Department or branch, when known. */
   dept?: string;
-  /** Portrait in /public. Cards without one show the person's initials. */
+  /** Portrait in /public. Alumni without one are not shown yet. */
   photo?: string;
   /** A short summary, shown on the Notable Alumni page. */
   bio?: string;
@@ -72,18 +72,3 @@ export const notableAlumni: NotableAlum[] = [
   },
 ];
 
-/** "BK" for "Bhawana Kanth"; "NS & NR" for a joint card. */
-export function initialsOf(name: string): string {
-  return name
-    .split("&")
-    .map((part) =>
-      part
-        .replace(/\./g, " ")
-        .split(/\s+/)
-        .filter(Boolean)
-        .filter((w, i, all) => i === 0 || i === all.length - 1)
-        .map((w) => w[0]!.toUpperCase())
-        .join("")
-    )
-    .join(" & ");
-}
