@@ -4,6 +4,7 @@ type Testimonial = {
   quote: string;
   name: string;
   batch: string | null; // "Class of 2024" year; null when unknown
+  dept?: string;
   initials: string;
 };
 
@@ -23,9 +24,25 @@ const TESTIMONIALS: Testimonial[] = [
     batch: null,
     initials: "BG",
   },
+  {
+    quote:
+      "Together with my classmates, I contributed to a scholarship supporting BMSCE students with financial need. It felt meaningful to come together again and to give back to my community. I hope our contribution encourages more alumni to support students who need a helping hand.",
+    name: "Sai Prashanth",
+    batch: "2018",
+    dept: "IEM",
+    initials: "SP",
+  },
+  {
+    quote:
+      "As a recent MBA grad recruiting for product and strategy roles, I joined the USA mentorship program looking for guidance in one of the toughest job markets in the recent past. My mentor was friendly and direct, and I genuinely enjoyed our conversations. I highly recommend the program to fellow BMSCE alumni navigating the US job market.",
+    name: "Akshay Acharya",
+    batch: "2019",
+    dept: "Mechanical",
+    initials: "AA",
+  },
 ];
 
-// The two letters are real quotes from members, kept exactly as given.
+// The letters are real quotes from members, kept exactly as given.
 // They are shown as notes pinned to the page, each signed in handwriting.
 export default function Testimonials() {
   return (
@@ -50,7 +67,11 @@ export default function Testimonials() {
               <figcaption className="mt-7 flex items-end justify-between gap-4 border-t border-dashed border-ink/25 pt-5">
                 <span>
                   <span className="hand block text-[2rem] leading-none text-forest">{t.name}</span>
-                  {t.batch && <span className="label-mono mt-2 block text-ink/70">Class of {t.batch}</span>}
+                  {t.batch && (
+                    <span className="label-mono mt-2 block text-ink/70">
+                      {t.dept ? `${t.dept}, ` : ""}Class of {t.batch}
+                    </span>
+                  )}
                 </span>
                 <span className="stamp text-ink/70">Member</span>
               </figcaption>

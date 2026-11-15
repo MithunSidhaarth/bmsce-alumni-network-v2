@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { notableAlumni } from "@/data/notableAlumni";
+import { initialsOf, notableAlumni } from "@/data/notableAlumni";
 import { gsap } from "@/lib/gsap";
 import { motionOK } from "@/lib/motion";
 import Icon from "../Icon";
@@ -14,6 +15,9 @@ const TILTS = [-2.4, 1.8, -1.2, 2.6, -1.9];
  * from the right the first time the row comes into view.
  */
 export default function NotableAlumni({ heading = "h2" }: { heading?: "h1" | "h2" }) {
+  // On its own page everyone is laid out in a grid with their bios. Home
+  // keeps the short cards in a sliding row.
+  const showBio = heading === "h1";
   const root = useRef<HTMLElement | null>(null);
   const track = useRef<HTMLUListElement | null>(null);
   const [edges, setEdges] = useState({ left: false, right: true });
@@ -56,7 +60,13 @@ export default function NotableAlumni({ heading = "h2" }: { heading?: "h1" | "h2
             Alumni making <span className="serif-accent hl">their mark</span>.
           </Title>
         </div>
-        <div className="flex items-center gap-2">
+        <div className={`items-center gap-2 ${showBio ? "hidden" : "flex"}`}>
+          <Link
+            href="/notable-alumni"
+            className="mr-2 inline-flex min-h-11 items-center text-sm font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
+          >
+            See all {notableAlumni.length}
+          </Link>
           <p className="hand mr-2 text-[1.5rem] text-forest sm:hidden" aria-hidden="true">
             swipe ←
           </p>
@@ -78,21 +88,39 @@ export default function NotableAlumni({ heading = "h2" }: { heading?: "h1" | "h2
       <ul
         ref={track}
         onScroll={measure}
-        className="mt-10 flex snap-x snap-mandatory gap-7 overflow-x-auto px-5 pb-8 pt-6 no-scrollbar md:px-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]"
+        className={
+          showBio
+            ? "mx-auto mt-10 grid max-w-7xl gap-x-7 gap-y-12 px-5 pb-8 pt-6 sm:grid-cols-2 md:px-10 lg:grid-cols-3 xl:grid-cols-4"
+            : "mt-10 flex snap-x snap-mandatory gap-7 overflow-x-auto px-5 pb-8 pt-6 no-scrollbar md:px-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]"
+        }
       >
         {notableAlumni.map((person, i) => (
-          <li key={person.name} className="w-[74vw] max-w-[19rem] shrink-0 snap-center sm:w-[19rem] sm:snap-start">
+          <li key={person.name} className={showBio ? "" : "w-[74vw] max-w-[19rem] shrink-0 snap-center sm:w-[19rem] sm:snap-start"}>
             <figure
               className="na-card pinned relative rounded-print bg-white p-3 pb-5 shadow-[0_22px_38px_-18px_rgb(33_37_41/0.55)]"
               style={{ ["--tilt" as string]: `${TILTS[i % TILTS.length]}deg` }}
             >
               <span className={`tape ${i % 2 ? "tape-lime" : ""}`} aria-hidden="true" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={person.photo} alt={person.name} loading="lazy" draggable={false} className="aspect-[4/5] w-full object-cover object-top" />
+              {person.photo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={person.photo} alt={person.name} loading="lazy" draggable={false} className="aspect-[4/5] w-full object-cover object-top" />
+              ) : (
+                <div
+                  role="img"
+                  aria-label={person.name}
+                  className={`flex aspect-[4/5] w-full items-center justify-center ${i % 2 ? "bg-forest" : "bg-ink"}`}
+                >
+                  <span className="px-4 text-center font-display text-[clamp(3rem,9vw,4.5rem)] leading-none text-ivory/90">
+                    {initialsOf(person.name)}
+                  </span>
+                </div>
+              )}
               <figcaption className="px-1 pt-4">
                 <span className="hand block text-[2rem] leading-none text-ink">{person.name}</span>
                 <span className="mt-2 block text-sm leading-snug text-ink/70">{person.role}</span>
-                <span className="stamp mt-3 text-forest">Class of {person.batch}</span>
+                {showBio && person.bio && <span className="mt-3 block text-sm leading-relaxed text-ink/80">{person.bio}</span>}
+                {person.dept && <span className="label-mono mt-3 block text-ink/60">{person.dept}</span>}
+                {person.batch && <span className="stamp mt-3 text-forest">Class of {person.batch}</span>}
               </figcaption>
             </figure>
           </li>
