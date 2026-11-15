@@ -120,6 +120,7 @@ export default function NotableAlumni({ heading = "h2" }: { heading?: "h1" | "h2
                 <span className="mt-2 block text-sm leading-snug text-ink/70">{person.role}</span>
                 {showBio && person.bio && <span className="mt-3 block text-sm leading-relaxed text-ink/80">{person.bio}</span>}
                 {person.dept && <span className="label-mono mt-3 block text-ink/60">{person.dept}</span>}
+                {person.photoCredit && <span className="mt-2 block text-xs text-ink/50">{person.photoCredit}</span>}
                 {person.batch && <span className="stamp mt-3 text-forest">Class of {person.batch}</span>}
               </figcaption>
             </figure>
