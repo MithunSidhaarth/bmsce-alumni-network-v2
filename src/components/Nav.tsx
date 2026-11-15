@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "./v2/ThemeToggle";
-import { GearMark, Logo } from "./v2/Brand";
+import { Logo } from "./v2/Brand";
 import { usePathname } from "next/navigation";
 import { useAuth } from "./AuthProvider";
 import AuthMenu from "./AuthMenu";
@@ -67,7 +67,7 @@ export default function Nav() {
     <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-6 px-5 md:px-10">
       <Link href="/" className="flex min-h-11 items-center" aria-label="BMSCE Alumni Network home">
         {slim ? (
-          <GearMark />
+          <Logo height={40} clear={false} />
         ) : (
           <>
             <span className="hidden lg:block">
