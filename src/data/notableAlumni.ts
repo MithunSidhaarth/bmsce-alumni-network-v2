@@ -5,10 +5,12 @@ export type NotableAlum = {
   batch?: string;
   /** Department or branch, when known. */
   dept?: string;
-  /** Portrait in /public. Cards without one show the person's initials. */
+  /** Portrait in /public. Alumni without one are not shown yet. */
   photo?: string;
   /** A short summary, shown on the Notable Alumni page. */
   bio?: string;
+  /** Attribution the photo's licence asks for. */
+  photoCredit?: string;
 };
 
 // Real BMSCE alumni. Names, roles, batches and bios are as given by the
@@ -24,18 +26,23 @@ export const notableAlumni: NotableAlum[] = [
     role: "Indian Air Force fighter pilot",
     dept: "Medical Electronics",
     batch: "2014",
+    photo: "/bhawana-kanth.jpg",
+    photoCredit: "Photo: Ministry of Defence (PIB), GODL-India",
     bio: "One of India's first three women fighter pilots, commissioned in 2016. The first woman cleared for daytime combat missions on the MiG-21 Bison (2019), she later flew the Su-30 MKI and became the first woman to complete the Fighter Combat Leader course.",
   },
   {
     name: "Nikhil Chinapa",
     role: "DJ, VJ, host and festival curator",
     dept: "Architecture",
-    bio: "Long associated with MTV India, including Roadies and Splitsvilla. He helped popularise EDM in India and was involved early with the Sunburn Festival.",
+    photo: "/nikhil-chinapa.jpg",
+    photoCredit: "Photo: Bollywood Hungama, CC BY 3.0",
+    bio: "Long associated with MTV India, including Roadies and Splitsvilla. He helped popularise EDM in India and co-founded the Sunburn Festival in 2007.",
   },
   {
     name: "Sanchari Vijay",
     role: "Actor, National Film Award winner (1983–2021)",
-    dept: "ISE",
+    photo: "/sanchari-vijay.jpg",
+    photoCredit: "Photo: Pavanaja, CC BY-SA 4.0",
     bio: "Kannada film and stage actor who won the National Film Award for Best Actor for Naanu Avanalla... Avalu, playing a transgender character. He also won state and Filmfare Critics awards and was active in theatre with Sanchari Theatre.",
   },
   {
@@ -48,35 +55,20 @@ export const notableAlumni: NotableAlum[] = [
   {
     name: "Narayan Subramaniam & Niraj Rajmohan",
     role: "Co-founders of Ultraviolette (CEO and CTO)",
-    bio: "From college engineering projects to building electric motorcycles together.",
+    bio: "Rivals for the top rank at school, then friends at BMSCE, where the two won most of the city's engineering contests together. Today they build electric motorcycles.",
   },
   {
-    name: "K.N. Vasudeva Adiga",
+    name: "Vasudeva Adiga",
     role: "Founder, Vasudev Adiga's and Paakashala",
     dept: "Electronics",
     batch: "1984",
-    bio: "After a short stint in industry and a denied US visa for higher studies, he drew on his family's restaurant background to build a multi-outlet chain of Udupi-style vegetarian restaurants and catering, and later launched Paakashala.",
+    bio: "Denied a US visa for a master's, he worked in industry for a while, then drew on his family's restaurant roots (his mother founded Brahmin's Coffee Bar) to start Adiga's in Basavanagudi in 1993. He grew it to about 30 outlets, sold the brand in 2017 and went on to launch Paakashala.",
   },
   {
     name: "Vikram Shenoy",
     role: "Managing Director, Deloitte Digital",
     dept: "Computer Science",
-    bio: "Early co-founder of the test-prep platform Magoosh. Now India Offering Leader for Advertising, Marketing and Commerce at Deloitte Digital.",
+    bio: "One of the four founders of the test-prep platform Magoosh (2009). Now India Offering Leader for Advertising, Marketing and Commerce at Deloitte Digital.",
   },
 ];
 
-/** "BK" for "Bhawana Kanth"; "NS & NR" for a joint card. */
-export function initialsOf(name: string): string {
-  return name
-    .split("&")
-    .map((part) =>
-      part
-        .replace(/\./g, " ")
-        .split(/\s+/)
-        .filter(Boolean)
-        .filter((w, i, all) => i === 0 || i === all.length - 1)
-        .map((w) => w[0]!.toUpperCase())
-        .join("")
-    )
-    .join(" & ");
-}
