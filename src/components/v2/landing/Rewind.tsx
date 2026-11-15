@@ -46,15 +46,18 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
       // The strip moves a little slower than the scroll that drives it, so
       // each year can be taken in rather than flying past.
       const scroll = () => distance() * (window.innerWidth < 768 ? 0.9 : 0.8);
+      // A longer scrub glides to each new position instead of snapping, and
+      // force3D keeps the whole strip on the GPU while it moves.
       const travel = gsap.to(t, {
         x: () => -distance(),
         ease: "none",
+        force3D: true,
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
           end: () => `+=${scroll()}`,
           pin: true,
-          scrub: 0.7,
+          scrub: 1.2,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -64,14 +67,14 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
         gsap.fromTo(
           el,
           { x: 90 * d },
-          { x: -90 * d, ease: "none", scrollTrigger: { trigger: el, containerAnimation: travel, start: "left right", end: "right left", scrub: true } }
+          { x: -90 * d, ease: "none", force3D: true, scrollTrigger: { trigger: el, containerAnimation: travel, start: "left right", end: "right left", scrub: true } }
         );
       });
       gsap.utils.toArray<HTMLElement>(".rw-year").forEach((el) => {
         gsap.fromTo(
           el,
           { xPercent: 22 },
-          { xPercent: -22, ease: "none", scrollTrigger: { trigger: el, containerAnimation: travel, start: "left right", end: "right left", scrub: true } }
+          { xPercent: -22, ease: "none", force3D: true, scrollTrigger: { trigger: el, containerAnimation: travel, start: "left right", end: "right left", scrub: true } }
         );
       });
       gsap.to(".rw-progress", {
@@ -82,6 +85,24 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
     }, root);
     return () => ctx.revert();
   }, [pinned]);
+
+  // Photographs further along the strip are off screen sideways, so the
+  // browser's lazy loading would fetch and decode each one just as it slides
+  // in, which stutters. Load them all once the section is close instead.
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        el.querySelectorAll<HTMLImageElement>("img[loading=lazy]").forEach((img) => (img.loading = "eager"));
+        io.disconnect();
+      },
+      { rootMargin: "150% 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <section
@@ -110,7 +131,7 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
             {/* The year, as a huge outline behind its photographs. */}
             <p
               aria-hidden="true"
-              className="rw-year pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 select-none font-display text-[46vh] font-extrabold leading-none tracking-[-0.06em] text-transparent [-webkit-text-stroke:1.5px_rgb(255_255_255/0.2)] md:text-[62vh]"
+              className="rw-year pointer-events-none absolute will-change-transform left-0 top-1/2 -translate-y-1/2 select-none font-display text-[46vh] font-extrabold leading-none tracking-[-0.06em] text-transparent [-webkit-text-stroke:1.5px_rgb(255_255_255/0.2)] md:text-[62vh]"
             >
               {y.year}
             </p>
@@ -119,7 +140,7 @@ export default function Rewind({ years, total }: { years: RewindYear[]; total: n
               <p className="label-mono mt-3 text-ivory/70">{y.count} moments pinned</p>
             </div>
             {y.photos.map((p, i) => (
-              <div key={p.code} data-depth={DEPTHS[i % DEPTHS.length]} className="relative shrink-0" style={{ top: DROPS[i % DROPS.length] }}>
+              <div key={p.code} data-depth={DEPTHS[i % DEPTHS.length]} className="relative shrink-0 will-change-transform" style={{ top: DROPS[i % DROPS.length] }}>
                 <Link
                   href="/noticeboard"
                   aria-label={`A moment from ${y.year}. Open The Wall.`}

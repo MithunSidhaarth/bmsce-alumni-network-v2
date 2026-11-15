@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { flushPush } from "@/app/push/actions";
 import type { Me } from "@/lib/me";
 import Avatar from "./Avatar";
-import { GearMark, Logo } from "./Brand";
+import { Logo } from "./Brand";
 import CommandPalette from "./CommandPalette";
 import Icon, { type IconName } from "./Icon";
 import Presence from "./Presence";
@@ -127,13 +127,13 @@ export default function AppChrome({ me }: { me: Me }) {
         className="fixed inset-y-0 left-0 z-40 hidden w-[var(--rail-slim)] flex-col border-r border-ink/10 md:flex rail:w-[var(--rail)]"
       >
         {/* The wide rail has room for the full logo and its clear space. The
-            narrow rail carries the gear mark; the name is in the top bar. */}
+            narrow rail shows the same logo, scaled to fit. */}
         <Link href="/" className="flex min-h-[var(--topbar)] items-center justify-center rail:justify-start rail:pl-1.5" aria-label="BMSCE Alumni Network home">
           <span className="hidden rail:block">
             <Logo />
           </span>
           <span className="rail:hidden">
-            <GearMark name={false} />
+            <Logo height={20} clear={false} />
           </span>
         </Link>
 
